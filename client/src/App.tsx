@@ -1,17 +1,32 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import {
+  Navigate,
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+
 import AddUser from "./components/AddUser/AddUser";
-import "./App.css";
 import AdduserMain from "./components/addUser/AdduserMain";
+import ErrorPage from "./components/errorPage/ErrorPage";
+// Component to handle routing with conditional rendering
+function AppRoutes() {
+  return (
+    <Routes>
+      {/* <Route path="/" element={<MainPage />} /> */}
+      <Route path="/add-user/" element={<AddUser />} />
+      <Route path="*" element={<ErrorPage />} />
+    </Routes>
+  );
+}
 
 function App() {
   return (
-    <>
-      <AddUser />
-      {/* <AdduserMain /> */}
-    </>
+    <Router basename="/">
+      <AppRoutes />
+    </Router>
   );
 }
+
 
 export default App;
