@@ -17,7 +17,13 @@ function AppRoutes() {
   return (
     <Routes>
       {/* <Route path="/" element={<MainPage />} /> */}
-      <Route path="/" element={<SignIn />} />
+      <Route path="/*" element={
+        <AppTheme>
+          <Routes>
+            <Route path="/" element={<SignIn />} />
+          </Routes>
+        </AppTheme>
+      } />
       <Route path="/add-user/" element={<AddUser />} />
       <Route path="*" element={<ErrorPage />} />
     </Routes>
@@ -27,9 +33,7 @@ function AppRoutes() {
 function App() {
   return (
     <Router basename="/">
-      <AppTheme>
-        <AppRoutes />
-      </AppTheme>
+      <AppRoutes />
     </Router>
   );
 }
