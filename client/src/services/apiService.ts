@@ -6,7 +6,7 @@ interface Credentials {
 }
 // Create Axios instance
 const apiClient = axios.create({
-  baseURL: "localhost:5128",
+  baseURL: "http://localhost:5128",
   headers: {
     "Content-Type": "application/json",
   },
@@ -23,8 +23,8 @@ export const setAuthToken = (token: string | null) => {
 
 // Automatically set auth token if stored in localStorage
 
-const getToken = () => localStorage.getItem("toekn");
-if (getToken()) setAuthToken(getToken());
+// const getToken = () => localStorage.getItem("toekn");
+// if (getToken()) setAuthToken(getToken());
 
 // API service with all CRUD operations
 export const apiService = {
@@ -44,9 +44,10 @@ export const apiService = {
 
   // Login API (Returns token & stores it)
   login: async (credentials: Credentials) => {
+    console.log(credentials)
     const response = await apiClient.post("/api/login", credentials);
-    setAuthToken(response.data.token);
-    localStorage.setItem("token", response.data.token);
+    // setAuthToken(response.data.token);
+    // localStorage.setItem("token", response.data.token);
     return response;
   },
 
