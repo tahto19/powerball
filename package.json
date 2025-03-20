@@ -21,8 +21,10 @@
   "homepage": "https://github.com/tahto19/powerball#readme",
   "dependencies": {
     "@fastify/cookie": "^11.0.2",
+    "@fastify/cors": "^11.0.0",
     "@fastify/jwt": "^9.1.0",
     "@fastify/middie": "^9.0.3",
+    "@fastify/swagger": "^9.4.2",
     "crypto-js": "^4.2.0",
     "dotenv": "^16.4.7",
     "fastify": "^5.2.1",

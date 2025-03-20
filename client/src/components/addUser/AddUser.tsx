@@ -129,7 +129,7 @@ const AddUser = () => {
                 label="Mobile Number"
                 variant="outlined"
                 size="medium"
-                {...register("firstname", { required: true })}
+                {...register("mobileNumber", { required: true })}
               />
             </Stack>
 
