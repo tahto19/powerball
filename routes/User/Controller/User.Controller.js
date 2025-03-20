@@ -31,3 +31,9 @@ export const updateController = async (req, res) => {
   let a = await uc.Edit(req.body);
   res.send(cSend(a));
 };
+export const createUser = async (req, res) => {
+  try {
+  } catch (err) {
+    throw err;
+  }
+};

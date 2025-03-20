@@ -1,19 +1,24 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { outsideAddUser } from "./asnycCalls";
 
 interface userState {
-  fullname: string | null;
+  firstname: string | null;
+  lastname: string | null;
   emailAddress: string | null;
   birthdate: Date | null;
-  idImage: File | null;
   loading: boolean | undefined;
+  outside: boolean | undefined;
+  file: File[] | null;
 }
 
 const initialState: userState = {
-  fullname: null,
+  firstname: null,
+  lastname: null,
   emailAddress: null,
   birthdate: null,
-  idImage: null,
   loading: false,
+  outside: false,
+  file: null,
 };
 
 const userSlice = createSlice({
@@ -30,6 +35,14 @@ const userSlice = createSlice({
         console.log(err);
       }
     },
+  },
+  extraReducers: (b) => {
+    b.addCase(outsideAddUser.fulfilled, (state) => {
+      state.outside = true;
+    });
+    b.addCase(outsideAddUser.pending, (state, action) => {
+      console.log(action, state);
+    });
   },
 });
 

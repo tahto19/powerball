@@ -50,6 +50,8 @@ Users.init(
         },
       },
     },
+    idPath: { allowNull: true, type: DataTypes.STRING, defaultValue: null },
+    birthdate: { allowNull: true, type: DataTypes.DATE, defaultValue: null },
     active: { allowNull: false, type: DataTypes.BOOLEAN, defaultValue: true },
     block: { allowNull: false, type: DataTypes.BOOLEAN, defaultValue: false },
     emailAddress: {

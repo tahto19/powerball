@@ -56,5 +56,5 @@ export const apiService = {
     localStorage.removeItem("token");
   },
 };
-
+export const apiServiceUser = {};
 export default apiService;

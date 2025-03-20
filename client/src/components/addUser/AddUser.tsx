@@ -21,13 +21,17 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useDropzone, FileWithPath } from "react-dropzone";
 import { useForm, SubmitHandler, SubmitErrorHandler } from "react-hook-form";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import PhoneInput from "react-phone-input-2";
 import moment from "moment";
-import { userState } from "./Types";
+import "react-phone-input-2/lib/style.css";
+import { userState } from "./Types.ts";
+import { useAppDispatch } from "@/redux/hook.ts";
+import { outsideAddUser } from "@/redux/reducers/user/asnycCalls.ts";
 const AddUser = () => {
-  const dispatch = useDispatch();
-  const { fullname, emailAddress, birthdate, idImage, loading } = useSelector(
-    (state: RootState) => state.user
-  );
+  const dispatch = useAppDispatch();
+  // const { fullname, emailAddress, birthdate, idImage, loading } = useSelector(
+  //   (state: RootState) => state.user
+  // );
   const [fileD, setFileD] = useState<File[]>([]);
   const {
     register,
@@ -38,6 +42,7 @@ const AddUser = () => {
 
   register("birthdate", { required: true });
   register("file", { required: true });
+  register("mobileNumber", { required: true });
   const onDrop = useCallback((acceptedFiles: File[]) => {
     // Do something with the files
     console.log(acceptedFiles);
@@ -55,13 +60,13 @@ const AddUser = () => {
     multiple: false,
   });
 
-  const onSubmit: SubmitHandler<userState> = (data, error) =>
-    console.log(data, error);
+  const onSubmit: SubmitHandler<userState> = (data) =>
+    dispatch(outsideAddUser(data));
   const onError: SubmitErrorHandler<userState> = (error) => console.log(error);
   return (
     <Grid container spacing={1}>
       <form onSubmit={handleSubmit(onSubmit, onError)} id="my-form"></form>
-      <Grid size={4}>
+      <Grid size={{ md: 4, xs: 12 }}>
         <Grid
           container
           spacing={2}
@@ -76,76 +81,109 @@ const AddUser = () => {
               Create Account
             </Typography>
           </Grid>
-          <Grid size={10}>
-            <Stack direction="row" spacing={1}>
-              <TextField
-                sx={{ width: "80%" }}
-                id="outlined-basic"
-                label="First Name"
-                variant="outlined"
-                size="medium"
-                {...register("firstname", { required: true })}
-              />
-              {errors &&
-                errors.firstname &&
-                errors.firstname.type &&
-                errors.firstname.type === "required" && (
-                  <FormHelperText sx={{ color: "red" }}>
-                    Required
-                  </FormHelperText>
-                )}{" "}
-              <TextField
-                sx={{ width: "80%" }}
-                id="outlined-basic"
-                label="Last Name"
-                variant="outlined"
-                size="medium"
-                {...register("lastname", { required: true })}
-              />
-              {errors &&
-                errors.lastname &&
-                errors.lastname.type &&
-                errors.lastname.type === "required" && (
-                  <FormHelperText sx={{ color: "red" }}>
-                    Required
-                  </FormHelperText>
-                )}
-            </Stack>
+          <Grid size={11}>
+            <Grid container spacing={1}>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <TextField
+                  sx={{ width: "100%" }}
+                  id="outlined-basic"
+                  label="First Name"
+                  variant="outlined"
+                  size="medium"
+                  {...register("firstname", { required: true })}
+                />
+                {errors &&
+                  errors.firstname &&
+                  errors.firstname.type &&
+                  errors.firstname.type === "required" && (
+                    <FormHelperText sx={{ color: "red" }}>
+                      Required
+                    </FormHelperText>
+                  )}{" "}
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <TextField
+                  fullWidth
+                  id="outlined-basic"
+                  label="Last Name"
+                  variant="outlined"
+                  size="medium"
+                  {...register("lastname", { required: true })}
+                />
+                {errors &&
+                  errors.lastname &&
+                  errors.lastname.type &&
+                  errors.lastname.type === "required" && (
+                    <FormHelperText sx={{ color: "red" }}>
+                      Required
+                    </FormHelperText>
+                  )}
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid size={10}></Grid>
-          <Grid size={10}>
-            <Stack direction="row" spacing={1}>
-              <TextField
-                sx={{ width: "80%" }}
-                id="outlined-basic"
-                label="Email Address"
-                variant="outlined"
-                size="medium"
-                {...register("emailAddress", { required: true })}
-              />{" "}
-              <TextField
-                sx={{ width: "80%" }}
-                id="outlined-basic"
-                label="Mobile Number"
-                variant="outlined"
-                size="medium"
-                {...register("mobileNumber", { required: true })}
-              />
-            </Stack>
 
-            {errors &&
-              errors.emailAddress &&
-              errors.emailAddress.type &&
-              errors.emailAddress.type === "required" && (
-                <FormHelperText sx={{ color: "red" }}>Required</FormHelperText>
-              )}
+          <Grid size={11}>
+            <Grid container spacing={1}>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <TextField
+                  fullWidth
+                  id="outlined-basic"
+                  label="Email Address"
+                  variant="outlined"
+                  size="medium"
+                  {...register("emailAddress", { required: true })}
+                />
+                {errors &&
+                  errors.emailAddress &&
+                  errors.emailAddress.type &&
+                  errors.emailAddress.type === "required" && (
+                    <FormHelperText sx={{ color: "red" }}>
+                      Required
+                    </FormHelperText>
+                  )}
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <PhoneInput
+                  country={"ph"}
+                  inputStyle={{
+                    border: "1px solid #c4c4c4",
+                    height: "100%",
+                    width: "100%",
+                    minHeight: "40px",
+                  }}
+                  containerStyle={{
+                    minHeight: "40px",
+                    height:
+                      errors &&
+                      errors.mobileNumber &&
+                      errors.mobileNumber &&
+                      errors.mobileNumber.type &&
+                      errors.mobileNumber.type === "required"
+                        ? "70%"
+                        : "100%",
+                  }}
+                  // value={this.state.phone}
+                  onChange={(phone) => {
+                    setValue("mobileNumber", phone);
+                  }}
+                />
+                {errors &&
+                  errors.mobileNumber &&
+                  errors.mobileNumber.type &&
+                  errors.mobileNumber.type === "required" && (
+                    <FormHelperText sx={{ color: "red" }}>
+                      Required
+                    </FormHelperText>
+                  )}
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid size={10}>
+          <Grid size={11}>
             <LocalizationProvider dateAdapter={AdapterMoment}>
               <DemoContainer components={["DatePicker"]}>
                 <DatePicker
                   label="Birthdate"
-                  sx={{ width: "80%" }}
+                  sx={{ width: "100%" }}
                   onChange={(e) => {
                     setValue("birthdate", moment(e).toISOString());
                   }}
@@ -161,7 +199,7 @@ const AddUser = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid size={7} sx={{ justifyContent: "center" }}>
+      <Grid size={{ md: 7, xs: 12 }} sx={{ justifyContent: "center" }}>
         <Stack spacing={1}>
           <Box>
             <Typography sx={{ fontSize: "1.5rem", fontWeight: "bold" }}>
@@ -229,7 +267,7 @@ const AddUser = () => {
         </Stack>
       </Grid>
       <Grid size={12} sx={{ marginTop: "25px" }}></Grid>
-      <Grid size={2} sx={{ textAlign: "center" }}>
+      <Grid size={{ md: 2, xs: 12 }} sx={{ textAlign: "center" }}>
         <Typography>
           By creating an account or signing you agree to our{" "}
           <Tooltip title="Click me!">
@@ -245,8 +283,8 @@ const AddUser = () => {
           </Tooltip>
         </Typography>
       </Grid>
-      <Grid size={7}></Grid>
-      <Grid size={2}>
+      <Grid size={{ md: 7, xs: 0 }}></Grid>
+      <Grid size={{ md: 2, xs: 12 }}>
         <Button
           variant="contained"
           fullWidth
