@@ -63,8 +63,8 @@ const AnimatedContent: React.FC<AnimatedContentProps> = ({
     },
     to: inView
       ? {
-          transform: `translate${directions[direction]}(0px) scale(1)`,
           opacity: 1,
+          transform: `translate${directions[direction]}(0px) scale(1)`,
         }
       : undefined,
     config,
