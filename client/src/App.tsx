@@ -11,18 +11,29 @@ import AdduserMain from "./components/addUser/AdduserMain";
 import ErrorPage from "./components/errorPage/ErrorPage";
 import SignIn from "./components/signIn/index";
 import AppTheme from '@/theme/AppTheme';
+import MainLayout from "./layout/MainLayout";
+import Dashboard from "./components/dashboard/index";
 
+const routes = [
+  { path: "/dashboard", component: <Dashboard /> },
+]
 // Component to handle routing with conditional rendering
 function AppRoutes() {
   return (
     <Routes>
-      {/* <Route path="/" element={<MainPage />} /> */}
       <Route path="/*" element={
-        <AppTheme>
-          <Routes>
-            <Route path="/" element={<SignIn />} />
-          </Routes>
-        </AppTheme>
+        <Routes>
+          <Route path="/" element={<AppTheme><SignIn /></AppTheme>} />
+          {
+            routes.map(({ path, component }) => (
+              <Route key={path} path={path} element={
+                <AppTheme>
+                  <MainLayout>{component}</MainLayout>
+                </AppTheme>
+              } />
+            ))
+          }
+        </Routes>
       } />
       <Route path="/add-user/" element={<AddUser />} />
       <Route path="*" element={<ErrorPage />} />
