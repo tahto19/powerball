@@ -1,0 +1,7 @@
+[
+  { "path": "/users", "method": "TESTING" },
+  { "path": "/users", "method": "POST" },
+
+  { "path": "/login", "method": "POST" },
+  { "path": "/login/checkSession", "method": "POST" }
+]

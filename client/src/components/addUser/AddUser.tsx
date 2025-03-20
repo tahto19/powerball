@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import Button from "@mui/material/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
@@ -7,40 +7,61 @@ import Grid from "@mui/material/Grid2";
 import {
   Box,
   Divider,
+  FormHelperText,
   Paper,
   Stack,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { useDropzone } from "react-dropzone";
-import { useForm } from "react-hook-form";
+import { useDropzone, FileWithPath } from "react-dropzone";
+import { useForm, SubmitHandler, SubmitErrorHandler } from "react-hook-form";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import moment from "moment";
+import { userState } from "./Types";
 const AddUser = () => {
   const dispatch = useDispatch();
   const { fullname, emailAddress, birthdate, idImage, loading } = useSelector(
     (state: RootState) => state.user
   );
+  const [fileD, setFileD] = useState<File[]>([]);
   const {
     register,
     handleSubmit,
-    watch,
     setValue,
+    getValues,
     formState: { errors },
-  } = useForm();
-  const onDrop = useCallback((acceptedFiles) => {
-    // Do something with the files
-    setValue("file", acceptedFiles);
-  }, []);
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  } = useForm<userState>();
 
-  const onSubmit = (data) => console.log(data);
+  register("birthdate", { required: true });
+  register("file", { required: true });
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    // Do something with the files
+    console.log(acceptedFiles);
+    setValue("file", acceptedFiles);
+    setFileD(acceptedFiles);
+    console.log(fileD);
+  }, []);
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    accept: {
+      "image/png": [".png"],
+      "image/jpg": [".jpg"],
+      "image/jpeg": [".jpeg"],
+    },
+    onDrop,
+    multiple: false,
+  });
+
+  const onSubmit: SubmitHandler<userState> = (data, error) =>
+    console.log(data, error);
+  const onError: SubmitErrorHandler<userState> = (error) => console.log(error);
   return (
     <Grid container spacing={1}>
+      <form onSubmit={handleSubmit(onSubmit, onError)} id="my-form"></form>
       <Grid size={4}>
         <Grid
           container
@@ -63,8 +84,14 @@ const AddUser = () => {
               label="Full Name"
               variant="outlined"
               size="medium"
-              {...(register("fullname"), { required: true })}
+              {...register("fullname", { required: true })}
             />
+            {errors &&
+              errors.fullname &&
+              errors.fullname.type &&
+              errors.fullname.type === "required" && (
+                <FormHelperText sx={{ color: "red" }}>Required</FormHelperText>
+              )}
           </Grid>
           <Grid size={10}>
             <TextField
@@ -73,8 +100,14 @@ const AddUser = () => {
               label="Email Address"
               variant="outlined"
               size="medium"
-              {...(register("emailAddress"), { required: true })}
+              {...register("emailAddress", { required: true })}
             />
+            {errors &&
+              errors.emailAddress &&
+              errors.emailAddress.type &&
+              errors.emailAddress.type === "required" && (
+                <FormHelperText sx={{ color: "red" }}>Required</FormHelperText>
+              )}
           </Grid>
           <Grid size={10}>
             <LocalizationProvider dateAdapter={AdapterMoment}>
@@ -83,11 +116,17 @@ const AddUser = () => {
                   label="Birthdate"
                   sx={{ width: "80%" }}
                   onChange={(e) => {
-                    setValue("birthday", moment(e).toISOString());
+                    setValue("birthdate", moment(e).toISOString());
                   }}
                 />
               </DemoContainer>
             </LocalizationProvider>
+            {errors &&
+              errors.birthdate &&
+              errors.birthdate.type &&
+              errors.birthdate.type === "required" && (
+                <FormHelperText sx={{ color: "red" }}>Required</FormHelperText>
+              )}
           </Grid>
         </Grid>
       </Grid>
@@ -134,12 +173,17 @@ const AddUser = () => {
                           borderWidth: "medium",
                         }}
                       >
-                        Browse File
+                        {fileD && fileD[0] && fileD[0].name
+                          ? fileD[0].name
+                          : "Browse File"}
                       </Button>
                     </Box>
                     <Box>
                       <Typography>
-                        Choose a file or drag & drop it here
+                        {fileD && fileD[0] && fileD[0].name
+                          ? "Change"
+                          : "Choose"}{" "}
+                        a file or drag & drop it here
                       </Typography>
                       <Typography sx={{ color: "#cacfdb" }}>
                         JPEG,PNG formats, up to 50MB
@@ -156,8 +200,18 @@ const AddUser = () => {
       <Grid size={12} sx={{ marginTop: "25px" }}></Grid>
       <Grid size={2} sx={{ textAlign: "center" }}>
         <Typography>
-          By creating an account or signing you agree to our Terms and
-          Conditions
+          By creating an account or signing you agree to our{" "}
+          <Tooltip title="Click me!">
+            <Typography
+              sx={{
+                fontWeight: "bolder",
+                textDecoration: "underline",
+                cursor: "pointer",
+              }}
+            >
+              Terms and Conditions
+            </Typography>
+          </Tooltip>
         </Typography>
       </Grid>
       <Grid size={7}></Grid>
@@ -171,6 +225,8 @@ const AddUser = () => {
             fontWeight: "bolder",
             fontSize: "16px",
           }}
+          type="submit"
+          form="my-form"
         >
           Next{" >"}
         </Button>

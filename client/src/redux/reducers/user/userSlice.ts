@@ -5,7 +5,7 @@ interface userState {
   emailAddress: string | null;
   birthdate: Date | null;
   idImage: File | null;
-  loading: boolean;
+  loading: boolean | undefined;
 }
 
 const initialState: userState = {
