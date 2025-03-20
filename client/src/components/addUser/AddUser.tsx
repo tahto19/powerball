@@ -33,7 +33,6 @@ const AddUser = () => {
     register,
     handleSubmit,
     setValue,
-    getValues,
     formState: { errors },
   } = useForm<userState>();
 
@@ -78,30 +77,62 @@ const AddUser = () => {
             </Typography>
           </Grid>
           <Grid size={10}>
-            <TextField
-              sx={{ width: "80%" }}
-              id="outlined-basic"
-              label="Full Name"
-              variant="outlined"
-              size="medium"
-              {...register("fullname", { required: true })}
-            />
-            {errors &&
-              errors.fullname &&
-              errors.fullname.type &&
-              errors.fullname.type === "required" && (
-                <FormHelperText sx={{ color: "red" }}>Required</FormHelperText>
-              )}
+            <Stack direction="row" spacing={1}>
+              <TextField
+                sx={{ width: "80%" }}
+                id="outlined-basic"
+                label="First Name"
+                variant="outlined"
+                size="medium"
+                {...register("firstname", { required: true })}
+              />
+              {errors &&
+                errors.firstname &&
+                errors.firstname.type &&
+                errors.firstname.type === "required" && (
+                  <FormHelperText sx={{ color: "red" }}>
+                    Required
+                  </FormHelperText>
+                )}{" "}
+              <TextField
+                sx={{ width: "80%" }}
+                id="outlined-basic"
+                label="Last Name"
+                variant="outlined"
+                size="medium"
+                {...register("lastname", { required: true })}
+              />
+              {errors &&
+                errors.lastname &&
+                errors.lastname.type &&
+                errors.lastname.type === "required" && (
+                  <FormHelperText sx={{ color: "red" }}>
+                    Required
+                  </FormHelperText>
+                )}
+            </Stack>
           </Grid>
+          <Grid size={10}></Grid>
           <Grid size={10}>
-            <TextField
-              sx={{ width: "80%" }}
-              id="outlined-basic"
-              label="Email Address"
-              variant="outlined"
-              size="medium"
-              {...register("emailAddress", { required: true })}
-            />
+            <Stack direction="row" spacing={1}>
+              <TextField
+                sx={{ width: "80%" }}
+                id="outlined-basic"
+                label="Email Address"
+                variant="outlined"
+                size="medium"
+                {...register("emailAddress", { required: true })}
+              />{" "}
+              <TextField
+                sx={{ width: "80%" }}
+                id="outlined-basic"
+                label="Mobile Number"
+                variant="outlined"
+                size="medium"
+                {...register("firstname", { required: true })}
+              />
+            </Stack>
+
             {errors &&
               errors.emailAddress &&
               errors.emailAddress.type &&

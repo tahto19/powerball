@@ -1,5 +1,6 @@
 export interface userState {
-  fullname: string | null;
+  firstname: string | null;
+  lastname: string | null;
   emailAddress: string | null;
   birthdate: string | null;
   file: File[] | null;
