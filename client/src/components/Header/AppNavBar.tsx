@@ -1,14 +1,14 @@
 import * as React from 'react';
+import { useLocation } from "react-router-dom";
 
 import { styled } from '@mui/material/styles';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import MuiToolbar from '@mui/material/Toolbar';
 import { tabsClasses } from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
-import MenuButton from '@/components/Header/MenuButton';
+import MenuButton from '@/components/MenuButton';
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/redux/store"; // Import types
@@ -61,11 +61,19 @@ const Toolbar = styled(MuiToolbar)({
     },
 });
 
+const routes = [
+    { path: "/dashboard", title: "Dashboard" },
+    { path: "/administrator", title: "Administrator" },
+];
 
 export default function AppNavbar() {
     const dispatch = useDispatch<AppDispatch>();
     const { open } = useSelector((state: RootState) => state.navBar);
 
+    const location = useLocation();
+
+    const currentRoute = routes.find(route => route.path === location.pathname);
+    const pageTitle = currentRoute?.title || " ";
     return (
         <AppBar
             position="fixed"
@@ -97,8 +105,8 @@ export default function AppNavbar() {
                         <MenuButton aria-label="menu" onClick={() => dispatch(openNav(!open))}>
                             <MenuRoundedIcon />
                         </MenuButton>
-                        <Typography variant="h5" sx={{ color: 'text.primary' }}>
-                            Dashboard
+                        <Typography variant="h5" sx={{ color: 'text.primary', display: "flex", alignItems: "center" }}>
+                            {pageTitle}
                         </Typography>
                     </Stack>
 

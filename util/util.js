@@ -17,6 +17,7 @@ const algorithm = "aes-256-cbc";
 const key = process.env.DB_KEY; //  this must not change it will change the value of the db
 const iv = process.env.DB_IV; // this must not change it will change the value of the db
 export const encrpytPassword = async (_d) => {
+  console.log("here");
   const cipher = createCipheriv(algorithm, key, iv);
   let encrypted = cipher.update(_d, "utf8", "hex");
   encrypted += cipher.final("hex");
