@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
@@ -10,23 +11,24 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 
 import { styled } from '@mui/material/styles';
+import apiService from '@/services/apiService';
 
-const NewCard = styled(Card)(({ theme }) => ({
-    display: 'flex',
-    flexDirection: 'column',
-    alignSelf: 'center',
-    padding: theme.spacing(4),
-    gap: theme.spacing(2),
-    margin: 'auto',
-    width: "80%",
-    maxWidth: "450px",
-    // [theme.breakpoints.up('sm')]: {
-    //     maxWidth: '450px',
-    // },
-    boxShadow:
-        'hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px',
+// const NewCard = styled(Card)(({ theme }) => ({
+//     display: 'flex',
+//     flexDirection: 'column',
+//     alignSelf: 'center',
+//     padding: theme.spacing(4),
+//     gap: theme.spacing(2),
+//     margin: 'auto',
+//     width: "80%",
+//     maxWidth: "450px",
+//     // [theme.breakpoints.up('sm')]: {
+//     //     maxWidth: '450px',
+//     // },
+//     boxShadow:
+//         'hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px',
 
-}));
+// }));
 
 const SignInContainer = styled(Stack)(({ theme }) => ({
     height: 'auto',
@@ -51,21 +53,27 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 const SignIn = () => {
+    const navigate = useNavigate();
     const [emailError, setEmailError] = React.useState(false);
     const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
     const [passwordError, setPasswordError] = React.useState(false);
     const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         if (emailError || passwordError) {
             event.preventDefault();
             return;
         }
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+        const formData = new FormData(event.currentTarget);
+
+        const email = formData.get('email') as string; // ✅ Ensure it's a string
+        const password = formData.get('password') as string;
+
+        const res = await apiService.login({ email, password })
+        if (res.data.success) {
+            // Redirect to dashboard after login
+            navigate('/dashboard');
+        }
     };
 
     const validateInputs = () => {
@@ -96,7 +104,7 @@ const SignIn = () => {
     };
     return (
         <SignInContainer direction="column" justifyContent="space-between">
-            <NewCard variant="outlined">
+            <Card variant="outlined">
                 <Typography
                     component="h1"
                     variant="h4"
@@ -158,7 +166,7 @@ const SignIn = () => {
                         Sign in
                     </Button>
                 </Box>
-            </NewCard>
+            </Card>
         </SignInContainer>
     )
 }
