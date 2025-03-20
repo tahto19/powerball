@@ -1,10 +1,6 @@
 import pino from "pino";
-import {
-  createHash,
-  randomBytes,
-  createCipheriv,
-  createDecipheriv,
-} from "crypto";
+import { createCipheriv, createDecipheriv } from "crypto";
+import "dotenv/config";
 import path from "path";
 import { fileURLToPath } from "url";
 import { Op } from "sequelize";
@@ -18,8 +14,8 @@ export const logger = pino({
   },
 });
 const algorithm = "aes-256-cbc";
-const key = "12345678912345678912345678912345"; // Key must be 32 bytes for AES-256
-const iv = "1234567891011133"; // IV must be 16 bytes
+const key = process.env.DB_KEY; //  this must not change it will change the value of the db
+const iv = process.env.DB_IV; // this must not change it will change the value of the db
 export const encrpytPassword = async (_d) => {
   const cipher = createCipheriv(algorithm, key, iv);
   let encrypted = cipher.update(_d, "utf8", "hex");

@@ -3,6 +3,8 @@ import "dotenv/config";
 import Fastify from "fastify";
 import fs from "fs";
 import fp from "fastify-plugin";
+import cors from "@fastify/cors";
+
 import conn from "./dbConnections/conn.js";
 
 import userRoute from "./routes/User/user.route.js";
@@ -38,6 +40,11 @@ const fastify = Fastify({
  */
 const start = async () => {
   try {
+    // cors
+    await fastify.register(cors, {
+      origin: "*",
+      methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    });
     // jwt
     fastify.register(import("@fastify/jwt"), {
       secret: process.env.JWT_SECRET,
