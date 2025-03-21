@@ -31,7 +31,9 @@ const AppBar = styled(MuiAppBar, {
             props: ({ open }) => open,
             style: {
                 width: `calc(100% - ${drawerWidth}px)`,
-                marginLeft: `${drawerWidth}px`,
+                [theme.breakpoints.down('sm')]: {
+                    width: '100%', // Change only for small screens
+                },
                 transition: theme.transitions.create(['margin', 'width'], {
                     easing: theme.transitions.easing.easeOut,
                     duration: theme.transitions.duration.enteringScreen,
@@ -47,7 +49,7 @@ const AppBar = styled(MuiAppBar, {
 }));
 const Toolbar = styled(MuiToolbar)({
     width: '100%',
-    padding: '6px 12px',
+    // padding: '6px 12px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'start',

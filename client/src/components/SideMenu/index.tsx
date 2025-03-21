@@ -8,10 +8,12 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import MenuList from '@/components/SideMenu/MenuList';
 import OptionsMenu from '@/components/SideMenu/OptionsMenu';
+import { useMediaQuery, useTheme } from "@mui/material";
 
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/redux/store"; // Import types
+import { openNav } from '@/redux/reducers/navBarSlice';
 
 const drawerWidth = 240;
 
@@ -26,14 +28,21 @@ const Drawer = styled(MuiDrawer)({
     },
 });
 export default function SideMenu() {
+    const dispatch = useDispatch<AppDispatch>();
+
     const { open } = useSelector((state: RootState) => state.navBar);
+    const theme = useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+
     return (
         <>
             <Drawer
                 open={open}
-                variant="persistent"
+                onClose={() => dispatch(openNav(!open))}
+                variant={isSmallScreen ? "temporary" : "persistent"} // Change variant based on screen size
                 sx={{
-                    display: { xs: 'none', md: 'block' },
+                    display: { xs: 'block', md: 'block' },
                     [`& .${drawerClasses.paper}`]: {
                         backgroundColor: 'background.paper',
                     },
@@ -46,7 +55,7 @@ export default function SideMenu() {
                         p: 1.5,
                     }}
                 >
-                    Power Rangers
+                    PowerBall ScratchIt
                 </Box>
                 <Divider />
                 <Box

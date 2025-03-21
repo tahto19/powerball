@@ -4,7 +4,9 @@ import type { ThemeOptions } from '@mui/material/styles';
 import { inputsCustomizations } from './customizations/inputs';
 import { navigationCustomizations } from './customizations/navigation';
 import { dataDisplayCustomizations } from './customizations/dataDisplay';
+import { dataGridCustomizations } from './customizations/dataGrid';
 import { surfacesCustomizations } from './customizations/surfaces';
+import { dialogCustomizations } from './customizations/dialog';
 
 import { colorSchemes, typography, shadows, shape } from './themePrimitives';
 
@@ -38,8 +40,10 @@ export default function AppTheme({
                 components: {
                     ...inputsCustomizations,
                     ...dataDisplayCustomizations,
+                    ...dataGridCustomizations,
                     ...navigationCustomizations,
                     ...surfacesCustomizations,
+                    ...dialogCustomizations,
                     ...themeComponents,
                 },
             });

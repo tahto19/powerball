@@ -82,5 +82,5 @@ export const apiService = {
     console.log(_r);
   },
 };
-export const apiServiceUser = {};
+
 export default apiService;
