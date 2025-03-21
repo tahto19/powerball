@@ -45,7 +45,7 @@ function AppRoutes() {
           </Routes>
         }
       />
-      <Route path="/add-user/" element={<AddUser />} />
+      <Route path="/add-user/" element={<AdduserMain />} />
       <Route path="*" element={<ErrorPage />} />
     </Routes>
   );

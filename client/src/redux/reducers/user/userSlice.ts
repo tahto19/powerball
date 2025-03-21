@@ -35,6 +35,9 @@ const userSlice = createSlice({
         console.log(err);
       }
     },
+    returnToAddUser: (state) => {
+      state.outside = false;
+    },
   },
   extraReducers: (b) => {
     b.addCase(outsideAddUser.fulfilled, (state) => {
@@ -46,5 +49,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { addUser } = userSlice.actions;
+export const { addUser, returnToAddUser } = userSlice.actions;
 export default userSlice.reducer;
