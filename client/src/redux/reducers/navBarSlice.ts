@@ -13,7 +13,6 @@ const navBarSlice = createSlice({
   initialState,
   reducers: {
     openNav: (state, action) => {
-      console.log(action);
       state.open = action.payload
     },
   },

@@ -8,7 +8,9 @@ import AppNavBar from "@/components/Header/AppNavBar";
 import { styled } from '@mui/material/styles';
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-
+// import { useMediaQuery, useTheme } from "@mui/material";
+// const theme = useTheme();
+// const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
 const drawerWidth = 240;
 
@@ -16,12 +18,16 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
     open?: boolean;
 }>(({ theme }) => ({
     flexGrow: 1,
+    width: "100%",
     padding: theme.spacing(3),
     transition: theme.transitions.create('margin', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
     }),
     marginLeft: -drawerWidth,
+    [theme.breakpoints.down('sm')]: {
+        marginLeft: 'auto', // Change only for small screens
+    },
     /**
      * This is necessary to enable the selection of content. In the DOM, the stacking order is determined
      * by the order of appearance. Following this rule, elements appearing later in the markup will overlay
@@ -50,6 +56,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
+    marginTop: 0,
 }));
 
 function MainLayout({ children }: { children: any }) {
@@ -76,12 +83,12 @@ function MainLayout({ children }: { children: any }) {
                             alignItems: 'center',
                             mx: 3,
                             pb: 5,
-                            mt: { xs: 8, md: 0 },
+                            mt: { xs: 3, md: 5 },
                         }}
                     >
                         {/* <Header /> */}
                         <AppNavBar />
-                        <DrawerHeader />
+                        {/* <DrawerHeader /> */}
                         <Main open={open}>{children}</Main>
                     </Stack>
                 </Main>
