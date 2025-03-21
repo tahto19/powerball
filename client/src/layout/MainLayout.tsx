@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+
 import SideMenu from "@/components/SideMenu";
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -7,6 +8,7 @@ import AppNavBar from "@/components/Header/AppNavBar";
 import { styled } from '@mui/material/styles';
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+
 
 const drawerWidth = 240;
 
@@ -49,16 +51,24 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
 }));
-function MainLayout({ children }: { children: any }) {
-    const { open } = useSelector((state: RootState) => state.navBar);
 
+function MainLayout({ children }: { children: any }) {
+
+    const { open } = useSelector((state: RootState) => state.navBar);
+    console.log(location)
     return (
         <>
             <Box sx={{ display: 'flex' }}>
                 <SideMenu />
                 {/* Main content */}
                 <Main open={open}
-
+                    sx={(theme) => ({
+                        flexGrow: 1,
+                        backgroundColor: theme
+                            ? `rgba(${theme.palette.background.defaultChannel} / 1)`
+                            : alpha(theme.palette.background.default, 1),
+                        overflow: 'auto',
+                    })}
                 >
                     <Stack
                         spacing={2}

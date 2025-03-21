@@ -8,13 +8,18 @@ import {
 
 import AddUser from "./components/AddUser/AddUser";
 import AdduserMain from "./components/addUser/AdduserMain";
-import ErrorPage from "./components/errorPage/ErrorPage";
-import SignIn from "./components/signIn/index";
-import AppTheme from "@/theme/AppTheme";
+import ErrorPage from "./components/ErrorPage/ErrorPage";
+import SignIn from "./components/SignIn/index";
+import AppTheme from '@/theme/AppTheme';
 import MainLayout from "./layout/MainLayout";
-import Dashboard from "./components/dashboard/index";
+import Dashboard from "./components/Dashboard/index";
+import Administrator from "./components/Administrator/index";
 
-const routes = [{ path: "/dashboard", component: <Dashboard /> }];
+
+const routes = [
+  { path: "/dashboard", component: <Dashboard />, title: "Dashboard" },
+  { path: "/administrator", component: <Administrator />, title: "Administrator" },
+]
 // Component to handle routing with conditional rendering
 function AppRoutes() {
   return (
