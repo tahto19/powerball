@@ -59,16 +59,27 @@ export const apiService = {
   },
 
   // for creating user in the outside
+
   createUser: async (d: userState) => {
     const fd = new FormData();
     for (const _d in d) {
-      console.log(d[_d], "  ", _d);
-      fd.append(_d, d[_d]);
+      const value = d[_d as keyof typeof d];
+      console.log(_d, d[_d as keyof typeof d]);
+      if (value !== null) {
+        if (typeof value === "string") {
+          fd.append(_d, value); // Append string directly
+        } else if (Array.isArray(value) && value.length > 0) {
+          fd.append(_d, value[0]); // Append first file if array is not empty
+        } else {
+          throw new Error(`${_d} has null`);
+        }
+      } else throw new Error(`${_d} has null`);
     }
-    // const _r = await apiClient.post("/", fd, {
-    //   headers: { "Content-Type": "multipart/form-data" },
-    // });
-    // console.log(_r);
+
+    const _r = await apiClient.post("/users/createUser", fd, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    console.log(_r);
   },
 };
 export const apiServiceUser = {};

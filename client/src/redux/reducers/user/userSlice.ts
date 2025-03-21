@@ -42,14 +42,14 @@ const userSlice = createSlice({
       state.outside = false;
     },
   },
-  // extraReducers: (b) => {
-  //   b.addCase(outsideAddUser.fulfilled, (state) => {
-  //     state.outside = true;
-  //   });
-  //   b.addCase(outsideAddUser.pending, (state, action) => {
-  //     console.log(action, state);
-  //   });
-  // },
+  extraReducers: (b) => {
+    b.addCase(outsideAddUser.fulfilled, (state) => {
+      state.outside = true;
+    });
+    b.addCase(outsideAddUser.pending, (state, action) => {
+      console.log(action, state);
+    });
+  },
 });
 
 export const { addUser, returnToAddUser } = userSlice.actions;
