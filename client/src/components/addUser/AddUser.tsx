@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
@@ -30,26 +30,43 @@ import { useAppDispatch } from "@/redux/hook.ts";
 import { outsideAddUser } from "@/redux/reducers/user/asnycCalls.ts";
 const AddUser = () => {
   const dispatch = useAppDispatch();
-  // const { fullname, emailAddress, birthdate, idImage, loading } = useSelector(
-  //   (state: RootState) => state.user
-  // );
+  const { firstname, lastname, emailAddress, birthdate, file, mobileNumber } =
+    useSelector((state: RootState) => state.user);
   const [fileD, setFileD] = useState<File[]>([]);
   const {
+    getValues,
     register,
     handleSubmit,
     setValue,
     formState: { errors },
   } = useForm<userState>();
 
-  register("birthdate", { required: true });
-  register("file", { required: true });
-  register("mobileNumber", { required: true });
+  // register("birthdate", { required: true });
+  // register("file", { required: true });
+  // register("mobileNumber", { required: true });
   const onDrop = useCallback((acceptedFiles: File[]) => {
     // Do something with the files
-    console.log(acceptedFiles);
-    setValue("file", acceptedFiles);
-    setFileD(acceptedFiles);
-    console.log(fileD);
+
+    setValue("file", acceptedFiles, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  }, []);
+  useEffect(() => {
+    if (firstname || lastname || emailAddress || birthdate || mobileNumber) {
+      setValue("firstname", firstname, { shouldValidate: true });
+      setValue("lastname", lastname, { shouldValidate: true });
+      setValue("emailAddress", emailAddress, { shouldValidate: true });
+      setValue("birthdate", birthdate, { shouldValidate: true });
+      setValue("file", file?.length === 0 ? null : file, {
+        shouldValidate: true,
+      });
+      setValue("mobileNumber", mobileNumber, { shouldValidate: true });
+    } else {
+      register("birthdate", { required: true });
+      register("file", { required: true });
+      register("mobileNumber", { required: true });
+    }
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
@@ -145,6 +162,7 @@ const AddUser = () => {
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
                 <PhoneInput
+                  value={getValues("mobileNumber")}
                   country={"ph"}
                   inputStyle={{
                     border: "1px solid #c4c4c4",
@@ -165,7 +183,10 @@ const AddUser = () => {
                   }}
                   // value={this.state.phone}
                   onChange={(phone) => {
-                    setValue("mobileNumber", phone);
+                    setValue("mobileNumber", phone, {
+                      shouldValidate: true,
+                      shouldDirty: true,
+                    });
                   }}
                 />
                 {errors &&
@@ -184,9 +205,13 @@ const AddUser = () => {
               <DemoContainer components={["DatePicker"]}>
                 <DatePicker
                   label="Birthdate"
+                  value={moment(getValues("birthdate"))}
                   sx={{ width: "100%" }}
                   onChange={(e) => {
-                    setValue("birthdate", moment(e).toISOString());
+                    setValue("birthdate", moment(e).toISOString(), {
+                      shouldValidate: true,
+                      shouldDirty: true,
+                    });
                   }}
                 />
               </DemoContainer>
@@ -243,13 +268,19 @@ const AddUser = () => {
                           borderWidth: "medium",
                         }}
                       >
-                        {fileD && fileD[0] && fileD[0].name
-                          ? fileD[0].name
+                        {getValues("file") && getValues("file")?.length !== 0
+                          ? getValues("file")?.[0].name
                           : "Browse File"}
                       </Button>
                     </Box>
                     <Box>
                       <Typography>
+                        {errors &&
+                          errors.file &&
+                          errors.file.type &&
+                          errors.file.type === "required" && (
+                            <span style={{ color: "red" }}>Required </span>
+                          )}
                         {fileD && fileD[0] && fileD[0].name
                           ? "Change"
                           : "Choose"}{" "}

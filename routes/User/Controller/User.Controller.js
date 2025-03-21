@@ -33,6 +33,7 @@ export const updateController = async (req, res) => {
 };
 export const createUser = async (req, res) => {
   try {
+    console.log("here");
   } catch (err) {
     throw err;
   }

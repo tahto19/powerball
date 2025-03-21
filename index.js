@@ -89,7 +89,7 @@ const start = async () => {
      *error handler
      */
     fastify.setErrorHandler((err, req, res) => {
-      logger.error(err.message);
+      logger.error(err);
       if (err.code === undefined) {
         res.status(400).send({ result: "error", message: err.message });
       } else

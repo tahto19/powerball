@@ -5,9 +5,10 @@ interface userState {
   firstname: string | null;
   lastname: string | null;
   emailAddress: string | null;
-  birthdate: Date | null;
+  birthdate: string | null;
   loading: boolean | undefined;
   outside: boolean | undefined;
+  mobileNumber: string | null;
   file: File[] | null;
 }
 
@@ -19,6 +20,7 @@ const initialState: userState = {
   loading: false,
   outside: false,
   file: null,
+  mobileNumber: null,
 };
 
 const userSlice = createSlice({
@@ -28,25 +30,26 @@ const userSlice = createSlice({
     addUser: (state, action) => {
       try {
         state.loading = true;
-        console.log(action);
-        state = action.payload;
+        Object.assign(state, action.payload);
+        state.outside = true;
       } catch (err) {
         state.loading = false;
         console.log(err);
       }
     },
     returnToAddUser: (state) => {
+      console.log(state, "beofre");
       state.outside = false;
     },
   },
-  extraReducers: (b) => {
-    b.addCase(outsideAddUser.fulfilled, (state) => {
-      state.outside = true;
-    });
-    b.addCase(outsideAddUser.pending, (state, action) => {
-      console.log(action, state);
-    });
-  },
+  // extraReducers: (b) => {
+  //   b.addCase(outsideAddUser.fulfilled, (state) => {
+  //     state.outside = true;
+  //   });
+  //   b.addCase(outsideAddUser.pending, (state, action) => {
+  //     console.log(action, state);
+  //   });
+  // },
 });
 
 export const { addUser, returnToAddUser } = userSlice.actions;

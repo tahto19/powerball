@@ -1,3 +1,4 @@
+import { userState } from "@/components/AddUser/Types";
 import axios from "axios";
 
 interface Credentials {
@@ -33,7 +34,7 @@ export const apiService = {
   getGraphs: () => apiClient.get("/graphs"),
 
   // POST request (e.g., create a new user)
-  createUser: (userData) => apiClient.post("/users", userData),
+  // createUser: (userData) => apiClient.post("/users", userData),
 
   // PUT request (e.g., update user details)
   updateUser: (userId: string | number, userData) =>
@@ -44,7 +45,7 @@ export const apiService = {
 
   // Login API (Returns token & stores it)
   login: async (credentials: Credentials) => {
-    console.log(credentials)
+    console.log(credentials);
     const response = await apiClient.post("/api/login", credentials);
     // setAuthToken(response.data.token);
     // localStorage.setItem("token", response.data.token);
@@ -55,6 +56,19 @@ export const apiService = {
   logout: () => {
     setAuthToken(null);
     localStorage.removeItem("token");
+  },
+
+  // for creating user in the outside
+  createUser: async (d: userState) => {
+    const fd = new FormData();
+    for (const _d in d) {
+      console.log(d[_d], "  ", _d);
+      fd.append(_d, d[_d]);
+    }
+    // const _r = await apiClient.post("/", fd, {
+    //   headers: { "Content-Type": "multipart/form-data" },
+    // });
+    // console.log(_r);
   },
 };
 export const apiServiceUser = {};
