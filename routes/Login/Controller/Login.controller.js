@@ -18,6 +18,9 @@ export const LoginController = async (req, res) => {
     delete changeDetails["createdAt"];
     delete changeDetails["updatedAt"];
     delete changeDetails["deletedAt"];
+    changeDetails["pm-scratch-it-m"] = req.headers["pm-scratch-it-m"];
+    changeDetails["platformversion"] = req.headers["platformversion"];
+    changeDetails["platform"] = req.headers["platform"];
     changeDetails["login"] = new Date();
 
     let token = await res.jwtSign(changeDetails);

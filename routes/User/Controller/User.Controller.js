@@ -1,6 +1,7 @@
+import OTP from "../../../models/OTP.model.js";
 import { cSend, decryptPassword } from "../../../util/util.js";
+import otp from "../lib/OTP.class.js";
 import uc from "../lib/User.class.js";
-
 export const getController = async (req, res) => {
   const { limit, offset } = req.query;
   //   if (!limit || !offset) throw new Error("limit or offset is required");
@@ -33,7 +34,11 @@ export const updateController = async (req, res) => {
 };
 export const createUser = async (req, res) => {
   try {
-    console.log("here");
+    let platform = req.headers.platform;
+    let platformversion = req.headers.platformversion;
+    let mobile = req.headers["pm-scratch-it-m"];
+    console.log(req.connection);
+    // otp.Insert({m})
   } catch (err) {
     throw err;
   }

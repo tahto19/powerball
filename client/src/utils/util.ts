@@ -42,6 +42,6 @@ export const getDeviceInfo = async () => {
     "platformVersion",
     "fullVersionList",
   ]);
-
   console.log(UserAgent);
+  return UserAgent;
 };

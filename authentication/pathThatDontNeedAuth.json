@@ -1,5 +1,5 @@
 [
-  { "path": "/users", "method": "TESTING" },
+  { "path": "/users", "method": "TESTING HRTR" },
   { "path": "/users", "method": "POST" },
 
   { "path": "/login", "method": "POST" },

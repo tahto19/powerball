@@ -7,11 +7,14 @@ interface Credentials {
   password: string;
 }
 // Create Axios instance
-
+const getDI = await getDeviceInfo();
 const apiClient = axios.create({
   baseURL: "http://localhost:5128",
   headers: {
     "Content-Type": "application/json",
+    "pm-scratch-it-m": getDI.model,
+    platformVersion: getDI.platformVersion,
+    platform: getDI.platform,
   },
 });
 

@@ -121,3 +121,6 @@ export const encryptData = (data, token) => {
 
   return encrypted;
 };
+export const generateRandomNumber = () => {
+  return Math.floor(100000 + Math.random() * 900000); // Generates a 6-digit random number
+};
