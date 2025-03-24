@@ -33,3 +33,15 @@ export const getMessage = (error: any) => {
     : error;
   return errorMessage;
 };
+
+export const getDeviceInfo = async () => {
+  const UserAgent = await navigator.userAgentData.getHighEntropyValues([
+    "architecture",
+    "model",
+    "platform",
+    "platformVersion",
+    "fullVersionList",
+  ]);
+
+  console.log(UserAgent);
+};

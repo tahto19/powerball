@@ -1,4 +1,5 @@
 import { userState } from "@/components/AddUser/Types";
+import { getDeviceInfo } from "@/utils/util";
 import axios from "axios";
 
 interface Credentials {
@@ -6,8 +7,12 @@ interface Credentials {
   password: string;
 }
 // Create Axios instance
+
 const apiClient = axios.create({
   baseURL: "http://localhost:5128",
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 // Function to set the auth token (Call this after login)

@@ -15,6 +15,8 @@ import MainLayout from "./layout/MainLayout";
 import Dashboard from "./components/Dashboard/index";
 import Administrator from "./components/Administrator/index";
 import Toaster_ from "./Global/toaster/Toaster_";
+import { getDeviceInfo } from "./utils/util";
+import { useEffect } from "react";
 
 const routes = [
   { path: "/dashboard", component: <Dashboard />, title: "Dashboard" },
@@ -26,6 +28,9 @@ const routes = [
 ];
 // Component to handle routing with conditional rendering
 function AppRoutes() {
+  useEffect(() => {
+    getDeviceInfo();
+  }, []);
   return (
     <Routes>
       <Route
