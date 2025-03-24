@@ -1,14 +1,21 @@
 import * as React from 'react';
 import { DataGrid, GridPaginationModel, GridSortModel, GridFilterModel, GridRowsProp, GridColDef, getGridStringOperators } from '@mui/x-data-grid';
 import debounce from "lodash.debounce";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 
+import EditIcon from '@mui/icons-material/Edit';
+import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
 interface PaginationProps {
 
     page: number;
     pageSize: number;
 
 }
-interface GridProps {
+interface GridProps<T> {
     sx: any;
     data: GridRowsProp;
     headers: GridColDef[];
@@ -20,19 +27,70 @@ interface GridProps {
         sortModel: GridSortModel;
         filterModel: GridFilterModel;
     }) => void;
+    onEditAction: (row: T) => void;
+    onViewAction: (row: T) => void;
+    onDeleteAction: (row: T) => void;
 }
 
-export default function CustomizedDataGrid({ sx, data, headers, pagination = {
+
+
+export default function CustomizedDataGrid<T>({ sx, data, headers, pagination = {
     page: 0,
     pageSize: 10,
-}, pageLength = 10, onTableChange }: GridProps) {
+}, pageLength = 10, onTableChange, onEditAction, onViewAction, onDeleteAction }: GridProps<T>) {
     // Get only "contains" operator for filtering
     const containsOperator = getGridStringOperators().filter((op) => op.value === "contains");
 
     // Modify column headers to allow only "contains"
-    const modifiedHeaders = headers.map((col) =>
+    let modifiedHeaders = headers.map((col) =>
         col.filterable !== false ? { ...col, filterOperators: containsOperator } : col
     );
+
+    // Modify column to add "Actions" header
+    modifiedHeaders = [
+        ...modifiedHeaders,
+        {
+            field: "actions",
+            headerName: "Actions",
+            sortable: false,
+            filterable: false,
+            width: 150,
+            renderCell: (params: any) => (
+                <Box sx={{ display: "flex", height: "100%", gap: 1, alignItems: 'center' }}>
+                    <IconButton
+                        aria-label="edit" size="small"
+                        onClick={(event) => {
+                            event.stopPropagation(); // ✅ Prevents row click from triggering sorting/filtering
+                            onEditAction(params.row)
+                        }
+                        }
+                    >
+                        <EditIcon color="primary" fontSize="inherit" />
+                    </IconButton>
+                    <IconButton
+                        aria-label="edit" size="small"
+                        onClick={(event) => {
+                            event.stopPropagation(); // ✅ Prevents row click from triggering sorting/filtering
+                            onViewAction(params.row)
+                        }
+                        }
+                    >
+                        <RemoveRedEyeRoundedIcon color="success" fontSize="inherit" />
+                    </IconButton>
+                    <IconButton
+                        aria-label="delete" size="small"
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            onDeleteAction(params.row)
+                        }}
+                    >
+                        <DeleteIcon color="error" fontSize="inherit" />
+                    </IconButton>
+                </Box>
+            ),
+        },
+    ];
+
 
     const [paginationModel, setPaginationModel] = React.useState<GridPaginationModel>(pagination);
     const [sortModel, setSortModel] = React.useState<GridSortModel>([]);
@@ -62,7 +120,13 @@ export default function CustomizedDataGrid({ sx, data, headers, pagination = {
     }, [paginationModel, sortModel, filterModel, onTableChange]);
     return (
         <DataGrid
-            sx={sx}
+            sx={{
+                ...sx,
+                // "& .MuiDataGrid-cell": {
+                //     padding: "10px", // ✅ Add padding inside cells
+                // },
+            }}
+            rowHeight={75}
             paginationMode="server"
             sortingMode="server"
             filterMode="server"

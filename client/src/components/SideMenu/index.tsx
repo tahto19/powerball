@@ -55,7 +55,9 @@ export default function SideMenu() {
                         p: 1.5,
                     }}
                 >
-                    PowerBall ScratchIt
+                    <Typography variant="body2" sx={{ fontWeight: 500, lineHeight: '16px' }}>
+                        PowerBall ScratchIt
+                    </Typography>
                 </Box>
                 <Divider />
                 <Box
