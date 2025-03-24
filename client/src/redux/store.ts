@@ -1,17 +1,18 @@
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import userReducer from "./reducers/user/userSlice";
 import navBarReducer from "./reducers/navBarSlice";
-
+import globalReducer from "./reducers/global/globalSlice";
 export const store = configureStore({
   reducer: {
     user: userReducer,
     navBar: navBarReducer,
+    global: globalReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: ["user/addUser"],
-        ignoredPaths: ["user.file"],
+        ignoredActions: ["user/addUser", "global/showToaster"],
+        ignoredPaths: ["user.file", "global.toasterShow.err"],
       },
     }),
 });
