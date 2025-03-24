@@ -77,8 +77,8 @@ const start = async () => {
         },
       })
       .addHook("onRequest", auth)
-      .addHook("preHandler", bodyChecker);
-    // .addHook("onSend", bodyEncrypt);
+      .addHook("preHandler", bodyChecker)
+      .addHook("onSend", bodyEncrypt);
 
     /**
      *

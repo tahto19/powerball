@@ -13,8 +13,12 @@ const bodyEncrypt = (req, res, pay, done) => {
   if (findNoP) {
     done(err, pay);
   } else {
-    let a = encryptData(pay, cookies.cookie_pb_1271);
-    done(err, JSON.stringify({ data: a }));
+    if (cookies.cookie_pb_1271) {
+      let a = encryptData(pay, cookies.cookie_pb_1271);
+      done(err, JSON.stringify({ data: a }));
+    } else {
+      done();
+    }
   }
 };
 export default bodyEncrypt;
