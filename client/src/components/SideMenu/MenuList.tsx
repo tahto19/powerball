@@ -41,7 +41,7 @@ export default function MenuContent() {
     }
     return (
         <Stack sx={{ flexGrow: 1, p: 1, justifyContent: 'space-between' }}>
-            <List dense>
+            <List dense sx={{ gap: "5px" }}>
                 {mainListItems.map((item, index) => (
                     <ListItem key={index} disablePadding sx={{ display: 'block' }}>
                         <ListItemButton onClick={() => handleNavigation(item.path, index)} selected={index === selected}>

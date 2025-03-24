@@ -12,19 +12,47 @@ import { styled } from '@mui/material/styles';
 
 interface MyDialogProps {
     open: boolean;
+    data: DataProps;
+    dialogType: string;
     onClose: (value: boolean) => void;
+}
+
+interface DataProps {
+    id: number | null,
+    first_name: string,
+    last_name: string,
+    mobile_number: string,
+    email: string,
+    status: string,
+    password: string | null,
 }
 
 const FormControl = styled(MuiFormControl)(({ theme }) => ({
     width: "100%"
 }));
 
-const MyDialog = ({ open, onClose }: MyDialogProps) => {
+const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
     // const [isOpen, setOpen] = React.useState(open);
+    const [dialog_type, setDialogType] = React.useState("")
+    const [formData, setData] = React.useState<DataProps>(data);
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    };
 
     const handleClose = () => {
         onClose(false);
     };
+
+    React.useEffect(() => {
+        setData(data)
+        setDialogType(dialogType)
+    }, [data, dialogType])
+
 
     return (
         <>
@@ -32,7 +60,7 @@ const MyDialog = ({ open, onClose }: MyDialogProps) => {
                 open={open}
                 onClose={handleClose}
             >
-                <DialogTitle>Add Administrator</DialogTitle>
+                <DialogTitle>{dialog_type} Administrator</DialogTitle>
                 <DialogContent>
                     <Grid
                         container
@@ -41,7 +69,7 @@ const MyDialog = ({ open, onClose }: MyDialogProps) => {
                     >
                         <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
                             <FormControl>
-                                <FormLabel htmlFor="email">First Name</FormLabel>
+                                <FormLabel htmlFor="first name">First Name</FormLabel>
                                 <TextField
                                     id="firstName"
                                     type="text"
@@ -51,13 +79,20 @@ const MyDialog = ({ open, onClose }: MyDialogProps) => {
                                     autoFocus
                                     required
                                     fullWidth
+                                    value={formData.first_name}
+                                    onChange={handleInputChange}
                                     variant="outlined"
+                                    slotProps={{
+                                        input: {
+                                            readOnly: dialog_type === 'View',
+                                        },
+                                    }}
                                 />
                             </FormControl>
                         </Grid>
                         <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
                             <FormControl>
-                                <FormLabel htmlFor="email">Last Name</FormLabel>
+                                <FormLabel htmlFor="last name">Last Name</FormLabel>
                                 <TextField
                                     id="lastName"
                                     type="text"
@@ -68,12 +103,19 @@ const MyDialog = ({ open, onClose }: MyDialogProps) => {
                                     required
                                     fullWidth
                                     variant="outlined"
+                                    value={formData.last_name}
+                                    onChange={handleInputChange}
+                                    slotProps={{
+                                        input: {
+                                            readOnly: dialog_type === 'View',
+                                        },
+                                    }}
                                 />
                             </FormControl>
                         </Grid>
                         <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
                             <FormControl>
-                                <FormLabel htmlFor="email">Mobile Number</FormLabel>
+                                <FormLabel htmlFor="mobile number">Mobile Number</FormLabel>
                                 <TextField
                                     id="mobileNumber"
                                     type="text"
@@ -84,6 +126,13 @@ const MyDialog = ({ open, onClose }: MyDialogProps) => {
                                     required
                                     fullWidth
                                     variant="outlined"
+                                    value={formData.mobile_number}
+                                    onChange={handleInputChange}
+                                    slotProps={{
+                                        input: {
+                                            readOnly: dialog_type === 'View',
+                                        },
+                                    }}
                                 />
                             </FormControl>
                         </Grid>
@@ -100,12 +149,19 @@ const MyDialog = ({ open, onClose }: MyDialogProps) => {
                                     required
                                     fullWidth
                                     variant="outlined"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    slotProps={{
+                                        input: {
+                                            readOnly: dialog_type === 'View',
+                                        },
+                                    }}
                                 />
                             </FormControl>
                         </Grid>
                         <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
                             <FormControl>
-                                <FormLabel htmlFor="email">Password</FormLabel>
+                                <FormLabel htmlFor="password">Password</FormLabel>
                                 <TextField
                                     name="password"
                                     placeholder="••••••"
@@ -113,9 +169,11 @@ const MyDialog = ({ open, onClose }: MyDialogProps) => {
                                     id="password"
                                     autoComplete="current-password"
                                     autoFocus
-                                    required
                                     fullWidth
                                     variant="outlined"
+                                    value={formData.password}
+                                    onChange={handleInputChange}
+                                    disabled={formData.id || dialog_type === 'View' ? true : false}
                                 />
                             </FormControl>
                         </Grid>
