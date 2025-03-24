@@ -55,6 +55,18 @@ const start = async () => {
       hook: "onRequest", // set to false to disable cookie autoparsing or set autoparsing on any of the following hooks: 'onRequest', 'preParsing', 'preHandler', 'preValidation'. default: 'onRequest'
       parseOptions: {}, // options for parsing cookies
     });
+    // multipart
+    fastify.register(import("@fastify/multipart"), {
+      limits: {
+        fieldNameSize: 100, // Max field name size in bytes
+        fieldSize: 100, // Max field value size in bytes
+        fields: 10, // Max number of non-file fields
+        fileSize: 1000000, // For multipart forms, the max file size in bytes
+        files: 1, // Max number of file fields
+        headerPairs: 2000, // Max number of header key=>value pairs
+        parts: 1000, // For multipart forms, the max number of parts (fields + files)
+      },
+    });
     // authentication part here
 
     fastify
@@ -65,8 +77,8 @@ const start = async () => {
         },
       })
       .addHook("onRequest", auth)
-      .addHook("preHandler", bodyChecker)
-      .addHook("onSend", bodyEncrypt);
+      .addHook("preHandler", bodyChecker);
+    // .addHook("onSend", bodyEncrypt);
 
     /**
      *

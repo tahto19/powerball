@@ -8,9 +8,6 @@ interface Credentials {
 // Create Axios instance
 const apiClient = axios.create({
   baseURL: "http://localhost:5128",
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 
 // Function to set the auth token (Call this after login)
@@ -76,7 +73,7 @@ export const apiService = {
       } else throw new Error(`${_d} has null`);
     }
 
-    const _r = await apiClient.post("/users/createUser", fd, {
+    const _r = await apiClient.post("/api/users/createUser", fd, {
       headers: { "Content-Type": "multipart/form-data" },
     });
     console.log(_r);

@@ -28,7 +28,6 @@ export const cookieChecker = async (req) => {
     if (userDetails.list === null) throw new Error("ErrorCODE X55");
     return userDetails.list.toJSON();
   } catch (err) {
-    console.log("#####################" + err + "################");
     throw err;
   }
 };

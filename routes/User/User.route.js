@@ -6,10 +6,11 @@ import {
 } from "./Schema/User.Schema.js";
 
 const users = (app, opts, done) => {
+  app.post("/createUser", createUserSchema);
   app.get("/", getSchema);
   app.post("/", insertSchema);
   app.put("/", updateSchema);
-  app.put("/createUser", createUserSchema);
+
   done();
 };
 export default users;
