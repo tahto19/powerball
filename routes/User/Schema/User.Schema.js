@@ -1,4 +1,5 @@
 import {
+  createUser,
   getController,
   insertController,
   updateController,
@@ -24,6 +25,17 @@ export const insertSchema = {
 };
 export const updateSchema = {
   handler: updateController,
+  body: {
+    firstname: { type: "string" },
+    lastname: { type: "string" },
+    password: { type: "string" },
+    emailAddres: { type: "string" },
+    mobileNumber: { type: "string" },
+    id: { type: "string" },
+  },
+};
+export const createUserSchema = {
+  handler: createUser,
   body: {
     firstname: { type: "string" },
     lastname: { type: "string" },
