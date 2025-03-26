@@ -13,6 +13,9 @@ import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import apiService from "@/services/apiService";
 
+import Cookies from "js-cookie";
+
+import { showToaster } from "@/redux/reducers/global/globalSlice"
 const NewCard = styled(Card)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
@@ -61,6 +64,13 @@ const SignIn = () => {
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        showToaster({
+            message: "Login success!",
+            show: true,
+            variant: "success",
+            icon: null,
+        })
+
 
         if (emailError || passwordError) {
             return;
@@ -71,10 +81,12 @@ const SignIn = () => {
         const password = formData.get("password") as string;
 
         const res = await apiService.login({ email, password });
-        if (res.data.success) {
+        console.log(res)
+        if (res.data.result == 'success') {
 
+            Cookies.set("cookie_pb_1271", res.data.token);
             // Redirect to dashboard after login
-            //   navigate("/dashboard");
+            navigate("/prize-list");
         }
     };
 
@@ -93,15 +105,16 @@ const SignIn = () => {
             setEmailErrorMessage("");
         }
 
-        if (!password.value || password.value.length < 6) {
-            setPasswordError(true);
-            setPasswordErrorMessage("Password must be at least 6 characters long.");
-            isValid = false;
-        } else {
-            setPasswordError(false);
-            setPasswordErrorMessage("");
-        }
-
+        // if (!password.value || password.value.length < 6) {
+        //     setPasswordError(true);
+        //     setPasswordErrorMessage("Password must be at least 6 characters long.");
+        //     isValid = false;
+        // } else {
+        //     setPasswordError(false);
+        //     setPasswordErrorMessage("");
+        // }
+        setPasswordError(false);
+        setPasswordErrorMessage("");
         return isValid;
     };
     return (

@@ -17,6 +17,9 @@ import Administrator from "./components/Administrator/index";
 import Toaster_ from "./Global/toaster/Toaster_";
 import { getDeviceInfo } from "./utils/util";
 import { useEffect } from "react";
+import ProtectedRoute from "./components/ProtectedRoute";
+import PrizeList from "./components/PrizeList";
+
 
 const routes = [
   { path: "/dashboard", component: <Dashboard />, title: "Dashboard" },
@@ -24,6 +27,11 @@ const routes = [
     path: "/administrator",
     component: <Administrator />,
     title: "Administrator",
+  },
+  {
+    path: "/prize-list",
+    component: <PrizeList />,
+    title: "Prize List",
   },
 ];
 // Component to handle routing with conditional rendering
@@ -38,24 +46,29 @@ function AppRoutes() {
         element={
           <Routes>
             <Route
-              path="/"
+              path="/sign-in"
               element={
                 <AppTheme>
                   <SignIn />
                 </AppTheme>
               }
             />
-            {routes.map(({ path, component }) => (
-              <Route
-                key={path}
-                path={path}
-                element={
-                  <AppTheme>
-                    <MainLayout>{component}</MainLayout>
-                  </AppTheme>
-                }
-              />
-            ))}
+            <Route
+              path="/"
+              element={<Navigate to="/sign-in" replace />} />
+            <Route element={<ProtectedRoute />}>
+              {routes.map(({ path, component, title }) => (
+                <Route
+                  key={path}
+                  path={path}
+                  element={
+                    <AppTheme>
+                      <MainLayout title={title}>{component}</MainLayout>
+                    </AppTheme>
+                  }
+                />
+              ))}
+            </Route>
           </Routes>
         }
       />

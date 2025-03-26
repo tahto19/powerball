@@ -1,3 +1,6 @@
+import CryptoJS from "crypto-js";
+import Cookies from "js-cookie";
+
 import {
   browserName,
   browserVersion,
@@ -51,4 +54,33 @@ export const getDeviceInfo = async () => {
 
   console.log(UserAgent);
   return UserAgent;
+};
+
+export const bodyDecrypt = (data: string): any | null => {
+  if (!data.trim()) {
+    // Ensure data is not empty or just whitespace
+    console.error("Decryption failed: Empty data.");
+    return null;
+  }
+  const token = Cookies.get("cookie_pb_1271");
+  if (!token) {
+    // Handle missing token
+    console.error("Decryption failed: Missing token doesn't exists.");
+    return null;
+  }
+  try {
+    var bytes = CryptoJS.AES.decrypt(data, token);
+    var cipherData = bytes.toString(CryptoJS.enc.Utf8);
+
+    if (!cipherData) {
+      // Handle incorrect decryption. (returns an empty string, it does not throw an exception)
+      console.error("Decryption failed: Invalid or corrupt data.");
+      return null;
+    }
+
+    return JSON.parse(cipherData);
+  } catch (error) {
+    console.error("Decryption failed: ", error);
+    return null;
+  }
 };

@@ -1,6 +1,9 @@
 import { userState } from "@/components/AddUser/Types";
+import { PrizeState } from '@/components/PrizeList/interface';
+
 import { getDeviceInfo } from "@/utils/util";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 interface Credentials {
   email: string;
@@ -19,13 +22,14 @@ const apiClient = axios.create({
 });
 
 // Function to set the auth token (Call this after login)
-export const setAuthToken = (token: string | null) => {
-  if (token) {
-    apiClient.defaults.headers.Aithorization = `Bearer ${token}`;
-  } else {
-    delete apiClient.defaults.headers.Authorization;
-  }
-};
+// export const setAuthToken = () => {
+//   const token = Cookies.get('pb_user');
+//   if (token) {
+//     apiClient.defaults.headers.Cookie = `sessionid=${token}`;
+//   } else {
+//     delete apiClient.defaults.headers.Cookie;
+//   }
+// };
 
 // Automatically set auth token if stored in localStorage
 
@@ -34,19 +38,19 @@ export const setAuthToken = (token: string | null) => {
 
 // API service with all CRUD operations
 export const apiService = {
+  // ================ Sample ===================
   // GET requests
   getUsers: () => apiClient.get("/users"),
   getGraphs: () => apiClient.get("/graphs"),
-
   // POST request (e.g., create a new user)
   // createUser: (userData) => apiClient.post("/users", userData),
-
   // PUT request (e.g., update user details)
   updateUser: (userId: string | number, userData) =>
     apiClient.put(`/users/${userId}`, userData),
-
   // DELETE request (e.g., delete a user)
   deleteUser: (userId: string | number) => apiClient.delete(`/users/${userId}`),
+  // =================== End =====================
+
 
   // Login API (Returns token & stores it)
   login: async (credentials: Credentials) => {
@@ -56,11 +60,21 @@ export const apiService = {
     // localStorage.setItem("token", response.data.token);
     return response;
   },
-
   // Logout (Clears token)
   logout: () => {
-    setAuthToken(null);
+    // setAuthToken(null);
     localStorage.removeItem("token");
+  },
+
+  createPrizeList: async (d: PrizeState) => {
+    const token = Cookies.get('pb_user');
+    // const res = apiClient.post('/api/prize-list/', d, {headers: {
+    //   "Cookie": `cookie_pb_1271=${token}`,
+    // }})
+    const res = apiClient.post('/api/prize-list/', d, { withCredentials: true })
+    // const res = apiClient.post('/api/prize-list/', d)
+
+    return res;
   },
 
   // for creating user in the outside
