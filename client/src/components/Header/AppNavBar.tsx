@@ -63,19 +63,15 @@ const Toolbar = styled(MuiToolbar)({
     },
 });
 
-const routes = [
-    { path: "/dashboard", title: "Dashboard" },
-    { path: "/administrator", title: "Administrator" },
-];
-
-export default function AppNavbar() {
+export default function AppNavbar({ title }: { title: string }) {
     const dispatch = useDispatch<AppDispatch>();
     const { open } = useSelector((state: RootState) => state.navBar);
 
     const location = useLocation();
 
-    const currentRoute = routes.find(route => route.path === location.pathname);
-    const pageTitle = currentRoute?.title || " ";
+    // const currentRoute = routes.find(route => route.path === location.pathname);
+    // console.log(title)
+    // const pageTitle = currentRoute?.title || " ";
     return (
         <AppBar
             position="fixed"
@@ -108,7 +104,7 @@ export default function AppNavbar() {
                             <MenuRoundedIcon />
                         </MenuButton>
                         <Typography variant="h5" sx={{ color: 'text.primary', display: "flex", alignItems: "center" }}>
-                            {pageTitle}
+                            {title}
                         </Typography>
                     </Stack>
 

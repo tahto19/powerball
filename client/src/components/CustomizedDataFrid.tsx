@@ -100,9 +100,11 @@ export default function CustomizedDataGrid<T>({ sx, data, headers, pagination = 
     const handleFilterChange = React.useMemo(
         () =>
             debounce((newFilterModel: GridFilterModel) => {
-                if (newFilterModel && newFilterModel.items && newFilterModel.items[0].value && newFilterModel.items[0].value !== "") {
-                    setFilterModel(newFilterModel);
-                }
+                setFilterModel(newFilterModel);
+
+                // if (newFilterModel && newFilterModel.items && newFilterModel.items.length > 0 && newFilterModel.items[0].value && newFilterModel.items[0].value !== "") {
+                //     setFilterModel(newFilterModel);
+                // }
             }, 500), // 500ms debounce delay
         []
     );

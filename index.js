@@ -9,6 +9,7 @@ import conn from "./dbConnections/conn.js";
 
 import userRoute from "./routes/User/user.route.js";
 import LoginRoute from "./routes/Login/Login.route.js";
+import PrizeListRoute from "./routes/PrizeList/PrizeList.route.js";
 
 import { logger } from "./util/util.js";
 import { auth } from "./authentication/auth.js";
@@ -41,9 +42,14 @@ const fastify = Fastify({
 const start = async () => {
   try {
     // cors
+    // await fastify.register(cors, {
+    //   origin: "*",
+    //   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    // });
     await fastify.register(cors, {
-      origin: "*",
+      origin: ["http://localhost:5173"],
       methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+      credentials: true, // ✅ Allow cookies
     });
     // jwt
     fastify.register(import("@fastify/jwt"), {
@@ -96,6 +102,7 @@ const start = async () => {
      */
     fastify.register(LoginRoute, { prefix: "api/login" });
     fastify.register(userRoute, { prefix: "api/users" });
+    fastify.register(PrizeListRoute, { prefix: "api/prize-list" });
 
     /**
      *error handler

@@ -59,7 +59,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     marginTop: 0,
 }));
 
-function MainLayout({ children }: { children: any }) {
+function MainLayout({ title, children }: { title: string, children: any }) {
 
     const { open } = useSelector((state: RootState) => state.navBar);
     console.log(location)
@@ -87,7 +87,7 @@ function MainLayout({ children }: { children: any }) {
                         }}
                     >
                         {/* <Header /> */}
-                        <AppNavBar />
+                        <AppNavBar title={title} />
                         {/* <DrawerHeader /> */}
                         <Main open={open}>{children}</Main>
                     </Stack>
