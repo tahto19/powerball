@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { addUser } from "../../redux/reducers/user/userSlice";
+import { addUser, editDetails } from "../../redux/reducers/user/userSlice";
 import Grid from "@mui/material/Grid2";
 import {
   Box,
@@ -30,14 +30,22 @@ import { useAppDispatch } from "@/redux/hook.ts";
 import { outsideAddUser } from "@/redux/reducers/user/asnycCalls.ts";
 const AddUser = () => {
   const dispatch = useAppDispatch();
-  const { firstname, lastname, emailAddress, birthdate, file, mobileNumber } =
-    useSelector((state: RootState) => state.user);
+  const {
+    firstname,
+    lastname,
+    emailAddress,
+    birthdate,
+    file,
+    mobileNumber,
+    otpID,
+  } = useSelector((state: RootState) => state.user);
   const [fileD, setFileD] = useState<File[]>([]);
   const {
     getValues,
     register,
     handleSubmit,
     setValue,
+
     formState: { errors },
   } = useForm<userState>();
 
@@ -78,8 +86,11 @@ const AddUser = () => {
     multiple: false,
   });
 
-  const onSubmit: SubmitHandler<userState> = (data) =>
-    dispatch(outsideAddUser(data));
+  const onSubmit: SubmitHandler<userState> = (data) => {
+    console.log(otpID);
+    if (!otpID) dispatch(outsideAddUser(data));
+    else dispatch(editDetails(data));
+  };
   const onError: SubmitErrorHandler<userState> = (error) => console.log(error);
   return (
     <Grid container spacing={1}>

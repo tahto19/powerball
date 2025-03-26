@@ -51,6 +51,24 @@ class OTP_class {
     let list = await OTP.findOne(query);
     return { list };
   }
+  async upsert(filter, data) {
+    let list = await this.FetchOne(filter);
+    if (list.list === null) {
+      let id = await this.Insert(data);
+      let list = await this.FetchOne([
+        {
+          field: "id",
+          type: "number",
+          filter: id,
+        },
+      ]);
+      return list;
+    } else {
+      console.log(list);
+      const a = await this.Edit(list.list.toJSON());
+      return list;
+    }
+  }
 }
 
 export default new OTP_class();

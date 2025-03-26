@@ -16,15 +16,16 @@ import bodyChecker from "./helpers/bodyChecker.js";
 import bodyEncrypt from "./helpers/bodyEncrypt.js";
 
 const fastify = Fastify({
-  logger: {
-    transport: {
-      target: "pino-pretty",
-      options: {
-        colorize: true,
-      },
-      levels: "debug",
-    },
-  },
+  trustProxy: true,
+  // logger: {
+  //   transport: {
+  //     target: "pino-pretty",
+  //     options: {
+  //       colorize: true,
+  //     },
+  //     levels: "debug",
+  //   },
+  // },
 });
 /**
  * Error code
@@ -36,6 +37,7 @@ const fastify = Fastify({
  * X44 = decryptCookie is invalid
  * X55 = no user found using cookie
  * ErroCODE X66 = expired cookie
+ * x231 = subject or to is not set
  * X999 = login wrong credentials
  */
 const start = async () => {

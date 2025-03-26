@@ -5,6 +5,14 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { Op } from "sequelize";
 import CryptoJS from "crypto-js";
+import nodemailer from "nodemailer";
+export const transport = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "username",
+    pass: "password",
+  },
+});
 export const logger = pino({
   transport: {
     target: "pino-pretty",
@@ -123,4 +131,16 @@ export const encryptData = (data, token) => {
 };
 export const generateRandomNumber = () => {
   return Math.floor(100000 + Math.random() * 900000); // Generates a 6-digit random number
+};
+export const emailSender = async (data) => {
+  const { from, to, subject, text, html } = data;
+  if (!subject | !to) throw new Error("ErrorCODE x231");
+  const info = await transporter.sendMail({
+    from: !from ? "crisstubelleja@gmail.com" : from, // Sender address
+    to: to, // Receiver email
+    subject: subject, // Email subject
+    text: text, // Plain text
+    html: html, // HTML body
+  });
+  return info;
 };

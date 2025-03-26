@@ -8,7 +8,8 @@ OTP.init(
   {
     mobile: {
       allowNull: true,
-      type: DataTypes.VIRTUAL,
+      type: DataTypes.STRING,
+      defaultValue: "",
     },
     ip_address: {
       allowNull: true,
@@ -20,6 +21,15 @@ OTP.init(
       allowNull: true,
       type: DataTypes.STRING,
       defaultValue: generateRandomNumber,
+    },
+    emailAddress: {
+      allowNull: false,
+      type: DataTypes.STRING,
+    },
+    auth: {
+      allowNull: false,
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
   },
   {

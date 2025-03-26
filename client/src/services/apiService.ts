@@ -12,9 +12,9 @@ const apiClient = axios.create({
   baseURL: "http://localhost:5128",
   headers: {
     "Content-Type": "application/json",
-    "pm-scratch-it-m": getDI.model,
-    platformVersion: getDI.platformVersion,
-    platform: getDI.platform,
+    "pm-scratch-it-m": getDI?.model || "none",
+    platformVersion: getDI?.platformVersion || "none",
+    platform: getDI?.platform || "none",
   },
 });
 
@@ -84,7 +84,7 @@ export const apiService = {
     const _r = await apiClient.post("/api/users/createUser", fd, {
       headers: { "Content-Type": "multipart/form-data" },
     });
-    console.log(_r);
+    return _r;
   },
 };
 

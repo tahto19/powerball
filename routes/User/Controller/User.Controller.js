@@ -37,8 +37,46 @@ export const createUser = async (req, res) => {
     let platform = req.headers.platform;
     let platformversion = req.headers.platformversion;
     let mobile = req.headers["pm-scratch-it-m"];
-    console.log(req.connection);
-    // otp.Insert({m})
+    let ip_address =
+      req.ip || req.headers["x-forwarded-for"] || req.connection?.remoteAddress;
+    const parts = req.parts();
+
+    for await (const part of parts) {
+      if (part.type === "field") {
+        if (part.fieldname === "emailAddress") {
+          let a = await otp.upsert(
+            [
+              {
+                field: "ip_address",
+                type: "string",
+                filter: ip_address,
+              },
+
+              {
+                field: "platform",
+                type: "string",
+                filter: platform,
+              },
+              {
+                field: "platformversion",
+                type: "string",
+                filter: platformversion,
+              },
+            ],
+            {
+              platform,
+              platformversion,
+              mobile,
+              ip_address,
+              emailAddress: part.value,
+            }
+          );
+          res.send(cSend(a));
+        }
+      }
+      console.log("1");
+    }
+    console.log(body_, "here2");
   } catch (err) {
     throw err;
   }

@@ -11,7 +11,11 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: ["user/addUser", "global/showToaster"],
+        ignoredActions: [
+          "user/addUser",
+          "global/showToaster",
+          "user/editDetails",
+        ],
         ignoredPaths: ["user.file", "global.toasterShow.err"],
       },
     }),

@@ -1,3 +1,10 @@
+import {
+  browserName,
+  browserVersion,
+  isMobile,
+  mobileModel,
+} from "mobile-device-detect";
+
 const getErrorsStatus = (code: string) => {
   const c_ = code.toLowerCase().replace("errorcode", "").trim();
   switch (c_) {
@@ -35,13 +42,13 @@ export const getMessage = (error: any) => {
 };
 
 export const getDeviceInfo = async () => {
-  const UserAgent = await navigator.userAgentData.getHighEntropyValues([
-    "architecture",
-    "model",
-    "platform",
-    "platformVersion",
-    "fullVersionList",
-  ]);
+  console.log(mobileModel);
+  const UserAgent = {
+    model: mobileModel,
+    platform: browserName,
+    platformVersion: browserVersion,
+  };
+
   console.log(UserAgent);
   return UserAgent;
 };

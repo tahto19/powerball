@@ -11,3 +11,7 @@ html,body,#root {
 }
 
 
+.MuiOtpInput-TextField{
+  border-radius: 25px;
+  border-color: red;
+}
