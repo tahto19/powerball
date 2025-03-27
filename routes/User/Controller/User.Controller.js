@@ -1,7 +1,16 @@
+import moment from "moment";
 import OTP from "../../../models/OTP.model.js";
-import { cSend, decryptPassword } from "../../../util/util.js";
-import otp from "../lib/OTP.class.js";
+import {
+  cSend,
+  decryptPassword,
+  generateRandomChar,
+  generateRandomNumber,
+  getPath,
+  uploadImage,
+} from "../../../util/util.js";
+import otp from "../../OTP/Class/OTP.class.js";
 import uc from "../lib/User.class.js";
+import fs from "fs";
 export const getController = async (req, res) => {
   const { limit, offset } = req.query;
   //   if (!limit || !offset) throw new Error("limit or offset is required");
@@ -39,44 +48,36 @@ export const createUser = async (req, res) => {
     let mobile = req.headers["pm-scratch-it-m"];
     let ip_address =
       req.ip || req.headers["x-forwarded-for"] || req.connection?.remoteAddress;
-    const parts = req.parts();
+    const data = await req.file();
+    const {
+      firstname,
+      file,
+      lastname,
+      mobileNumber,
+      birthdate,
+      emailAddress,
+      password,
+    } = data.fields;
+    if (!file.mimetype.startsWith("image/")) throw new Error("ErrorCODE x91c");
 
-    for await (const part of parts) {
-      if (part.type === "field") {
-        if (part.fieldname === "emailAddress") {
-          let a = await otp.upsert(
-            [
-              {
-                field: "ip_address",
-                type: "string",
-                filter: ip_address,
-              },
+    let newFileName = `${moment().format(
+      "MM-DD-YYYY"
+    )}-${generateRandomNumber()}-${generateRandomChar(5)}-${file.filename}`;
+    let _path = getPath("/uploads/ids/" + newFileName);
 
-              {
-                field: "platform",
-                type: "string",
-                filter: platform,
-              },
-              {
-                field: "platformversion",
-                type: "string",
-                filter: platformversion,
-              },
-            ],
-            {
-              platform,
-              platformversion,
-              mobile,
-              ip_address,
-              emailAddress: part.value,
-            }
-          );
-          res.send(cSend(a));
-        }
-      }
-      console.log("1");
-    }
-    console.log(body_, "here2");
+    let iUp = await uploadImage(file);
+    if (!password || !emailAddress)
+      throw new Error("password or email is not set");
+    let r = await uc.Insert({
+      firstname: firstname.value,
+      lastname: lastname.value,
+      password: password.value,
+      emailAddress: emailAddress.value,
+      mobileNumber: mobileNumber.value,
+      birthdate: birthdate.value,
+      idPath: iUp.filename,
+    });
+    res.send(cSend(_path));
   } catch (err) {
     throw err;
   }

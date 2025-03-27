@@ -15,6 +15,7 @@ import { logger } from "./util/util.js";
 import { auth } from "./authentication/auth.js";
 import bodyChecker from "./helpers/bodyChecker.js";
 import bodyEncrypt from "./helpers/bodyEncrypt.js";
+import OTPRoute from "./routes/OTP/OTP.route.js";
 
 const fastify = Fastify({
   trustProxy: true,
@@ -39,7 +40,12 @@ const fastify = Fastify({
  * X55 = no user found using cookie
  * ErroCODE X66 = expired cookie
  * x231 = subject or to is not set
+ * X556 = no code sent
+ * x557 = no email found
+ * x58 = code is invalid
  * X999 = login wrong credentials
+ * x91c = not image
+ * X741 = email details sender is incorrect
  */
 const start = async () => {
   try {
@@ -49,7 +55,7 @@ const start = async () => {
     //   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     // });
     await fastify.register(cors, {
-      origin: ["http://localhost:5173"],
+      origin: "http://localhost:5173",
       methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
       credentials: true, // ✅ Allow cookies
     });
@@ -59,17 +65,18 @@ const start = async () => {
     });
     //cookie setter
     fastify.register(import("@fastify/cookie"), {
+      parseOptions: { sameSite: "lax" },
       secret: process.env.COOKIE_SECRET, // for cookies signature
-      hook: "onRequest", // set to false to disable cookie autoparsing or set autoparsing on any of the following hooks: 'onRequest', 'preParsing', 'preHandler', 'preValidation'. default: 'onRequest'
-      parseOptions: {}, // options for parsing cookies
+      // hook: "onRequest", // set to false to disable cookie autoparsing or set autoparsing on any of the following hooks: 'onRequest', 'preParsing', 'preHandler', 'preValidation'. default: 'onRequest'
+      // parseOptions: {}, // options for parsing cookies
     });
     // multipart
     fastify.register(import("@fastify/multipart"), {
       limits: {
         fieldNameSize: 100, // Max field name size in bytes
-        fieldSize: 100, // Max field value size in bytes
+        fieldSize: 100000, // Max field value size in bytes
         fields: 10, // Max number of non-file fields
-        fileSize: 1000000, // For multipart forms, the max file size in bytes
+        fileSize: 100000000, // For multipart forms, the max file size in bytes
         files: 1, // Max number of file fields
         headerPairs: 2000, // Max number of header key=>value pairs
         parts: 1000, // For multipart forms, the max number of parts (fields + files)
@@ -105,7 +112,7 @@ const start = async () => {
     fastify.register(LoginRoute, { prefix: "api/login" });
     fastify.register(userRoute, { prefix: "api/users" });
     fastify.register(PrizeListRoute, { prefix: "api/prize-list" });
-
+    fastify.register(OTPRoute, { prefix: "api/otp" });
     /**
      *error handler
      */

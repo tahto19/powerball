@@ -13,10 +13,15 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [
           "user/addUser",
-          "global/showToaster",
           "user/editDetails",
+          "global/showToaster",
         ],
-        ignoredPaths: ["user.file", "global.toasterShow.err"],
+        ignoredPaths: [
+          "user.file",
+          "global.toasterShow.message",
+          "global.toasterShow.err",
+          "payload.err",
+        ],
       },
     }),
 });

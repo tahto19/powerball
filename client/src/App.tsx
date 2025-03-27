@@ -6,7 +6,7 @@ import {
   useLocation,
 } from "react-router-dom";
 
-import AddUser from "./components/AddUser/AddUser";
+import AddUser from "./components/addUser/AddUserC";
 import AdduserMain from "./components/addUser/AdduserMain";
 import ErrorPage from "./components/ErrorPage/ErrorPage";
 import SignIn from "./components/SignIn/index";
@@ -19,7 +19,6 @@ import { getDeviceInfo } from "./utils/util";
 import { useEffect } from "react";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PrizeList from "./components/PrizeList";
-
 
 const routes = [
   { path: "/dashboard", component: <Dashboard />, title: "Dashboard" },
@@ -53,9 +52,7 @@ function AppRoutes() {
                 </AppTheme>
               }
             />
-            <Route
-              path="/"
-              element={<Navigate to="/sign-in" replace />} />
+            <Route path="/" element={<Navigate to="/sign-in" replace />} />
             <Route element={<ProtectedRoute />}>
               {routes.map(({ path, component, title }) => (
                 <Route

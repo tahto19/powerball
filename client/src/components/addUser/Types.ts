@@ -5,4 +5,5 @@ export type userState = {
   emailAddress: string | null;
   birthdate: string | null;
   file: File[] | null;
+  password: string | null;
 };

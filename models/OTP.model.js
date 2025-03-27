@@ -1,8 +1,31 @@
 import "dotenv/config";
 import conn from "../dbConnections/conn.js";
 import { Model, DataTypes } from "sequelize";
-import { generateRandomNumber } from "../util/util.js";
-class OTP extends Model {}
+import { emailSender, generateRandomNumber } from "../util/util.js";
+class OTP extends Model {
+  getNewCode() {
+    return this.code;
+  }
+  generateNewCode() {
+    this.code = generateRandomNumber();
+    return this.code;
+  }
+  async emailCode() {
+    try {
+      await emailSender({
+        from: null,
+        to: this.emailAddress,
+        subject: "otp code",
+        text: "otp code",
+        html: `<span>${this.code}</span>`,
+      });
+      return true;
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
+  }
+}
 
 OTP.init(
   {

@@ -3,4 +3,5 @@ export type ToasterI = {
   show: boolean | null;
   variant: string | null;
   icon: string | null;
+  count: number;
 };

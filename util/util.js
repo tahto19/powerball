@@ -6,11 +6,14 @@ import { fileURLToPath } from "url";
 import { Op } from "sequelize";
 import CryptoJS from "crypto-js";
 import nodemailer from "nodemailer";
-export const transport = nodemailer.createTransport({
-  service: "gmail",
+import moment from "moment";
+import fs from "fs";
+const transport = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  secure: true,
   auth: {
-    user: "username",
-    pass: "password",
+    user: "crisanto.tubelleja@eacomm.com",
+    pass: "dgzlreovyxzkciog",
   },
 });
 export const logger = pino({
@@ -132,15 +135,41 @@ export const encryptData = (data, token) => {
 export const generateRandomNumber = () => {
   return Math.floor(100000 + Math.random() * 900000); // Generates a 6-digit random number
 };
+export const generateRandomChar = (n_) => {
+  let result = "";
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const charactersLength = characters.length;
+  let counter = 0;
+  while (counter < n_) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    counter += 1;
+  }
+  return result;
+};
+
 export const emailSender = async (data) => {
+  console.log(data);
   const { from, to, subject, text, html } = data;
-  if (!subject | !to) throw new Error("ErrorCODE x231");
-  const info = await transporter.sendMail({
-    from: !from ? "crisstubelleja@gmail.com" : from, // Sender address
+  if (!subject || !to) throw new Error("ErrorCODE x231");
+
+  const info = await transport.sendMail({
+    from: !from ? "crisanto.tubelleja@eacomm.com" : from, // Sender address
     to: to, // Receiver email
     subject: subject, // Email subject
     text: text, // Plain text
     html: html, // HTML body
   });
   return info;
+};
+export const uploadImage = async (file, filename) => {
+  let fName = filename;
+  if (!filename)
+    fName = `${moment().format(
+      "MM-DD-YYYY"
+    )}-${generateRandomNumber()}-${generateRandomChar(5)}-${file.filename}`;
+  let _path = getPath("/uploads/ids/" + fName);
+  let toBuffer_ = await file.toBuffer();
+  let uploadeImage = await fs.writeFileSync(_path, toBuffer_);
+  return { uploadeImage, filename: fName };
 };

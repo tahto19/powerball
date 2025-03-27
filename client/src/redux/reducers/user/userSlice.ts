@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { outsideAddUser } from "./asnycCalls";
+import { createAccount, outsideAddUser, verfiyAccountUser } from "./asnycCalls";
+import { useAppDispatch } from "@/redux/hook";
 
 interface userState {
   firstname: string | null;
@@ -10,7 +11,9 @@ interface userState {
   outside: boolean | undefined;
   mobileNumber: string | null;
   file: File[] | null;
+  verifiedAndCreatedAccount: boolean;
   otpID: number | null;
+  password: string | null;
 }
 
 const initialState: userState = {
@@ -23,6 +26,8 @@ const initialState: userState = {
   file: null,
   mobileNumber: null,
   otpID: null,
+  verifiedAndCreatedAccount: false,
+  password: null,
 };
 
 const userSlice = createSlice({
@@ -33,14 +38,13 @@ const userSlice = createSlice({
       try {
         state.loading = true;
         Object.assign(state, action.payload);
+        console.log(action.payload);
         state.outside = true;
       } catch (err) {
-        state.loading = false;
         console.log(err);
       }
     },
     returnToAddUser: (state) => {
-      console.log(state, "beofre");
       state.outside = false;
     },
     addOTP: (state, action) => {
@@ -53,11 +57,21 @@ const userSlice = createSlice({
     },
   },
   extraReducers: (b) => {
-    b.addCase(outsideAddUser.fulfilled, (state) => {
-      state.outside = true;
+    b.addCase(outsideAddUser.fulfilled, (state, action) => {
+      state.loading = false;
     });
-    b.addCase(outsideAddUser.pending, (state, action) => {
-      console.log(action, state);
+    b.addCase(outsideAddUser.pending, (state) => {
+      state.loading = true;
+    });
+    b.addCase(verfiyAccountUser.fulfilled, () => {
+      state.loading = false;
+    });
+    b.addCase(verfiyAccountUser.pending, (state) => {
+      state.loading = true;
+    });
+    b.addCase(createAccount.fulfilled, (state) => {
+      state.loading = false;
+      state.verifiedAndCreatedAccount = true;
     });
   },
 });

@@ -9,15 +9,16 @@ const bodyEncrypt = (req, res, pay, done) => {
     let regex = new RegExp(x.path.toString(), "i").test(req.url.toString());
     if (regex && x.method.toLowerCase() === req.method.toLowerCase()) return x;
   });
-
-  if (findNoP) {
+  if (res.statusCode >= 400) {
+    done(null, pay);
+  } else if (findNoP) {
     done(err, pay);
   } else {
     if (cookies.cookie_pb_1271) {
       let a = encryptData(pay, cookies.cookie_pb_1271);
-      done(err, JSON.stringify({ data: a }));
+      done(err, JSON.stringify(a));
     } else {
-      done();
+      done(err, null);
     }
   }
 };

@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ToasterI } from "./types/types";
 import { getMessage } from "@/utils/util";
+import { stat } from "fs";
 
 interface global_ {
   toasterShow: ToasterI;
@@ -12,6 +13,7 @@ const initialState: global_ = {
     show: false,
     variant: null,
     icon: null,
+    count: 0,
   },
 };
 const globalSlice = createSlice({
@@ -20,11 +22,17 @@ const globalSlice = createSlice({
   reducers: {
     showToaster: (state, action) => {
       action.payload.show = true;
-      const message = getMessage(
-        action.payload.err ? action.payload.err : action.payload.message
-      );
-      action.payload.message = message;
-      state.toasterShow = action.payload;
+      const message = action.payload.err
+        ? getMessage(action.payload.err)
+        : action.payload.message;
+      // action.payload.message = message;
+      const toChange = {
+        ...action.payload,
+        message,
+        count: state.toasterShow.count + 1,
+      };
+
+      state.toasterShow = toChange;
     },
     unShowToaster: (state) => {
       state.toasterShow = initialState.toasterShow;

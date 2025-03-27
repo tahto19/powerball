@@ -30,16 +30,21 @@ const getErrorsStatus = (code: string) => {
       return "needs relogin";
     case "x999":
       return "invalid credentials";
+    case "x91c":
+      return "File is not image";
+    case "x741":
+      return "Generated OTP but the system email sender has a problem please contact adminstartor";
     default:
-      return code;
+      return false;
   }
 };
 
 export const getMessage = (error: any) => {
-  const errorMessage = error?.response?.data?.result
-    ? getErrorsStatus(error?.response?.data?.message)
-    : error?.data && error?.data?.message
-    ? getErrorsStatus(error?.data?.message)
+  const getErrorMessage = getErrorsStatus(error?.response?.data?.message);
+  const errorMessage = getErrorMessage
+    ? getErrorMessage
+    : error?.response?.data?.message
+    ? error?.response?.data?.message
     : error;
   return errorMessage;
 };
@@ -69,8 +74,8 @@ export const bodyDecrypt = (data: string): any | null => {
     return null;
   }
   try {
-    var bytes = CryptoJS.AES.decrypt(data, token);
-    var cipherData = bytes.toString(CryptoJS.enc.Utf8);
+    const bytes = CryptoJS.AES.decrypt(data, token);
+    const cipherData = bytes.toString(CryptoJS.enc.Utf8);
 
     if (!cipherData) {
       // Handle incorrect decryption. (returns an empty string, it does not throw an exception)
@@ -84,3 +89,4 @@ export const bodyDecrypt = (data: string): any | null => {
     return null;
   }
 };
+export const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));

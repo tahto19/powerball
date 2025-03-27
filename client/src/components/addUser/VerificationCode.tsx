@@ -1,8 +1,11 @@
-import { useAppDispatch } from "@/redux/hook";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { MuiOtpInput } from "mui-one-time-password-input";
 import { Button, Grid2, styled, Typography } from "@mui/material";
 import AnimatedContent from "@/animated/AnimatedContent.tsx";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+import { verfiyAccountUser } from "@/redux/reducers/user/asnycCalls";
+import { RootState } from "@/redux/store";
 
 const MuiOtpInputStyled = styled(MuiOtpInput)`
   display: flex;
@@ -13,6 +16,11 @@ const MuiOtpInputStyled = styled(MuiOtpInput)`
 const VerificationCode = () => {
   const dispatch = useAppDispatch();
   const [otp, setOTP] = useState("");
+  const { otpID, loading } = useAppSelector((state: RootState) => state.user);
+  console.log(loading);
+  useEffect(() => {
+    console.log(loading, otpID);
+  }, [loading]);
   return (
     <AnimatedContent
       distance={200}
@@ -56,6 +64,10 @@ const VerificationCode = () => {
           <Button
             variant="contained"
             fullWidth
+            onClick={() => {
+              dispatch(verfiyAccountUser({ code: otp, id: otpID }));
+            }}
+            loading={loading}
             sx={{
               background: "#000000",
               border: "none",

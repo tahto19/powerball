@@ -1,9 +1,10 @@
 import { userState } from "@/components/AddUser/Types";
-import { PrizeState } from '@/components/PrizeList/interface';
+import { PrizeState } from "@/components/PrizeList/interface";
 
 import { getDeviceInfo } from "@/utils/util";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { veriyCode } from "./types/user";
 
 interface Credentials {
   email: string;
@@ -19,6 +20,7 @@ const apiClient = axios.create({
     platformVersion: getDI?.platformVersion || "none",
     platform: getDI?.platform || "none",
   },
+  withCredentials: true,
 });
 
 // Function to set the auth token (Call this after login)
@@ -51,7 +53,6 @@ export const apiService = {
   deleteUser: (userId: string | number) => apiClient.delete(`/users/${userId}`),
   // =================== End =====================
 
-
   // Login API (Returns token & stores it)
   login: async (credentials: Credentials) => {
     console.log(credentials);
@@ -67,18 +68,17 @@ export const apiService = {
   },
 
   createPrizeList: async (d: PrizeState) => {
-    const token = Cookies.get('pb_user');
+    const token = Cookies.get("pb_user");
     // const res = apiClient.post('/api/prize-list/', d, {headers: {
     //   "Cookie": `cookie_pb_1271=${token}`,
     // }})
-    const res = apiClient.post('/api/prize-list/', d, { withCredentials: true })
+    const res = apiClient.post("/api/prize-list/", d);
     // const res = apiClient.post('/api/prize-list/', d)
 
     return res;
   },
 
   // for creating user in the outside
-
   createUser: async (d: userState) => {
     const fd = new FormData();
     for (const _d in d) {
@@ -99,6 +99,14 @@ export const apiService = {
       headers: { "Content-Type": "multipart/form-data" },
     });
     return _r;
+  },
+  createOTP: async (d: userState) => {
+    return apiClient.post("/api/otp", {
+      emailAddress: d.emailAddress,
+    });
+  },
+  verifyOTP: async (data: veriyCode) => {
+    return apiClient.post("/api/otp/verify", data);
   },
 };
 
