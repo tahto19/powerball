@@ -1,8 +1,14 @@
 import { Grid2, Typography, Button } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import CustomizedDataGrid from "../CustomizedDataFrid";
 import headers from "./headers.json";
-const index = () => {
+import { useAppDispatch } from "@/redux/hook";
+import { getAdmin } from "@/redux/reducers/user/asnycCalls";
+const Index = () => {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getAdmin());
+  }, []);
   return (
     <Grid2 container spacing={2} columns={12}>
       <Grid2
@@ -38,4 +44,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;

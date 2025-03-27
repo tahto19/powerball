@@ -9,6 +9,7 @@ import {
 } from "mobile-device-detect";
 
 const getErrorsStatus = (code: string) => {
+  if (!code) return false;
   const c_ = code.toLowerCase().replace("errorcode", "").trim();
   switch (c_) {
     case "x1":

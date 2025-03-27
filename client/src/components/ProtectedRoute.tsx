@@ -11,7 +11,7 @@ const ProtectedRoute = () => {
   useEffect(() => {
     dispatch(getToken());
   }, [token]);
-  console.log(token, loading, doneLoading);
+
   return !doneLoading ? (
     <>..loading</>
   ) : token ? (

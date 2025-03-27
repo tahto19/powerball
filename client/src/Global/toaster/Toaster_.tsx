@@ -8,19 +8,21 @@ const Toaster_ = () => {
     (state: RootState) => state.global.toasterShow
   );
   useEffect(() => {
-    console.log(count, message);
-
+    console.log(message, count);
     toast(message, {
       type: variant === null || variant === undefined ? "success" : variant,
     });
   }, [count]);
   return (
-    <ToastContainer
-      position="top-right"
-      autoClose={5000}
-      closeOnClick={true}
-      transition={Flip}
-    />
+    <>
+      <span style={{ color: "red" }}>here</span>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        closeOnClick={true}
+        transition={Flip}
+      />
+    </>
   );
 };
 

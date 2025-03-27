@@ -97,12 +97,8 @@ export const getAdmin = createAsyncThunk(
     try {
       throw new Error("testing");
     } catch (err) {
-      dispatch(
-        showToaster({
-          err,
-          variant: "error",
-        })
-      );
+      console.log("here");
+      dispatch(showToaster({ err, variant: "error", icon: "error" }));
     }
   }
 );
