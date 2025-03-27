@@ -108,17 +108,29 @@ export default function CustomizedDataGrid<T>({ sx, data, headers, pagination = 
             }, 500), // 500ms debounce delay
         []
     );
+    const prevState = React.useRef({ page: null, pageSize: null, sortModel: null, filterModel: null });
 
     // Handle changes and send them to parent
     React.useEffect(() => {
-        if (onTableChange) {
-            onTableChange({
-                page: paginationModel.page,
-                pageSize: paginationModel.pageSize,
-                sortModel,
-                filterModel,
-            });
-        }
+        if (!onTableChange) return;
+
+        const hasChanged =
+            prevState.current.page !== paginationModel.page ||
+            prevState.current.pageSize !== paginationModel.pageSize ||
+            JSON.stringify(prevState.current.sortModel) !== JSON.stringify(sortModel) ||
+            JSON.stringify(prevState.current.filterModel) !== JSON.stringify(filterModel);
+
+        if (!hasChanged) return;
+
+        prevState.current = { page: paginationModel.page, pageSize: paginationModel.pageSize, sortModel, filterModel };
+
+        onTableChange({
+            page: paginationModel.page,
+            pageSize: paginationModel.pageSize,
+            sortModel,
+            filterModel,
+        });
+
     }, [paginationModel, sortModel, filterModel, onTableChange]);
     return (
         <DataGrid

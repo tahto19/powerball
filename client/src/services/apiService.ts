@@ -1,5 +1,5 @@
 import { userState } from "@/components/AddUser/Types";
-import { PrizeState } from "@/components/PrizeList/interface";
+import { PrizeState, PrizePaginationState } from '@/components/PrizeList/interface';
 
 import { getDeviceInfo } from "@/utils/util";
 import axios from "axios";
@@ -68,11 +68,19 @@ export const apiService = {
   },
 
   createPrizeList: async (d: PrizeState) => {
-    const token = Cookies.get("pb_user");
     // const res = apiClient.post('/api/prize-list/', d, {headers: {
     //   "Cookie": `cookie_pb_1271=${token}`,
     // }})
     const res = apiClient.post("/api/prize-list/", d);
+    // const res = apiClient.post('/api/prize-list/', d)
+
+    return res;
+  },
+  getPrizeList: async (d: PrizePaginationState) => {
+    // const res = apiClient.post('/api/prize-list/', d, {headers: {
+    //   "Cookie": `cookie_pb_1271=${token}`,
+    // }})
+    const res = apiClient.get('/api/prize-list/',{ params: d, withCredentials: true })
     // const res = apiClient.post('/api/prize-list/', d)
 
     return res;

@@ -6,8 +6,14 @@ export interface MyDialogProps {
 }
 
 export interface PrizeState {
-    id: number | null,
-    name: string,
-    value: number,
-    type: string,
+    id: number | null;
+    name: string;
+    value: number;
+    type: string;
+}
+
+export interface PrizePaginationState {
+    offset: number;
+    limit: number;
+    sort: string;
 }

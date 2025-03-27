@@ -4,9 +4,11 @@ import CustomizedDataGrid from "../CustomizedDataFrid";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Grid from '@mui/material/Grid2';
+import apiService from "@/services/apiService";
 
 import MyDialog from "./Dialog.tsx";
-import { PrizeState } from '@/components/PrizeList/interface';
+import { PrizeState, PrizePaginationState } from '@/components/PrizeList/interface';
+import { bodyDecrypt } from "@/utils/util";
 
 
 //Temporary data
@@ -45,8 +47,32 @@ const defaultData = {
 const PrizeList = () => {
     const [dialogType, setDialogType] = React.useState("Add")
     const [data_row, setDataRow] = React.useState<PrizeState>(defaultData);
-    const handleTableChange = ({ page, pageSize, sortModel, filterModel }: any) => {
+
+    const [list, setPrizeList] = React.useState<[]>([]);
+    const [listCount, setListCount] = React.useState<number>(0);
+    const [pagination, setPagination] = React.useState(samplePagination);
+
+    const handleTableChange = async ({ page, pageSize, sortModel, filterModel }: any) => {
         console.log("Table Changed:", { page, pageSize, sortModel, filterModel });
+
+        setPagination({ page, pageSize })
+
+        const sort = [];
+        if (sortModel.length > 0) {
+            sort.push([sortModel[0].field, sortModel[0].sort.toUpperCase()]);
+        }
+
+        const query: PrizePaginationState = {
+            offset: page, limit: pageSize, sort: JSON.stringify(sort)
+        }
+
+        const res = await apiService.getPrizeList(query);
+        const d = bodyDecrypt(res.data.data)
+        if (d && d.success === 'success') {
+            console.log(d)
+            setPrizeList(d.data.list)
+            setListCount(d.data.total)
+        }
     };
 
     const [open, setOpen] = React.useState(false);
@@ -105,10 +131,10 @@ const PrizeList = () => {
                         sx={{
                             width: "100%",
                         }}
-                        data={sampleData}
+                        data={list}
                         headers={sampleHeaders}
-                        pagination={samplePagination}
-                        pageLength={sampleData.length}
+                        pagination={pagination}
+                        pageLength={listCount}
                         onTableChange={handleTableChange}
                         onEditAction={handleEditAction}
                         onViewAction={handleViewAction}

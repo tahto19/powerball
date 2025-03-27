@@ -1,6 +1,8 @@
 const bodyChecker = (req, res, done) => {
   console.log(req.method);
-  let formHeader = req.headers["content-type"].includes("multipart/form-data;");
+  let formHeader = req.headers["content-type"]?.includes(
+    "multipart/form-data;"
+  );
   if (req.method === "POST" && !req.body && !formHeader)
     throw new Error("ErrorCODE X2");
   if (req.method === "PUT" && !req.body && !formHeader)
