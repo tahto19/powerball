@@ -1,5 +1,5 @@
 import CryptoJS from "crypto-js";
-import Cookies from "js-cookie";
+
 
 import {
   browserName,
@@ -64,13 +64,13 @@ export const getDeviceInfo = async () => {
   return UserAgent;
 };
 
-export const bodyDecrypt = (data: string): any | null => {
-  if (!data.trim()) {
-    // Ensure data is not empty or just whitespace
+export const bodyDecrypt = (data: string | null | undefined, token: string | null): any | null => {
+  if (!data || (typeof data === "string" && !data.trim())) {
+        // Ensure data is not empty or just whitespace
     console.error("Decryption failed: Empty data.");
     return null;
   }
-  const token = Cookies.get("cookie_pb_1271");
+
   if (!token) {
     // Handle missing token
     console.error("Decryption failed: Missing token doesn't exists.");
