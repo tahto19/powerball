@@ -27,12 +27,12 @@ const index = () => {
         </Button>
       </Grid2>
       <Grid2 size={12}>
-        <CustomizedDataGrid
+        {/* <CustomizedDataGrid
           sx={{
             width: "100%",
           }}
           headers={headers}
-        />
+        /> */}
       </Grid2>
     </Grid2>
   );

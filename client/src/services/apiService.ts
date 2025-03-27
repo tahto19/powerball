@@ -124,7 +124,7 @@ export const apiService = {
   },
   // for token
   checkSession: async () => {
-    return apiClient.get("api/login/checkSession");
+    return apiClient.get("/api/login/checkSession");
   },
 };
 

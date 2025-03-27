@@ -3,10 +3,12 @@ import { getToken } from "./asyncCalls";
 interface tokenFace {
   token: string | null;
   loading: boolean;
+  doneLoading:boolean;
 }
 const initialState: tokenFace = {
   token: null,
   loading: true,
+  doneLoading:false
 };
 const tokenSlice = createSlice({
   name: "token",
@@ -25,9 +27,11 @@ const tokenSlice = createSlice({
   extraReducers: (b) => {
     b.addCase(getToken.fulfilled, (state) => {
       state.loading = false;
+      state.doneLoading = true
     });
     b.addCase(getToken.pending, (state) => {
       state.loading = true;
+      
     });
   },
 });

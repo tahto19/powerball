@@ -1,10 +1,24 @@
 import { Navigate, Outlet } from "react-router-dom";
-
-import { useAppSelector } from "@/redux/hook";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { useEffect } from "react";
+import { getToken } from "@/redux/reducers/token/asyncCalls";
 
 const ProtectedRoute = () => {
-  const token = useAppSelector((state) => state.token.token); // Check if token exists
-  return token ? <Outlet /> : <Navigate to="/sign-in" replace />;
+  const dispatch = useAppDispatch();
+  const { token, loading, doneLoading } = useAppSelector(
+    (state) => state.token
+  ); // Check if token exists
+  useEffect(() => {
+    dispatch(getToken());
+  }, [token]);
+  console.log(token, loading, doneLoading);
+  return !doneLoading ? (
+    <>..loading</>
+  ) : token ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/sign-in" replace />
+  );
 };
 
 export default ProtectedRoute;

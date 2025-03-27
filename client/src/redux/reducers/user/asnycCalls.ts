@@ -91,3 +91,18 @@ export const createAccount = createAsyncThunk(
     }
   }
 );
+export const getAdmin = createAsyncThunk(
+  "user/getAdmin",
+  async (_, { dispatch }) => {
+    try {
+      throw new Error("testing");
+    } catch (err) {
+      dispatch(
+        showToaster({
+          err,
+          variant: "error",
+        })
+      );
+    }
+  }
+);
