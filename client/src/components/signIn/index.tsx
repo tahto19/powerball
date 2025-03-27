@@ -13,9 +13,9 @@ import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import apiService from "@/services/apiService";
 
-import Cookies from "js-cookie";
-
 import { showToaster } from "@/redux/reducers/global/globalSlice";
+import { useAppDispatch } from "@/redux/hook";
+
 const NewCard = styled(Card)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
@@ -55,6 +55,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 const SignIn = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
@@ -62,33 +63,46 @@ const SignIn = () => {
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    showToaster({
-      message: "Login success!",
-      show: true,
-      variant: "success",
-      icon: null,
-    });
+    try {
+      event.preventDefault();
 
-    if (emailError || passwordError) {
-      return;
-    }
-    const formData = new FormData(event.currentTarget);
+      if (emailError || passwordError) {
+        return;
+      }
+      const formData = new FormData(event.currentTarget);
 
-    const email = formData.get("email") as string; // ✅ Ensure it's a string
-    const password = formData.get("password") as string;
+      const email = formData.get("email") as string; // ✅ Ensure it's a string
+      const password = formData.get("password") as string;
 
-    const res = await apiService.login({ email, password });
-    console.log(res);
-    if (res.data.result == "success") {
-      // Redirect to dashboard after login
-      navigate("/prize-list");
+      const res = await apiService.login({ email, password });
+
+      if (res.data.result == "success") {
+        // Redirect to dashboard after login
+        navigate("/prize-list");
+      }
+      dispatch(
+        showToaster({
+          message: "Login success!",
+          show: true,
+          variant: "success",
+          icon: null,
+        })
+      );
+    } catch (err) {
+      dispatch(
+        showToaster({
+          err,
+          show: true,
+          variant: "error",
+          icon: null,
+        })
+      );
     }
   };
 
   const validateInputs = () => {
     const email = document.getElementById("email") as HTMLInputElement;
-    const password = document.getElementById("password") as HTMLInputElement;
+    // const password = document.getElementById("password") as HTMLInputElement;
 
     let isValid = true;
 

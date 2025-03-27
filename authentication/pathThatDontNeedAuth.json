@@ -3,5 +3,5 @@
   { "path": "/users", "method": "POST" },
   { "path": "/otp", "method": "POST" },
   { "path": "/login", "method": "POST" },
-  { "path": "/login/checkSession", "method": "POST" }
+  { "path": "/login/checkSession", "method": "GET" }
 ]

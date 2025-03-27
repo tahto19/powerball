@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Button from "@mui/material/Button";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store.ts";
-import { addUser, editDetails } from "../../redux/reducers/user/userSlice.ts";
+import { editDetails } from "../../redux/reducers/user/userSlice.ts";
 import Grid from "@mui/material/Grid2";
 import {
   Box,
@@ -28,7 +28,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import PhoneInput, { CountryData } from "react-phone-input-2";
 import moment from "moment";
 import "react-phone-input-2/lib/style.css";
-import { userState } from "./Types.ts";
+import { userState } from "./TypesHere.ts";
 import { useAppDispatch } from "@/redux/hook.ts";
 import { outsideAddUser } from "@/redux/reducers/user/asnycCalls.ts";
 const AddUserC = () => {
@@ -43,7 +43,6 @@ const AddUserC = () => {
     otpID,
     loading,
   } = useSelector((state: RootState) => state.user);
-  const [fileD, setFileD] = useState<File[]>([]);
   const {
     getValues,
     register,
@@ -128,8 +127,6 @@ const AddUserC = () => {
                   size="medium"
                   {...register("firstname", {
                     required: true,
-
-                    shouldDirty: true,
                   })}
                 />
                 {errors &&
@@ -283,10 +280,10 @@ const AddUserC = () => {
                   }}
                   onBlur={(phone, e: CountryData) => {
                     const mobileNumber = phone.target.value.replace(
-                      /[\+\s]/g,
+                      /[+\s]/g,
                       ""
                     ).length;
-                    const totalLength = e.format.replace(/[\+\s]/g, "").length;
+                    const totalLength = e.format.replace(/[+\s]/g, "").length;
 
                     if (totalLength - 1 > mobileNumber || mobileNumber <= 2) {
                       setError("mobileNumber", {
@@ -397,9 +394,9 @@ const AddUserC = () => {
                           errors.file.type === "required" && (
                             <span style={{ color: "red" }}>Required </span>
                           )}
-                        {fileD && fileD[0] && fileD[0].name
-                          ? "Change"
-                          : "Choose"}{" "}
+                        {getValues("file") && getValues("file")?.length !== 0
+                          ? "Change "
+                          : "Choose "}
                         a file or drag & drop it here
                       </Typography>
                       <Typography sx={{ color: "#cacfdb" }}>

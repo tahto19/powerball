@@ -1,4 +1,5 @@
 import {
+  checkSessionController,
   getMyDetailsController,
   LoginController,
 } from "../Controller/Login.controller.js";
@@ -12,4 +13,7 @@ export const LoginSchema = {
 };
 export const getMyDetailsSchema = {
   handler: getMyDetailsController,
+};
+export const checkSessionSchema = {
+  handler: checkSessionController,
 };

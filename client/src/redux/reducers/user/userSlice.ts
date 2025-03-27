@@ -1,6 +1,5 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { createAccount, outsideAddUser, verfiyAccountUser } from "./asnycCalls";
-import { useAppDispatch } from "@/redux/hook";
 
 interface userState {
   firstname: string | null;
@@ -57,13 +56,13 @@ const userSlice = createSlice({
     },
   },
   extraReducers: (b) => {
-    b.addCase(outsideAddUser.fulfilled, (state, action) => {
+    b.addCase(outsideAddUser.fulfilled, (state) => {
       state.loading = false;
     });
     b.addCase(outsideAddUser.pending, (state) => {
       state.loading = true;
     });
-    b.addCase(verfiyAccountUser.fulfilled, () => {
+    b.addCase(verfiyAccountUser.fulfilled, (state) => {
       state.loading = false;
     });
     b.addCase(verfiyAccountUser.pending, (state) => {

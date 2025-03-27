@@ -32,6 +32,8 @@ const getErrorsStatus = (code: string) => {
       return "invalid credentials";
     case "x91c":
       return "File is not image";
+    case "x909":
+      return "Email is already used";
     case "x741":
       return "Generated OTP but the system email sender has a problem please contact adminstartor";
     default:

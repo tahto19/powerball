@@ -45,6 +45,7 @@ const fastify = Fastify({
  * x58 = code is invalid
  * X999 = login wrong credentials
  * x91c = not image
+ * x909 = Email already exists error
  * X741 = email details sender is incorrect
  */
 const start = async () => {

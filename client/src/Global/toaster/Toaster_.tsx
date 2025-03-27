@@ -4,16 +4,15 @@ import { useSelector } from "react-redux";
 import { Flip, ToastContainer, toast } from "react-toastify";
 
 const Toaster_ = () => {
-  const { message, show, variant, icon, count } = useSelector(
+  const { message, variant, count } = useSelector(
     (state: RootState) => state.global.toasterShow
   );
   useEffect(() => {
     console.log(count, message);
-    setTimeout(() => {
-      toast(message, {
-        type: variant === null || variant === undefined ? "success" : variant,
-      });
-    }, [150]);
+
+    toast(message, {
+      type: variant === null || variant === undefined ? "success" : variant,
+    });
   }, [count]);
   return (
     <ToastContainer

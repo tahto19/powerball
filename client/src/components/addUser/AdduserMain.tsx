@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { Box } from "@mui/material";
 
@@ -7,6 +7,7 @@ import { RootState } from "@/redux/store";
 import { useAppSelector } from "@/redux/hook";
 import VerificationCode from "./VerificationCode";
 import AddUserC from "./AddUserC.tsx";
+import SuccessCreation from "./SuccessCreation.tsx";
 
 const AdduserMain = () => {
   const { outside, verifiedAndCreatedAccount } = useAppSelector(
@@ -14,12 +15,12 @@ const AdduserMain = () => {
   );
   return (
     <Box>
-      {!outside ? (
+      {outside ? (
         <AddUserC />
-      ) : !verifiedAndCreatedAccount ? (
+      ) : verifiedAndCreatedAccount ? (
         <VerificationCode />
       ) : (
-        "test"
+        <SuccessCreation />
       )}
     </Box>
   );

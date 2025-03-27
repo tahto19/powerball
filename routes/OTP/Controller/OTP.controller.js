@@ -1,9 +1,10 @@
 import { cSend, generateRandomNumber } from "../../../util/util.js";
+import UserClass from "../../User/lib/User.class.js";
 import OTPClass from "../Class/OTP.class.js";
 
 export const createOTPController = async (req, res) => {
   try {
-    const { emailAddress } = req.body;
+    const { emailAddress, outside } = req.body;
     let platform = req.headers.platform;
     let platformversion = req.headers.platformversion;
     let mobile = req.headers["pm-scratch-it-m"];
@@ -17,6 +18,12 @@ export const createOTPController = async (req, res) => {
       { filter: platformversion, type: "string", field: "platformversion" },
       { filter: platform, type: "string", field: "platform" },
     ]);
+    if (!outside) {
+      let findUser = await UserClass.FetchOne([
+        { filter: emailAddress, field: "emailAddress", type: "string" },
+      ]);
+      if (findUser !== null) throw new Error("ErrorCODE x909");
+    }
     if (r) {
       await OTPClass.Edit({
         platform,

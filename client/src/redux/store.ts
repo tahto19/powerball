@@ -1,12 +1,14 @@
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import userReducer from "./reducers/user/userSlice";
 import navBarReducer from "./reducers/navBarSlice";
+import tokenReducers from "./reducers/token/tokenSlice";
 import globalReducer from "./reducers/global/globalSlice";
 export const store = configureStore({
   reducer: {
     user: userReducer,
     navBar: navBarReducer,
     global: globalReducer,
+    token: tokenReducers,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

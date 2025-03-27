@@ -1,10 +1,9 @@
-import { userState } from "@/components/AddUser/Types";
+import { userState } from "@/components/addUser/TypesHere";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { useDispatch } from "react-redux";
 import { addOTP, addUser } from "./userSlice";
 import apiService from "@/services/apiService";
 import { showToaster } from "../global/globalSlice";
-import { delay, getMessage } from "@/utils/util";
+import { delay } from "@/utils/util";
 import { veriyCode } from "@/services/types/user";
 import { RootState } from "@/redux/store";
 export const outsideAddUser = createAsyncThunk(
@@ -68,7 +67,7 @@ export const createAccount = createAsyncThunk(
         password,
       } = state.user;
       console.log(file, firstname, lastname, mobileNumber, birthdate);
-      const _r = await apiService.createUser({
+      await apiService.createUser({
         file,
         firstname,
         lastname,
@@ -84,6 +83,7 @@ export const createAccount = createAsyncThunk(
           icon: "info",
         })
       );
+
       return true;
     } catch (err) {
       dispatch(showToaster({ err, variant: "error", icon: "error" }));

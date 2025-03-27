@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ToasterI } from "./types/types";
 import { getMessage } from "@/utils/util";
-import { stat } from "fs";
 
 interface global_ {
   toasterShow: ToasterI;
@@ -31,7 +30,6 @@ const globalSlice = createSlice({
         message,
         count: state.toasterShow.count + 1,
       };
-
       state.toasterShow = toChange;
     },
     unShowToaster: (state) => {

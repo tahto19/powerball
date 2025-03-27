@@ -82,3 +82,12 @@ export const createUser = async (req, res) => {
     throw err;
   }
 };
+export const checkUser = async (req, res) => {
+  try {
+    const { filter } = req.body;
+    const getUser = await uc.FetchOne(filter);
+    return;
+  } catch (err) {
+    throw err;
+  }
+};

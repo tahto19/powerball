@@ -81,6 +81,8 @@ export const WhereFilters = (filters = []) => {
           wherefilters[f.field] = {
             [Op.in]: f.filter,
           };
+        case "number":
+          wherefilters[f.field] = f.filter;
           break;
         case "date":
           if (

@@ -48,3 +48,10 @@ export const getMyDetailsController = async (req, res) => {
     throw err;
   }
 };
+export const checkSessionController = async (req, res) => {
+  try {
+    res.send(req.cookies.cookie_pb_1271);
+  } catch (err) {
+    throw err;
+  }
+};

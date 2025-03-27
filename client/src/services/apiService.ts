@@ -1,5 +1,8 @@
-import { userState } from "@/components/AddUser/Types";
-import { PrizeState, PrizePaginationState } from '@/components/PrizeList/interface';
+import { userState } from "@/components/addUser/TypesHere";
+import {
+  PrizeState,
+  PrizePaginationState,
+} from "@/components/PrizeList/interface";
 
 import { getDeviceInfo } from "@/utils/util";
 import axios from "axios";
@@ -80,7 +83,10 @@ export const apiService = {
     // const res = apiClient.post('/api/prize-list/', d, {headers: {
     //   "Cookie": `cookie_pb_1271=${token}`,
     // }})
-    const res = apiClient.get('/api/prize-list/',{ params: d, withCredentials: true })
+    const res = apiClient.get("/api/prize-list/", {
+      params: d,
+      withCredentials: true,
+    });
     // const res = apiClient.post('/api/prize-list/', d)
 
     return res;
@@ -115,6 +121,10 @@ export const apiService = {
   },
   verifyOTP: async (data: veriyCode) => {
     return apiClient.post("/api/otp/verify", data);
+  },
+  // for token
+  checkSession: async () => {
+    return apiClient.get("api/login/checkSession");
   },
 };
 

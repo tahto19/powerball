@@ -4,6 +4,7 @@ import {
   Routes,
   Route,
   useLocation,
+  useNavigate,
 } from "react-router-dom";
 
 import AddUser from "./components/addUser/AddUserC";
@@ -19,6 +20,8 @@ import { getDeviceInfo } from "./utils/util";
 import { useEffect } from "react";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PrizeList from "./components/PrizeList";
+import { useAppDispatch, useAppSelector } from "./redux/hook";
+import { getToken } from "./redux/reducers/token/asyncCalls";
 
 const routes = [
   { path: "/dashboard", component: <Dashboard />, title: "Dashboard" },
@@ -33,11 +36,23 @@ const routes = [
     title: "Prize List",
   },
 ];
+
 // Component to handle routing with conditional rendering
 function AppRoutes() {
+  const dispatch = useAppDispatch();
+  const nav = useNavigate();
+  const { loading, token } = useAppSelector((state) => state.token);
+  const location = useLocation();
   useEffect(() => {
     getDeviceInfo();
+    if (loading) dispatch(getToken());
   }, []);
+  useEffect(() => {
+    if (token !== "" && token) {
+      console.log(location);
+      if (location.pathname === "/sign-in") nav("/prize-list");
+    }
+  }, [token]);
   return (
     <Routes>
       <Route
