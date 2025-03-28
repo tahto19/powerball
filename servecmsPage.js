@@ -12,7 +12,7 @@ const start = () => {
   });
   fastify.register(cors, {
     origin: "*",
-    // methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true, // ✅ Allow cookies
   });
   fastify.route({
