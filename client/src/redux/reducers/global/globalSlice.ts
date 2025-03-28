@@ -21,7 +21,6 @@ const globalSlice = createSlice({
   reducers: {
     showToaster: (state, action) => {
       try {
-        console.log("here");
         action.payload.show = true;
         const message = action.payload.err
           ? getMessage(action.payload.err)
@@ -34,7 +33,6 @@ const globalSlice = createSlice({
           count: state.toasterShow.count + 1,
         };
         state.toasterShow = toChange;
-        console.log(state.toasterShow);
       } catch (err) {
         console.log(err);
       }

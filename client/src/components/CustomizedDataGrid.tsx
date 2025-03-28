@@ -1,14 +1,14 @@
+//@ts-nocheck
+
 import * as React from 'react';
 import { DataGrid, GridPaginationModel, GridSortModel, GridFilterModel, GridRowsProp, GridColDef, getGridStringOperators } from '@mui/x-data-grid';
 import debounce from "lodash.debounce";
-import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 
 import EditIcon from '@mui/icons-material/Edit';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
-import EditRoundedIcon from '@mui/icons-material/EditRounded';
 interface PaginationProps {
 
     page: number;

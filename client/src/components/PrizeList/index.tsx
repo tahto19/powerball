@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import CustomizedDataGrid from "../CustomizedDataFrid";
+import CustomizedDataGrid from "../CustomizedDataGrid.tsx";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Grid from '@mui/material/Grid2';
@@ -10,24 +10,9 @@ import { useAppSelector } from "@/redux/hook";
 import MyDialog from "./Dialog.tsx";
 import { PrizeState, PrizePaginationState } from '@/components/PrizeList/interface';
 import { bodyDecrypt } from "@/utils/util";
+import { showToaster } from "@/redux/reducers/global/globalSlice";
+import { useAppDispatch } from "@/redux/hook";
 
-
-//Temporary data
-const sampleData = [{
-    id: 1,
-    name: 'Prize 1',
-    value: 100,
-    type: "grand",
-
-},
-{
-    id: 2,
-    name: 'Prize 1',
-    value: 100,
-    type: "grand",
-
-
-}]
 //Temporary data
 const sampleHeaders = [
     { field: 'name', headerName: 'Name', flex: 1, minWidth: 200 },
@@ -46,6 +31,8 @@ const defaultData = {
 }
 
 const PrizeList = () => {
+    const dispatch = useAppDispatch();
+
     const { token } = useAppSelector((state) => state.token);
     const [dialogType, setDialogType] = React.useState("Add")
     const [data_row, setDataRow] = React.useState<PrizeState>(defaultData);
@@ -69,6 +56,14 @@ const PrizeList = () => {
         }
 
         const res = await apiService.getPrizeList(query);
+        dispatch(
+            showToaster({
+                message: "Login success!",
+                show: true,
+                variant: "success",
+                icon: null,
+            })
+        );
         console.log(res.data)
         const d = bodyDecrypt(res.data, token)
         if (d && d.success === 'success') {

@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import { Navigate, Outlet } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { useEffect } from "react";

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store.ts";
@@ -264,10 +264,10 @@ const AddUserC = () => {
                     minHeight: "40px",
                     height:
                       errors &&
-                      errors.mobileNumber &&
-                      errors.mobileNumber &&
-                      errors.mobileNumber.type &&
-                      errors.mobileNumber.type === "required"
+                        errors.mobileNumber &&
+                        errors.mobileNumber &&
+                        errors.mobileNumber.type &&
+                        errors.mobileNumber.type === "required"
                         ? "70%"
                         : "100%",
                   }}

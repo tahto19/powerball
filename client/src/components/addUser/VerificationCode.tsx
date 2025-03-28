@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { MuiOtpInput } from "mui-one-time-password-input";
 import { Button, Grid2, styled, Typography } from "@mui/material";
 import AnimatedContent from "@/animated/AnimatedContent.tsx";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { verfiyAccountUser } from "@/redux/reducers/user/asnycCalls";
 import { RootState } from "@/redux/store";

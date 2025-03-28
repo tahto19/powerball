@@ -1,3 +1,4 @@
+//@ts-nocheck
 import * as React from "react";
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -14,6 +15,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { showToaster } from "@/redux/reducers/global/globalSlice"
 import apiService from "@/services/apiService";
 import { bodyDecrypt } from "@/utils/util";
+import { useAppSelector } from "@/redux/hook";
 
 const FormControl = styled(MuiFormControl)(({ theme }) => ({
     width: "100%"
@@ -23,6 +25,7 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
     // const [isOpen, setOpen] = React.useState(open);
     const [dialog_type, setDialogType] = React.useState("")
     const [formData, setData] = React.useState<PrizeState>(data);
+    const { token } = useAppSelector((state) => state.token);
 
     const handleSubmit = async (e: React.FocusEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -34,7 +37,8 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
         })
 
         const res = await apiService.createPrizeList(formData);
-        const d = bodyDecrypt(res.data.data)
+
+        const d = bodyDecrypt(res.data, token)
 
         if (d && d.success === 'success') {
             showToaster({

@@ -3,11 +3,9 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  useLocation,
   useNavigate,
 } from "react-router-dom";
 
-import AddUser from "./components/addUser/AddUserC";
 import AdduserMain from "./components/addUser/AdduserMain";
 import ErrorPage from "./components/ErrorPage/ErrorPage";
 import SignIn from "./components/SignIn/index";
@@ -47,42 +45,36 @@ function AppRoutes() {
     if (loading) dispatch(getToken());
   }, []);
   useEffect(() => {
-    if (token !== "" && token) {
+    const currentPath = window.location.pathname;
+    if (token !== "" && token && (currentPath === "/cms/" || currentPath === "/cms/sign-in")) {
       nav("/prize-list");
     }
-  }, [token]);
+  }, [token, nav]);
   return (
     <Routes>
-      <Route
-        path="/*"
-        element={
-          <Routes>
-            <Route
-              path="/sign-in"
-              element={
-                <AppTheme>
-                  <SignIn />
-                </AppTheme>
-              }
-            />
-            <Route path="/" element={<Navigate to="/sign-in" replace />} />
-            <Route element={<ProtectedRoute />}>
-              {routes.map(({ path, component, title }) => (
-                <Route
-                  key={path}
-                  path={path}
-                  element={
-                    <AppTheme>
-                      <MainLayout title={title}>{component}</MainLayout>
-                    </AppTheme>
-                  }
-                />
-              ))}
-            </Route>
-          </Routes>
-        }
-      />
-      <Route path="/add-user/" element={<AdduserMain />} />
+      {/* Authentication Routes */}
+      <Route path="/sign-in" element={<AppTheme><SignIn /></AppTheme>} />
+      <Route path="/" element={<Navigate to="/sign-in" replace />} />
+
+      {/* Protected Routes */}
+      <Route element={<ProtectedRoute />}>
+        {routes.map(({ path, component, title }) => (
+          <Route
+            key={path}
+            path={path}
+            element={
+              <AppTheme>
+                <MainLayout title={title}>{component}</MainLayout>
+              </AppTheme>
+            }
+          />
+        ))}
+      </Route>
+
+      {/* Iframe Routes */}
+      <Route path="/iframe/add-user" element={<AdduserMain />} />
+
+      {/* Catch-All Error Page */}
       <Route path="*" element={<ErrorPage />} />
     </Routes>
   );
@@ -91,7 +83,7 @@ function AppRoutes() {
 function App() {
   return (
     <>
-      <Router basename="/">
+      <Router basename="/cms">
         <AppRoutes />
       </Router>
       <Toaster_></Toaster_>

@@ -1,5 +1,5 @@
 import { RootState } from "@/redux/store";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Flip, ToastContainer, toast } from "react-toastify";
 
@@ -15,7 +15,6 @@ const Toaster_ = () => {
   }, [count]);
   return (
     <>
-      <span style={{ color: "red" }}>here</span>
       <ToastContainer
         position="top-right"
         autoClose={5000}

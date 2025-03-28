@@ -1,4 +1,3 @@
-import React from "react";
 
 import { Box } from "@mui/material";
 
@@ -13,9 +12,11 @@ const AdduserMain = () => {
   const { outside, verifiedAndCreatedAccount } = useAppSelector(
     (state: RootState) => state.user
   );
+
+  console.log(outside)
   return (
     <Box>
-      {outside ? (
+      {!outside ? (
         <AddUserC />
       ) : verifiedAndCreatedAccount ? (
         <VerificationCode />

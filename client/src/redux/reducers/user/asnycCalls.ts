@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { userState } from "@/components/addUser/TypesHere";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { addOTP, addUser } from "./userSlice";

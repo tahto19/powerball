@@ -1,7 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { showToaster } from "../global/globalSlice";
 import apiService from "@/services/apiService";
-import { tokenType } from "@/types/allTypes";
 import { addToken } from "./tokenSlice";
 
 export const getToken = createAsyncThunk(

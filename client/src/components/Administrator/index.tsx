@@ -1,6 +1,8 @@
+//@ts-nocheck
+
 import { Grid2, Typography, Button } from "@mui/material";
 import React, { useEffect } from "react";
-import CustomizedDataGrid from "../CustomizedDataFrid";
+import CustomizedDataGrid from "../CustomizedDataGrid";
 import headers from "./headers.json";
 import { useAppDispatch } from "@/redux/hook";
 import { getAdmin } from "@/redux/reducers/user/asnycCalls";

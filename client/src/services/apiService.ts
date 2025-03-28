@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import { userState } from "@/components/addUser/TypesHere";
 import {
   PrizeState,
@@ -6,25 +8,34 @@ import {
 
 import { getDeviceInfo } from "@/utils/util";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { veriyCode } from "./types/user";
 
 interface Credentials {
   email: string;
   password: string;
 }
-// Create Axios instance
-const getDI = await getDeviceInfo();
-const apiClient = axios.create({
-  baseURL: "http://localhost:5128",
-  headers: {
-    "Content-Type": "application/json",
-    "pm-scratch-it-m": getDI?.model || "none",
-    platformVersion: getDI?.platformVersion || "none",
-    platform: getDI?.platform || "none",
-  },
-  withCredentials: true,
-});
+
+
+let apiClient: any;
+
+// Initialize apiClient asynchronously
+async function initApiClient() {
+  const getDI = await getDeviceInfo();
+  apiClient = axios.create({
+    baseURL: "http://localhost:5128",
+    headers: {
+      "Content-Type": "application/json",
+      "pm-scratch-it-m": getDI?.model || "none",
+      platformVersion: getDI?.platformVersion || "none",
+      platform: getDI?.platform || "none",
+    },
+    withCredentials: true,
+  });
+}
+
+// Call the initialization function
+initApiClient();
+
 
 // Function to set the auth token (Call this after login)
 // export const setAuthToken = () => {
