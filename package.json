@@ -6,7 +6,8 @@
   "module": "CommonJS",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "servehtml": "node servecmsPage.js"
   },
   "repository": {
     "type": "git",
