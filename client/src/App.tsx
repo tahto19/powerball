@@ -41,14 +41,14 @@ const routes = [
 function AppRoutes() {
   const dispatch = useAppDispatch();
   const nav = useNavigate();
-  const { token } = useAppSelector((state) => state.token);
-  const location = useLocation();
+  const { loading, token } = useAppSelector((state) => state.token);
   useEffect(() => {
     getDeviceInfo();
+    if (loading) dispatch(getToken());
   }, []);
   useEffect(() => {
     if (token !== "" && token) {
-      if (location.pathname === "/sign-in") nav("/prize-list");
+      nav("/prize-list");
     }
   }, [token]);
   return (
