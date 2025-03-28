@@ -8,7 +8,7 @@ const start = () => {
   console.log(path.join(process.cwd(), "/client/dist"));
   fastify.register(fastifyStatic, {
     root: path.join(process.cwd(), "/client/dist"), // This is where your Vue.js build output is located
-    prefix: "/", // Serve files under the root path
+    prefix: "/cms", // Serve files under the root path
   });
   fastify.register(cors, {
     origin: "*",
