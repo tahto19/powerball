@@ -1,6 +1,7 @@
 import Fastify from "fastify";
 import path from "path";
 import fastifyStatic from "@fastify/static";
+import cors from "@fastify/cors";
 
 const fastify = Fastify();
 const start = () => {
