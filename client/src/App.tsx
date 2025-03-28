@@ -7,11 +7,11 @@ import {
 } from "react-router-dom";
 
 import AdduserMain from "./components/addUser/AdduserMain";
-import ErrorPage from "./components/ErrorPage/ErrorPage";
-import SignIn from "./components/SignIn/index";
+import ErrorPage from "./components/errorPage/ErrorPage";
+import SignIn from "./components/signIn/index";
 import AppTheme from "@/theme/AppTheme";
 import MainLayout from "./layout/MainLayout";
-import Dashboard from "./components/Dashboard/index";
+import Dashboard from "./components/dashboard/index";
 import Administrator from "./components/Administrator/index";
 import Toaster_ from "./Global/toaster/Toaster_";
 import { getDeviceInfo } from "./utils/util";
@@ -46,14 +46,25 @@ function AppRoutes() {
   }, []);
   useEffect(() => {
     const currentPath = window.location.pathname;
-    if (token !== "" && token && (currentPath === "/cms/" || currentPath === "/cms/sign-in")) {
+    if (
+      token !== "" &&
+      token &&
+      (currentPath === "/cms/" || currentPath === "/cms/sign-in")
+    ) {
       nav("/prize-list");
     }
   }, [token, nav]);
   return (
     <Routes>
       {/* Authentication Routes */}
-      <Route path="/sign-in" element={<AppTheme><SignIn /></AppTheme>} />
+      <Route
+        path="/sign-in"
+        element={
+          <AppTheme>
+            <SignIn />
+          </AppTheme>
+        }
+      />
       <Route path="/" element={<Navigate to="/sign-in" replace />} />
 
       {/* Protected Routes */}
@@ -83,7 +94,7 @@ function AppRoutes() {
 function App() {
   return (
     <>
-      <Router basename="/cms">
+      <Router basename="/">
         <AppRoutes />
       </Router>
       <Toaster_></Toaster_>
