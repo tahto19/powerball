@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Grid from '@mui/material/Grid2';
 import apiService from "@/services/apiService";
+import { useAppSelector } from "@/redux/hook";
 
 import MyDialog from "./Dialog.tsx";
 import { PrizeState, PrizePaginationState } from '@/components/PrizeList/interface';
@@ -45,6 +46,7 @@ const defaultData = {
 }
 
 const PrizeList = () => {
+    const { token } = useAppSelector((state) => state.token);
     const [dialogType, setDialogType] = React.useState("Add")
     const [data_row, setDataRow] = React.useState<PrizeState>(defaultData);
 
@@ -67,7 +69,8 @@ const PrizeList = () => {
         }
 
         const res = await apiService.getPrizeList(query);
-        const d = bodyDecrypt(res.data.data)
+        console.log(res.data)
+        const d = bodyDecrypt(res.data, token)
         if (d && d.success === 'success') {
             console.log(d)
             setPrizeList(d.data.list)
