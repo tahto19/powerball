@@ -21,6 +21,17 @@ class PrizeList_class {
     const create = await PrizeList.create(_data);
     return create.id;
   }
+
+  async Edit(_data) {
+    let count = await PrizeList.count({ where: { id: _data.id } });
+    if (count < 0) throw new Error("User Not found");
+    const id = _data.id;
+    delete _data.id;
+
+    await PrizeList.update(_data, { where: { id }, individualHooks: true });
+
+    return id;
+  }
 }
 
 export default new PrizeList_class();

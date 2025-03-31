@@ -9,6 +9,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
+
+import { useAppSelector } from "@/redux/hook";
+
 interface PaginationProps {
 
     page: number;
@@ -38,6 +41,7 @@ export default function CustomizedDataGrid<T>({ sx, data, headers, pagination = 
     page: 0,
     pageSize: 10,
 }, pageLength = 10, onTableChange, onEditAction, onViewAction, onDeleteAction }: GridProps<T>) {
+    const { token } = useAppSelector((state) => state.token);
     // Get only "contains" operator for filtering
     const containsOperator = getGridStringOperators().filter((op) => op.value === "contains");
 
@@ -108,13 +112,15 @@ export default function CustomizedDataGrid<T>({ sx, data, headers, pagination = 
             }, 500), // 500ms debounce delay
         []
     );
-    const prevState = React.useRef({ page: null, pageSize: null, sortModel: null, filterModel: null });
+    const prevState = React.useRef({ token: "", page: null, pageSize: null, sortModel: null, filterModel: null });
+
 
     // Handle changes and send them to parent
     React.useEffect(() => {
         if (!onTableChange) return;
 
         const hasChanged =
+            prevState.current.token !== token ||
             prevState.current.page !== paginationModel.page ||
             prevState.current.pageSize !== paginationModel.pageSize ||
             JSON.stringify(prevState.current.sortModel) !== JSON.stringify(sortModel) ||
@@ -122,7 +128,7 @@ export default function CustomizedDataGrid<T>({ sx, data, headers, pagination = 
 
         if (!hasChanged) return;
 
-        prevState.current = { page: paginationModel.page, pageSize: paginationModel.pageSize, sortModel, filterModel };
+        prevState.current = { token: token, page: paginationModel.page, pageSize: paginationModel.pageSize, sortModel, filterModel };
 
         onTableChange({
             page: paginationModel.page,
@@ -131,7 +137,7 @@ export default function CustomizedDataGrid<T>({ sx, data, headers, pagination = 
             filterModel,
         });
 
-    }, [paginationModel, sortModel, filterModel, onTableChange]);
+    }, [token, paginationModel, sortModel, filterModel, onTableChange]);
     return (
         <DataGrid
             sx={{

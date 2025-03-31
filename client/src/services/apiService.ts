@@ -71,8 +71,6 @@ export const apiService = {
   login: async (credentials: Credentials) => {
     console.log(credentials);
     const response = await apiClient.post("/api/login", credentials);
-    // setAuthToken(response.data.token);
-    // localStorage.setItem("token", response.data.token);
     return response;
   },
   // Logout (Clears token)
@@ -90,16 +88,15 @@ export const apiService = {
 
     return res;
   },
+  updatePrizeList: async (d: PrizeState) => {
+    const res = apiClient.put("/api/prize-list/", d);
+    return res;
+  },
   getPrizeList: async (d: PrizePaginationState) => {
-    // const res = apiClient.post('/api/prize-list/', d, {headers: {
-    //   "Cookie": `cookie_pb_1271=${token}`,
-    // }})
     const res = apiClient.get("/api/prize-list/", {
       params: d,
       withCredentials: true,
     });
-    // const res = apiClient.post('/api/prize-list/', d)
-
     return res;
   },
 

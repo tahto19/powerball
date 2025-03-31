@@ -20,7 +20,7 @@ const sampleHeaders = [
     { field: 'type', headerName: 'Type', flex: 1, minWidth: 200 }
 ]
 //Temporary data
-const samplePagination = { page: 0, pageSize: 1 }
+const samplePagination = { page: 0, pageSize: 10 }
 
 
 const defaultData = {
@@ -41,6 +41,10 @@ const PrizeList = () => {
     const [listCount, setListCount] = React.useState<number>(0);
     const [pagination, setPagination] = React.useState(samplePagination);
 
+    const [refreshKey, setRefreshKey] = React.useState(0);
+    // Call this function when data updates
+    const refreshTable = () => setRefreshKey((prev) => prev + 1);
+
     const handleTableChange = async ({ page, pageSize, sortModel, filterModel }: any) => {
         console.log("Table Changed:", { page, pageSize, sortModel, filterModel });
 
@@ -51,20 +55,36 @@ const PrizeList = () => {
             sort.push([sortModel[0].field, sortModel[0].sort.toUpperCase()]);
         }
 
+        let newFilterModel = [];
+
+        if (filterModel.items.length > 0) {
+            newFilterModel = JSON.parse(JSON.stringify(filterModel)).items.map((x: any) => {
+                x.filter = x.value;
+                x.type = 'string';
+
+                delete x.value;
+                delete x.fromInput;
+                delete x.id;
+                delete x.operator;
+                return x;
+            })
+        }
+
         const query: PrizePaginationState = {
-            offset: page, limit: pageSize, sort: JSON.stringify(sort)
+            offset: page, limit: pageSize, sort: JSON.stringify(sort), filter: JSON.stringify(newFilterModel)
         }
 
         const res = await apiService.getPrizeList(query);
-        dispatch(
-            showToaster({
-                message: "Login success!",
-                show: true,
-                variant: "success",
-                icon: null,
-            })
-        );
-        console.log(res.data)
+        // dispatch(
+        //     showToaster({
+        //         message: "Login success!",
+        //         show: true,
+        //         variant: "success",
+        //         icon: null,
+        //     })
+        // );
+        // console.log(res.data)
+
         const d = bodyDecrypt(res.data, token)
         if (d && d.success === 'success') {
             console.log(d)
@@ -126,6 +146,7 @@ const PrizeList = () => {
                 </Grid>
                 <Grid size={12}>
                     <CustomizedDataGrid
+                        key={refreshKey} //Changing key forces re-render
                         sx={{
                             width: "100%",
                         }}
@@ -139,7 +160,7 @@ const PrizeList = () => {
                         onDeleteAction={handleDeleteAction} />
                 </Grid>
             </Grid>
-            <MyDialog open={open} dialogType={dialogType} data={data_row} onClose={handleOnClose} />
+            <MyDialog open={open} dialogType={dialogType} data={data_row} onClose={handleOnClose} onSubmit={refreshTable} />
         </>
     )
 }

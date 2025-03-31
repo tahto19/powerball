@@ -21,7 +21,7 @@ const FormControl = styled(MuiFormControl)(({ theme }) => ({
     width: "100%"
 }));
 
-const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
+const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: MyDialogProps) => {
     // const [isOpen, setOpen] = React.useState(open);
     const [dialog_type, setDialogType] = React.useState("")
     const [formData, setData] = React.useState<PrizeState>(data);
@@ -29,27 +29,40 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
 
     const handleSubmit = async (e: React.FocusEvent<HTMLFormElement>) => {
         e.preventDefault();
-        showToaster({
-            message: "Login success!",
-            show: true,
-            variant: "success",
-            icon: null,
-        })
 
-        const res = await apiService.createPrizeList(formData);
+        let message;
+        let res;
+
+        if (dialogType === 'Edit') {
+            res = await apiService.updatePrizeList(formData);
+            message = "Record updated successfully."
+        } else {
+            res = await apiService.createPrizeList(formData);
+            message = "Record created successfully."
+        }
 
         const d = bodyDecrypt(res.data, token)
 
         if (d && d.success === 'success') {
             showToaster({
-                message: "Record created successfully.",
+                message: message,
                 show: true,
                 variant: "success",
                 icon: null,
             })
-            onClose(false);
+        } else {
+            showToaster({
+                message: d.message,
+                show: true,
+                variant: "error",
+                icon: null,
+            })
         }
+        onClose(false);
+        onSubmit()
     }
+
+
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;

@@ -3,6 +3,7 @@ export interface MyDialogProps {
     data: PrizeState;
     dialogType: string;
     onClose: (value: boolean) => void;
+    onSubmit: () => void;
 }
 
 export interface PrizeState {
@@ -16,4 +17,5 @@ export interface PrizePaginationState {
     offset: number;
     limit: number;
     sort: string;
+    filter: string;
 }
