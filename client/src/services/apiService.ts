@@ -93,7 +93,7 @@ export const apiService = {
     const res = apiClient.put("/api/prize-list/", d);
     return res;
   },
-  getPrizeList: async (d: PrizePaginationState) => {
+  getPrizeList: async (d: getData) => {
     const res = apiClient.get("/api/prize-list/", {
       params: d,
       withCredentials: true,

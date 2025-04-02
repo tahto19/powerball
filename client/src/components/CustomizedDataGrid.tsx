@@ -158,6 +158,9 @@ export default function CustomizedDataGrid<T>({ sx, data, headers, pagination = 
             }
             initialState={{
                 pagination: { paginationModel: paginationModel },
+                sorting: {
+                    sortModel: [{ field: "id", sort: "desc" }] // 👈 Default sorting
+                },
             }}
             pageSizeOptions={[1, 2, 10, 20, 50]}
             disableColumnResize

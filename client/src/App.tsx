@@ -14,6 +14,8 @@ import AppTheme from "@/theme/AppTheme";
 import MainLayout from "./layout/MainLayout";
 import Dashboard from "./components/dashboard/index";
 import Administrator from "./components/Administrator/index";
+import GameMaintenance from "./components/GameMaintenance/index";
+
 import Toaster_ from "./Global/toaster/Toaster_";
 import { getDeviceInfo } from "./utils/util";
 import { useEffect } from "react";
@@ -33,6 +35,11 @@ const routes = [
     path: "/prize-list",
     component: <PrizeList />,
     title: "Prize List",
+  },
+  {
+    path: "/game-maintenace",
+    component: <GameMaintenance />,
+    title: "Game Maintenance",
   },
 ];
 

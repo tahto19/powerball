@@ -11,7 +11,6 @@ export type adminType = {
 }
 
 export type getData = {
-  row:number | null
   limit:number | null
   offset:number | null
   filter:string | null

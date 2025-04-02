@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import CustomizedDataGrid from "../CustomizedDataGrid.tsx";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -8,16 +7,19 @@ import apiService from "@/services/apiService";
 import { useAppSelector } from "@/redux/hook";
 
 import MyDialog from "./Dialog.tsx";
-import { PrizeState } from '@/components/PrizeList/interface';
+import { RaffleState, RafflePaginationState } from '@/components/GameMaintenance/interface.ts';
 import { bodyDecrypt } from "@/utils/util";
 import { showToaster } from "@/redux/reducers/global/globalSlice";
 import { useAppDispatch } from "@/redux/hook";
-import { getData } from "@/types/allTypes"
+import moment from "moment";
+
+
+
 //Temporary data
 const sampleHeaders = [
-    { field: 'name', headerName: 'Name', flex: 1, minWidth: 200 },
-    { field: 'value', headerName: 'Value', flex: 1, minWidth: 200 },
-    { field: 'type', headerName: 'Type', flex: 1, minWidth: 200 }
+    { field: 'details', headerName: 'Raffle ID', flex: 1, minWidth: 200 },
+    { field: 'schedule_type', headerName: 'Schedule Type', flex: 1, minWidth: 200 },
+    { field: 'active', headerName: 'Active', flex: 1, minWidth: 200 }
 ]
 //Temporary data
 const samplePagination = { page: 0, pageSize: 10 }
@@ -25,19 +27,22 @@ const samplePagination = { page: 0, pageSize: 10 }
 
 const defaultData = {
     id: null,
-    name: "",
-    value: 0,
-    type: ""
+    details: "",
+    more_details: "",
+    active: true,
+    starting_date: moment().toISOString(),
+    end_date: null,
+    schedule_type: 1,
 }
 
-const PrizeList = () => {
+const GameMaintenace = () => {
     const dispatch = useAppDispatch();
 
     const { token } = useAppSelector((state) => state.token);
     const [dialogType, setDialogType] = React.useState("Add")
-    const [data_row, setDataRow] = React.useState<PrizeState>(defaultData);
+    const [data_row, setDataRow] = React.useState<RaffleState>(defaultData);
 
-    const [list, setPrizeList] = React.useState<[]>([]);
+    const [list, setRaffleList] = React.useState<[]>([]);
     const [listCount, setListCount] = React.useState<number>(0);
     const [pagination, setPagination] = React.useState(samplePagination);
 
@@ -50,7 +55,7 @@ const PrizeList = () => {
 
         setPagination({ page, pageSize })
 
-        const sort = [["id", "DESC"]];
+        const sort = [];
         if (sortModel.length > 0) {
             sort.push([sortModel[0].field, sortModel[0].sort.toUpperCase()]);
         }
@@ -70,27 +75,18 @@ const PrizeList = () => {
             })
         }
 
-        const query: getData = {
+        const query: RafflePaginationState = {
             offset: page, limit: pageSize, sort: JSON.stringify(sort), filter: JSON.stringify(newFilterModel)
         }
 
-        const res = await apiService.getPrizeList(query);
-        // dispatch(
-        //     showToaster({
-        //         message: "Login success!",
-        //         show: true,
-        //         variant: "success",
-        //         icon: null,
-        //     })
-        // );
-        // console.log(res.data)
+        //   const res = await apiService.getPrizeList(query);
 
-        const d = bodyDecrypt(res.data, token)
-        if (d && d.success === 'success') {
-            console.log(d)
-            setPrizeList(d.data.list)
-            setListCount(d.data.total)
-        }
+        //   const d = bodyDecrypt(res.data, token)
+        //   if (d && d.success === 'success') {
+        //       console.log(d)
+        //       setRaffleList(d.data.list)
+        //       setListCount(d.data.total)
+        //   }
     };
 
     const [open, setOpen] = React.useState(false);
@@ -103,13 +99,13 @@ const PrizeList = () => {
         setOpen(true)
     }
 
-    const handleEditAction = (row: PrizeState) => {
+    const handleEditAction = (row: RaffleState) => {
         setDialogType("Edit");
         setDataRow(row)
         setOpen(true)
     }
 
-    const handleViewAction = (row: PrizeState) => {
+    const handleViewAction = (row: RaffleState) => {
         setDialogType("View");
         setDataRow(row)
         setOpen(true)
@@ -121,6 +117,7 @@ const PrizeList = () => {
     }
 
 
+
     return (
         <>
             <Grid
@@ -129,9 +126,9 @@ const PrizeList = () => {
                 columns={12}
             >
                 <Grid sx={{ display: 'flex', alignItems: "center" }} size={{ xs: 6, sm: 6, lg: 6 }}>
-                    <Typography component="h2" variant="h6">
+                    {/* <Typography component="h2" variant="h6">
                         Prizes
-                    </Typography>
+                    </Typography> */}
                 </Grid>
                 <Grid size={{ xs: 6, sm: 6, lg: 6 }}>
                     <Button
@@ -141,7 +138,7 @@ const PrizeList = () => {
                         variant="contained"
                         onClick={handleOpenDialog}
                     >
-                        Add Prize
+                        Add Raffle Details
                     </Button>
                 </Grid>
                 <Grid size={12}>
@@ -165,4 +162,4 @@ const PrizeList = () => {
     )
 }
 
-export default PrizeList;
+export default GameMaintenace;

@@ -7,7 +7,7 @@ import cors from "@fastify/cors";
 
 import conn from "./dbConnections/conn.js";
 
-import userRoute from "./routes/User/user.route.js";
+import userRoute from "./routes/User/User.route.js";
 import LoginRoute from "./routes/Login/Login.route.js";
 import PrizeListRoute from "./routes/PrizeList/PrizeList.route.js";
 
