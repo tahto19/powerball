@@ -7,6 +7,7 @@ import { showToaster } from "../global/globalSlice";
 import { delay } from "@/utils/util";
 import { veriyCode } from "@/services/types/user";
 import { RootState } from "@/redux/store";
+import { adminType, getData } from "@/types/allTypes";
 export const outsideAddUser = createAsyncThunk(
   "user/outsideAddUser",
   async (data: userState, { dispatch }) => {
@@ -94,12 +95,32 @@ export const createAccount = createAsyncThunk(
 );
 export const getAdmin = createAsyncThunk(
   "user/getAdmin",
-  async (_, { dispatch }) => {
+  async (data:getData, { dispatch ,getState}) => {
     try {
-      throw new Error("testing");
+      var data_ = data
+      if(data === undefined){
+        const state = getState() as RootState;
+        data_ = state.admin
+   
+      }
+   
+      let _r = await apiService.getAdmin(data_)
+    
     } catch (err) {
       console.log("here");
       dispatch(showToaster({ err, variant: "error", icon: "error" }));
     }
   }
 );
+
+export const postAdmin = createAsyncThunk(
+  "user/postUser",
+  async(data:adminType,{dispatch})=>{
+    try{
+      let _r = await apiService.insertAdmin(data)
+      dispatch(showToaster({ message:'successsfully added admin', variant: "success", icon: "success" }));
+    }catch(err){
+      dispatch(showToaster({ err, variant: "error", icon: "error" }));
+    }
+  }
+)

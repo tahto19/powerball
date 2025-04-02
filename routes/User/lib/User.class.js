@@ -48,7 +48,7 @@ class User_class {
     query["where"] = WhereFilters(filter);
 
     let list = await Users.findOne(query);
-    return { list };
+    return  list ;
   }
 }
 

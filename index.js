@@ -48,6 +48,12 @@ const fastify = Fastify({
  * x909 = Email already exists error
  * X741 = email details sender is incorrect
  */
+
+/**
+ * reaffle details schedule type
+ * 1 = daily
+ * 2 = weekly
+ */
 const start = async () => {
   try {
     // cors

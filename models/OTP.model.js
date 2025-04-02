@@ -12,6 +12,7 @@ class OTP extends Model {
   }
   async emailCode() {
     try {
+      console.log('here')
       await emailSender({
         from: null,
         to: this.emailAddress,
@@ -21,7 +22,7 @@ class OTP extends Model {
       });
       return true;
     } catch (err) {
-      console.log(err);
+      console.log(err,'here');
       return false;
     }
   }

@@ -14,7 +14,10 @@ const transport = nodemailer.createTransport({
   auth: {
     user: "crisanto.tubelleja@eacomm.com",
     pass: "dgzlreovyxzkciog",
-  },
+  },  
+  tls: {
+    rejectUnauthorized: false
+}
 });
 export const logger = pino({
   transport: {
@@ -154,14 +157,17 @@ export const emailSender = async (data) => {
   console.log(data);
   const { from, to, subject, text, html } = data;
   if (!subject || !to) throw new Error("ErrorCODE x231");
-
+  console.log("info",'here2')
+  console.log(!from ? "crisanto.tubelleja@eacomm.com" : from)
   const info = await transport.sendMail({
     from: !from ? "crisanto.tubelleja@eacomm.com" : from, // Sender address
     to: to, // Receiver email
     subject: subject, // Email subject
     text: text, // Plain text
     html: html, // HTML body
+    
   });
+  console.log(info,'here2')
   return info;
 };
 export const uploadImage = async (file, filename) => {

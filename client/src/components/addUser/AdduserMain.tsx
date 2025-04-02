@@ -18,7 +18,7 @@ const AdduserMain = () => {
     <Box>
       {!outside ? (
         <AddUserC />
-      ) : verifiedAndCreatedAccount ? (
+      ) : !verifiedAndCreatedAccount ? (
         <VerificationCode />
       ) : (
         <SuccessCreation />

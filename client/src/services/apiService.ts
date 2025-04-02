@@ -9,6 +9,7 @@ import {
 import { getDeviceInfo } from "@/utils/util";
 import axios from "axios";
 import { veriyCode } from "./types/user";
+import { adminType, getData } from "@/types/allTypes";
 
 interface Credentials {
   email: string;
@@ -129,6 +130,13 @@ export const apiService = {
   },
   verifyOTP: async (data: veriyCode) => {
     return apiClient.post("/api/otp/verify", data);
+  },
+  insertAdmin : async(data:adminType) =>{
+    return apiClient.post("/api/users",data)
+  },
+  getAdmin:async(data:getData) =>{
+    console.log(data)
+    return apiClient.post("/api/users/admin",data)
   },
   // for token
   checkSession: async () => {

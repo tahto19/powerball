@@ -7,10 +7,10 @@ export const LoginController = async (req, res) => {
     let a = await UserClass.FetchOne([
       { filter: req.body.email, type: "string", field: "emailAddress" },
     ]);
-    if (a.list === null) throw new Error("ErrorCODE X999");
-    let b = await a.list.validPassword(req.body.password);
+    if (a === null) throw new Error("ErrorCODE X999");
+    let b = await a.validPassword(req.body.password);
     if (!b) throw new Error("ErrorCODE X999");
-    let changeDetails = a.list.toJSON();
+    let changeDetails = a.toJSON();
 
     delete changeDetails["password"];
     delete changeDetails["active"];

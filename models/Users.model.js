@@ -60,6 +60,7 @@ Users.init(
       unique: { msg: "Email address already in use!" },
       validate: { isEmail: { args: true, msg: "Email is not valid" } },
     },
+    isAdmin:{allowNull:false,type:DataTypes.BOOLEAN,defaultValue:false},
     mobileNumber: { allowNull: true, type: DataTypes.STRING },
   },
   {

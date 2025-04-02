@@ -46,11 +46,13 @@ const getErrorsStatus = (code: string) => {
 
 export const getMessage = (error: any) => {
   const getErrorMessage = getErrorsStatus(error?.response?.data?.message);
+  console.log(typeof error.Error)
   const errorMessage = getErrorMessage
     ? getErrorMessage
     : error?.response?.data?.message
-    ? error?.response?.data?.message
-    : error;
+      ? error?.response?.data?.message
+      : error;
+  console.log(errorMessage)
   return errorMessage;
 };
 
@@ -68,7 +70,7 @@ export const getDeviceInfo = async () => {
 
 export const bodyDecrypt = (data: string | null | undefined, token: string | null): any | null => {
   if (!data || (typeof data === "string" && !data.trim())) {
-        // Ensure data is not empty or just whitespace
+    // Ensure data is not empty or just whitespace
     console.error("Decryption failed: Empty data.");
     return null;
   }
@@ -95,5 +97,18 @@ export const bodyDecrypt = (data: string | null | undefined, token: string | nul
   }
 };
 
-
+export const bodyEncrypt = (data: string | null | undefined, token: string | null): any | null => {
+  if (!data || (typeof data === "string" && !data.trim())) {
+    // Ensure data is not empty or just whitespace
+    console.error("Decryption failed: Empty data.");
+    throw new Error('Not found bd');
+  }
+  if (!token) {
+    // Handle missing token
+    console.error("Decryption failed: Missing token doesn't exists.");
+    throw new Error('Not found bt');
+  }
+  const bytes = CryptoJS.AES.decrypt(data, token);
+  const cipherData = bytes.toString(CryptoJS.enc.Utf8);
+}
 export const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
