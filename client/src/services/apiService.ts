@@ -135,8 +135,8 @@ export const apiService = {
     return apiClient.post("/api/users",data)
   },
   getAdmin:async(data:getData) =>{
-    console.log(data)
-    return apiClient.post("/api/users/admin",data)
+    
+    return apiClient.post("/api/users/admin",{data})
   },
   // for token
   checkSession: async () => {

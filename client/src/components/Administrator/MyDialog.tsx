@@ -11,23 +11,16 @@ import MuiFormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import Grid from '@mui/material/Grid2';
 import { styled } from '@mui/material/styles';
+import { DataProps } from "@/types/allTypes";
 
 interface MyDialogProps {
     open: boolean;
     data: DataProps;
-    dialogType: string;
+    dialogType: string | null;
     onClose: (value: boolean) => void;
 }
 
-interface DataProps {
-    id: number | null,
-    first_name: string,
-    last_name: string,
-    mobile_number: string,
-    email: string,
-    status: string,
-    password: string | null,
-}
+
 
 const FormControl = styled(MuiFormControl)(({ theme }) => ({
     width: "100%"
@@ -53,6 +46,7 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
     React.useEffect(() => {
         setData(data)
         setDialogType(dialogType)
+        console.log(data)
     }, [data, dialogType])
 
 
@@ -81,7 +75,7 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
                                     autoFocus
                                     required
                                     fullWidth
-                                    value={formData.first_name}
+                                    value={formData.firstname}
                                     onChange={handleInputChange}
                                     variant="outlined"
                                     slotProps={{
@@ -98,14 +92,14 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
                                 <TextField
                                     id="lastName"
                                     type="text"
-                                    name="last_name"
+                                    name="lastname"
                                     placeholder="Snow"
-                                    autoComplete="last_name"
+                                    autoComplete="lastname"
                                     autoFocus
                                     required
                                     fullWidth
                                     variant="outlined"
-                                    value={formData.last_name}
+                                    value={formData.lastname}
                                     onChange={handleInputChange}
                                     slotProps={{
                                         input: {
@@ -128,7 +122,7 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
                                     required
                                     fullWidth
                                     variant="outlined"
-                                    value={formData.mobile_number}
+                                    value={formData.mobileNumber}
                                     onChange={handleInputChange}
                                     slotProps={{
                                         input: {
@@ -140,7 +134,7 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
                         </Grid>
                         <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
                             <FormControl>
-                                <FormLabel htmlFor="email">Email</FormLabel>
+                                <FormLabel htmlFor="email">Email Address</FormLabel>
                                 <TextField
                                     id="email"
                                     type="email"
@@ -151,7 +145,7 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
                                     required
                                     fullWidth
                                     variant="outlined"
-                                    value={formData.email}
+                                    value={formData.emailAddress}
                                     onChange={handleInputChange}
                                     slotProps={{
                                         input: {

@@ -12,18 +12,21 @@ import otp from "../../OTP/Class/OTP.class.js";
 import uc from "../lib/User.class.js";
 import fs from "fs";
 export const getController = async (req, res) => {
-  const { limit, offset,sort } = req.body;
-  console.log(limit,offset,JSON.parse(sort))
-  // let r = await uc.FetchAndCount(offset,limit,sort.)
+  
+  const {offset,limit,sort,filter} = req.body
+  console.log(req.body)
+  // const { limit, offset,sort } = req.body;
+  // console.log(limit,offset,JSON.parse(sort))
+  let r = await uc.FetchAndCount(offset,limit,sort,filter)
   //   if (!limit || !offset) throw new Error("limit or offset is required");
   // let a = await uc.FetchOne(offset, limit);
   // let b = a.toJSON();
 
-  res.send(cSend("a"));
+  res.send(cSend(r));
 };
 
 export const insertController = async (req, res) => {
-  if (!req.body) throw new Error("ErrorCODE X2");
+
   const { firstname, lastname, password, emailAddress, mobileNumber,isAdmin } =
     req.body;
   let a = await uc.Insert({

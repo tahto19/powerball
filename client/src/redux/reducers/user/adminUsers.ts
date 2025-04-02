@@ -7,7 +7,7 @@ interface adminState {
     limit: number | null
     offset: number | null
     sort: string | null
-    filter: string | null
+    filter: Array<any> | null
     count: number | null
 }
 
@@ -28,27 +28,26 @@ const adminSlice = createSlice({
         addList: (state, action) => {
             state.list = action.payload.list
             state.count = action.payload.count
+       
         },
-        addoffset: (state, action) => {
-            state.offset = action.payload.offset
+        addOffset: (state, action) => {
+            state.offset = action.payload
         },
         addLimit: (state, action) => {
-            state.limit = action.payload.limit
+            state.limit = action.payload
         },
-        addCount: (state, action) => {
-            state.count = action.payload.count
-        },
+       
         addSort: (state, action) => {
-            state.sort = action.payload.sort
+            state.sort = action.payload
         },
         addFilter: (state, action) => {
-            state.filter = action.payload.filter
+            state.filter = action.payload
         }
     },
     extraReducers: (b) => {
         b.addCase(getAdmin.fulfilled, state => {
             state.loading = false
-            state.list = []
+      
         });
         b.addCase(getAdmin.pending, state => {
             state.loading = true
@@ -59,7 +58,7 @@ const adminSlice = createSlice({
 
 
 export const { addList,
-    addoffset,
+    addOffset,
     addLimit,
     addCount,
     addSort,

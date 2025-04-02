@@ -31,6 +31,8 @@ const getErrorsStatus = (code: string) => {
       return "needs relogin";
     case "x66":
       return "needs relogin";
+    case "x58":
+      return "code is invalid";
     case "x999":
       return "invalid credentials";
     case "x91c":
@@ -82,6 +84,7 @@ export const bodyDecrypt = (data: string | null | undefined, token: string | nul
   }
   try {
     const bytes = CryptoJS.AES.decrypt(data, token);
+
     const cipherData = bytes.toString(CryptoJS.enc.Utf8);
 
     if (!cipherData) {
@@ -97,18 +100,31 @@ export const bodyDecrypt = (data: string | null | undefined, token: string | nul
   }
 };
 
-export const bodyEncrypt = (data: string | null | undefined, token: string | null): any | null => {
+export const bodyEncrypt = (d: string | null | undefined, token: string | null): any | null => {
+  const data = typeof d === "string" ? d : typeof d === 'array' || typeof d === 'object' ? JSON.stringify(d) : d
   if (!data || (typeof data === "string" && !data.trim())) {
     // Ensure data is not empty or just whitespace
     console.error("Decryption failed: Empty data.");
-    throw new Error('Not found bd');
+    throw new Error('Encryption  failed: Empty data.');
   }
+
   if (!token) {
     // Handle missing token
     console.error("Decryption failed: Missing token doesn't exists.");
-    throw new Error('Not found bt');
+    throw new Error('Encryption  failed: Missing token doesn"t exists.');
   }
-  const bytes = CryptoJS.AES.decrypt(data, token);
-  const cipherData = bytes.toString(CryptoJS.enc.Utf8);
-}
+  try {
+    const bytes = CryptoJS.AES.encrypt(data, token).toString()
+    if (!bytes) {
+      // Handle incorrect decryption. (returns an empty string, it does not throw an exception)
+      console.error("Encryption failed: Invalid or corrupt data.");
+      throw new Error('Encryption failed');
+    }
+
+    return bytes;
+  } catch (error) {
+    console.error("Decryption failed: ", error);
+    return null;
+  }
+};
 export const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));

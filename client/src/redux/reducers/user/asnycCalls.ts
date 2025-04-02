@@ -4,10 +4,11 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { addOTP, addUser } from "./userSlice";
 import apiService from "@/services/apiService";
 import { showToaster } from "../global/globalSlice";
-import { delay } from "@/utils/util";
+import { bodyDecrypt, bodyEncrypt, delay } from "@/utils/util";
 import { veriyCode } from "@/services/types/user";
 import { RootState } from "@/redux/store";
 import { adminType, getData } from "@/types/allTypes";
+import { addCount, addFilter, addLimit, addList, addOffset } from "./adminUsers";
 export const outsideAddUser = createAsyncThunk(
   "user/outsideAddUser",
   async (data: userState, { dispatch }) => {
@@ -95,19 +96,28 @@ export const createAccount = createAsyncThunk(
 );
 export const getAdmin = createAsyncThunk(
   "user/getAdmin",
-  async (data:getData, { dispatch ,getState}) => {
+  async (data: getData, { dispatch, getState }) => {
     try {
       var data_ = data
-      if(data === undefined){
-        const state = getState() as RootState;
+      const state = getState() as RootState;
+      const token = state.token.token
+      if (data === undefined) {
         data_ = state.admin
-   
       }
+      else {
+        dispatch(addOffset(data.offset))
+        dispatch(addFilter(data.filter))
+        dispatch(addLimit(data.addLimit))
+      }
+
+      let _r = await apiService.getAdmin(bodyEncrypt(data_, token))
+      let c = bodyDecrypt(_r.data, token)
    
-      let _r = await apiService.getAdmin(data_)
-    
+      if (c.data.result === 'error') throw new Error(c.data.message)
+
+      dispatch(addList({list:c.data.list.rows,count:c.data.list.count}))
     } catch (err) {
-      console.log("here");
+   
       dispatch(showToaster({ err, variant: "error", icon: "error" }));
     }
   }
@@ -115,11 +125,11 @@ export const getAdmin = createAsyncThunk(
 
 export const postAdmin = createAsyncThunk(
   "user/postUser",
-  async(data:adminType,{dispatch})=>{
-    try{
+  async (data: adminType, { dispatch }) => {
+    try {
       let _r = await apiService.insertAdmin(data)
-      dispatch(showToaster({ message:'successsfully added admin', variant: "success", icon: "success" }));
-    }catch(err){
+      dispatch(showToaster({ message: 'successsfully added admin', variant: "success", icon: "success" }));
+    } catch (err) {
       dispatch(showToaster({ err, variant: "error", icon: "error" }));
     }
   }

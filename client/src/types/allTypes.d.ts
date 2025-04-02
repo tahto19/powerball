@@ -16,3 +16,13 @@ export type getData = {
   filter:string | null
   sort:string | null
 }
+
+export type DataProps ={
+  id: number | null,
+  first_name: string,
+  last_name: string,
+  mobile_number: string,
+  email: string,
+  status: string,
+  password: string | null,
+}

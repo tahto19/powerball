@@ -137,6 +137,11 @@ export const encryptData = (data, token) => {
 
   return encrypted;
 };
+export const decryptData = (data, token) => {
+  var decrypt = CryptoJS.AES.decrypt(data, token).toString(CryptoJS.enc.Utf8);
+  console.log(decrypt)
+  return decrypt;
+};
 export const generateRandomNumber = () => {
   return Math.floor(100000 + Math.random() * 900000); // Generates a 6-digit random number
 };

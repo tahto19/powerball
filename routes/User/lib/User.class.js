@@ -24,7 +24,7 @@ class User_class {
       offset: parseInt(offset),
       sort: sort,
     };
-    if (filter.length !== 0) query["where"] = WhereFilters(filter);
+    if (filter && filter.length !== 0) query["where"] = WhereFilters(filter);
     let list = await Users.findAndCountAll(query);
     return { list };
   }
