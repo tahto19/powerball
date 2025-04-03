@@ -1,7 +1,7 @@
 import { WhereFilters } from "../../../util/util.js";
 import Users from "../../../models/Users.model.js";
 class User_class {
-  constructor() {}
+  constructor() { }
   async Fetch(offset = 0, limit = 10, sort = [["id", "ASC"]], filter = []) {
     let query = {
       limit: parseInt(limit),
@@ -37,7 +37,9 @@ class User_class {
     if (count < 0) throw new Error("User Not found");
     const id = _data.id;
     delete _data.id;
-
+    if (_data.password === '') {
+      delete _data.password
+    }
     await Users.update(_data, { where: { id }, individualHooks: true });
 
     return id;
@@ -48,7 +50,7 @@ class User_class {
     query["where"] = WhereFilters(filter);
 
     let list = await Users.findOne(query);
-    return  list ;
+    return list;
   }
 }
 

@@ -88,6 +88,7 @@ const start = async () => {
         headerPairs: 2000, // Max number of header key=>value pairs
         parts: 10000, // For multipart forms, the max number of parts (fields + files)
       },
+      attachFieldsToBody: true
     });
     // authentication part here
 

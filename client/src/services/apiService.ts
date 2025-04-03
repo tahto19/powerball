@@ -132,10 +132,12 @@ export const apiService = {
     return apiClient.post("/api/otp/verify", data);
   },
   insertAdmin : async(data:adminType) =>{
-    return apiClient.post("/api/users",data)
+    return apiClient.post("/api/users",{data})
+  },
+  updateAdmin:async(data:adminType)=>{
+    return apiClient.put("api/users",{data})
   },
   getAdmin:async(data:getData) =>{
-    
     return apiClient.post("/api/users/admin",{data})
   },
   // for token

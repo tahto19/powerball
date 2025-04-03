@@ -7,7 +7,7 @@ import { showToaster } from "../global/globalSlice";
 import { bodyDecrypt, bodyEncrypt, delay } from "@/utils/util";
 import { veriyCode } from "@/services/types/user";
 import { RootState } from "@/redux/store";
-import { adminType, getData } from "@/types/allTypes";
+import { adminType, getData, postAdminType } from "@/types/allTypes";
 import { addCount, addFilter, addLimit, addList, addOffset } from "./adminUsers";
 export const outsideAddUser = createAsyncThunk(
   "user/outsideAddUser",
@@ -112,12 +112,12 @@ export const getAdmin = createAsyncThunk(
 
       let _r = await apiService.getAdmin(bodyEncrypt(data_, token))
       let c = bodyDecrypt(_r.data, token)
-   
+
       if (c.data.result === 'error') throw new Error(c.data.message)
 
-      dispatch(addList({list:c.data.list.rows,count:c.data.list.count}))
+      dispatch(addList({ list: c.data.list.rows, count: c.data.list.count }))
     } catch (err) {
-   
+
       dispatch(showToaster({ err, variant: "error", icon: "error" }));
     }
   }
@@ -125,10 +125,17 @@ export const getAdmin = createAsyncThunk(
 
 export const postAdmin = createAsyncThunk(
   "user/postUser",
-  async (data: adminType, { dispatch }) => {
+  async ({ data, dialogType }: postAdminType, { dispatch, getState }) => {
     try {
-      let _r = await apiService.insertAdmin(data)
-      dispatch(showToaster({ message: 'successsfully added admin', variant: "success", icon: "success" }));
+      const state = getState() as RootState;
+      const token = state.token.token
+      console.log(data, dialogType)
+      if (dialogType.toLowerCase() === 'add')
+        await apiService.insertAdmin(bodyEncrypt(data, token))
+      else if (dialogType.toLowerCase() === 'edit')
+        await apiService.updateAdmin(bodyEncrypt(data, token))
+      setTimeout(()=>{dispatch(getAdmin())},[1000])
+      dispatch(showToaster({ message: `successsfully ${dialogType.toLowerCase()}ed admin`, variant: "success", icon: "success" }));
     } catch (err) {
       dispatch(showToaster({ err, variant: "error", icon: "error" }));
     }

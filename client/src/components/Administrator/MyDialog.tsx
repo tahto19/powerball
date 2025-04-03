@@ -1,7 +1,11 @@
 //@ts-nocheck
 
 import * as React from "react";
+import { useState } from 'react'
 import TextField from '@mui/material/TextField';
+import { InputAdornment, IconButton, FormHelperText } from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -12,6 +16,9 @@ import FormLabel from "@mui/material/FormLabel";
 import Grid from '@mui/material/Grid2';
 import { styled } from '@mui/material/styles';
 import { DataProps } from "@/types/allTypes";
+import { useForm, SubmitHandler, SubmitErrorHandler } from "react-hook-form";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { postAdmin } from "@/redux/reducers/user/asnycCalls";
 
 interface MyDialogProps {
     open: boolean;
@@ -28,9 +35,23 @@ const FormControl = styled(MuiFormControl)(({ theme }) => ({
 
 const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
     // const [isOpen, setOpen] = React.useState(open);
+    const { loading } = useAppSelector(s => s.user)
+    const dispatch = useAppDispatch()
+    const {
+        getValues,
+        register,
+        handleSubmit,
+        setValue,
+        setError,
+        clearErrors,
+        reset,
+        formState: { errors },
+    } = useForm<DataProps>({
+        mode: "onChange"
+    });
     const [dialog_type, setDialogType] = React.useState("")
     const [formData, setData] = React.useState<DataProps>(data);
-
+    const [showPassword, setShowPassword] = useState(false)
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setData((prevData) => ({
@@ -38,17 +59,40 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
             [name]: value,
         }));
     };
-
+    const resetValues = () => {
+        let a = getValues()
+        let b = {}
+        Object.keys(a).forEach(v => {
+            b[v] = null
+        })
+        reset(b, {
+            keepErrors: true,
+            keepDirty: true,
+        })
+    }
     const handleClose = () => {
         onClose(false);
+        // reset()
+        resetValues()
+
     };
 
     React.useEffect(() => {
         setData(data)
         setDialogType(dialogType)
-        console.log(data)
+       
+        if (dialogType?.toLowerCase() !== "add") {
+            Object.keys(data).forEach((v) => {
+                let val = v === 'password' ? '' : data[v]
+                setValue(v, val, { shouldValidate: true, required: true })
+            })
+        }
     }, [data, dialogType])
-
+    const onSubmit: SubmitHandler<DataProps> = (data) => {
+        let toSend = { ...data, 'isAdmin': true }
+        
+        dispatch(postAdmin({ data: toSend, dialogType }))
+    };
 
     return (
         <>
@@ -58,6 +102,7 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
             >
                 <DialogTitle>{dialog_type} Administrator</DialogTitle>
                 <DialogContent>
+                    <form onSubmit={handleSubmit(onSubmit)} id="my-form"></form>
                     <Grid
                         container
                         spacing={2}
@@ -72,11 +117,12 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
                                     name="first_name"
                                     placeholder="John"
                                     autoComplete="firstName"
+                                    {...register("firstname", {
+                                        required: true,
+                                    })}
                                     autoFocus
                                     required
                                     fullWidth
-                                    value={formData.firstname}
-                                    onChange={handleInputChange}
                                     variant="outlined"
                                     slotProps={{
                                         input: {
@@ -84,6 +130,14 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
                                         },
                                     }}
                                 />
+                                {errors &&
+                                    errors.firstname &&
+                                    errors.firstname.type &&
+                                    errors.firstname.type === "required" && (
+                                        <FormHelperText sx={{ color: "red" }}>
+                                            Required
+                                        </FormHelperText>
+                                    )}
                             </FormControl>
                         </Grid>
                         <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
@@ -99,14 +153,22 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
                                     required
                                     fullWidth
                                     variant="outlined"
-                                    value={formData.lastname}
-                                    onChange={handleInputChange}
+                                    {...register("lastname", { required: true })}
+
                                     slotProps={{
                                         input: {
                                             readOnly: dialog_type === 'View',
                                         },
                                     }}
                                 />
+                                {errors &&
+                                    errors.lastname &&
+                                    errors.lastname.type &&
+                                    errors.lastname.type === "required" && (
+                                        <FormHelperText sx={{ color: "red" }}>
+                                            Required
+                                        </FormHelperText>
+                                    )}
                             </FormControl>
                         </Grid>
                         <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
@@ -122,8 +184,7 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
                                     required
                                     fullWidth
                                     variant="outlined"
-                                    value={formData.mobileNumber}
-                                    onChange={handleInputChange}
+                                    {...register("mobileNumber", { required: true })}
                                     slotProps={{
                                         input: {
                                             readOnly: dialog_type === 'View',
@@ -145,8 +206,14 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
                                     required
                                     fullWidth
                                     variant="outlined"
-                                    value={formData.emailAddress}
-                                    onChange={handleInputChange}
+
+                                    {...register("emailAddress", {
+                                        required: true,
+                                        pattern: {
+                                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                            message: "invalid email address",
+                                        },
+                                    })}
                                     slotProps={{
                                         input: {
                                             readOnly: dialog_type === 'View',
@@ -154,6 +221,19 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
                                     }}
                                 />
                             </FormControl>
+                            {errors &&
+                                errors.emailAddress &&
+                                errors.emailAddress.type &&
+                                errors.emailAddress.type === "required" && (
+                                    <FormHelperText sx={{ color: "red" }}>
+                                        Required
+                                    </FormHelperText>
+                                )}
+                            {errors && errors.emailAddress && (
+                                <FormHelperText sx={{ color: "red" }}>
+                                    {errors.emailAddress.message}
+                                </FormHelperText>
+                            )}
                         </Grid>
                         <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
                             <FormControl>
@@ -161,23 +241,68 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
                                 <TextField
                                     name="password"
                                     placeholder="••••••"
-                                    type="password"
+                                    type={showPassword ? 'text' : "password"}
                                     id="password"
                                     autoComplete="current-password"
                                     autoFocus
                                     fullWidth
                                     variant="outlined"
-                                    value={formData.password}
-                                    onChange={handleInputChange}
+                                    slotProps={{
+                                        input: {
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <IconButton
+                                                        aria-label={
+                                                            showPassword
+                                                                ? "hide the password"
+                                                                : "display the password"
+                                                        }
+                                                        onClick={() => {
+                                                            setShowPassword(!showPassword);
+                                                        }}
+                                                        edge="end"
+                                                    >
+                                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                    </IconButton>
+                                                </InputAdornment>
+                                            ),
+                                        },
+                                    }}
+                                    {...register("password", {
+                                        required:dialog_type === 'add' ?  true:false,
+                                        minLength: {
+                                            value: 6,
+                                            message: "At least 6 characters required",
+                                        },
+                                        pattern: {
+                                            value: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])/,
+                                            message:
+                                                "Must include uppercase, lowercase  number, and special character",
+                                        },
+                                    })}
                                     disabled={formData.id || dialog_type === 'View' ? true : false}
                                 />
-                            </FormControl>
+                            </FormControl>   {errors &&
+                                errors.password &&
+                                errors.password.type === "required" && (
+                                    <FormHelperText sx={{ color: "red" }}>
+                                        Required
+                                    </FormHelperText>
+                                )}
+                            {errors &&
+                                errors.password &&
+                                errors.password.message &&
+                                errors.password.message !== "" && (
+                                    <FormHelperText sx={{ color: "red" }}>
+                                        {errors.password.message}
+                                    </FormHelperText>
+                                )}
                         </Grid>
                     </Grid>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button type="submit">Submit</Button>
+                    <Button type="submit" form="my-form" loading={loading}>Submit</Button>
                 </DialogActions>
             </Dialog>
         </>

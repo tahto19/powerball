@@ -8,6 +8,7 @@ export type adminType = {
   emailAddress: string | null
   mobileNumber: string | null
   isAdmin: boolean | null
+  id:number | null | undefined
 }
 
 export type getData = {
@@ -25,4 +26,9 @@ export type DataProps ={
   email: string,
   status: string,
   password: string | null,
+}
+
+export const postAdminType = {
+  data: adminType,
+  dialogType:string | null | undefined
 }

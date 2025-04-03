@@ -54,23 +54,22 @@ export const createUser = async (req, res) => {
     let mobile = req.headers["pm-scratch-it-m"];
     let ip_address =
       req.ip || req.headers["x-forwarded-for"] || req.connection?.remoteAddress;
-    const data = await req.file();
+
     const {
       firstname,
-      file,
+    file,
       lastname,
       mobileNumber,
       birthdate,
       emailAddress,
       password,
-    } = data.fields;
-    const data_ = await req.parts()
+    } = req.body;
+
     let fields = [];
-  
-    console.log(req.fields,'here22233344566');
-    if (!file.mimetype.startsWith("image/")) throw new Error("ErrorCODE x91c");
-    console.log(data.fields ,'68')
     console.log(req.body)
+
+    if (!file.mimetype.startsWith("image/")) throw new Error("ErrorCODE x91c");
+   
     let newFileName = `${moment().format(
       "MM-DD-YYYY"
     )}-${generateRandomNumber()}-${generateRandomChar(5)}-${file.filename}`;

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createAccount, outsideAddUser, verfiyAccountUser } from "./asnycCalls";
+import { createAccount, outsideAddUser, postAdmin, verfiyAccountUser } from "./asnycCalls";
 
 interface userState {
   firstname: string | null;
@@ -75,6 +75,12 @@ const userSlice = createSlice({
       state.loading = false;
       state.verifiedAndCreatedAccount = true;
     });
+    b.addCase(postAdmin.pending, (state)=>{
+      state.loading = true
+    });
+    b.addCase(postAdmin.fulfilled, (state)=>{
+      state.loading = false
+    })
   },
 });
 
