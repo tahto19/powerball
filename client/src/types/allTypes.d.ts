@@ -11,6 +11,11 @@ export type adminType = {
   id:number | null | undefined
 }
 
+export type fetchAll = {
+  filter:string | null
+  sort:string | null
+}
+
 export type getData = {
   limit:number | null
   offset:number | null

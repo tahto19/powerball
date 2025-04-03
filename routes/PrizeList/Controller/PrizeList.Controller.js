@@ -8,7 +8,7 @@ export const insertController = async (req, res) => {
 };
 
 export const getController = async (req, res) => {
-  const { limit, offset, sort, filter } = req.query;
+  const { limit, offset, sort, filter } = req.body;
   let parsedSort = JSON.parse(sort);
   let parsedFilter = JSON.parse(filter);
 
@@ -18,6 +18,15 @@ export const getController = async (req, res) => {
   let a = await plc.Fetch(new_offset, limit, parsedSort, parsedFilter);
   // let b = a.list;
 
+  res.send(cSend(a));
+};
+
+export const getControllerAll = async (req, res) => {
+  const { sort, filter } = req.body;
+  let parsedSort = !sort ? [["id", "DESC"]] : JSON.parse(sort);
+  let parsedFilter = !filter ? [] : JSON.parse(filter);
+  parsedSort = parsedSort.length > 0 ? parsedSort : [["id", "DESC"]];
+  let a = await plc.FetchAll(parsedSort, parsedFilter);
   res.send(cSend(a));
 };
 

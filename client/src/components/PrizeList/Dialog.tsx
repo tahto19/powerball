@@ -34,10 +34,10 @@ const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: MyDialogProps) 
         let res;
 
         if (dialogType === 'Edit') {
-            res = await apiService.updatePrizeList(formData);
+            res = await apiService.updatePrizeList(formData, token);
             message = "Record updated successfully."
         } else {
-            res = await apiService.createPrizeList(formData);
+            res = await apiService.createPrizeList(formData, token);
             message = "Record created successfully."
         }
 

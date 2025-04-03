@@ -6,6 +6,11 @@ export interface MyDialogProps {
     onSubmit: () => void;
 }
 
+export type PrizeListAll = {
+    list: [];
+    count: number;
+}
+
 export interface PrizeState {
     id: number | null;
     name: string;

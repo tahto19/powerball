@@ -29,7 +29,7 @@ const FormControl = styled(MuiFormControl)(({ theme }) => ({
     width: "100%"
 }));
 
-const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: MyDialogProps) => {
+const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDialogProps) => {
     // const [isOpen, setOpen] = React.useState(open);
     const [dialog_type, setDialogType] = React.useState("")
     const [formData, setData] = React.useState<RaffleState>(data);
@@ -186,6 +186,60 @@ const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: MyDialogProps) 
                                         <DateTimePicker name="starting_date" onChange={(date) => handleInputChange(date, "starting_date")} // Pass name explicitly
                                             value={formData.starting_date ? moment(formData.starting_date) : moment()} />
                                     </LocalizationProvider>
+                                </FormControl>
+                            </Grid>
+                            <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+                                <FormControl>
+                                    <FormLabel htmlFor="schedule_type">Prize Name</FormLabel>
+                                    <TextField
+                                        select
+                                        id="prize_id"
+                                        type="text"
+                                        name="prize_id"
+                                        autoComplete="prize_id"
+                                        autoFocus
+                                        required
+                                        fullWidth
+                                        variant="outlined"
+                                        value={formData.prize_id}
+                                        onChange={handleInputChange}
+                                        slotProps={{
+                                            input: {
+                                                readOnly: dialog_type === 'View',
+                                            },
+                                        }}
+
+                                    >
+                                        {
+                                            prizeList && prizeList.list.length > 0 ? prizeList.list.map((x) => {
+                                                <>
+                                                    <MenuItem value={x.id}>{x.name}</MenuItem>
+                                                </>
+                                            }) : null
+                                        }
+                                    </TextField>
+                                </FormControl>
+                            </Grid>
+                            <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+                                <FormControl>
+                                    <FormLabel htmlFor="details">Amount</FormLabel>
+                                    <TextField
+                                        id="amount"
+                                        type="number"
+                                        name="amount"
+                                        placeholder=""
+                                        autoComplete="amount"
+                                        autoFocus
+                                        required
+                                        fullWidth
+                                        value={formData.amount}
+                                        variant="outlined"
+                                        slotProps={{
+                                            input: {
+                                                readOnly: true,
+                                            },
+                                        }}
+                                    />
                                 </FormControl>
                             </Grid>
                             {/* {

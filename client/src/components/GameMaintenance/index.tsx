@@ -12,6 +12,7 @@ import { bodyDecrypt } from "@/utils/util";
 import { showToaster } from "@/redux/reducers/global/globalSlice";
 import { useAppDispatch } from "@/redux/hook";
 import moment from "moment";
+import { PrizeListAll } from "@/components/PrizeList/interface";
 
 
 
@@ -24,6 +25,15 @@ const sampleHeaders = [
 //Temporary data
 const samplePagination = { page: 0, pageSize: 10 }
 
+// UPDATE `Customize_Questions` SET `Company_ID_Link`=13 WHERE `Project_ID_Link`=23;
+// UPDATE `Customize_Popup_Message` SET `Company_ID_Link`=13 WHERE `Project_ID_Link`=23;
+// UPDATE `Customize_Opening_Message` SET `Company_ID_Link`=13 WHERE `Project_ID_Link`=23;
+// UPDATE `Customize_Logo` SET `Company_ID_Link`=13 WHERE `Project_ID_Link`=23;
+// UPDATE `Customize_Error_Message` SET `Company_ID_Link`=13 WHERE `Project_ID_Link`=23;
+// UPDATE `Customize_Color` SET `Company_ID_Link`=13 WHERE `Project_ID_Link`=23;
+// UPDATE `Customize_Avatar` SET `Company_ID_Link`=13 WHERE `Project_ID_Link`=23;
+// UPDATE `Chat_History` SET `Company_ID_Link`=13 WHERE `Project_ID_Link`=23;
+// UPDATE `Authorize_IP_Address` SET `Company_ID_Link`=13 WHERE `Project_ID_Link`=23;
 
 const defaultData = {
     id: null,
@@ -33,18 +43,25 @@ const defaultData = {
     starting_date: moment().toISOString(),
     end_date: null,
     schedule_type: 1,
+    prize_id: null,
+    amount: null,
 }
 
+const initialPrizeListData: PrizeListAll = {
+    list: [],
+    count: 0
+}
 const GameMaintenace = () => {
     const dispatch = useAppDispatch();
 
     const { token } = useAppSelector((state) => state.token);
     const [dialogType, setDialogType] = React.useState("Add")
-    const [data_row, setDataRow] = React.useState<RaffleState>(defaultData);
+    const [dataRow, setDataRow] = React.useState<RaffleState>(defaultData);
 
     const [list, setRaffleList] = React.useState<[]>([]);
     const [listCount, setListCount] = React.useState<number>(0);
     const [pagination, setPagination] = React.useState(samplePagination);
+    const [prizeList, setPrizeList] = React.useState<PrizeListAll>(initialPrizeListData);
 
     const [refreshKey, setRefreshKey] = React.useState(0);
     // Call this function when data updates
@@ -117,7 +134,22 @@ const GameMaintenace = () => {
     }
 
 
+    React.useEffect(() => {
+        const fetch = async () => {
+            const payload = {
+                sort: JSON.stringify([["id", "DESC"]]),
+                filter: ""
+            }
+            const res = await apiService.getPrizeListAll(payload, token);
+            const d = bodyDecrypt(res.data, token)
 
+            if (d && d.success === 'success') {
+                setPrizeList(d.data)
+            }
+        }
+
+        fetch();
+    }, [token])
     return (
         <>
             <Grid
@@ -157,7 +189,7 @@ const GameMaintenace = () => {
                         onDeleteAction={handleDeleteAction} />
                 </Grid>
             </Grid>
-            <MyDialog open={open} dialogType={dialogType} data={data_row} onClose={handleOnClose} onSubmit={refreshTable} />
+            <MyDialog open={open} prizeList={prizeList} dialogType={dialogType} data={dataRow} onClose={handleOnClose} onSubmit={refreshTable} />
         </>
     )
 }

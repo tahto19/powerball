@@ -80,24 +80,28 @@ export const apiService = {
     localStorage.removeItem("token");
   },
 
-  createPrizeList: async (d: PrizeState) => {
+ createPrizeList: async (d: PrizeState, token: string | null) => {
     // const res = apiClient.post('/api/prize-list/', d, {headers: {
     //   "Cookie": `cookie_pb_1271=${token}`,
     // }})
-    const res = apiClient.post("/api/prize-list/", d);
+    const res = apiClient.post("/api/prize-list/create", {data: bodyEncrypt(d, token)});
     // const res = apiClient.post('/api/prize-list/', d)
 
     return res;
   },
-  updatePrizeList: async (d: PrizeState) => {
-    const res = apiClient.put("/api/prize-list/", d);
+  updatePrizeList: async (d: PrizeState, token: string | null) => {
+    const res = apiClient.put("/api/prize-list/", {data: bodyEncrypt(d, token)});
     return res;
   },
-  getPrizeList: async (d: getData) => {
-    const res = apiClient.get("/api/prize-list/", {
-      params: d,
-      withCredentials: true,
-    });
+  getPrizeList: async (d: getData, token: string | null) => {
+    const res = apiClient.post("/api/prize-list/", {data: bodyEncrypt(d, token)});
+    return res;
+  },
+  getPrizeListAll: async (d: fetchAll, token: string | null) => { 
+    console.log(d)  
+    console.log(token)   
+ 
+    const res = apiClient.post("/api/prize-list/all", {data: bodyEncrypt(d, token)});
     return res;
   },
 

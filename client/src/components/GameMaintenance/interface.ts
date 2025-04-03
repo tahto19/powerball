@@ -1,10 +1,15 @@
+import {PrizeListAll} from "@/components/PrizeList/interface";
+
 export interface MyDialogProps {
     open: boolean;
+    prizeList: PrizeListAll;
     data: RaffleState;
     dialogType: string;
     onClose: (value: boolean) => void;
     onSubmit: () => void;
 }
+
+
 
 export interface RaffleState {
     id: number | null;
@@ -14,6 +19,8 @@ export interface RaffleState {
     starting_date: string | null;
     end_date: string | null;
     schedule_type: number | null;
+    prize_id: number | null;
+    amount: number | null;
 }
 
 

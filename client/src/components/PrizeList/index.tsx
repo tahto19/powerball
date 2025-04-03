@@ -74,7 +74,7 @@ const PrizeList = () => {
             offset: page, limit: pageSize, sort: JSON.stringify(sort), filter: JSON.stringify(newFilterModel)
         }
 
-        const res = await apiService.getPrizeList(query);
+        const res = await apiService.getPrizeList(query, token);
         // dispatch(
         //     showToaster({
         //         message: "Login success!",
