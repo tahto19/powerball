@@ -1,21 +1,15 @@
 //@ts-nocheck
 import * as React from "react";
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Button from "@mui/material/Button";
-import MuiFormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
-import Grid from '@mui/material/Grid2';
-import { styled } from '@mui/material/styles';
-import { MyDialogProps, PrizeState } from '@/components/PrizeList/interface';
-import MenuItem from '@mui/material/MenuItem';
+import { useAppSelector } from "@/redux/hook";
 import { showToaster } from "@/redux/reducers/global/globalSlice"
+
+import { TextField, MenuItem, Dialog, DialogActions, DialogContent, DialogTitle, Button, MuiFormControl, FormLabel, Grid2 } from '@mui/material/TextField';
+import { styled } from '@mui/material/styles';
+
+import { MyDialogProps, PrizeState } from '@/components/PrizeList/interface';
+
 import apiService from "@/services/apiService";
 import { bodyDecrypt } from "@/utils/util";
-import { useAppSelector } from "@/redux/hook";
 
 const FormControl = styled(MuiFormControl)(({ theme }) => ({
     width: "100%"
@@ -30,36 +24,41 @@ const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: MyDialogProps) 
     const handleSubmit = async (e: React.FocusEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        let message;
-        let res;
+        try {
+            let message;
+            let res;
 
-        if (dialogType === 'Edit') {
-            res = await apiService.updatePrizeList(formData, token);
-            message = "Record updated successfully."
-        } else {
-            res = await apiService.createPrizeList(formData, token);
-            message = "Record created successfully."
+            if (dialogType === 'Edit') {
+                res = await apiService.updatePrizeList(formData, token);
+                message = "Record updated successfully."
+            } else {
+                res = await apiService.createPrizeList(formData, token);
+                message = "Record created successfully."
+            }
+
+            const d = bodyDecrypt(res.data, token)
+
+            if (d && d.success === 'success') {
+                showToaster({
+                    message: message,
+                    show: true,
+                    variant: "success",
+                    icon: null,
+                })
+                onClose(false);
+                onSubmit()
+            } else {
+                showToaster({
+                    message: d.message,
+                    show: true,
+                    variant: "error",
+                    icon: null,
+                })
+            }
+        } catch (err) {
+            dispatch(showToaster({ err, variant: "error", icon: "error" }));
+            return false;
         }
-
-        const d = bodyDecrypt(res.data, token)
-
-        if (d && d.success === 'success') {
-            showToaster({
-                message: message,
-                show: true,
-                variant: "success",
-                icon: null,
-            })
-        } else {
-            showToaster({
-                message: d.message,
-                show: true,
-                variant: "error",
-                icon: null,
-            })
-        }
-        onClose(false);
-        onSubmit()
     }
 
 
@@ -92,12 +91,12 @@ const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: MyDialogProps) 
                 <form onSubmit={handleSubmit}>
                     <DialogTitle>{dialog_type} Prize</DialogTitle>
                     <DialogContent>
-                        <Grid
+                        <Grid2
                             container
                             spacing={2}
                             columns={12}
                         >
-                            <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                            <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
                                 <FormControl>
                                     <FormLabel htmlFor="name">Name</FormLabel>
                                     <TextField
@@ -119,8 +118,8 @@ const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: MyDialogProps) 
                                         }}
                                     />
                                 </FormControl>
-                            </Grid>
-                            <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+                            </Grid2>
+                            <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
                                 <FormControl>
                                     <FormLabel htmlFor="type">Type</FormLabel>
                                     <TextField
@@ -147,8 +146,8 @@ const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: MyDialogProps) 
                                         <MenuItem value={'major'}>Major Prize</MenuItem>
                                     </TextField>
                                 </FormControl>
-                            </Grid>
-                            <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+                            </Grid2>
+                            <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
                                 <FormControl>
                                     <FormLabel htmlFor="value">Value</FormLabel>
                                     <TextField
@@ -170,8 +169,8 @@ const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: MyDialogProps) 
                                         }}
                                     />
                                 </FormControl>
-                            </Grid>
-                        </Grid>
+                            </Grid2>
+                        </Grid2>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>Cancel</Button>

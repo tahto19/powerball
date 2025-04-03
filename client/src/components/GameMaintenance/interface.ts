@@ -1,4 +1,5 @@
 import {PrizeListAll} from "@/components/PrizeList/interface";
+import moment from "moment";
 
 export interface MyDialogProps {
     open: boolean;
@@ -19,8 +20,8 @@ export interface RaffleState {
     starting_date: string | null;
     end_date: string | null;
     schedule_type: number | null;
-    prize_id: number | null;
-    amount: number | null;
+    prize_id: number | string;
+    amount: number | string;
 }
 
 
@@ -29,4 +30,16 @@ export interface RafflePaginationState {
     limit: number;
     sort: string;
     filter: string;
+}
+
+export const initialRaffleData: RaffleState = {
+      id: null,
+        details: "",
+        more_details: "",
+        active: true,
+        starting_date: moment().toISOString(),
+        end_date: null,
+        schedule_type: 1,
+        prize_id: "",
+        amount: "",
 }

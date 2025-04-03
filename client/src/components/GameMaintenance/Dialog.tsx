@@ -1,86 +1,94 @@
-//@ts-nocheck
-import * as React from "react";
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Button from "@mui/material/Button";
-import MuiFormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
-import FormControlLabel from '@mui/material/FormControlLabel';
-
-import Grid from '@mui/material/Grid2';
-import { styled } from '@mui/material/styles';
-import { RaffleState, MyDialogProps } from '@/components/GameMaintenance/interface.ts';
-import MenuItem from '@mui/material/MenuItem';
+import { useState, useEffect } from "react";
+import { useAppSelector, useAppDispatch } from "@/redux/hook";
 import { showToaster } from "@/redux/reducers/global/globalSlice"
-import apiService from "@/services/apiService";
-import { bodyDecrypt } from "@/utils/util";
-import { useAppSelector } from "@/redux/hook";
+import moment from "moment";
+
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-import moment from "moment";
-import Switch from '@mui/material/Switch';
-import Box from "@mui/material/Box";
+import { TextField, Box, Switch, MenuItem, Dialog, DialogActions, DialogContent, DialogTitle, Button, FormLabel, FormControlLabel, Grid2 } from '@mui/material';
+import MuiFormControl from '@mui/material/FormControl';
+import { styled } from '@mui/material/styles';
 
-const FormControl = styled(MuiFormControl)(({ theme }) => ({
+import { RaffleState, MyDialogProps } from '@/components/GameMaintenance/interface.ts';
+import { PrizeListAll, initialPrizeListData } from '@/components/PrizeList/interface.ts';
+
+import apiService from "@/services/apiService";
+import { bodyDecrypt } from "@/utils/util";
+
+const FormControl = styled(MuiFormControl)(() => ({
     width: "100%"
 }));
 
+
 const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDialogProps) => {
-    // const [isOpen, setOpen] = React.useState(open);
-    const [dialog_type, setDialogType] = React.useState("")
-    const [formData, setData] = React.useState<RaffleState>(data);
+    const dispatch = useAppDispatch();
+
+    // const [isOpen, setOpen] = useState(open);
+    const [dialog_type, setDialogType] = useState("")
+    const [formData, setData] = useState<RaffleState>(data);
     const { token } = useAppSelector((state) => state.token);
+    const [prize_List, setPrizeList] = useState<PrizeListAll>(initialPrizeListData);
+
 
     const handleSubmit = async (e: React.FocusEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        let message;
-        let res;
+        try {
+            let message;
+            let res;
 
-        console.log(formData)
-        // if (dialogType === 'Edit') {
-        //     res = await apiService.updatePrizeList(formData);
-        //     message = "Record updated successfully."
-        // } else {
-        //     res = await apiService.createPrizeList(formData);
-        //     message = "Record created successfully."
-        // }
+            if (dialogType === 'Edit') {
+                res = await apiService.updateGM(formData, token);
+                message = "Record updated successfully."
+            } else {
+                res = await apiService.createGM(formData, token);
+                message = "Record created successfully."
+            }
 
-        // const d = bodyDecrypt(res.data, token)
-
-        // if (d && d.success === 'success') {
-        //     showToaster({
-        //         message: message,
-        //         show: true,
-        //         variant: "success",
-        //         icon: null,
-        //     })
-        // } else {
-        //     showToaster({
-        //         message: d.message,
-        //         show: true,
-        //         variant: "error",
-        //         icon: null,
-        //     })
-        // }
-        // onClose(false);
-        // onSubmit()
+            const d = bodyDecrypt(res.data, token)
+            console.log(">>>>>>>>>>>", d)
+            if (d && d.success === 'success') {
+                dispatch(showToaster({
+                    message: message,
+                    show: true,
+                    variant: "success",
+                    icon: null,
+                }))
+                onClose(false);
+                onSubmit()
+            } else {
+                dispatch(showToaster({
+                    message: d.message,
+                    show: true,
+                    variant: "error",
+                    icon: null,
+                }))
+            }
+        } catch (err) {
+            dispatch(showToaster({ err, variant: "error", icon: "error" }));
+            return false;
+        }
     }
 
+    const handlePrizeNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = event.target;
+        const amount = prize_List.list.filter((x) => x.id === value)
+        setData((prevData) => ({
+            ...prevData,
+            prize_id: value ?? "",
+            amount: amount[0].value
+        }));
+    }
 
-
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement> | moment.Moment, name?: string) => {
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | moment.Moment, name?: string) => {
 
 
         if (moment.isMoment(event)) {
             // If the change comes from DateTimePicker
             setData((prevData) => ({
                 ...prevData,
-                [name]: event.toISOString(), // Store as ISO string
+                [name as string]: event ? event.toISOString() : null, // Store as ISO string
             }));
         } else {
             // Regular input change
@@ -96,10 +104,13 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
         onClose(false);
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         setData(data)
         setDialogType(dialogType)
-    }, [data, dialogType])
+        setPrizeList(prizeList)
+
+        console.log(prizeList)
+    }, [data, dialogType, prizeList])
 
 
     return (
@@ -121,15 +132,15 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                 alignItems: "end",
                                 height: "100%"
                             }}>
-                                <FormControlLabel control={<Switch name="active" checked={formData.active === true} onChange={handleInputChange} />} label="Active" />
+                                <FormControlLabel control={<Switch name="active" checked={formData.active === true} onChange={(event) => handleInputChange(event)} />} label="Active" />
                             </FormControl>
                         </Box>
-                        <Grid
+                        <Grid2
                             container
                             spacing={2}
                             columns={12}
                         >
-                            <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                            <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
                                 <FormControl>
                                     <FormLabel htmlFor="details">Raffle ID</FormLabel>
                                     <TextField
@@ -142,7 +153,7 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                         required
                                         fullWidth
                                         value={formData.details}
-                                        onChange={handleInputChange}
+                                        onChange={(event) => handleInputChange(event)}
                                         variant="outlined"
                                         slotProps={{
                                             input: {
@@ -151,8 +162,8 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                         }}
                                     />
                                 </FormControl>
-                            </Grid>
-                            <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+                            </Grid2>
+                            <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
                                 <FormControl>
                                     <FormLabel htmlFor="schedule_type">Schedule Type</FormLabel>
                                     <TextField
@@ -166,7 +177,7 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                         fullWidth
                                         variant="outlined"
                                         value={formData.schedule_type}
-                                        onChange={handleInputChange}
+                                        onChange={(event) => handleInputChange(event)}
                                         slotProps={{
                                             input: {
                                                 readOnly: dialog_type === 'View',
@@ -178,17 +189,17 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                         <MenuItem value={'2'}>Weekly</MenuItem>
                                     </TextField>
                                 </FormControl>
-                            </Grid>
-                            <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+                            </Grid2>
+                            <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
                                 <FormControl>
                                     <FormLabel htmlFor="value">Start Date</FormLabel>
-                                    <LocalizationProvider name="starting_date" dateAdapter={AdapterMoment}>
-                                        <DateTimePicker name="starting_date" onChange={(date) => handleInputChange(date, "starting_date")} // Pass name explicitly
+                                    <LocalizationProvider dateAdapter={AdapterMoment}>
+                                        <DateTimePicker name="starting_date" onChange={(date: any) => handleInputChange(date, "starting_date")} // Pass name explicitly
                                             value={formData.starting_date ? moment(formData.starting_date) : moment()} />
                                     </LocalizationProvider>
                                 </FormControl>
-                            </Grid>
-                            <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+                            </Grid2>
+                            <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
                                 <FormControl>
                                     <FormLabel htmlFor="schedule_type">Prize Name</FormLabel>
                                     <TextField
@@ -201,8 +212,8 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                         required
                                         fullWidth
                                         variant="outlined"
-                                        value={formData.prize_id}
-                                        onChange={handleInputChange}
+                                        value={formData.prize_id ?? ""}
+                                        onChange={handlePrizeNameChange}
                                         slotProps={{
                                             input: {
                                                 readOnly: dialog_type === 'View',
@@ -211,16 +222,16 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
 
                                     >
                                         {
-                                            prizeList && prizeList.list.length > 0 ? prizeList.list.map((x) => {
-                                                <>
-                                                    <MenuItem value={x.id}>{x.name}</MenuItem>
-                                                </>
-                                            }) : null
+                                            prize_List?.list.length > 0 ? prize_List.list.map((x) => (
+
+                                                <MenuItem key={x.id} value={x.id?.toString()}>{x.name}</MenuItem>
+
+                                            )) : null
                                         }
                                     </TextField>
                                 </FormControl>
-                            </Grid>
-                            <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+                            </Grid2>
+                            <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
                                 <FormControl>
                                     <FormLabel htmlFor="details">Amount</FormLabel>
                                     <TextField
@@ -241,10 +252,10 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                         }}
                                     />
                                 </FormControl>
-                            </Grid>
+                            </Grid2>
                             {/* {
                                 formData.schedule_type !== 1 ? (
-                                    <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+                                    <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
                                         <FormControl>
                                             <FormLabel htmlFor="value">End Date</FormLabel>
                                             <LocalizationProvider name="starting_date" dateAdapter={AdapterMoment}>
@@ -252,10 +263,10 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                                     value={formData.end_date ? moment(formData.end_date) : null} />
                                             </LocalizationProvider>
                                         </FormControl>
-                                    </Grid>
+                                    </Grid2>
                                 ) : null
                             } */}
-                        </Grid>
+                        </Grid2>
                     </DialogContent>
 
                     <DialogActions>

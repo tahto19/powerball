@@ -14,10 +14,10 @@ const transport = nodemailer.createTransport({
   auth: {
     user: "crisanto.tubelleja@eacomm.com",
     pass: "dgzlreovyxzkciog",
-  },  
+  },
   tls: {
-    rejectUnauthorized: false
-}
+    rejectUnauthorized: false,
+  },
 });
 export const logger = pino({
   transport: {
@@ -75,6 +75,11 @@ export const WhereFilters = (filters = []) => {
         case "string":
           wherefilters[f.field] = {
             [Op.substring]: f.filter.toString(),
+          };
+          break;
+        case "string_eq":
+          wherefilters[f.field] = {
+            [Op.eq]: f.filter.toString(),
           };
           break;
         case "boolean":
@@ -139,7 +144,7 @@ export const encryptData = (data, token) => {
 };
 export const decryptData = (data, token) => {
   var decrypt = CryptoJS.AES.decrypt(data, token).toString(CryptoJS.enc.Utf8);
-  console.log(decrypt)
+  console.log(decrypt);
   return decrypt;
 };
 export const generateRandomNumber = () => {
@@ -162,17 +167,16 @@ export const emailSender = async (data) => {
   console.log(data);
   const { from, to, subject, text, html } = data;
   if (!subject || !to) throw new Error("ErrorCODE x231");
-  console.log("info",'here2')
-  console.log(!from ? "crisanto.tubelleja@eacomm.com" : from)
+  console.log("info", "here2");
+  console.log(!from ? "crisanto.tubelleja@eacomm.com" : from);
   const info = await transport.sendMail({
     from: !from ? "crisanto.tubelleja@eacomm.com" : from, // Sender address
     to: to, // Receiver email
     subject: subject, // Email subject
     text: text, // Plain text
     html: html, // HTML body
-    
   });
-  console.log(info,'here2')
+  console.log(info, "here2");
   return info;
 };
 export const uploadImage = async (file, filename) => {

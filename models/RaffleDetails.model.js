@@ -1,5 +1,5 @@
 import "dotenv/config";
-import conn from "../dbConnections/conn";
+import conn from "../dbConnections/conn.js";
 import { Model, DataTypes } from "sequelize";
 
 class RaffleDetails extends Model {}
@@ -7,8 +7,12 @@ class RaffleDetails extends Model {}
 RaffleDetails.init(
   {
     details: {
-      allowNull: false,
       type: DataTypes.STRING,
+      allowNull: false,
+      unique: {
+        name: "unique_details",
+        msg: "Raffle ID must be unique",
+      },
       validate: {
         notNull: {
           msg: "Please enter Raffle ID",
@@ -16,8 +20,8 @@ RaffleDetails.init(
       },
     },
     more_details: {
-      allowNull: true,
       type: DataTypes.STRING,
+      allowNull: true,
       defaultValue: null,
     },
     active: {
@@ -25,8 +29,8 @@ RaffleDetails.init(
       defaultValue: true,
     },
     starting_date: {
-      allowNull: false,
       type: DataTypes.DATE,
+      allowNull: false,
       validate: {
         notNull: {
           msg: "Please enter Starting Date",
@@ -34,18 +38,23 @@ RaffleDetails.init(
       },
     },
     end_date: {
-      allowNull: true,
       type: DataTypes.DATE,
+      allowNull: true,
       defaultValue: null,
     },
     schedule_type: {
-      allowNull: false,
       type: DataTypes.BIGINT,
+      allowNull: false,
       validate: {
         notNull: {
           msg: "Please enter Schedule Type",
         },
       },
+    },
+    prize_id: {
+      allowNull: true,
+      type: DataTypes.BIGINT,
+      defaultValue: null,
     },
   },
   {
@@ -54,6 +63,10 @@ RaffleDetails.init(
     modelName: "Raffle Details",
     paranoid: true,
     tableName: process.env.DB_PREFIX + "raffle_details",
-    indexes: [{ name: "raffle_details_idx", fields: ["id"] }],
+    indexes: [
+      { name: "raffle_details_idx", fields: ["id"] },
+      { unique: true, name: "unique_details_idx", fields: ["details"] },
+    ],
   }
 );
+export default RaffleDetails;

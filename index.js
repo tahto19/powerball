@@ -5,11 +5,13 @@ import fs from "fs";
 import fp from "fastify-plugin";
 import cors from "@fastify/cors";
 
+import Associations from "./associations/associations.js";
 import conn from "./dbConnections/conn.js";
 
 import userRoute from "./routes/User/User.route.js";
 import LoginRoute from "./routes/Login/Login.route.js";
 import PrizeListRoute from "./routes/PrizeList/PrizeList.route.js";
+import GameMaintenace from "./routes/GameMaintenance/Raffle.route.js";
 
 import { logger } from "./util/util.js";
 import { auth } from "./authentication/auth.js";
@@ -43,6 +45,7 @@ const fastify = Fastify({
  * X556 = no code sent
  * x557 = no email found
  * x58 = code is invalid
+ * x71 = Raffle ID already exists
  * X999 = login wrong credentials
  * x91c = not image
  * x909 = Email already exists error
@@ -54,6 +57,7 @@ const fastify = Fastify({
  * 1 = daily
  * 2 = weekly
  */
+
 const start = async () => {
   try {
     // cors
@@ -88,7 +92,7 @@ const start = async () => {
         headerPairs: 2000, // Max number of header key=>value pairs
         parts: 10000, // For multipart forms, the max number of parts (fields + files)
       },
-      attachFieldsToBody: true
+      attachFieldsToBody: true,
     });
     // authentication part here
 
@@ -120,6 +124,7 @@ const start = async () => {
     fastify.register(LoginRoute, { prefix: "api/login" });
     fastify.register(userRoute, { prefix: "api/users" });
     fastify.register(PrizeListRoute, { prefix: "api/prize-list" });
+    fastify.register(GameMaintenace, { prefix: "api/game-maintenance" });
     fastify.register(OTPRoute, { prefix: "api/otp" });
     /**
      *error handler
@@ -145,6 +150,7 @@ const start = async () => {
     const connected = await conn.auth();
     if (connected) {
       await conn.auth();
+      Associations();
       await conn.sync();
     }
 

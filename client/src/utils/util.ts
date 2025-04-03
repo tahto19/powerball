@@ -33,6 +33,8 @@ const getErrorsStatus = (code: string) => {
       return "needs relogin";
     case "x58":
       return "code is invalid";
+    case "x71":
+      return "Raffle ID already exists";
     case "x999":
       return "invalid credentials";
     case "x91c":

@@ -8,7 +8,7 @@ import apiService from "@/services/apiService";
 import { useAppSelector } from "@/redux/hook";
 
 import MyDialog from "./Dialog.tsx";
-import { PrizeState } from '@/components/PrizeList/interface';
+import { PrizeState, initialData } from '@/components/PrizeList/interface';
 import { bodyDecrypt } from "@/utils/util";
 import { showToaster } from "@/redux/reducers/global/globalSlice";
 import { useAppDispatch } from "@/redux/hook";
@@ -23,19 +23,12 @@ const sampleHeaders = [
 const samplePagination = { page: 0, pageSize: 10 }
 
 
-const defaultData = {
-    id: null,
-    name: "",
-    value: 0,
-    type: ""
-}
-
 const PrizeList = () => {
     const dispatch = useAppDispatch();
 
     const { token } = useAppSelector((state) => state.token);
     const [dialogType, setDialogType] = React.useState("Add")
-    const [data_row, setDataRow] = React.useState<PrizeState>(defaultData);
+    const [data_row, setDataRow] = React.useState(initialData);
 
     const [list, setPrizeList] = React.useState<[]>([]);
     const [listCount, setListCount] = React.useState<number>(0);
@@ -75,16 +68,6 @@ const PrizeList = () => {
         }
 
         const res = await apiService.getPrizeList(query, token);
-        // dispatch(
-        //     showToaster({
-        //         message: "Login success!",
-        //         show: true,
-        //         variant: "success",
-        //         icon: null,
-        //     })
-        // );
-        // console.log(res.data)
-
         const d = bodyDecrypt(res.data, token)
         if (d && d.success === 'success') {
             console.log(d)
@@ -99,7 +82,7 @@ const PrizeList = () => {
     }
     const handleOpenDialog = () => {
         setDialogType("Add");
-        setDataRow(defaultData)
+        setDataRow(initialData)
         setOpen(true)
     }
 

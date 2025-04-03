@@ -1,19 +1,19 @@
 import "dotenv/config";
-import conn from "../dbConnections/conn";
+import conn from "../dbConnections/conn.js";
 import { Model, DataTypes } from "sequelize";
 
 class RaffleSchedule extends Model {}
 
 RaffleSchedule.init(
   {
-    starting_date: {
+    schedule_date: {
       allowNull: true,
       type: DataTypes.DATE,
       defaultValue: null,
     },
     raffle_id: {
       allowNull: true,
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       defaultValue: null,
     },
   },
@@ -26,3 +26,4 @@ RaffleSchedule.init(
     indexes: [{ name: "raffle_schedule_idx", fields: ["id"] }],
   }
 );
+export default RaffleSchedule;

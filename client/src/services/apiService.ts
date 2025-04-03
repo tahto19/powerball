@@ -5,7 +5,10 @@ import {
   PrizeState,
   PrizePaginationState,
 } from "@/components/PrizeList/interface";
-
+import {
+  RaffleState,
+  RafflePaginationState,
+} from "@/components/GameMaintenance/interface";
 import { getDeviceInfo } from "@/utils/util";
 import axios from "axios";
 import { veriyCode } from "./types/user";
@@ -102,6 +105,26 @@ export const apiService = {
     console.log(token)   
  
     const res = apiClient.post("/api/prize-list/all", {data: bodyEncrypt(d, token)});
+    return res;
+  },
+
+  createGM: async (d: RaffleState, token: string | null) => {
+    const res = apiClient.post("/api/game-maintenance/create", {data: bodyEncrypt(d, token)});
+    return res;
+  },
+  updateGM: async (d: RaffleState, token: string | null) => {
+    const res = apiClient.put("/api/game-maintenance/", {data: bodyEncrypt(d, token)});
+    return res;
+  },
+  getGMList: async (d: getData, token: string | null) => {
+    const res = apiClient.post("/api/game-maintenance/", {data: bodyEncrypt(d, token)});
+    return res;
+  },
+  getGMListAll: async (d: fetchAll, token: string | null) => { 
+    console.log(d)  
+    console.log(token)   
+ 
+    const res = apiClient.post("/api/game-maintenance/all", {data: bodyEncrypt(d, token)});
     return res;
   },
 

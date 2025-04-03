@@ -1,5 +1,5 @@
 import "dotenv/config";
-import conn from "../dbConnections/conn";
+import conn from "../dbConnections/conn.js";
 import { Model, DataTypes } from "sequelize";
 
 class RafflePrize extends Model {}
@@ -13,10 +13,10 @@ RafflePrize.init(
     },
     raffle_schedule_id: {
       allowNull: true,
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       defaultValue: null,
     },
-    raffle_prize_id: {
+    prize_id: {
       allowNull: true,
       type: DataTypes.BIGINT,
       defaultValue: null,
@@ -31,3 +31,4 @@ RafflePrize.init(
     indexes: [{ name: "raffle_prize_info_idx", fields: ["id"] }],
   }
 );
+export default RafflePrize;
