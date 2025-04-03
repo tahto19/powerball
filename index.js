@@ -80,13 +80,13 @@ const start = async () => {
     // multipart
     fastify.register(import("@fastify/multipart"), {
       limits: {
-        fieldNameSize: 100, // Max field name size in bytes
-        fieldSize: 100000, // Max field value size in bytes
-        fields: 10, // Max number of non-file fields
-        fileSize: 100000000, // For multipart forms, the max file size in bytes
-        files: 1, // Max number of file fields
+        fieldNameSize: 1000, // Max field name size in bytes
+        fileSize: 10000000, // Max field value size in bytes
+        fields: 50, // Max number of non-file fields
+        fileSize: 10000000000, // For multipart forms, the max file size in bytes
+        files: 2, // Max number of file fields
         headerPairs: 2000, // Max number of header key=>value pairs
-        parts: 1000, // For multipart forms, the max number of parts (fields + files)
+        parts: 10000, // For multipart forms, the max number of parts (fields + files)
       },
     });
     // authentication part here

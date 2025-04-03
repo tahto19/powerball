@@ -54,6 +54,9 @@ const userSlice = createSlice({
       Object.assign(state, action.payload);
       state.outside = true;
     },
+    returnToVerification:(state)=>{
+      state.verifiedAndCreatedAccount = false
+    }
   },
   extraReducers: (b) => {
     b.addCase(outsideAddUser.fulfilled, (state) => {
@@ -75,6 +78,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { addUser, returnToAddUser, addOTP, editDetails } =
+export const {returnToVerification, addUser, returnToAddUser, addOTP, editDetails } =
   userSlice.actions;
 export default userSlice.reducer;

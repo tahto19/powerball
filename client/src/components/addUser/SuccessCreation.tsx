@@ -3,10 +3,13 @@ import { Button, Grid2, Typography } from "@mui/material";
 import Confetti from "react-confetti";
 import { useWindowSize } from "@uidotdev/usehooks";
 import { useNavigate } from "react-router-dom";
+import { returnToVerification } from "@/redux/reducers/user/userSlice";
+import { useAppDispatch } from "@/redux/hook";
 
 const SuccessCreation = () => {
   const { width, height } = useWindowSize();
   const nav = useNavigate();
+  const dispatch = useAppDispatch()
   return (
     <AnimatedContent
       distance={25}
@@ -50,6 +53,9 @@ const SuccessCreation = () => {
           >
             Login Now
           </Button>
+          <Button onClick={()=>{
+            dispatch(returnToVerification())
+          }}> return</Button>
         </Grid2>
       </Grid2>
     </AnimatedContent>

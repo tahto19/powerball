@@ -64,8 +64,13 @@ export const createUser = async (req, res) => {
       emailAddress,
       password,
     } = data.fields;
+    const data_ = await req.parts()
+    let fields = [];
+  
+    console.log(req.fields,'here22233344566');
     if (!file.mimetype.startsWith("image/")) throw new Error("ErrorCODE x91c");
-
+    console.log(data.fields ,'68')
+    console.log(req.body)
     let newFileName = `${moment().format(
       "MM-DD-YYYY"
     )}-${generateRandomNumber()}-${generateRandomChar(5)}-${file.filename}`;
