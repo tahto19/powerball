@@ -17,7 +17,7 @@ import AttractionsIcon from '@mui/icons-material/Attractions';
 const mainListItems = [
     { text: 'Home', icon: <HomeRoundedIcon />, path: "/dashboard" },
     { text: 'Administrator', icon: <GroupIcon />, path: "/administrator" },
-    { text: 'Game Maintenance', icon: <DisplaySettingsIcon />, path: "/dashboard" },
+    { text: 'Game Maintenance', icon: <DisplaySettingsIcon />, path: "/game-maintenance" },
     { text: 'Prize List', icon: <ListAltIcon />, path: "/prize-list" },
     { text: 'Raffle Draw', icon: <AttractionsIcon />, path: "/dashboard" },
 
