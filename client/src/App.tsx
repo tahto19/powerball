@@ -37,7 +37,7 @@ const routes = [
     title: "Prize List",
   },
   {
-    path: "/game-maintenace",
+    path: "/game-maintenance",
     component: <GameMaintenance />,
     title: "Game Maintenance",
   },
