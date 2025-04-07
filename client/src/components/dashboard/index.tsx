@@ -1,6 +1,7 @@
+import LotteryBalls from "@/components/RaffleAnimation.tsx"
 const Dashboard = () => {
     return (
-        <>Dashboard</>
+        <><LotteryBalls /></>
     )
 }
 

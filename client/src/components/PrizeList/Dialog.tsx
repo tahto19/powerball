@@ -3,8 +3,9 @@ import * as React from "react";
 import { useAppSelector } from "@/redux/hook";
 import { showToaster } from "@/redux/reducers/global/globalSlice"
 
-import { TextField, MenuItem, Dialog, DialogActions, DialogContent, DialogTitle, Button, MuiFormControl, FormLabel, Grid2 } from '@mui/material/TextField';
+import { TextField, MenuItem, Dialog, DialogActions, DialogContent, DialogTitle, Button, FormLabel, Grid2 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import MuiFormControl from '@mui/material/FormControl';
 
 import { MyDialogProps, PrizeState } from '@/components/PrizeList/interface';
 
