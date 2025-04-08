@@ -73,7 +73,7 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
 
     const handlePrizeNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
-        const amount = prize_List.list.filter((x) => x.id === value)
+        const amount = prize_List.list.filter((x) => Number(x.id) === Number(value))
         setData((prevData) => ({
             ...prevData,
             prize_id: value ?? "",
