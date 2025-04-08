@@ -188,13 +188,13 @@ export const uploadImage = async (file, filename) => {
   let uploadeImage = await fs.writeFileSync(_path, toBuffer_);
   return { uploadeImage, filename: fName };
 };
-export const randomLetters = async (length) => {
+export const randomLetters = (length) => {
   let mixed =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890~!@#$%^&*()_";
   let a = "";
   for (let i = 0; i < length; i++) {
-    let indexOfMixed = Math.floor(Math.random(mixed.length));
-    console.log(indexOfMixed);
+    let indexOfMixed = Math.floor(Math.random() * mixed.length);
+    a += mixed[indexOfMixed];
   }
   return a;
 };

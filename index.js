@@ -18,6 +18,7 @@ import bodyChecker from "./helpers/bodyChecker.js";
 import bodyEncrypt from "./helpers/bodyEncrypt.js";
 import OTPRoute from "./routes/OTP/OTP.route.js";
 import Associations from "./models/association/index.js";
+import Ticket from "./routes/Ticket/Ticket.js";
 
 const fastify = Fastify({
   trustProxy: true,
@@ -126,6 +127,7 @@ const start = async () => {
     fastify.register(userRoute, { prefix: "api/users" });
     fastify.register(PrizeListRoute, { prefix: "api/prize-list" });
     fastify.register(GameMaintenace, { prefix: "api/game-maintenance" });
+    fastify.register(Ticket, { prefix: "api/ticket" });
     fastify.register(OTPRoute, { prefix: "api/otp" });
     /**
      *error handler
