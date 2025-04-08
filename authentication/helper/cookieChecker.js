@@ -13,7 +13,7 @@ export const cookieChecker = async (req) => {
     let getCookeDetails = await req.jwtVerfiy(decryptCookie);
 
     if (moment(getCookeDetails.login).diff(moment(), "days") > 0)
-      throw new Error("ErroCODE X66");
+      throw new Error("ErrorCODE X66");
 
     if (!getCookeDetails) throw new Error("ErrorCODE x33");
 

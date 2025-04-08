@@ -5,7 +5,6 @@ import fs from "fs";
 import fp from "fastify-plugin";
 import cors from "@fastify/cors";
 
-import Associations from "./associations/associations.js";
 import conn from "./dbConnections/conn.js";
 
 import userRoute from "./routes/User/User.route.js";
@@ -18,6 +17,7 @@ import { auth } from "./authentication/auth.js";
 import bodyChecker from "./helpers/bodyChecker.js";
 import bodyEncrypt from "./helpers/bodyEncrypt.js";
 import OTPRoute from "./routes/OTP/OTP.route.js";
+import Associations from "./models/association/index.js";
 
 const fastify = Fastify({
   trustProxy: true,
@@ -33,6 +33,7 @@ const fastify = Fastify({
 });
 /**
  * Error code
+ * x11 not login
  * X1 = FETCH 1 NO FILTER IS SET
  * X2 = requests post has no body
  * X3 = requests put has no body

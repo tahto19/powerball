@@ -25,7 +25,7 @@ RafflePrize.init(
   {
     timestamps: true,
     sequelize: conn.sequelize,
-    modelName: "Raffle Prize",
+    modelName: "Raffle_Prize",
     paranoid: true,
     tableName: process.env.DB_PREFIX + "raffle_prize_info",
     indexes: [{ name: "raffle_prize_info_idx", fields: ["id"] }],

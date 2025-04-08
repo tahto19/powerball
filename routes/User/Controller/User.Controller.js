@@ -12,12 +12,11 @@ import otp from "../../OTP/Class/OTP.class.js";
 import uc from "../lib/User.class.js";
 import fs from "fs";
 export const getController = async (req, res) => {
-  
-  const {offset,limit,sort,filter} = req.body
-  console.log(req.body)
+  const { offset, limit, sort, filter } = req.body;
+
   // const { limit, offset,sort } = req.body;
   // console.log(limit,offset,JSON.parse(sort))
-  let r = await uc.FetchAndCount(offset,limit,sort,filter)
+  let r = await uc.FetchAndCount(offset, limit, sort, filter);
   //   if (!limit || !offset) throw new Error("limit or offset is required");
   // let a = await uc.FetchOne(offset, limit);
   // let b = a.toJSON();
@@ -26,8 +25,7 @@ export const getController = async (req, res) => {
 };
 
 export const insertController = async (req, res) => {
-
-  const { firstname, lastname, password, emailAddress, mobileNumber,isAdmin } =
+  const { firstname, lastname, password, emailAddress, mobileNumber, isAdmin } =
     req.body;
   let a = await uc.Insert({
     firstname,
@@ -35,7 +33,7 @@ export const insertController = async (req, res) => {
     password,
     emailAddress,
     mobileNumber,
-    isAdmin:isAdmin?isAdmin:false
+    isAdmin: isAdmin ? isAdmin : false,
   });
 
   res.send(cSend(a));
@@ -57,7 +55,7 @@ export const createUser = async (req, res) => {
 
     const {
       firstname,
-    file,
+      file,
       lastname,
       mobileNumber,
       birthdate,
@@ -66,10 +64,10 @@ export const createUser = async (req, res) => {
     } = req.body;
 
     let fields = [];
-    console.log(req.body)
+    console.log(req.body);
 
     if (!file.mimetype.startsWith("image/")) throw new Error("ErrorCODE x91c");
-   
+
     let newFileName = `${moment().format(
       "MM-DD-YYYY"
     )}-${generateRandomNumber()}-${generateRandomChar(5)}-${file.filename}`;

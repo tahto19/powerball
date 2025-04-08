@@ -60,7 +60,7 @@ RaffleDetails.init(
   {
     timestamps: true,
     sequelize: conn.sequelize,
-    modelName: "Raffle Details",
+    modelName: "Raffle_Details",
     paranoid: true,
     tableName: process.env.DB_PREFIX + "raffle_details",
     indexes: [

@@ -31,7 +31,6 @@ const algorithm = "aes-256-cbc";
 const key = process.env.DB_KEY; //  this must not change it will change the value of the db
 const iv = process.env.DB_IV; // this must not change it will change the value of the db
 export const encrpytPassword = async (_d) => {
-  console.log("here");
   const cipher = createCipheriv(algorithm, key, iv);
   let encrypted = cipher.update(_d, "utf8", "hex");
   encrypted += cipher.final("hex");
@@ -144,7 +143,7 @@ export const encryptData = (data, token) => {
 };
 export const decryptData = (data, token) => {
   var decrypt = CryptoJS.AES.decrypt(data, token).toString(CryptoJS.enc.Utf8);
-  console.log(decrypt);
+
   return decrypt;
 };
 export const generateRandomNumber = () => {
@@ -167,8 +166,7 @@ export const emailSender = async (data) => {
   console.log(data);
   const { from, to, subject, text, html } = data;
   if (!subject || !to) throw new Error("ErrorCODE x231");
-  console.log("info", "here2");
-  console.log(!from ? "crisanto.tubelleja@eacomm.com" : from);
+
   const info = await transport.sendMail({
     from: !from ? "crisanto.tubelleja@eacomm.com" : from, // Sender address
     to: to, // Receiver email
@@ -189,4 +187,14 @@ export const uploadImage = async (file, filename) => {
   let toBuffer_ = await file.toBuffer();
   let uploadeImage = await fs.writeFileSync(_path, toBuffer_);
   return { uploadeImage, filename: fName };
+};
+export const randomLetters = async (length) => {
+  let mixed =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890~!@#$%^&*()_";
+  let a = "";
+  for (let i = 0; i < length; i++) {
+    let indexOfMixed = Math.floor(Math.random(mixed.length));
+    console.log(indexOfMixed);
+  }
+  return a;
 };

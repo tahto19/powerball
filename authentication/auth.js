@@ -12,12 +12,23 @@ export const auth = async (req, res) => {
     let PTDNA = JSON.parse(fs.readFileSync(p, "utf8"));
     let findNoP = PTDNA.find((x) => {
       let regex = new RegExp(x.path.toString(), "i").test(req.url.toString());
-      
       if (regex && x.method.toLowerCase() === req.method.toLowerCase())
         return x;
     });
     if (findNoP === undefined) {
+      // check adminPaths
+      let AdminP = getPath("/authentication/adminPath.json");
+      let readAdminP = JSON.parse(fs.readFileSync(AdminP, "utf8"));
+      let findNoAP = readAdminP.find((x) => {
+        let regex = new RegExp(x.path.toString(), "i").test(req.url.toString());
+        if (regex) return x;
+      });
       let c_checkerDetails = await cookieChecker(req);
+      // if admin paths found check for the cookieChecker if the user is admin
+      if (findNoAP) {
+        console.log(c_checkerDetails);
+      }
+    } else {
     }
   } catch (err) {
     throw err;

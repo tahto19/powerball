@@ -2,7 +2,6 @@
 
 import CryptoJS from "crypto-js";
 
-
 import {
   browserName,
   browserVersion,
@@ -28,9 +27,9 @@ const getErrorsStatus = (code: string) => {
     case "x44":
       return "you need to clear your cookie";
     case "x55":
-      return "needs relogin";
+      return "needs re-login";
     case "x66":
-      return "needs relogin";
+      return "needs re-login";
     case "x58":
       return "code is invalid";
     case "x71":
@@ -41,8 +40,11 @@ const getErrorsStatus = (code: string) => {
       return "File is not image";
     case "x909":
       return "Email is already used";
+    case "x11":
+      return "not login";
+
     case "x741":
-      return "Generated OTP but the system email sender has a problem please contact adminstartor";
+      return "Generated OTP but the system email sender has a problem please contact administrator";
     default:
       return false;
   }
@@ -50,13 +52,13 @@ const getErrorsStatus = (code: string) => {
 
 export const getMessage = (error: any) => {
   const getErrorMessage = getErrorsStatus(error?.response?.data?.message);
-  console.log(typeof error.Error)
+  console.log(typeof error.Error);
   const errorMessage = getErrorMessage
     ? getErrorMessage
     : error?.response?.data?.message
-      ? error?.response?.data?.message
-      : error;
-  console.log(errorMessage)
+    ? error?.response?.data?.message
+    : error;
+  console.log(errorMessage);
   return errorMessage;
 };
 
@@ -72,7 +74,10 @@ export const getDeviceInfo = async () => {
   return UserAgent;
 };
 
-export const bodyDecrypt = (data: string | null | undefined, token: string | null): any | null => {
+export const bodyDecrypt = (
+  data: string | null | undefined,
+  token: string | null
+): any | null => {
   if (!data || (typeof data === "string" && !data.trim())) {
     // Ensure data is not empty or just whitespace
     console.error("Decryption failed: Empty data.");
@@ -102,12 +107,20 @@ export const bodyDecrypt = (data: string | null | undefined, token: string | nul
   }
 };
 
-export const bodyEncrypt = (d: string | null | undefined, token: string | null): any | null => {
-  const data = typeof d === "string" ? d : typeof d === 'array' || typeof d === 'object' ? JSON.stringify(d) : d
+export const bodyEncrypt = (
+  d: string | null | undefined,
+  token: string | null
+): any | null => {
+  const data =
+    typeof d === "string"
+      ? d
+      : typeof d === "array" || typeof d === "object"
+      ? JSON.stringify(d)
+      : d;
   if (!data || (typeof data === "string" && !data.trim())) {
     // Ensure data is not empty or just whitespace
     console.error("Decryption failed: Empty data.");
-    throw new Error('Encryption  failed: Empty data.');
+    throw new Error("Encryption  failed: Empty data.");
   }
 
   if (!token) {
@@ -116,11 +129,11 @@ export const bodyEncrypt = (d: string | null | undefined, token: string | null):
     throw new Error('Encryption  failed: Missing token doesn"t exists.');
   }
   try {
-    const bytes = CryptoJS.AES.encrypt(data, token).toString()
+    const bytes = CryptoJS.AES.encrypt(data, token).toString();
     if (!bytes) {
       // Handle incorrect decryption. (returns an empty string, it does not throw an exception)
       console.error("Encryption failed: Invalid or corrupt data.");
-      throw new Error('Encryption failed');
+      throw new Error("Encryption failed");
     }
 
     return bytes;

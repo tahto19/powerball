@@ -1,5 +1,5 @@
 //@ts-nocheck
-import {bodyEncrypt} from "@/utils/util"
+import { bodyEncrypt } from "@/utils/util";
 import { userState } from "@/components/addUser/TypesHere";
 import {
   PrizeState,
@@ -18,7 +18,6 @@ interface Credentials {
   email: string;
   password: string;
 }
-
 
 let apiClient: any;
 
@@ -39,7 +38,6 @@ async function initApiClient() {
 
 // Call the initialization function
 initApiClient();
-
 
 // Function to set the auth token (Call this after login)
 // export const setAuthToken = () => {
@@ -83,48 +81,64 @@ export const apiService = {
     localStorage.removeItem("token");
   },
 
- createPrizeList: async (d: PrizeState, token: string | null) => {
+  createPrizeList: async (d: PrizeState, token: string | null) => {
     // const res = apiClient.post('/api/prize-list/', d, {headers: {
     //   "Cookie": `cookie_pb_1271=${token}`,
     // }})
-    const res = apiClient.post("/api/prize-list/create", {data: bodyEncrypt(d, token)});
+    const res = apiClient.post("/api/prize-list/create", {
+      data: bodyEncrypt(d, token),
+    });
     // const res = apiClient.post('/api/prize-list/', d)
 
     return res;
   },
   updatePrizeList: async (d: PrizeState, token: string | null) => {
-    const res = apiClient.put("/api/prize-list/", {data: bodyEncrypt(d, token)});
+    const res = apiClient.put("/api/prize-list/", {
+      data: bodyEncrypt(d, token),
+    });
     return res;
   },
   getPrizeList: async (d: getData, token: string | null) => {
-    const res = apiClient.post("/api/prize-list/", {data: bodyEncrypt(d, token)});
+    const res = apiClient.post("/api/prize-list/", {
+      data: bodyEncrypt(d, token),
+    });
     return res;
   },
-  getPrizeListAll: async (d: fetchAll, token: string | null) => { 
-    console.log(d)  
-    console.log(token)   
- 
-    const res = apiClient.post("/api/prize-list/all", {data: bodyEncrypt(d, token)});
+  getPrizeListAll: async (d: fetchAll, token: string | null) => {
+    console.log(d);
+    console.log(token);
+
+    const res = apiClient.post("/api/prize-list/all", {
+      data: bodyEncrypt(d, token),
+    });
     return res;
   },
 
   createGM: async (d: RaffleState, token: string | null) => {
-    const res = apiClient.post("/api/game-maintenance/create", {data: bodyEncrypt(d, token)});
+    const res = apiClient.post("/api/game-maintenance/create", {
+      data: bodyEncrypt(d, token),
+    });
     return res;
   },
   updateGM: async (d: RaffleState, token: string | null) => {
-    const res = apiClient.put("/api/game-maintenance/", {data: bodyEncrypt(d, token)});
+    const res = apiClient.put("/api/game-maintenance/", {
+      data: bodyEncrypt(d, token),
+    });
     return res;
   },
   getGMList: async (d: getData, token: string | null) => {
-    const res = apiClient.post("/api/game-maintenance/", {data: bodyEncrypt(d, token)});
+    const res = apiClient.post("/api/game-maintenance/", {
+      data: bodyEncrypt(d, token),
+    });
     return res;
   },
-  getGMListAll: async (d: fetchAll, token: string | null) => { 
-    console.log(d)  
-    console.log(token)   
- 
-    const res = apiClient.post("/api/game-maintenance/all", {data: bodyEncrypt(d, token)});
+  getGMListAll: async (d: fetchAll, token: string | null) => {
+    console.log(d);
+    console.log(token);
+
+    const res = apiClient.post("/api/game-maintenance/all", {
+      data: bodyEncrypt(d, token),
+    });
     return res;
   },
 
@@ -158,15 +172,17 @@ export const apiService = {
   verifyOTP: async (data: veriyCode) => {
     return apiClient.post("/api/otp/verify", data);
   },
-  insertAdmin : async(data:adminType) =>{
-    return apiClient.post("/api/users",{data})
+  insertAdmin: async (data: adminType) => {
+    return apiClient.post("/api/users", { data });
   },
-  updateAdmin:async(data:adminType)=>{
-    return apiClient.put("api/users",{data})
+  updateAdmin: async (data: adminType) => {
+    return apiClient.put("api/users", { data });
   },
-  getAdmin:async(data:getData) =>{
-    return apiClient.post("/api/users/admin",{data})
+  getAdmin: async (data: getData) => {
+    return apiClient.post("/api/users/admin", { data });
   },
+  // raffle here
+  getRaffleList: async (data) => {},
   // for token
   checkSession: async () => {
     return apiClient.get("/api/login/checkSession");
