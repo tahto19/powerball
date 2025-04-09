@@ -41,3 +41,9 @@ export const postAdminType = {
 export type raffle = {
   ticketID: string | null;
 };
+export interface IDetectedBarcode {
+  boundingBox: IBoundingBox | undefined;
+  cornerPoints: IPoint[] | undefined;
+  format: string | undefined;
+  rawValue: string | undefined;
+}

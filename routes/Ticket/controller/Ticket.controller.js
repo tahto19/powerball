@@ -6,7 +6,7 @@ export const raffleDrawController = (req, res) => {
     const { tickets } = req.body;
     console.log(tickets);
     let a = random(tickets);
-    res.send(cSend(tickets));
+    res.send(cSend(a));
   } catch (err) {
     throw err;
   }

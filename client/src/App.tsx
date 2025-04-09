@@ -23,6 +23,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import PrizeList from "./components/PrizeList";
 import { useAppDispatch, useAppSelector } from "./redux/hook";
 import { getToken } from "./redux/reducers/token/asyncCalls";
+import TicketScanner from "./components/ticketScanner/TicketScanner";
 
 const routes = [
   { path: "/dashboard", component: <Dashboard />, title: "Dashboard" },
@@ -40,6 +41,11 @@ const routes = [
     path: "/game-maintenance",
     component: <GameMaintenance />,
     title: "Game Maintenance",
+  },
+  {
+    path: "/scan",
+    component: <TicketScanner />,
+    title: "Ticket Scanner",
   },
 ];
 
@@ -73,7 +79,15 @@ function AppRoutes() {
           </AppTheme>
         }
       />
-      <Route path="/" element={<Navigate to="/sign-in" replace />} />
+      <Route
+        path="/"
+        element={
+          <Navigate
+            to="/sign-in"
+            replace
+          />
+        }
+      />
 
       {/* Protected Routes */}
       <Route element={<ProtectedRoute />}>
@@ -91,10 +105,16 @@ function AppRoutes() {
       </Route>
 
       {/* Iframe Routes */}
-      <Route path="/iframe/add-user" element={<AdduserMain />} />
+      <Route
+        path="/iframe/add-user"
+        element={<AdduserMain />}
+      />
 
       {/* Catch-All Error Page */}
-      <Route path="*" element={<ErrorPage />} />
+      <Route
+        path="*"
+        element={<ErrorPage />}
+      />
     </Routes>
   );
 }
