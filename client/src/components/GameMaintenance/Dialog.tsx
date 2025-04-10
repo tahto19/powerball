@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useState, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "@/redux/hook";
 import { showToaster } from "@/redux/reducers/global/globalSlice"

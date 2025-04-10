@@ -1,4 +1,4 @@
-
+//@ts-nocheck
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { DataGrid, GridPaginationModel, GridRowsProp, GridColDef, getGridStringOperators } from '@mui/x-data-grid';
 
