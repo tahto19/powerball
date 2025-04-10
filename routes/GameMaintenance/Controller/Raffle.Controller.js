@@ -4,16 +4,17 @@ import rc from "../lib/Raffle.class.js";
 export const insertController = async (req, res) => {
   try {
     if (!req.body) throw new Error("ErrorCODE X2");
+    const { formData, newPrizeList } = req.body;
 
     /** Check Raffle ID */
-    const { details } = req.body;
+    const { details } = formData;
     const findRaffle = await rc.FetchOne([
       { filter: details, field: "details", type: "string_eq" },
     ]);
     if (findRaffle !== null) throw new Error("ErrorCODE x71");
     /** END Check */
 
-    const a = await rc.Insert(req.body);
+    const a = await rc.Insert(formData, newPrizeList);
     res.send(cSend(a));
   } catch (error) {
     throw error;
@@ -43,6 +44,7 @@ export const getControllerAll = async (req, res) => {
 
 export const updateController = async (req, res) => {
   if (!req.body) throw new Error("ErrorCODE X2");
-  let a = await rc.Edit(req.body);
+  const { formData, newPrizeList } = req.body;
+  let a = await rc.Edit(formData, newPrizeList);
   res.send(cSend(a));
 };

@@ -16,11 +16,16 @@ RaffleSchedule.init(
       type: DataTypes.INTEGER,
       defaultValue: null,
     },
+    status: {
+      type: DataTypes.SMALLINT,
+      allowNull: false,
+      defaultValue: 2, //2 for active
+    },
   },
   {
     timestamps: true,
     sequelize: conn.sequelize,
-    modelName: "Raffle Schedule",
+    modelName: "Raffle_Schedule",
     paranoid: true,
     tableName: process.env.DB_PREFIX + "raffle_details_schedule",
     indexes: [{ name: "raffle_schedule_idx", fields: ["id"] }],

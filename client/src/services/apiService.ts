@@ -8,6 +8,7 @@ import {
 import {
   RaffleState,
   RafflePaginationState,
+  PayloadState
 } from "@/components/GameMaintenance/interface";
 import { getDeviceInfo } from "@/utils/util";
 import axios from "axios";
@@ -114,13 +115,13 @@ export const apiService = {
     return res;
   },
 
-  createGM: async (d: RaffleState, token: string | null) => {
+  createGM: async (d: PayloadState, token: string | null) => {
     const res = apiClient.post("/api/game-maintenance/create", {
       data: bodyEncrypt(d, token),
     });
     return res;
   },
-  updateGM: async (d: RaffleState, token: string | null) => {
+  updateGM: async (d: PayloadState, token: string | null) => {
     const res = apiClient.put("/api/game-maintenance/", {
       data: bodyEncrypt(d, token),
     });

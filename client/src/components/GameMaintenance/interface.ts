@@ -10,7 +10,14 @@ export interface MyDialogProps {
     onSubmit: () => void;
 }
 
-
+export interface RaffleScheduleState {
+    id: number | null;
+    prizeInfo: PrizeInfoState[]
+}
+export interface PrizeInfoState {
+    id: number | null;
+    prize_id: number;
+}
 
 export interface RaffleState {
     id: number | null;
@@ -20,8 +27,12 @@ export interface RaffleState {
     starting_date: string | null;
     end_date: string | null;
     schedule_type: number | null;
-    prize_id: number | string;
-    amount: number | string;
+    raffleSchedule: RaffleScheduleState[]
+}
+
+export interface PayloadState {
+    formData: RaffleState
+    newPrizeList: {id: number, value: number}[]
 }
 
 
@@ -40,6 +51,5 @@ export const initialRaffleData: RaffleState = {
         starting_date: moment().toISOString(),
         end_date: null,
         schedule_type: 1,
-        prize_id: "",
-        amount: "",
+        raffleSchedule: [{id: null, prizeInfo: [{id: null, prize_id: -1}]}],
 }

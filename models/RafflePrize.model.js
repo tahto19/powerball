@@ -21,6 +21,11 @@ RafflePrize.init(
       type: DataTypes.BIGINT,
       defaultValue: null,
     },
+    status: {
+      type: DataTypes.SMALLINT,
+      allowNull: false,
+      defaultValue: 1, //1 for not deleted
+    },
   },
   {
     timestamps: true,

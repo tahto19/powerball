@@ -11,11 +11,8 @@ import { WhereFilters } from "../../../util/util.js";
 class Raffle_class {
   constructor() {}
 
-  async Insert(_data) {
-    const amount = _data.amount;
-
+  async Insert(_data, newPrizeList) {
     delete _data.id;
-    delete _data.amount;
 
     const createRaffleDetails = await RaffleDetails.create(_data);
 
@@ -23,17 +20,27 @@ class Raffle_class {
     const scheduleData = {
       raffle_id: createRaffleDetails.id,
       schedule_date: _data.starting_date,
+      status: _data.active ? 2 : 3,
     };
 
     const createRaffleSchedule = await RaffleSchedule.create(scheduleData);
 
     //======== Create Raffle prize data ===============//
-    const prizeData = {
-      raffle_schedule_id: createRaffleSchedule.id,
-      prize_id: _data.prize_id,
-      amount: amount,
-    };
-    const createRafflePrizeInfo = await RafflePrize.create(prizeData);
+
+    for (const x of newPrizeList) {
+      const prizeData = {
+        raffle_schedule_id: createRaffleSchedule.id,
+        prize_id: x.id,
+        amount: x.value,
+      };
+
+      try {
+        const createRafflePrizeInfo = await RafflePrize.create(prizeData);
+      } catch (error) {
+        console.error("Error creating raffle prize:", error);
+        throw new Error("Failed to create prize info");
+      }
+    }
 
     return createRaffleDetails.id;
   }
@@ -51,6 +58,23 @@ class Raffle_class {
       limit: parseInt(limit),
       offset: parseInt(offset),
       order: sort,
+      include: [
+        {
+          model: RaffleSchedule,
+          order: [["id", "DESC"]],
+          as: "raffleSchedule",
+          attributes: ["id"],
+          include: [
+            {
+              model: RafflePrize,
+              order: [["id", "DESC"]],
+              as: "prizeInfo",
+              attributes: ["id", "prize_id"],
+              where: { status: 1 },
+            },
+          ],
+        },
+      ],
     };
 
     if (filter.length !== 0) query["where"] = WhereFilters(filter);
@@ -72,13 +96,56 @@ class Raffle_class {
     return { list: rows, total: count };
   }
 
-  async Edit(_data) {
+  async Edit(_data, newPrizeList) {
     let count = await RaffleDetails.count({ where: { id: _data.id } });
-    if (count < 0) throw new Error("User Not found");
+    if (count === 0) throw new Error("User Not found");
     const id = _data.id;
     delete _data.id;
 
     await RaffleDetails.update(_data, { where: { id }, individualHooks: true });
+
+    const prizeInfo = _data.raffleSchedule[0].prizeInfo;
+
+    // Update prize info status to 2 if the old prize info is not present in the new prize info.
+    for (const item of prizeInfo) {
+      const filter = newPrizeList.filter((x) => x.id === item.prize_id);
+      const prizeInfo_id = item.id;
+
+      if (filter.length === 0) {
+        const prizeData = {
+          status: 2,
+        };
+
+        try {
+          await RafflePrize.update(prizeData, {
+            where: { id: prizeInfo_id },
+            individualHooks: true,
+          });
+        } catch (error) {
+          console.error("Error updating prize info:", error);
+          throw new Error("Failed to update prize info");
+        }
+      }
+    }
+
+    // Add new data in PrizeInfo Table
+    for (const item of newPrizeList) {
+      const filter = prizeInfo.filter((x) => x.prize_id === item.id);
+      if (filter.length === 0) {
+        const prizeData = {
+          raffle_schedule_id: _data.raffleSchedule[0].id,
+          prize_id: item.id,
+          amount: item.value,
+        };
+
+        try {
+          const createRafflePrizeInfo = await RafflePrize.create(prizeData);
+        } catch (error) {
+          console.error("Error creating raffle prize:", error);
+          throw new Error("Failed to create prize info");
+        }
+      }
+    }
 
     return id;
   }

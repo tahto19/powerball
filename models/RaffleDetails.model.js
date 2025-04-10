@@ -51,11 +51,6 @@ RaffleDetails.init(
         },
       },
     },
-    prize_id: {
-      allowNull: true,
-      type: DataTypes.BIGINT,
-      defaultValue: null,
-    },
   },
   {
     timestamps: true,

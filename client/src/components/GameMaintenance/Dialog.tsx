@@ -10,16 +10,18 @@ import { TextField, Box, Switch, MenuItem, Dialog, DialogActions, DialogContent,
 import MuiFormControl from '@mui/material/FormControl';
 import { styled } from '@mui/material/styles';
 
-import { RaffleState, MyDialogProps } from '@/components/GameMaintenance/interface.ts';
-import { PrizeListAll, initialPrizeListData } from '@/components/PrizeList/interface.ts';
+import { PayloadState, RaffleState, MyDialogProps } from '@/components/GameMaintenance/interface.ts';
+import { PrizeListAll, initialPrizeListData, PrizeState } from '@/components/PrizeList/interface.ts';
 
 import apiService from "@/services/apiService";
 import { bodyDecrypt } from "@/utils/util";
+import PrizeListDialog from "./PrizeListDialog";
+import CustomizedDataGridBasic from "../CustomizedDataGridBasic";
+import { columnHeader, paginationModel } from "./DataGridDetails.ts";
 
 const FormControl = styled(MuiFormControl)(() => ({
     width: "100%"
 }));
-
 
 const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDialogProps) => {
     const dispatch = useAppDispatch();
@@ -29,7 +31,15 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
     const [formData, setData] = useState<RaffleState>(data);
     const { token } = useAppSelector((state) => state.token);
     const [prize_List, setPrizeList] = useState<PrizeListAll>(initialPrizeListData);
+    const [selectedPrize, setSelectedPrize] = useState<PrizeState[]>([]);
 
+    const handlePrizeSubmit = (list: []) => {
+        const prizelist = JSON.parse(JSON.stringify(prize_List))
+        const selected_prize = prizelist.list.filter((x: any) =>
+            list.some(z => Number(z) === Number(x.id))
+        );
+        setSelectedPrize(selected_prize)
+    }
 
     const handleSubmit = async (e: React.FocusEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -38,11 +48,15 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
             let message;
             let res;
 
+            const payload: PayloadState = {
+                formData,
+                newPrizeList: selectedPrize.map(x => ({ id: Number(x.id), value: Number(x.value) }))
+            }
             if (dialogType === 'Edit') {
-                res = await apiService.updateGM(formData, token);
+                res = await apiService.updateGM(payload, token);
                 message = "Record updated successfully."
             } else {
-                res = await apiService.createGM(formData, token);
+                res = await apiService.createGM(payload, token);
                 message = "Record created successfully."
             }
 
@@ -109,10 +123,20 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
         setDialogType(dialogType)
         setPrizeList(prizeList)
 
-        console.log(prizeList)
+        const selected_prize = prizeList.list.filter(x =>
+            data.raffleSchedule[0].prizeInfo.some(z => Number(z.prize_id) === Number(x.id))
+        );
+
+        setSelectedPrize(selected_prize)
     }, [data, dialogType, prizeList])
 
-
+    const [openPrizeList, setOpenPrizeListDialog] = useState(false);
+    const handleOnClosePrizeList = (value: boolean) => {
+        setOpenPrizeListDialog(value)
+    }
+    const handleOpenPrizeListDialog = () => {
+        setOpenPrizeListDialog(true)
+    }
     return (
         <>
             <Dialog
@@ -199,7 +223,34 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                     </LocalizationProvider>
                                 </FormControl>
                             </Grid2>
-                            <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+                            <Box sx={{
+                                display: "flex",
+                                justifyContent: "end",
+                                width: "100%",
+                                marginTop: "10px",
+                            }}>
+                                <Button
+                                    variant="contained"
+                                    onClick={handleOpenPrizeListDialog}
+                                >
+                                    Add Prizes
+                                </Button>
+                            </Box>
+
+
+                            <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }} sx={{ marginTop: "10px" }}>
+                                <CustomizedDataGridBasic
+                                    sx={{
+                                        width: "100%",
+                                    }}
+                                    data={selectedPrize}
+                                    headers={columnHeader}
+                                    pagination={paginationModel}
+                                    checkboxSelection={false}
+                                />
+                            </Grid2>
+
+                            {/* <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
                                 <FormControl>
                                     <FormLabel htmlFor="schedule_type">Prize Name</FormLabel>
                                     <TextField
@@ -252,7 +303,7 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                         }}
                                     />
                                 </FormControl>
-                            </Grid2>
+                            </Grid2> */}
                             {/* {
                                 formData.schedule_type !== 1 ? (
                                     <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
@@ -267,6 +318,7 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                 ) : null
                             } */}
                         </Grid2>
+                        <PrizeListDialog selectedPrize={selectedPrize} open={openPrizeList} onClose={handleOnClosePrizeList} prizeList={prizeList} onSubmit={handlePrizeSubmit} />
                     </DialogContent>
 
                     <DialogActions>

@@ -111,7 +111,7 @@ const GameMaintenace = () => {
 
         const d = bodyDecrypt(res.data, token)
         if (d && d.success === 'success') {
-            console.log(d)
+            console.log(">>>>>>>>", d.data)
             setRaffleList(d.data.list)
             setListCount(d.data.total)
         }
@@ -128,9 +128,9 @@ const GameMaintenace = () => {
     }
 
     const handleEditAction = (row: RaffleState) => {
-        const list = prizeList.list.find((x: any) => x.id === row.prize_id)
+        console.log("-------", row)
         setDialogType("Edit");
-        setDataRow({ ...row, amount: list ? list.value : 0 })
+        setDataRow({ ...row })
         setOpen(true)
     }
 
@@ -156,7 +156,6 @@ const GameMaintenace = () => {
             const d = bodyDecrypt(res.data, token)
 
             if (d && d.success === 'success') {
-                console.log(d.data)
                 setPrizeList(d.data)
             }
         }

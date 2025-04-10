@@ -60,6 +60,13 @@ const fastify = Fastify({
  * 2 = weekly
  */
 
+/**
+ * reaffle details schedule status
+ * 1 = done
+ * 2 = active
+ * 3 = inactive
+ */
+
 const start = async () => {
   try {
     // cors
