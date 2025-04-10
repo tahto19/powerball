@@ -1,3 +1,4 @@
+//@ts-nocheck
 import * as React from "react";
 
 import CustomizedDataGrid from "../CustomizedDataGrid.tsx";

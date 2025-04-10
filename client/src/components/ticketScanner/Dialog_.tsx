@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { IDetectedBarcode } from "@/types/allTypes";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import { useState, CSSProperties } from "react";

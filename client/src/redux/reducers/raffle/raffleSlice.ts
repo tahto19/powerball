@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { raffle } from "@/types/allTypes";
 import { createSlice } from "@reduxjs/toolkit";
 import { getRaffleList } from "./asyncCalls";

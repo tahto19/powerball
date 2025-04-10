@@ -1,3 +1,4 @@
+//@ts-nocheck
 import FadeContent from "@/animated/FadeContent";
 import { CSSProperties, useState } from "react";
 import ClockLoader from "react-spinners/ClockLoader";

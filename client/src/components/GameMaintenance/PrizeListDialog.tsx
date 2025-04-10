@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useState, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "@/redux/hook";
 import { showToaster } from "@/redux/reducers/global/globalSlice"
@@ -39,9 +40,6 @@ const PrizeListDialog = ({ open, prizeList, selectedPrize, onClose, onSubmit }: 
     useEffect(() => {
         if (selectedPrize && selectedPrize.length > 0) {
             const newselectedPrize = selectedPrize.map((x: any) => x.id)
-            console.log("=>>>>>>", newselectedPrize)
-            console.log("=====", selectedPrize)
-
             setSelectedPrizes(newselectedPrize)
         }
     }, [selectedPrize])

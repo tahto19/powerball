@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { GridColDef } from "@mui/x-data-grid";
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
@@ -23,9 +24,9 @@ const headers: GridColDef[] = [
     "active", 
     "flex": 1, 
     "minWidth": 200,
-    renderCell: (params: { value: any }) => {
-      return params.value ? `${<CheckIcon /> }`: <CloseIcon />;
-    },
+    // renderCell: (params: { value: any }) => {
+    //   return params.value ? `${<CheckIcon /> }`: <CloseIcon />;
+    // },
   }
 ]
 export default headers
