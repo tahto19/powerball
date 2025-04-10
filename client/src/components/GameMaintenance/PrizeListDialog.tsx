@@ -13,26 +13,18 @@ import { styled } from '@mui/material/styles';
 import { RaffleState, MyDialogProps } from '@/components/GameMaintenance/interface.ts';
 import { PrizeListAll, initialPrizeListData } from '@/components/PrizeList/interface.ts';
 
-import apiService from "@/services/apiService";
-import { bodyDecrypt } from "@/utils/util";
+import { PrizeListDialogProps } from '@/components/GameMaintenance/interface.ts';
 import CustomizedDataGridBasic from "../CustomizedDataGridBasic";
 import { columnHeader, paginationModel } from "./DataGridDetails.ts";
-const FormControl = styled(MuiFormControl)(() => ({
-    width: "100%"
-}));
-const headers = [
-    { field: 'name', headerName: 'Prize Name', flex: 1, },
-    { field: 'type', headerName: 'Type', flex: 1, },
-    { field: 'value', headerName: 'Amount', flex: 1, },
-]
-const initialPaginationData = { page: 0, pageSize: 10 }
 
-const PrizeListDialog = ({ open, prizeList, selectedPrize, onClose, onSubmit }) => {
-    const dispatch = useAppDispatch();
-    const [pagination, setPagination] = useState(initialPaginationData);
-    const [selectedPrizes, setSelectedPrizes] = useState([]);
+const PrizeListDialog = ({ open, prizeList, selectedPrize, onClose, onSubmit }: PrizeListDialogProps) => {
+    const [selectedPrizes, setSelectedPrizes] = useState<number[]>([0]);
 
     const handleClose = () => {
+        if (selectedPrize && selectedPrize.length > 0) {
+            const newselectedPrize = selectedPrize.map((x: any) => x.id)
+            setSelectedPrizes(newselectedPrize)
+        }
         onClose(false);
     };
     const handleSubmit = () => {
@@ -52,9 +44,8 @@ const PrizeListDialog = ({ open, prizeList, selectedPrize, onClose, onSubmit }) 
 
             setSelectedPrizes(newselectedPrize)
         }
-
-
     }, [selectedPrize])
+
     return (
         <>
             <Dialog

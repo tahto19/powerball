@@ -10,6 +10,15 @@ export interface MyDialogProps {
     onSubmit: () => void;
 }
 
+export interface PrizeListDialogProps {
+    open: boolean;
+    selectedPrize: number[];
+    prizeList: PrizeListAll;
+    onClose: (value: boolean) => void;
+    onSubmit: (value: number[]) => void;
+}
+
+
 export interface RaffleScheduleState {
     id: number | null;
     prizeInfo: PrizeInfoState[]

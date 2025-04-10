@@ -6,7 +6,7 @@ import moment from "moment";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { TextField, Box, Switch, MenuItem, Dialog, DialogActions, DialogContent, DialogTitle, Button, FormLabel, FormControlLabel, Grid2 } from '@mui/material';
+import { Chip, TextField, Box, Switch, MenuItem, Dialog, DialogActions, DialogContent, DialogTitle, Button, FormLabel, FormControlLabel, Grid2 } from '@mui/material';
 import MuiFormControl from '@mui/material/FormControl';
 import { styled } from '@mui/material/styles';
 
@@ -17,8 +17,32 @@ import apiService from "@/services/apiService";
 import { bodyDecrypt } from "@/utils/util";
 import PrizeListDialog from "./PrizeListDialog";
 import CustomizedDataGridBasic from "../CustomizedDataGridBasic";
-import { columnHeader, paginationModel } from "./DataGridDetails.ts";
+import { paginationModel } from "./DataGridDetails.ts";
 
+const renderType = (status: 'minor' | 'major' | 'grand') => {
+    const colors: { [index: string]: '#4FC3F7' | '#FFA726' | '#AB47BC' } = {
+        minor: '#4FC3F7',
+        major: '#FFA726',
+        grand: '#AB47BC',
+    };
+
+    return <Chip label={status} sx={{
+        background: colors[status], '& .MuiChip-label': {
+            color: '#fff',
+        },
+    }} size="small" />;
+}
+const columnHeader = [
+    { field: 'name', headerName: 'Prize Name', flex: 1, },
+    {
+        field: 'type', headerName: 'Type', flex: 1, renderCell: (params: any) => {
+
+            // return renderType(params.value as any)
+            return params.value;
+        },
+    },
+    { field: 'value', headerName: 'Amount', flex: 1, },
+]
 const FormControl = styled(MuiFormControl)(() => ({
     width: "100%"
 }));
@@ -32,8 +56,9 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
     const { token } = useAppSelector((state) => state.token);
     const [prize_List, setPrizeList] = useState<PrizeListAll>(initialPrizeListData);
     const [selectedPrize, setSelectedPrize] = useState<PrizeState[]>([]);
+    const [submitting, setSubmitting] = useState(false);
 
-    const handlePrizeSubmit = (list: []) => {
+    const handlePrizeSubmit = (list: number[]) => {
         const prizelist = JSON.parse(JSON.stringify(prize_List))
         const selected_prize = prizelist.list.filter((x: any) =>
             list.some(z => Number(z) === Number(x.id))
@@ -43,7 +68,7 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
 
     const handleSubmit = async (e: React.FocusEvent<HTMLFormElement>) => {
         e.preventDefault();
-
+        setSubmitting(true);
         try {
             let message;
             let res;
@@ -71,6 +96,7 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                 }))
                 onClose(false);
                 onSubmit()
+
             } else {
                 dispatch(showToaster({
                     message: d.message,
@@ -80,9 +106,11 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                 }))
             }
         } catch (err) {
+            setSubmitting(false);
             dispatch(showToaster({ err, variant: "error", icon: "error" }));
             return false;
         }
+
     }
 
     const handlePrizeNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -128,6 +156,7 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
         );
 
         setSelectedPrize(selected_prize)
+        setSubmitting(false);
     }, [data, dialogType, prizeList])
 
     const [openPrizeList, setOpenPrizeListDialog] = useState(false);
@@ -233,7 +262,7 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                     variant="contained"
                                     onClick={handleOpenPrizeListDialog}
                                 >
-                                    Add Prizes
+                                    {dialog_type} Prizes
                                 </Button>
                             </Box>
 
@@ -323,7 +352,7 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
 
                     <DialogActions>
                         <Button onClick={handleClose}>Cancel</Button>
-                        <Button type="submit">Submit</Button>
+                        <Button type="submit" disabled={submitting}>Submit</Button>
                     </DialogActions>
                 </form>
             </Dialog>

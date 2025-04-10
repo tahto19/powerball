@@ -71,6 +71,7 @@ class Raffle_class {
               as: "prizeInfo",
               attributes: ["id", "prize_id"],
               where: { status: 1 },
+              required: false, // This ensures the RaffleSchedule is included even if there's no matching RafflePrize
             },
           ],
         },
