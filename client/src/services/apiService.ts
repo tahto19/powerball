@@ -1,3 +1,4 @@
+import { getTicket } from "./../redux/reducers/ticket/asyncCalls";
 //@ts-nocheck
 import { bodyEncrypt } from "@/utils/util";
 import { userState } from "@/components/addUser/TypesHere";
@@ -8,12 +9,12 @@ import {
 import {
   RaffleState,
   RafflePaginationState,
-  PayloadState
+  PayloadState,
 } from "@/components/GameMaintenance/interface";
 import { getDeviceInfo } from "@/utils/util";
 import axios from "axios";
 import { veriyCode } from "./types/user";
-import { adminType, getData } from "@/types/allTypes";
+import { adminType, getData, getDataV2, ticketState } from "@/types/allTypes";
 
 interface Credentials {
   email: string;
@@ -182,8 +183,17 @@ export const apiService = {
   getAdmin: async (data: getData) => {
     return apiClient.post("/api/users/admin", { data });
   },
-  // raffle here
-  getRaffleList: async (data) => {},
+  // ticket here
+  getTicketList: async (data: getDataV2, token: string | null) => {
+    return apiClient.post("api/ticket/user", {
+      data: bodyEncrypt(JSON.stringify(data), token),
+    });
+  },
+  postTicketList: async (data: ticketState, token: string | null) => {
+    return apiClient.post("api/ticket", {
+      data: bodyEncrypt(JSON.stringify({ ticket_id: data }), token),
+    });
+  },
   // for token
   checkSession: async () => {
     return apiClient.get("/api/login/checkSession");

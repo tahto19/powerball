@@ -4,6 +4,7 @@ import { getMessage } from "@/utils/util";
 
 interface global_ {
   toasterShow: ToasterI;
+  btn: Boolean | undefined | null;
 }
 
 const initialState: global_ = {
@@ -14,6 +15,7 @@ const initialState: global_ = {
     icon: null,
     count: 0,
   },
+  btn: false,
 };
 const globalSlice = createSlice({
   name: "global",
@@ -40,7 +42,14 @@ const globalSlice = createSlice({
     unShowToaster: (state) => {
       state.toasterShow = initialState.toasterShow;
     },
+    disableBtn: (state) => {
+      state.btn = true;
+    },
+    enableBtn: (state) => {
+      state.btn = false;
+    },
   },
 });
-export const { showToaster, unShowToaster } = globalSlice.actions;
+export const { showToaster, unShowToaster, disableBtn, enableBtn } =
+  globalSlice.actions;
 export default globalSlice.reducer;

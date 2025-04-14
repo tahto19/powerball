@@ -1,5 +1,32 @@
-import { raffleDrawController } from "../controller/Ticket.controller.js";
+import {
+  fetchTicketController,
+  postTicketController,
+  raffleDrawController,
+} from "../controller/Ticket.controller.js";
 
 export const raffleDrawSchema = {
   handler: raffleDrawController,
+};
+export const fetchTicketSchema = {
+  handler: fetchTicketController,
+  schema: {
+    body: {
+      type: "object",
+      properties: {
+        sort: { type: "array" },
+        offset: { type: "number" },
+        filter: { type: "array" },
+        limit: { type: "number" },
+      },
+    },
+  },
+};
+export const postTicketSchema = {
+  handler: postTicketController,
+  body: {
+    type: "object",
+    properties: {
+      ticket_id: { type: "string" },
+    },
+  },
 };

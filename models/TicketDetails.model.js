@@ -16,6 +16,7 @@ TicketDetails.init(
     entries_used: {
       allowNull: false,
       type: DataTypes.SMALLINT,
+      defaultValue: 0,
     },
     user_id: {
       allowNull: false,

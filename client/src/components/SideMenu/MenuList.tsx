@@ -14,10 +14,11 @@ import DisplaySettingsIcon from "@mui/icons-material/DisplaySettings";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import AttractionsIcon from "@mui/icons-material/Attractions";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
-
+import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
 const mainListItems = [
   { text: "Home", icon: <HomeRoundedIcon />, path: "/dashboard" },
   { text: "Administrator", icon: <GroupIcon />, path: "/administrator" },
+  { text: "Costumer", icon: <PeopleOutlineIcon />, path: "/scan" },
   {
     text: "Game Maintenance",
     icon: <DisplaySettingsIcon />,
@@ -25,7 +26,7 @@ const mainListItems = [
   },
   { text: "Prize List", icon: <ListAltIcon />, path: "/prize-list" },
   { text: "Raffle Draw", icon: <AttractionsIcon />, path: "/dashboard" },
-  { text: "Scan", icon: <QrCodeScannerIcon />, path: "/scan" },
+  { text: "Ticket Scan", icon: <QrCodeScannerIcon />, path: "/scan" },
 ];
 
 const secondaryListItems = [

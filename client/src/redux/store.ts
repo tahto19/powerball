@@ -4,13 +4,15 @@ import navBarReducer from "./reducers/navBarSlice";
 import tokenReducers from "./reducers/token/tokenSlice";
 import globalReducer from "./reducers/global/globalSlice";
 import adminUsers from "./reducers/user/adminUsers";
+import ticketSlice from "./reducers/ticket/ticketSlice";
 export const store = configureStore({
   reducer: {
     user: userReducer,
     navBar: navBarReducer,
     global: globalReducer,
     token: tokenReducers,
-    admin:adminUsers
+    admin: adminUsers,
+    ticket: ticketSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

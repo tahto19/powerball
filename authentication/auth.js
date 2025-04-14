@@ -24,6 +24,7 @@ export const auth = async (req, res) => {
         if (regex) return x;
       });
       let c_checkerDetails = await cookieChecker(req);
+      req.user_id = c_checkerDetails.id;
       // if admin paths found check for the cookieChecker if the user is admin
       if (findNoAP) {
         console.log(c_checkerDetails);

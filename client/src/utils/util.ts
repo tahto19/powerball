@@ -42,7 +42,8 @@ const getErrorsStatus = (code: string) => {
       return "Email is already used";
     case "x11":
       return "not login";
-
+    case "x891":
+      return "Server Error";
     case "x741":
       return "Generated OTP but the system email sender has a problem please contact administrator";
     default:
@@ -52,7 +53,7 @@ const getErrorsStatus = (code: string) => {
 
 export const getMessage = (error: any) => {
   const getErrorMessage = getErrorsStatus(error?.response?.data?.message);
-  console.log(typeof error.Error);
+
   const errorMessage = getErrorMessage
     ? getErrorMessage
     : error?.response?.data?.message

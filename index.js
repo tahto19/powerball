@@ -52,6 +52,7 @@ const fastify = Fastify({
  * x91c = not image
  * x909 = Email already exists error
  * X741 = email details sender is incorrect
+ * X891 = body checker json error incorrect data
  */
 
 /**
@@ -140,7 +141,7 @@ const start = async () => {
      *error handler
      */
     fastify.setErrorHandler((err, req, res) => {
-      logger.error(err);
+      // logger.error(err);
       if (err.code === undefined) {
         res.status(400).send({ result: "error", message: err.message });
       } else

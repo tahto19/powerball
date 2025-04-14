@@ -24,6 +24,7 @@ import PrizeList from "./components/PrizeList";
 import { useAppDispatch, useAppSelector } from "./redux/hook";
 import { getToken } from "./redux/reducers/token/asyncCalls";
 import TicketScanner from "./components/ticketScanner/TicketScanner";
+import Costumer from "./components/costumer/Costumer";
 
 const routes = [
   { path: "/dashboard", component: <Dashboard />, title: "Dashboard" },
@@ -46,6 +47,11 @@ const routes = [
     path: "/scan",
     component: <TicketScanner />,
     title: "Ticket Scanner",
+  },
+  {
+    path: "/costumer",
+    component: <Costumer />,
+    title: "Costumer",
   },
 ];
 

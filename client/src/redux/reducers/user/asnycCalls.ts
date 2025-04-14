@@ -8,7 +8,13 @@ import { bodyDecrypt, bodyEncrypt, delay } from "@/utils/util";
 import { veriyCode } from "@/services/types/user";
 import { RootState } from "@/redux/store";
 import { adminType, getData, postAdminType } from "@/types/allTypes";
-import { addCount, addFilter, addLimit, addList, addOffset } from "./adminUsers";
+import {
+  addCount,
+  addFilter,
+  addLimit,
+  addList,
+  addOffset,
+} from "./adminUsers";
 export const outsideAddUser = createAsyncThunk(
   "user/outsideAddUser",
   async (data: userState, { dispatch }) => {
@@ -98,26 +104,24 @@ export const getAdmin = createAsyncThunk(
   "user/getAdmin",
   async (data: getData, { dispatch, getState }) => {
     try {
-      var data_ = data
+      var data_ = data;
       const state = getState() as RootState;
-      const token = state.token.token
+      const token = state.token.token;
       if (data === undefined) {
-        data_ = state.admin
+        data_ = state.admin;
+      } else {
+        dispatch(addOffset(data.offset));
+        dispatch(addFilter(data.filter));
+        dispatch(addLimit(data.addLimit));
       }
-      else {
-        dispatch(addOffset(data.offset))
-        dispatch(addFilter(data.filter))
-        dispatch(addLimit(data.addLimit))
-      }
 
-      let _r = await apiService.getAdmin(bodyEncrypt(data_, token))
-      let c = bodyDecrypt(_r.data, token)
+      let _r = await apiService.getAdmin(bodyEncrypt(data_, token));
+      let c = bodyDecrypt(_r.data, token);
 
-      if (c.data.result === 'error') throw new Error(c.data.message)
+      if (c.data.result === "error") throw new Error(c.data.message);
 
-      dispatch(addList({ list: c.data.list.rows, count: c.data.list.count }))
+      dispatch(addList({ list: c.data.list.rows, count: c.data.list.count }));
     } catch (err) {
-
       dispatch(showToaster({ err, variant: "error", icon: "error" }));
     }
   }
@@ -128,16 +132,25 @@ export const postAdmin = createAsyncThunk(
   async ({ data, dialogType }: postAdminType, { dispatch, getState }) => {
     try {
       const state = getState() as RootState;
-      const token = state.token.token
-      console.log(data, dialogType)
-      if (dialogType.toLowerCase() === 'add')
-        await apiService.insertAdmin(bodyEncrypt(data, token))
-      else if (dialogType.toLowerCase() === 'edit')
-        await apiService.updateAdmin(bodyEncrypt(data, token))
-      setTimeout(()=>{dispatch(getAdmin())},[1000])
-      dispatch(showToaster({ message: `successsfully ${dialogType.toLowerCase()}ed admin`, variant: "success", icon: "success" }));
+      const token = state.token.token;
+      console.log(data, dialogType);
+      if (dialogType.toLowerCase() === "add")
+        await apiService.insertAdmin(bodyEncrypt(data, token));
+      else if (dialogType.toLowerCase() === "edit")
+        await apiService.updateAdmin(bodyEncrypt(data, token));
+      setTimeout(() => {
+        dispatch(getAdmin());
+      }, [1000]);
+      dispatch(
+        showToaster({
+          message: `successsfully ${dialogType.toLowerCase()}ed admin`,
+          variant: "success",
+          icon: "success",
+        })
+      );
     } catch (err) {
       dispatch(showToaster({ err, variant: "error", icon: "error" }));
     }
   }
-)
+);
+export const getCostumer = createAsyncThunk({});

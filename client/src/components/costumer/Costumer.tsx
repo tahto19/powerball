@@ -10,9 +10,9 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
 import { GridColDef } from "@mui/x-data-grid";
-import MyDialog from "./MyDialog";
+// import MyDialog from "./MyDialog";
 import { DataProps } from "@/types/allTypes";
-const Index = () => {
+const Costumer = () => {
   const dispatch = useAppDispatch();
   const { loading, list, offset, limit, sort, count } = useAppSelector(
     (state: RootState) => state.admin
@@ -163,14 +163,14 @@ const Index = () => {
           onViewAction={handleViewAction}
         />
       </Grid2>
-      <MyDialog
+      {/* <MyDialog
         open={open}
         onClose={onClose}
         data={data}
         dialogType={dialogType}
-      />
+      /> */}
     </Grid2>
   );
 };
 
-export default Index;
+export default Costumer;
