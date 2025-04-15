@@ -1,6 +1,4 @@
-import cookieChecker, {
-  getUserByCookie,
-} from "../../../authentication/helper/cookieChecker.js";
+import cookieChecker from "../../../authentication/helper/cookieChecker.js";
 import random from "../../../lib/random.js";
 import { cSend } from "../../../util/util.js";
 import tc from "../lib/Ticket.class.js";

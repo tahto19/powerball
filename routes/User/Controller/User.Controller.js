@@ -13,14 +13,12 @@ import uc from "../lib/User.class.js";
 import fs from "fs";
 export const getController = async (req, res) => {
   const { offset, limit, sort, filter } = req.body;
-
-  // const { limit, offset,sort } = req.body;
-  // console.log(limit,offset,JSON.parse(sort))
-  let r = await uc.FetchAndCount(offset, limit, sort, filter);
-  //   if (!limit || !offset) throw new Error("limit or offset is required");
-  // let a = await uc.FetchOne(offset, limit);
-  // let b = a.toJSON();
-
+  console.log(req.url);
+  let changeFilter =
+    req.url === "/api/users/admin"
+      ? [...filter, { field: "isAdmin", filter: true, type: "boolean" }]
+      : [...filter, { field: "isAdmin", filter: false, type: "boolean" }];
+  let r = await uc.FetchAndCount(offset, limit, sort, changeFilter);
   res.send(cSend(r));
 };
 

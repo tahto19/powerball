@@ -5,17 +5,17 @@ import React, { useEffect } from "react";
 import CustomizedDataGrid from "../CustomizedDataGrid";
 // import headers from "./headers.ts";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { getAdmin } from "@/redux/reducers/user/asnycCalls";
+import { getAdmin, getCostumer } from "@/redux/reducers/user/asnycCalls";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
 import { GridColDef } from "@mui/x-data-grid";
 // import MyDialog from "./MyDialog";
-import { DataProps } from "@/types/allTypes";
+import { DataProps, getDataV2 } from "@/types/allTypes";
 const Costumer = () => {
   const dispatch = useAppDispatch();
   const { loading, list, offset, limit, sort, count } = useAppSelector(
-    (state: RootState) => state.admin
+    (state: RootState) => state.costumer
   );
 
   const [pagination, setPagination] = useState({ page: 0, pageSize: 10 });
@@ -28,7 +28,7 @@ const Costumer = () => {
     setData([]);
   };
   useEffect(() => {
-    dispatch(getAdmin());
+    dispatch(getCostumer());
   }, []);
   useEffect(() => {
     console.log(loading, list);
@@ -69,13 +69,13 @@ const Costumer = () => {
       );
     }
 
-    const query: getData = {
+    const query: getDataV2 = {
       offset: page,
       limit: pageSize,
-      sort: JSON.stringify(sort),
-      filter: JSON.stringify(newFilterModel),
+      sort: sort,
+      filter: newFilterModel,
     };
-    console.log(query);
+
     // const res = await apiService.getPrizeList(query);
   };
   const handleEditAction = (row: DataProps) => {

@@ -1,5 +1,6 @@
 import { getTicket } from "./../redux/reducers/ticket/asyncCalls";
 //@ts-nocheck
+import _ from "lodash";
 import { bodyEncrypt } from "@/utils/util";
 import { userState } from "@/components/addUser/TypesHere";
 import {
@@ -180,8 +181,15 @@ export const apiService = {
   updateAdmin: async (data: adminType) => {
     return apiClient.put("api/users", { data });
   },
-  getAdmin: async (data: getData) => {
-    return apiClient.post("/api/users/admin", { data });
+  getAdmin: async (data: getDataV2, token: string) => {
+    return apiClient.post("/api/users/admin", {
+      data: bodyEncrypt(JSON.stringify(data), token),
+    });
+  },
+  getCostumer: async (data: getData, token: string) => {
+    return apiClient.post("/api/users/users", {
+      data: bodyEncrypt(JSON.stringify(data), token),
+    });
   },
   // ticket here
   getTicketList: async (data: getDataV2, token: string | null) => {

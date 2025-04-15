@@ -15,6 +15,13 @@ import {
   addList,
   addOffset,
 } from "./adminUsers";
+import {
+  addFilterC_,
+  addLimitC_,
+  addListC_,
+  addOffsetC_,
+  addSortC_,
+} from "./costumerUsers";
 export const outsideAddUser = createAsyncThunk(
   "user/outsideAddUser",
   async (data: userState, { dispatch }) => {
@@ -113,11 +120,12 @@ export const getAdmin = createAsyncThunk(
         dispatch(addOffset(data.offset));
         dispatch(addFilter(data.filter));
         dispatch(addLimit(data.addLimit));
+        dispatch(addSort(data.sort));
       }
 
-      let _r = await apiService.getAdmin(bodyEncrypt(data_, token));
+      let _r = await apiService.getAdmin(data_, token);
       let c = bodyDecrypt(_r.data, token);
-
+      console.log(c);
       if (c.data.result === "error") throw new Error(c.data.message);
 
       dispatch(addList({ list: c.data.list.rows, count: c.data.list.count }));
@@ -153,4 +161,27 @@ export const postAdmin = createAsyncThunk(
     }
   }
 );
-export const getCostumer = createAsyncThunk({});
+export const getCostumer = createAsyncThunk(
+  "user/getCostumer",
+  async (data: getData, { dispatch, getState }) => {
+    try {
+      var data_ = data;
+      const state = getState() as RootState;
+      const token = state.token.token;
+      if (data === undefined) {
+        data_ = state.costumer;
+      } else {
+        dispatch(addOffsetC_(data.offset));
+        dispatch(addFilterC_(data.filter));
+        dispatch(addLimitC_(data.addLimit));
+        dispatch(addSortC_(data.sort));
+      }
+      const _r = await apiService.getCostumer(data_, token);
+      let c = bodyDecrypt(_r.data, token);
+      console.log(c);
+      dispatch(addListC_({ list: c.data.list.rows, count: c.data.list.count }));
+    } catch (err) {
+      dispatch(showToaster({ err, variant: "error", icon: "error" }));
+    }
+  }
+);

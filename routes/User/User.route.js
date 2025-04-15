@@ -6,9 +6,9 @@ import {
 } from "./Schema/User.Schema.js";
 
 const users = (app, opts, done) => {
-  app.post("/admin",getSchema)
+  app.post("/admin", getSchema);
   app.post("/createUser", createUserSchema);
-  app.get("/", getSchema);
+  app.post("/users", getSchema);
   app.post("/", insertSchema);
   app.put("/", updateSchema);
 

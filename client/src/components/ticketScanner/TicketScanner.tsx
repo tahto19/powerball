@@ -15,6 +15,9 @@ const headers: GridColDef[] = [
     flex: 1,
     minWidth: 200,
     editable: true,
+    renderCell: (params: GridRenderCellParams<any, Date>) => {
+      return <>{moment(params.value).format("MMMM DD yyyy hh:mm A")}</>;
+    },
   },
   {
     field: "entries",

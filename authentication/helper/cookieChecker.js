@@ -32,9 +32,5 @@ export const cookieChecker = async (req) => {
     throw err;
   }
 };
-export const getUserByCookie = async (cookie) => {
-  let decryptCookie = await decryptPassword(cookie);
-  if (!decryptCookie) throw new Error("ErrorCODE x44");
-  let getCookeDetails = await fastifyJwt.jwtVerfiy(decryptCookie);
-};
+
 export default cookieChecker;

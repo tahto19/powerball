@@ -36,7 +36,7 @@ export const getTicket = createAsyncThunk(
       const getFilter = data ? data : state.ticket.getData;
       let r = await apiService.getTicketList(getFilter, token);
       let r_data = bodyDecrypt(r.data, token);
-      console.log(r_data);
+
       let toReturn = { ...r_data, ...data, loading: false };
 
       dispatch(addTicketList(toReturn));

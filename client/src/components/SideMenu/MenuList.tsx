@@ -18,7 +18,7 @@ import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
 const mainListItems = [
   { text: "Home", icon: <HomeRoundedIcon />, path: "/dashboard" },
   { text: "Administrator", icon: <GroupIcon />, path: "/administrator" },
-  { text: "Costumer", icon: <PeopleOutlineIcon />, path: "/scan" },
+  { text: "Costumer", icon: <PeopleOutlineIcon />, path: "/costumer" },
   {
     text: "Game Maintenance",
     icon: <DisplaySettingsIcon />,

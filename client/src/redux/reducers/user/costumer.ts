@@ -1,6 +1,6 @@
 //@ts-nocheck
 import { createSlice } from "@reduxjs/toolkit";
-import { getCostumer } from "./asnycCalls";
+import { getAdmin } from "./asnycCalls";
 
 interface costumerState {
   list: Array<any> | null;
@@ -22,45 +22,39 @@ const initialState: costumerState = {
   count: null,
 };
 
-const costumerSlice = createSlice({
-  name: "costumer",
+const adminSlice = createSlice({
+  name: "admin",
   initialState,
   reducers: {
-    addListC_: (state, action) => {
+    addList: (state, action) => {
       state.list = action.payload.list;
       state.count = action.payload.count;
     },
-    addOffsetC_: (state, action) => {
+    addOffset: (state, action) => {
       state.offset = action.payload;
     },
-    addLimitC_: (state, action) => {
+    addLimit: (state, action) => {
       state.limit = action.payload;
     },
 
-    addSortC_: (state, action) => {
+    addSort: (state, action) => {
       state.sort = action.payload;
     },
-    addFilterC_: (state, action) => {
+    addFilter: (state, action) => {
       state.filter = action.payload;
     },
   },
   extraReducers: (b) => {
-    b.addCase(getCostumer.fulfilled, (state) => {
+    b.addCase(getAdmin.fulfilled, (state) => {
       state.loading = false;
     });
-    b.addCase(getCostumer.pending, (state) => {
+    b.addCase(getAdmin.pending, (state) => {
       state.loading = true;
       state.list = [];
     });
   },
 });
 
-export const {
-  addListC_,
-  addOffsetC_,
-  addLimitC_,
-  addCountC_,
-  addSortC_,
-  addFilterC_,
-} = costumerSlice.actions;
-export default costumerSlice.reducer;
+export const { addList, addOffset, addLimit, addCount, addSort, addFilter } =
+  adminSlice.actions;
+export default adminSlice.reducer;
