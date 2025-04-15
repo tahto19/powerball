@@ -19,6 +19,15 @@ RaffleDetails.init(
         },
       },
     },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "Please enter Raffle Name",
+        },
+      },
+    },
     more_details: {
       type: DataTypes.STRING,
       allowNull: true,

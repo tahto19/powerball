@@ -3,6 +3,7 @@ import {
   getController,
   getControllerAll,
   updateController,
+  get2ndChanceControllerAll,
 } from "../Controller/Raffle.Controller.js";
 
 export const insertSchema = {
@@ -64,4 +65,9 @@ export const updateSchema = {
     end_date: { type: "string" },
     schedule_type: { type: "number" },
   },
+};
+
+export const get2ndChanceSchemaAll = {
+  handler: get2ndChanceControllerAll,
+  body: getBodySchema,
 };

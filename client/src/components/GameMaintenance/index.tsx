@@ -32,6 +32,8 @@ const renderType = (status: 'Daily' | 'Weekly') => {
 
 const headers = [
     { field: 'details', headerName: 'Raffle ID', flex: 1, minWidth: 200 },
+    { field: 'name', headerName: 'Raffle Name', flex: 1, minWidth: 200 },
+
     {
         field: 'schedule_type', headerName: 'Schedule Type', flex: 1, minWidth: 200, renderCell: (params: any) => {
             const value = params.value === 1 ? 'Daily' : 'Weekly'

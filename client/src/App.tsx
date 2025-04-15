@@ -25,7 +25,7 @@ import { useAppDispatch, useAppSelector } from "./redux/hook";
 import { getToken } from "./redux/reducers/token/asyncCalls";
 import TicketScanner from "./components/ticketScanner/TicketScanner";
 import Costumer from "./components/costumer/Costumer";
-
+import Raffles from "./components/2ndChance_iFrame/Raffles/Raffles";
 const routes = [
   { path: "/dashboard", component: <Dashboard />, title: "Dashboard" },
   {
@@ -114,6 +114,10 @@ function AppRoutes() {
       <Route
         path="/iframe/add-user"
         element={<AdduserMain />}
+      />
+      <Route
+        path="/iframe/2nd-chance/raffles"
+        element={<Raffles />}
       />
 
       {/* Catch-All Error Page */}

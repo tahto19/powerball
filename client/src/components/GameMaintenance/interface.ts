@@ -31,6 +31,7 @@ export interface PrizeInfoState {
 export interface RaffleState {
     id: number | null;
     details: string;
+    name: string;
     more_details: string;
     active: boolean;
     starting_date: string | null;
@@ -55,6 +56,7 @@ export interface RafflePaginationState {
 export const initialRaffleData: RaffleState = {
       id: null,
         details: "",
+        name: "",
         more_details: "",
         active: true,
         starting_date: moment().toISOString(),
