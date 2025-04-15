@@ -150,6 +150,27 @@ class Raffle_class {
 
     return id;
   }
+
+  async _2ndChanceFetchAll(sort = [["id", "ASC"]], filter = []) {
+    let query = {
+      order: sort,
+      include: [
+        {
+          model: RaffleSchedule,
+          order: [["id", "DESC"]],
+          as: "raffleSchedule",
+          attributes: ["schedule_date"],
+          limit: 1, // Tries to get only the latest RaffleSchedule
+        },
+      ],
+    };
+
+    if (filter.length !== 0) query["where"] = WhereFilters(filter);
+
+    // ✅ Fetch both filtered list and total count
+    let { count, rows } = await RaffleDetails.findAndCountAll(query);
+    return { list: rows };
+  }
   // async Delete(_data) {
   //   let count = await RaffleDetails.count({ where: { id: _data.id } });
   //   if (count < 0) throw new Error("User Not found");

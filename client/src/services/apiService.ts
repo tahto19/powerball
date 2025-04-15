@@ -144,6 +144,15 @@ export const apiService = {
     });
     return res;
   },
+  get2ndChanceGMListAll: async (d: fetchAll, token: string | null) => {
+    console.log(d);
+    console.log(token);
+
+    const res = apiClient.post("/api/game-maintenance/2nd-chance/list", {
+      data: bodyEncrypt(d, token),
+    });
+    return res;
+  },
 
   // for creating user in the outside
   createUser: async (d: userState) => {

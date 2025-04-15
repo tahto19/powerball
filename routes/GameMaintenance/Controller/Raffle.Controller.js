@@ -48,3 +48,12 @@ export const updateController = async (req, res) => {
   let a = await rc.Edit(formData, newPrizeList);
   res.send(cSend(a));
 };
+
+export const get2ndChanceControllerAll = async (req, res) => {
+  const { sort, filter } = req.body;
+  let parsedSort = !sort ? [["id", "DESC"]] : JSON.parse(sort);
+  let parsedFilter = !filter ? [] : JSON.parse(filter);
+  parsedSort = parsedSort.length > 0 ? parsedSort : [["id", "DESC"]];
+  let a = await rc._2ndChanceFetchAll(parsedSort, parsedFilter);
+  res.send(cSend(a));
+};

@@ -194,7 +194,7 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                             spacing={2}
                             columns={12}
                         >
-                            <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                            <Grid2 size={{ xs: 6, sm: 6, md: 6, lg: 6 }}>
                                 <FormControl>
                                     <FormLabel htmlFor="details">Raffle ID</FormLabel>
                                     <TextField
@@ -207,6 +207,28 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                         required
                                         fullWidth
                                         value={formData.details}
+                                        onChange={(event) => handleInputChange(event)}
+                                        variant="outlined"
+                                        slotProps={{
+                                            input: {
+                                                readOnly: dialog_type === 'View',
+                                            },
+                                        }}
+                                    />
+                                </FormControl>
+                            </Grid2>
+                            <Grid2 size={{ xs: 6, sm: 6, md: 6, lg: 6 }}>
+                                <FormControl>
+                                    <FormLabel htmlFor="name">Raffle Name</FormLabel>
+                                    <TextField
+                                        id="name"
+                                        type="text"
+                                        name="name"
+                                        placeholder=""
+                                        autoFocus
+                                        required
+                                        fullWidth
+                                        value={formData.name}
                                         onChange={(event) => handleInputChange(event)}
                                         variant="outlined"
                                         slotProps={{
