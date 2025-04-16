@@ -26,12 +26,19 @@ import { getToken } from "./redux/reducers/token/asyncCalls";
 import TicketScanner from "./components/ticketScanner/TicketScanner";
 import Costumer from "./components/costumer/Costumer";
 import Raffles from "./components/2ndChance_iFrame/Raffles/Raffles";
+import ImagePage from "./components/ImagePage/Image";
+
 const routes = [
   { path: "/dashboard", component: <Dashboard />, title: "Dashboard" },
   {
     path: "/administrator",
     component: <Administrator />,
     title: "Administrator",
+  },
+  {
+    path: "/images",
+    component: <ImagePage />,
+    title: "Images",
   },
   {
     path: "/prize-list",

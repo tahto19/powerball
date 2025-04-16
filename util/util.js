@@ -188,6 +188,19 @@ export const uploadImage = async (file, filename) => {
   let uploadeImage = await fs.writeFileSync(_path, toBuffer_);
   return { uploadeImage, filename: fName };
 };
+
+export const uploadImage2 = async (file, filename) => {
+  let fName = filename;
+  if (!filename)
+    fName = `${moment().format(
+      "MM-DD-YYYY"
+    )}-${generateRandomNumber()}-${generateRandomChar(5)}-${file.filename}`;
+  let _path = getPath("/uploads/image_page/" + fName);
+  let toBuffer_ = await file.toBuffer();
+  let uploadeImage = await fs.writeFileSync(_path, toBuffer_);
+  return { uploadeImage, filename: fName };
+};
+
 export const randomLetters = (length) => {
   let mixed =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890~!@#$%^&*()_";

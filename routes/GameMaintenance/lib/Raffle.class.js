@@ -159,7 +159,7 @@ class Raffle_class {
           model: RaffleSchedule,
           order: [["id", "DESC"]],
           as: "raffleSchedule",
-          attributes: ["schedule_date"],
+          attributes: ["id", "schedule_date"],
           limit: 1, // Tries to get only the latest RaffleSchedule
         },
       ],
