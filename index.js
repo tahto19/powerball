@@ -137,6 +137,7 @@ const start = async () => {
     fastify.register(GameMaintenace, { prefix: "api/game-maintenance" });
     fastify.register(Ticket, { prefix: "api/ticket" });
     fastify.register(OTPRoute, { prefix: "api/otp" });
+    fastify.register(OTPRoute, { prefix: "api/raffleHistory" });
     /**
      *error handler
      */

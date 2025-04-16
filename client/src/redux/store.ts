@@ -6,6 +6,7 @@ import globalReducer from "./reducers/global/globalSlice";
 import adminUsers from "./reducers/user/adminUsers";
 import costumerSlice from "./reducers/user/costumerUsers";
 import ticketSlice from "./reducers/ticket/ticketSlice";
+import raffleEntrySlice from "./reducers/raffleEntry/raffleEntrySlice";
 export const store = configureStore({
   reducer: {
     user: userReducer,
@@ -15,6 +16,7 @@ export const store = configureStore({
     admin: adminUsers,
     costumer: costumerSlice,
     ticket: ticketSlice,
+    raffleEntry: raffleEntrySlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

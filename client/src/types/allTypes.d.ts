@@ -76,3 +76,10 @@ export interface _getState {
   filter: Array<any> | null;
   count: number | null;
 }
+export interface raffleEntries {
+  btnLoading: boolean;
+  totalEntries: number | null;
+  totalTicket: number | null;
+  totalUsedEntries: number | null;
+  loading: boolean;
+}

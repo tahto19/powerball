@@ -1,8 +1,9 @@
 import { col, fn } from "sequelize";
-import TicketDetails from "../../../models/ticketDetails.model.js";
+import TicketHistory from "../../../models/TicketHistory.model.js";
 import { WhereFilters } from "../../../util/util.js";
+import TicketHistory from "../../../models/TicketHistory.model.js";
 
-class TicketDetails_class {
+class TicketHistory_class {
   constructor() {}
   async Fetch(offset = 0, limit = 10, sort = [["id", "ASC"]], filter = []) {
     let query = {
@@ -14,10 +15,10 @@ class TicketDetails_class {
     if (filter.length !== 0) query["where"] = WhereFilters(filter);
     console.log(query);
     // ✅ Fetch both filtered list and total count
-    let r = await TicketDetails.findAndCountAll();
-    let { count, rows } = await TicketDetails.findAndCountAll(query);
+    let r = await TicketHistory.findAndCountAll();
+    let { count, rows } = await TicketHistory.findAndCountAll(query);
 
-    // let list = await TicketDetails.findAll(query);
+    // let list = await TicketHistory.findAll(query);
     return { list: rows, count };
   }
   async FetchAll(sort = [["id", "ASC"]], filter = []) {
@@ -28,23 +29,23 @@ class TicketDetails_class {
     if (filter.length !== 0) query["where"] = WhereFilters(filter);
 
     // ✅ Fetch both filtered list and total count
-    let { count, rows } = await TicketDetails.findAndCountAll(query);
+    let { count, rows } = await TicketHistory.findAndCountAll(query);
 
-    // let list = await TicketDetails.findAll(query);
+    // let list = await TicketHistory.findAll(query);
     return { list: rows, total: count };
   }
   async Insert(_data) {
-    const create = await TicketDetails.create(_data);
+    const create = await TicketHistory.create(_data);
     return create.id;
   }
 
   async Edit(_data) {
-    let count = await TicketDetails.count({ where: { id: _data.id } });
+    let count = await TicketHistory.count({ where: { id: _data.id } });
     if (count < 0) throw new Error("User Not found");
     const id = _data.id;
     delete _data.id;
 
-    await TicketDetails.update(_data, { where: { id }, individualHooks: true });
+    await TicketHistory.update(_data, { where: { id }, individualHooks: true });
 
     return id;
   }
@@ -59,9 +60,9 @@ class TicketDetails_class {
     };
     if (filter.length !== 0) query["where"] = WhereFilters(filter);
 
-    let r = await TicketDetails.findAll(query);
+    let r = await TicketHistory.findAll(query);
     return r;
   }
 }
 
-export default new TicketDetails_class();
+export default new TicketHistory_class();

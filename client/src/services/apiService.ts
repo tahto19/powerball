@@ -16,6 +16,7 @@ import { getDeviceInfo } from "@/utils/util";
 import axios from "axios";
 import { veriyCode } from "./types/user";
 import { adminType, getData, getDataV2, ticketState } from "@/types/allTypes";
+import { enterEntries } from "@/components/2ndChance_iFrame/Raffles/interface";
 
 interface Credentials {
   email: string;
@@ -109,7 +110,6 @@ export const apiService = {
   },
   getPrizeListAll: async (d: fetchAll, token: string | null) => {
     console.log(d);
-    console.log(token);
 
     const res = apiClient.post("/api/prize-list/all", {
       data: bodyEncrypt(d, token),
@@ -137,7 +137,6 @@ export const apiService = {
   },
   getGMListAll: async (d: fetchAll, token: string | null) => {
     console.log(d);
-    console.log(token);
 
     const res = apiClient.post("/api/game-maintenance/all", {
       data: bodyEncrypt(d, token),
@@ -146,7 +145,6 @@ export const apiService = {
   },
   get2ndChanceGMListAll: async (d: fetchAll, token: string | null) => {
     console.log(d);
-    console.log(token);
 
     const res = apiClient.post("/api/game-maintenance/2nd-chance/list", {
       data: bodyEncrypt(d, token),
@@ -197,6 +195,16 @@ export const apiService = {
   },
   getCostumer: async (data: getData, token: string) => {
     return apiClient.post("/api/users/users", {
+      data: bodyEncrypt(JSON.stringify(data), token),
+    });
+  },
+  // getRaffleEntry
+  getRaffleEntry: async () => {
+    return apiClient.get("api/ticket/entries");
+  },
+  // post raffleentry
+  postRaffleEntry: async (data: enterEntries, token: string | null) => {
+    return apiClient.post("api/ticket/insert", {
       data: bodyEncrypt(JSON.stringify(data), token),
     });
   },

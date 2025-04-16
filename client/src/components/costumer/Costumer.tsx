@@ -132,10 +132,10 @@ const Costumer = () => {
           component="h2"
           variant="h6"
         >
-          Administrator
+          Costumer
         </Typography>
       </Grid2>
-      <Grid2 size={{ xs: 6, sm: 6, lg: 6 }}>
+      {/* <Grid2 size={{ xs: 6, sm: 6, lg: 6 }}>
         <Button
           sx={{
             float: "right",
@@ -148,7 +148,7 @@ const Costumer = () => {
         >
           Add Admin
         </Button>
-      </Grid2>
+      </Grid2> */}
       <Grid2 size={12}>
         <CustomizedDataGrid
           sx={{

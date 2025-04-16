@@ -134,7 +134,7 @@ export const getPath = (_d) => {
   return path.join(__filename, "../../", _P);
 };
 export const cSend = (data) => {
-  return { success: "success", data };
+  return { success: "success", success: "success", data };
 };
 export const encryptData = (data, token) => {
   var encrypted = CryptoJS.AES.encrypt(data, token).toString();

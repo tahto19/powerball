@@ -2,6 +2,7 @@ import {
   fetchTicketController,
   postTicketController,
   raffleDrawController,
+  ticketHistoryInEntriesController,
 } from "../controller/Ticket.controller.js";
 
 export const raffleDrawSchema = {
@@ -29,4 +30,7 @@ export const postTicketSchema = {
       ticket_id: { type: "string" },
     },
   },
+};
+export const ticketHistoryInEntriesSchema = {
+  handler: ticketHistoryInEntriesController,
 };

@@ -33,3 +33,11 @@ export const postTicketController = async (req, res) => {
     throw err;
   }
 };
+export const ticketHistoryInEntriesController = async (req, res) => {
+  try {
+    let r = await tc.getTotalEntries();
+    res.send(cSend(r));
+  } catch (err) {
+    throw err;
+  }
+};
