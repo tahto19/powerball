@@ -9,8 +9,8 @@ export const insertRaffleHistoryController = async (req, res) => {
       { field: "user_id", type: "number", filter: req.user_id },
       { field: "active", type: "boolean", filter: true },
     ]);
-
-    if (!!r) throw new Error("ERRORCODE x268");
+    console.log(r);
+    if (!!!r) throw new Error("ERRORCODE x268");
     let totalEntries = r[0].toJSON();
     let totalEntriesRemaining =
       totalEntries.totalEntries - totalEntries.totalUsedEntries;
