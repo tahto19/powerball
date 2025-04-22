@@ -44,6 +44,8 @@ const getErrorsStatus = (code: string) => {
       return "not login";
     case "x891":
       return "Server Error";
+    case "268":
+      return "No Active Ticket or no more entries available";
     case "x741":
       return "Generated OTP but the system email sender has a problem please contact administrator";
     default:

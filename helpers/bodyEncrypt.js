@@ -1,6 +1,6 @@
 import { encryptData, getPath } from "../util/util.js";
 import fs from "fs";
-const bodyEncrypt = (req, res, pay, done) => {
+const bodyEncrypt = async (req, res, pay) => {
   const err = null;
   const cookies = { ...req.cookies };
   let p = getPath("/authentication/pathThatDontNeedAuth.json");
@@ -10,15 +10,21 @@ const bodyEncrypt = (req, res, pay, done) => {
     if (regex && x.method.toLowerCase() === req.method.toLowerCase()) return x;
   });
   if (res.statusCode >= 400) {
-    done(null, pay);
+    // done(null, pay);
+    return pay;
   } else if (findNoP) {
-    done(err, pay);
+    // done(err, pay);
+    return pay;
   } else {
     if (cookies.cookie_pb_1271) {
+      console.log(pay);
       let a = encryptData(pay, cookies.cookie_pb_1271);
-      done(err, JSON.stringify(a));
+      return a;
+      // done(err, JSON.stringify(a));
     } else {
-      done(err, null);
+      // throw error;
+      if (req.method !== "OPTIONS") throw new Error("no cookies found");
+      // done(err, null);
     }
   }
 };

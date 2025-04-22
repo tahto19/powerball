@@ -1,6 +1,8 @@
+import AuditTrail from "../models/AuditTrail.js";
 import { decryptData, getPath } from "../util/util.js";
+import Ac from "../routes/AuditTrail/lib/AuditTrail.class.js";
 import fs from "fs";
-const bodyChecker = (req, res, done) => {
+const bodyChecker = async (req, res) => {
   try {
     let formHeader = req.headers["content-type"]?.includes(
       "multipart/form-data;"
@@ -28,10 +30,18 @@ const bodyChecker = (req, res, done) => {
 
         if (!a) throw new Error("ErrorCODE X891");
         req.body = JSON.parse(a);
+        // const keysToCheckOfItsOnlyFetch = ["limit", "offset", "sort", "filter"];
+        // const hasAllKeys = keysToCheckOfItsOnlyFetch.every(
+        //   (key) => key in req.body
+        // );
+        // // save audit trail here if not fetch kind of post
+
+        // if (!hasAllKeys) {
+        //   let saveTrail = await ac.Insert({ performedBy: req.user_id,targetId });
+        // }
+        if (req.url.includes("create")) console.log(req.url, "her");
       }
     }
-
-    done();
   } catch (err) {
     throw err;
   }

@@ -20,6 +20,7 @@ import OTPRoute from "./routes/OTP/OTP.route.js";
 import Associations from "./models/association/index.js";
 import Ticket from "./routes/Ticket/Ticket.js";
 import raffleHistory from "./routes/raffleHistory/raffleHistory.js";
+import auditTrailAdder from "./helpers/auditTrailAdder.js";
 
 const fastify = Fastify({
   // trustProxy: true,
@@ -32,6 +33,7 @@ const fastify = Fastify({
   //     levels: "debug",
   //   },
   // },
+  logger: false,
 });
 /**
  * Error code
@@ -119,6 +121,7 @@ const start = async () => {
       .addHook("onRequest", auth)
       .addHook("preHandler", bodyChecker)
       .addHook("onSend", bodyEncrypt);
+    // .addHook("onResponse", auditTrailAdder);
 
     /**
      *
@@ -171,6 +174,7 @@ const start = async () => {
 
     await fastify.ready();
   } catch (err) {
+    console.log(err);
     fastify.log.error(err);
     process.exit(1);
   }
