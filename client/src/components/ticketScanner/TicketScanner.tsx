@@ -6,8 +6,14 @@ import { RootState } from "@/redux/store";
 import { Button, Grid2, Typography } from "@mui/material";
 import CustomizedDataGrid from "../CustomizedDataGrid";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import { getDataV2, getTicketState, paginationType } from "@/types/allTypes";
+import {
+  getDataV2,
+  getTicketState,
+  LocationState,
+  paginationType,
+} from "@/types/allTypes";
 import moment from "moment";
+import { useLocation } from "react-router-dom";
 const headers: GridColDef[] = [
   {
     field: "fullname",
@@ -59,9 +65,14 @@ const TicketScanner = () => {
     createdAt: null,
   });
   const [dialogType, setDialogType] = useState<string>("");
+  const location = useLocation();
+
   useEffect(() => {
-    dispatch(getTicket({ filter, offset, limit, sort }));
-  }, []);
+    const l = location?.pathname;
+    dispatch(
+      getTicket({ filter, offset, limit, sort, location: location?.pathname })
+    );
+  }, [location]);
   useEffect(() => {
     console.log("here", loading, filter, offset, limit, sort, list, count);
     setPagination(() => {
@@ -148,7 +159,7 @@ const TicketScanner = () => {
           component="h2"
           variant="h6"
         >
-          Ticket Details
+          {location.pathname.includes("myScan") ? "My" : "All"} Ticket Details
         </Typography>
       </Grid2>
       <Grid2 size={{ xs: 6, sm: 6, lg: 6 }}>

@@ -26,6 +26,11 @@ TicketDetails.init(
         key: "id",
       },
     },
+    active: {
+      allowNull: false,
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
   },
   {
     timestamps: true,

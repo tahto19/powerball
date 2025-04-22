@@ -1,7 +1,6 @@
 import { col, fn } from "sequelize";
 import TicketHistory from "../../../models/TicketHistory.model.js";
 import { WhereFilters } from "../../../util/util.js";
-import TicketHistory from "../../../models/TicketHistory.model.js";
 
 class TicketHistory_class {
   constructor() {}

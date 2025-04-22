@@ -33,6 +33,14 @@ export const postRaffleEntry = createAsyncThunk(
       let token = state.token.token;
       let _r = await apiService.postRaffleEntry(data, token);
       let bd = bodyDecrypt(_r.data, token);
+      dispatch(
+        showToaster({
+          message: "successfully added entries",
+          variant: "success",
+          icon: "success",
+        })
+      );
+      dispatch(getRaffleEntry());
     } catch (err) {
       dispatch(showToaster({ err, variant: "error", icon: "error" }));
     }

@@ -1,5 +1,7 @@
+import { insertRaffleHistorySchema } from "./Schema/raffleHistory.Schema.js";
+
 const raffleHistory = (app, opts, done) => {
-  app.get("/insert");
+  app.post("/insert", insertRaffleHistorySchema);
   done();
 };
 export default raffleHistory;

@@ -27,6 +27,7 @@ export type getDataV2 = {
   offset: number | null;
   filter: Array<any> | null;
   sort: Array<any> | null;
+  location: undefined | null | string;
 };
 export type DataProps = {
   id: number | null;
@@ -82,4 +83,9 @@ export interface raffleEntries {
   totalTicket: number | null;
   totalUsedEntries: number | null;
   loading: boolean;
+}
+export interface LocationState {
+  from: {
+    pathname: string;
+  };
 }

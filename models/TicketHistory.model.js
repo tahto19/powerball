@@ -6,7 +6,7 @@ class TicketHistory extends Model {}
 TicketHistory.init(
   {
     ticket_history_generate: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING,
     },
     raffle_id: {

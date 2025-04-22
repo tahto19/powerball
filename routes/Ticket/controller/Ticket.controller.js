@@ -5,7 +5,7 @@ import tc from "../lib/Ticket.class.js";
 export const raffleDrawController = (req, res) => {
   try {
     const { tickets } = req.body;
-    console.log(tickets);
+
     let a = random(tickets);
     res.send(cSend(a));
   } catch (err) {
@@ -14,7 +14,11 @@ export const raffleDrawController = (req, res) => {
 };
 export const fetchTicketController = async (req, res) => {
   try {
-    const { limit, sort, offset, filter } = req.body;
+    const { limit, sort, offset, filter, location } = req.body;
+    if (location && location.includes("myScan")) {
+      filter.push({ field: "user_id", filter: req.user_id, type: "number" });
+    }
+    console.log(filter);
     let r = await tc.Fetch(offset, limit, sort, filter);
     res.send(r);
   } catch (err) {

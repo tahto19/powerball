@@ -91,6 +91,9 @@ export const WhereFilters = (filters = []) => {
         case "number":
           wherefilters[f.field] = f.filter;
           break;
+        case "isnot":
+          wherefilters[f.field] = { [Op.ne]: f.filter };
+          break;
         case "date":
           if (
             f.filter.start &&
@@ -203,7 +206,7 @@ export const uploadImage2 = async (file, filename) => {
 
 export const randomLetters = (length) => {
   let mixed =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890~!@#$%^&*()_";
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890~!@$%^&()_";
   let a = "";
   for (let i = 0; i < length; i++) {
     let indexOfMixed = Math.floor(Math.random() * mixed.length);

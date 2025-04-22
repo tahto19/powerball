@@ -204,7 +204,8 @@ export const apiService = {
   },
   // post raffleentry
   postRaffleEntry: async (data: enterEntries, token: string | null) => {
-    return apiClient.post("api/ticket/insert", {
+    console.log(data);
+    return apiClient.post("api/raffleHistory/insert", {
       data: bodyEncrypt(JSON.stringify(data), token),
     });
   },

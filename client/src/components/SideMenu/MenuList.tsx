@@ -27,6 +27,7 @@ const mainListItems = [
   { text: "Prize List", icon: <ListAltIcon />, path: "/prize-list" },
   { text: "Raffle Draw", icon: <AttractionsIcon />, path: "/dashboard" },
   { text: "Ticket Scan", icon: <QrCodeScannerIcon />, path: "/scan" },
+  { text: "My Ticket Scan", icon: <QrCodeScannerIcon />, path: "/myScan" },
 ];
 
 const secondaryListItems = [

@@ -34,6 +34,7 @@ const MyDialog = ({
   onSubmit,
   totalEntries,
   totalUsedEntries,
+  btnLoading,
 }: DialogProps) => {
   const dispatch = useAppDispatch();
   const [formData, setData] = useState<RaffleState>(data);
@@ -45,12 +46,19 @@ const MyDialog = ({
     onClose(false);
   };
   const handleSubmit = () => {
-    setTotalEntriesDetails((prev) => ({ ...prev, raffle_id: formData.id }));
+    console.log(formData.raffleSchedule[0]);
+    console.log(entriesDetails);
     dispatch(postRaffleEntry(entriesDetails));
   };
   useEffect(() => {
-    setData(data);
-  }, [data]);
+    if (open) {
+      setData(data);
+      setTotalEntriesDetails((prev) => ({
+        ...prev,
+        raffle_id: data.raffleSchedule[0]?.id,
+      }));
+    }
+  }, [open]);
   return (
     <>
       <Dialog
@@ -127,6 +135,7 @@ const MyDialog = ({
               type="submit"
               variant="contained"
               sx={{ width: "100%" }}
+              loading={btnLoading}
               onClick={(e) => {
                 e.preventDefault();
                 handleSubmit();

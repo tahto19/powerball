@@ -19,9 +19,10 @@ import bodyEncrypt from "./helpers/bodyEncrypt.js";
 import OTPRoute from "./routes/OTP/OTP.route.js";
 import Associations from "./models/association/index.js";
 import Ticket from "./routes/Ticket/Ticket.js";
+import raffleHistory from "./routes/raffleHistory/raffleHistory.js";
 
 const fastify = Fastify({
-  trustProxy: true,
+  // trustProxy: true,
   // logger: {
   //   transport: {
   //     target: "pino-pretty",
@@ -53,16 +54,18 @@ const fastify = Fastify({
  * x909 = Email already exists error
  * X741 = email details sender is incorrect
  * X891 = body checker json error incorrect data
+ * X369 = entries is more than the total remaining entries
+ * x268 no active ticket or no more entries
  */
 
 /**
- * reaffle details schedule type
+ * raffle details schedule type
  * 1 = daily
  * 2 = weekly
  */
 
 /**
- * reaffle details schedule status
+ * raffle details schedule status
  * 1 = done
  * 2 = active
  * 3 = inactive
@@ -137,7 +140,7 @@ const start = async () => {
     fastify.register(GameMaintenace, { prefix: "api/game-maintenance" });
     fastify.register(Ticket, { prefix: "api/ticket" });
     fastify.register(OTPRoute, { prefix: "api/otp" });
-    fastify.register(OTPRoute, { prefix: "api/raffleHistory" });
+    fastify.register(raffleHistory, { prefix: "api/raffleHistory" });
     /**
      *error handler
      */

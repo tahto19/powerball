@@ -56,6 +56,11 @@ const routes = [
     title: "Ticket Scanner",
   },
   {
+    path: "/MyScan",
+    component: <TicketScanner />,
+    title: "My Ticket",
+  },
+  {
     path: "/costumer",
     component: <Costumer />,
     title: "Costumer",
