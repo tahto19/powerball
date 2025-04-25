@@ -1,5 +1,5 @@
 import { col, fn } from "sequelize";
-import TicketDetails from "../../../models/ticketDetails.model.js";
+import TicketDetails from "../../../models/TicketDetails.model.js";
 import { WhereFilters } from "../../../util/util.js";
 
 class TicketDetails_class {
