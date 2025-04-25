@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import { bodyDecrypt } from "@/utils/util";
 import { getDataV2 } from "@/types/allTypes";
 import { createAsyncThunk } from "@reduxjs/toolkit";

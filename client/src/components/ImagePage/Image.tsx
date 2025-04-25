@@ -8,7 +8,7 @@ import { initialImageData } from "./interface.ts";
 import MyDialog from "./Dialog";
 import { getDataV2 } from "@/types/allTypes";
 import CustomizedDataGrid from "../CustomizedDataGrid.tsx";
-import { Card, CardMedia, Typography } from '@mui/material';
+import { Card, CardMedia } from '@mui/material';
 
 import { ImageState } from "./interface.ts"
 const apiEndpoint = "http://localhost:5128/api/file/serve/image/";

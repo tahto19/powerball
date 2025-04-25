@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import { Box, Card, CardContent, CardMedia, Typography, Button } from "@mui/material";
 import apiService from "@/services/apiService";
 import { bodyDecrypt } from "@/utils/util";

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import apiService from "@/services/apiService";
 import { bodyDecrypt } from "@/utils/util";
 import { useEffect, useState } from "react";

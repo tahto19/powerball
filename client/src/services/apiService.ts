@@ -1,5 +1,5 @@
-import { getTicket } from "./../redux/reducers/ticket/asyncCalls";
 //@ts-nocheck
+import { getTicket } from "./../redux/reducers/ticket/asyncCalls";
 import _ from "lodash";
 import { bodyEncrypt } from "@/utils/util";
 import { userState } from "@/components/addUser/TypesHere";

@@ -1,12 +1,12 @@
-import TicketDetails from "../ticketDetails.model.js";
-import TicketHistory from "../TicketHistory.model.js";
-import Users from "../Users.model.js";
-import RaffleDetails from "../RaffleDetails.model.js";
-import RaffleSchedule from "../RaffleSchedule.model.js";
-import RafflePrize from "../RafflePrize.model.js";
-import Files from "../Files.model.js";
-import PrizeList from "../PrizeList.model.js";
-import WiningDrawDetails from "../WiningDrawDetails.model.js";
+import TicketDetails from "../models/../ticketDetails.model.js";
+import TicketHistory from "../models/../TicketHistory.model.js";
+import Users from "../models/../Users.model.js";
+import RaffleDetails from "../models/../RaffleDetails.model.js";
+import RaffleSchedule from "../models/../RaffleSchedule.model.js";
+import RafflePrize from "../models/../RafflePrize.model.js";
+import Files from "../models/../Files.model.js";
+import PrizeList from "../models/../PrizeList.model.js";
+import WiningDrawDetails from "../models/../WiningDrawDetails.model.js";
 
 export default function Associations() {
   Users.hasMany(TicketDetails, {

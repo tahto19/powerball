@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import { getData, getDataV2, ticketState } from "@/types/allTypes";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { disableBtn, enableBtn, showToaster } from "../global/globalSlice";

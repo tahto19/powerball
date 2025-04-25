@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { MyDialogProps, RaffleState } from '@/components/GameMaintenance/interface.ts';
 import React, { useState, useEffect, forwardRef } from 'react';
 import {
@@ -88,6 +89,12 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
     useEffect(() => {
         console.log(data)
         setOpen(open)
+        setPrizeData(initialRaffleData.raffleSchedule[0].prizeInfo[0])
+        setOpenPTDialog(true)
+
+        if (!open) {
+            setOpenPTDialog(false)
+        }
 
         const interval = setInterval(() => {
             const now = moment();

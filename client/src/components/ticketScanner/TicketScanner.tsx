@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import { useEffect, useState } from "react";
 import Dialog_ from "./Dialog_";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";

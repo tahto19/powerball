@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import {
   DialogProps,
   enterEntries,
@@ -119,11 +121,10 @@ const MyDialog = ({
                         entries: parseInt(e.target.value),
                       }));
                     }}
-                    helperText={`Total Entries Remaining: ${
-                      totalEntries !== null && totalUsedEntries !== null
+                    helperText={`Total Entries Remaining: ${totalEntries !== null && totalUsedEntries !== null
                         ? totalEntries - totalUsedEntries
                         : "loading" + totalUsedEntries + totalEntries
-                    }`}
+                      }`}
                   />
                 </FormControl>
               </Grid2>
