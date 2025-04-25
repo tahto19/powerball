@@ -1,0 +1,218 @@
+.elementor-514 .elementor-element.elementor-element-7fa96ec {
+    --display: flex;
+    --flex-direction: column;
+    --container-widget-width: 100%;
+    --container-widget-height: initial;
+    --container-widget-flex-grow: 0;
+    --container-widget-align-self: initial;
+    --flex-wrap-mobile: wrap;
+    --margin-top: 100px;
+    --margin-bottom: 0px;
+    --margin-left: 0px;
+    --margin-right: 0px;
+}
+
+.elementor-514 .elementor-element.elementor-element-4b9d4b03>.elementor-container>.elementor-column>.elementor-widget-wrap {
+    align-content: center;
+    align-items: center;
+}
+
+.elementor-514 .elementor-element.elementor-element-4b9d4b03:not(.elementor-motion-effects-element-type-background),
+.elementor-514 .elementor-element.elementor-element-4b9d4b03>.elementor-motion-effects-container>.elementor-motion-effects-layer {
+    background-image: url("https://18.138.76.86/wp-content/uploads/2025/03/shape-bg.png");
+    background-position: -194px 0px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.elementor-514 .elementor-element.elementor-element-4b9d4b03 {
+    transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 100px 0px 50px 0px;
+}
+
+.elementor-514 .elementor-element.elementor-element-4b9d4b03>.elementor-background-overlay {
+    transition: background 0.3s, border-radius 0.3s, opacity 0.3s;
+}
+
+.elementor-514 .elementor-element.elementor-element-20b54d12:not(.elementor-motion-effects-element-type-background)>.elementor-widget-wrap,
+.elementor-514 .elementor-element.elementor-element-20b54d12>.elementor-widget-wrap>.elementor-motion-effects-container>.elementor-motion-effects-layer {
+    background-color: #FFFFFF;
+}
+
+.elementor-514 .elementor-element.elementor-element-20b54d12>.elementor-element-populated {
+    transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
+    margin: 0px 0px 0px 0px;
+    --e-column-margin-right: 0px;
+    --e-column-margin-left: 0px;
+    padding: 20px 20px 20px 20px;
+}
+
+.elementor-514 .elementor-element.elementor-element-20b54d12>.elementor-element-populated>.elementor-background-overlay {
+    transition: background 0.3s, border-radius 0.3s, opacity 0.3s;
+}
+
+.elementor-widget-login .elementor-button {
+    background-color: var(--e-global-color-accent);
+    font-family: var(--e-global-typography-accent-font-family), Sans-serif;
+    font-weight: var(--e-global-typography-accent-font-weight);
+}
+
+.elementor-widget-login .elementor-field-group>a {
+    color: var(--e-global-color-text);
+}
+
+.elementor-widget-login .elementor-field-group>a:hover {
+    color: var(--e-global-color-accent);
+}
+
+.elementor-widget-login .elementor-form-fields-wrapper label {
+    color: var(--e-global-color-text);
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-weight: var(--e-global-typography-text-font-weight);
+}
+
+.elementor-widget-login .elementor-field-group .elementor-field {
+    color: var(--e-global-color-text);
+}
+
+.elementor-widget-login .elementor-field-group .elementor-field,
+.elementor-widget-login .elementor-field-subgroup label {
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-weight: var(--e-global-typography-text-font-weight);
+}
+
+.elementor-widget-login .elementor-widget-container .elementor-login__logged-in-message {
+    color: var(--e-global-color-text);
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-weight: var(--e-global-typography-text-font-weight);
+}
+
+.elementor-514 .elementor-element.elementor-element-938a465 .elementor-field-group {
+    margin-bottom: 10px;
+}
+
+.elementor-514 .elementor-element.elementor-element-938a465 .elementor-form-fields-wrapper {
+    margin-bottom: -10px;
+}
+
+body .elementor-514 .elementor-element.elementor-element-938a465 .elementor-field-group>label {
+    padding-bottom: 0px;
+}
+
+.elementor-514 .elementor-element.elementor-element-938a465 .elementor-field-group .elementor-field:not(.elementor-select-wrapper) {
+    background-color: #ffffff;
+}
+
+.elementor-514 .elementor-element.elementor-element-938a465 .elementor-field-group .elementor-select-wrapper select {
+    background-color: #ffffff;
+}
+
+.elementor-514 .elementor-element.elementor-element-483ef2bd:not(.elementor-motion-effects-element-type-background)>.elementor-widget-wrap,
+.elementor-514 .elementor-element.elementor-element-483ef2bd>.elementor-widget-wrap>.elementor-motion-effects-container>.elementor-motion-effects-layer {
+    background-color: #E6EEFD;
+    background-image: url("https://18.138.76.86/wp-content/uploads/2025/03/scratchit-logo-resized.png");
+    background-position: -396px 352px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.elementor-514 .elementor-element.elementor-element-483ef2bd>.elementor-element-populated>.elementor-background-overlay {
+    background-image: url("https://18.138.76.86/wp-content/uploads/2025/03/bubble_bg_popup.png");
+    background-position: top right;
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.5;
+}
+
+.elementor-bc-flex-widget .elementor-514 .elementor-element.elementor-element-483ef2bd.elementor-column .elementor-widget-wrap {
+    align-items: center;
+}
+
+.elementor-514 .elementor-element.elementor-element-483ef2bd.elementor-column.elementor-element[data-element_type="column"]>.elementor-widget-wrap.elementor-element-populated {
+    align-content: center;
+    align-items: center;
+}
+
+.elementor-514 .elementor-element.elementor-element-483ef2bd>.elementor-element-populated {
+    transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
+    padding: 0px 50px 0px 0px;
+}
+
+.elementor-514 .elementor-element.elementor-element-483ef2bd>.elementor-element-populated>.elementor-background-overlay {
+    transition: background 0.3s, border-radius 0.3s, opacity 0.3s;
+}
+
+.elementor-widget-ha-gradient-heading .ha-gradient-heading {
+    font-family: var(--e-global-typography-primary-font-family), Sans-serif;
+    font-weight: var(--e-global-typography-primary-font-weight);
+}
+
+.elementor-514 .elementor-element.elementor-element-4ee2ac6b {
+    text-align: center;
+}
+
+.elementor-514 .elementor-element.elementor-element-4ee2ac6b .ha-gradient-heading {
+    color: var(--e-global-color-primary);
+}
+
+.elementor-widget-button .elementor-button {
+    background-color: var(--e-global-color-accent);
+    font-family: var(--e-global-typography-accent-font-family), Sans-serif;
+    font-weight: var(--e-global-typography-accent-font-weight);
+}
+
+@media(max-width:1024px) {
+
+    .elementor-514 .elementor-element.elementor-element-4b9d4b03:not(.elementor-motion-effects-element-type-background),
+    .elementor-514 .elementor-element.elementor-element-4b9d4b03>.elementor-motion-effects-container>.elementor-motion-effects-layer {
+        background-position: 0px 0px;
+    }
+
+    .elementor-514 .elementor-element.elementor-element-4b9d4b03 {
+        padding: 30px 0px 53px 0px;
+    }
+
+    .elementor-514 .elementor-element.elementor-element-483ef2bd:not(.elementor-motion-effects-element-type-background)>.elementor-widget-wrap,
+    .elementor-514 .elementor-element.elementor-element-483ef2bd>.elementor-widget-wrap>.elementor-motion-effects-container>.elementor-motion-effects-layer {
+        background-position: 0px 0px;
+    }
+
+    .elementor-514 .elementor-element.elementor-element-483ef2bd>.elementor-element-populated {
+        padding: 0px 20px 0px 20px;
+    }
+}
+
+@media(max-width:767px) {
+
+    .elementor-514 .elementor-element.elementor-element-4b9d4b03:not(.elementor-motion-effects-element-type-background),
+    .elementor-514 .elementor-element.elementor-element-4b9d4b03>.elementor-motion-effects-container>.elementor-motion-effects-layer {
+        background-position: 0px 0px;
+    }
+
+    .elementor-514 .elementor-element.elementor-element-483ef2bd:not(.elementor-motion-effects-element-type-background)>.elementor-widget-wrap,
+    .elementor-514 .elementor-element.elementor-element-483ef2bd>.elementor-widget-wrap>.elementor-motion-effects-container>.elementor-motion-effects-layer {
+        background-position: 0px 0px;
+    }
+}
+
+@media(min-width:768px) {
+    .elementor-514 .elementor-element.elementor-element-20b54d12 {
+        width: 40%;
+    }
+
+    .elementor-514 .elementor-element.elementor-element-483ef2bd {
+        width: 68.588%;
+    }
+}
+
+@media(max-width:1024px) and (min-width:768px) {
+    .elementor-514 .elementor-element.elementor-element-20b54d12 {
+        width: 100%;
+    }
+
+    .elementor-514 .elementor-element.elementor-element-483ef2bd {
+        width: 100%;
+    }
+}

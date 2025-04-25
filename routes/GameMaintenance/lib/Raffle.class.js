@@ -1,6 +1,8 @@
 import RaffleDetails from "../../../models/RaffleDetails.model.js";
 import RafflePrize from "../../../models/RafflePrize.model.js";
 import RaffleSchedule from "../../../models/RaffleSchedule.model.js";
+import Files from "../../../models/Files.model.js";
+
 import { WhereFilters } from "../../../util/util.js";
 
 /**
@@ -13,6 +15,12 @@ class Raffle_class {
 
   async Insert(_data, newPrizeList) {
     delete _data.id;
+
+    if (!_data.fileInfo) {
+    }
+
+    _data.file_id = _data.fileInfo ? _data.fileInfo.id : null;
+    delete _data.fileInfo;
 
     const createRaffleDetails = await RaffleDetails.create(_data);
 
@@ -75,6 +83,12 @@ class Raffle_class {
             },
           ],
         },
+        {
+          model: Files,
+          order: [["id", "DESC"]],
+          as: "fileInfo",
+          attributes: ["id", "name", "description"],
+        },
       ],
     };
 
@@ -102,6 +116,9 @@ class Raffle_class {
     if (count === 0) throw new Error("User Not found");
     const id = _data.id;
     delete _data.id;
+
+    _data.file_id = _data.fileInfo ? _data.fileInfo.id : null;
+    delete _data.fileInfo;
 
     await RaffleDetails.update(_data, { where: { id }, individualHooks: true });
 
@@ -161,6 +178,12 @@ class Raffle_class {
           as: "raffleSchedule",
           attributes: ["id", "schedule_date"],
           limit: 1, // Tries to get only the latest RaffleSchedule
+        },
+        {
+          model: Files,
+          order: [["id", "DESC"]],
+          as: "fileInfo",
+          attributes: ["id", "name", "description"],
         },
       ],
     };

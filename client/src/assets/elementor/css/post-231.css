@@ -1,0 +1,61 @@
+.elementor-231 .elementor-element.elementor-element-10f74fb {
+    --display: flex;
+    --min-height: 40vh;
+    --flex-direction: column;
+    --container-widget-width: 100%;
+    --container-widget-height: initial;
+    --container-widget-flex-grow: 0;
+    --container-widget-align-self: initial;
+    --flex-wrap-mobile: wrap;
+    --overlay-opacity: 0.5;
+    --margin-top: 0px;
+    --margin-bottom: 0px;
+    --margin-left: 0px;
+    --margin-right: 0px;
+    --padding-top: 0px;
+    --padding-bottom: 0px;
+    --padding-left: 0px;
+    --padding-right: 0px;
+}
+
+.elementor-231 .elementor-element.elementor-element-10f74fb::before,
+.elementor-231 .elementor-element.elementor-element-10f74fb>.elementor-background-video-container::before,
+.elementor-231 .elementor-element.elementor-element-10f74fb>.e-con-inner>.elementor-background-video-container::before,
+.elementor-231 .elementor-element.elementor-element-10f74fb>.elementor-background-slideshow::before,
+.elementor-231 .elementor-element.elementor-element-10f74fb>.e-con-inner>.elementor-background-slideshow::before,
+.elementor-231 .elementor-element.elementor-element-10f74fb>.elementor-motion-effects-container>.elementor-motion-effects-layer::before {
+    background-color: var(--e-global-color-primary);
+    --background-overlay: '';
+}
+
+.elementor-231 .elementor-element.elementor-element-10f74fb .elementor-background-slideshow__slide__image {
+    background-size: cover;
+}
+
+.elementor-231 .elementor-element.elementor-element-10f74fb>.elementor-shape-bottom .elementor-shape-fill,
+.elementor-231 .elementor-element.elementor-element-10f74fb>.e-con-inner>.elementor-shape-bottom .elementor-shape-fill {
+    fill: #FDFDFD;
+}
+
+.elementor-231 .elementor-element.elementor-element-10f74fb>.elementor-shape-bottom svg,
+.elementor-231 .elementor-element.elementor-element-10f74fb>.e-con-inner>.elementor-shape-bottom svg {
+    height: 62px;
+}
+
+.elementor-231 .elementor-element.elementor-element-57efaa3 {
+    --display: flex;
+    --margin-top: 0px;
+    --margin-bottom: 0px;
+    --margin-left: 0px;
+    --margin-right: 0px;
+    --padding-top: 0px;
+    --padding-bottom: 0px;
+    --padding-left: 0px;
+    --padding-right: 0px;
+}
+
+.elementor-widget-theme-post-content {
+    color: var(--e-global-color-text);
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-weight: var(--e-global-typography-text-font-weight);
+}

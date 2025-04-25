@@ -12,6 +12,9 @@ import {
   RafflePaginationState,
   PayloadState,
 } from "@/components/GameMaintenance/interface";
+import {
+  ImageState2,ImageState
+} from "@/components/ImagePage/interface";
 import { getDeviceInfo } from "@/utils/util";
 import axios from "axios";
 import { veriyCode } from "./types/user";
@@ -152,6 +155,42 @@ export const apiService = {
     return res;
   },
 
+  createImage: async (d: ImageState2, token: string | null) => {
+    let fd = new FormData();
+
+    fd.append('data', bodyEncrypt(d, token))
+    fd.append('file', d.file[0])
+    const res = apiClient.post("/api/file/image", fd,{
+      headers: {
+        "Content-Type": "multipart/form-data",
+      }});
+    return res;
+  },
+
+  
+  updateImage: async (d: ImageState2, token: string | null) => {
+    let fd = new FormData();
+
+    fd.append('data', bodyEncrypt(d, token))
+    fd.append('file', d.file[0])
+    const res = apiClient.put("/api/file/image", fd,{
+      headers: {
+        "Content-Type": "multipart/form-data",
+      }});
+    return res;
+  },
+
+  getFile: async (d: getDataV2, token: string | null) => {
+    const res = apiClient.post("/api/file/", {
+      data: bodyEncrypt(d, token),
+    });
+    return res;
+  },
+  serveFile: async (id) => {
+    const res = apiClient.get("/api/file/serve/image/" + id);
+    return res;
+  },
+  
   // for creating user in the outside
   createUser: async (d: userState) => {
     const fd = new FormData();

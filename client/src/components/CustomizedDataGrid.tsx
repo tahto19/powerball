@@ -30,6 +30,7 @@ interface GridProps<T> {
   headers: GridColDef[];
   pagination: PaginationProps;
   pageLength: number | null;
+  rowHeight: number;
   onTableChange?: (params: {
     page: number;
     pageSize: number;
@@ -50,6 +51,7 @@ export default function CustomizedDataGrid<T>({
     pageSize: 10,
   },
   pageLength = 10,
+  rowHeight = 75,
   onTableChange,
   onEditAction,
   onViewAction,
@@ -161,9 +163,9 @@ export default function CustomizedDataGrid<T>({
       prevState.current.page !== paginationModel.page ||
       prevState.current.pageSize !== paginationModel.pageSize ||
       JSON.stringify(prevState.current.sortModel) !==
-        JSON.stringify(sortModel) ||
+      JSON.stringify(sortModel) ||
       JSON.stringify(prevState.current.filterModel) !==
-        JSON.stringify(filterModel);
+      JSON.stringify(filterModel);
 
     if (!hasChanged) return;
 
@@ -190,7 +192,7 @@ export default function CustomizedDataGrid<T>({
         //     padding: "10px", // ✅ Add padding inside cells
         // },
       }}
-      rowHeight={75}
+      rowHeight={rowHeight}
       paginationMode="server"
       sortingMode="server"
       filterMode="server"
