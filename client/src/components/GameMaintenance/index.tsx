@@ -105,7 +105,6 @@ const GameMaintenace = () => {
                 return x;
             })
         }
-
         const query: RafflePaginationState = {
             offset: page, limit: pageSize, sort: JSON.stringify(sort), filter: JSON.stringify(newFilterModel)
         }
@@ -114,7 +113,7 @@ const GameMaintenace = () => {
 
         const d = bodyDecrypt(res.data, token)
         if (d && d.success === 'success') {
-            console.log(">>>>>>>>", d.data)
+            console.log(d.data.list)
             setRaffleList(d.data.list)
             setListCount(d.data.total)
         }

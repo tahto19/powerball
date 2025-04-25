@@ -11,6 +11,7 @@ import userRoute from "./routes/User/User.route.js";
 import LoginRoute from "./routes/Login/Login.route.js";
 import PrizeListRoute from "./routes/PrizeList/PrizeList.route.js";
 import GameMaintenace from "./routes/GameMaintenance/Raffle.route.js";
+import FileEntries from "./routes/FileEntries/File.Route.js";
 
 import { logger } from "./util/util.js";
 import { auth } from "./authentication/auth.js";
@@ -144,6 +145,8 @@ const start = async () => {
     fastify.register(Ticket, { prefix: "api/ticket" });
     fastify.register(OTPRoute, { prefix: "api/otp" });
     fastify.register(raffleHistory, { prefix: "api/raffleHistory" });
+    fastify.register(FileEntries, { prefix: "api/file" });
+
     /**
      *error handler
      */

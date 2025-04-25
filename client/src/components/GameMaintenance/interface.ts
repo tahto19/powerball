@@ -1,6 +1,5 @@
 import {PrizeListAll} from "@/components/PrizeList/interface";
 import moment from "moment";
-
 export interface MyDialogProps {
     open: boolean;
     prizeList: PrizeListAll;
@@ -9,6 +8,7 @@ export interface MyDialogProps {
     onClose: (value: boolean) => void;
     onSubmit: () => void;
 }
+
 
 export interface PrizeListDialogProps {
     open: boolean;
@@ -28,6 +28,13 @@ export interface PrizeInfoState {
     prize_id: number;
 }
 
+export interface FileState {
+    id: number | null;
+    name: string;
+    description: string;
+}
+
+
 export interface RaffleState {
     id: number | null;
     details: string;
@@ -37,7 +44,8 @@ export interface RaffleState {
     starting_date: string | null;
     end_date: string | null;
     schedule_type: number | null;
-    raffleSchedule: RaffleScheduleState[]
+    raffleSchedule: RaffleScheduleState[];
+    fileInfo: FileState | null
 }
 
 export interface PayloadState {
@@ -63,4 +71,5 @@ export const initialRaffleData: RaffleState = {
         end_date: null,
         schedule_type: 1,
         raffleSchedule: [{id: null, prizeInfo: [{id: null, prize_id: -1}]}],
-}
+        fileInfo: null,
+    }

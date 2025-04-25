@@ -16,15 +16,26 @@ const bodyEncrypt = async (req, res, pay) => {
     // done(err, pay);
     return pay;
   } else {
-    if (cookies.cookie_pb_1271) {
-      console.log(pay);
-      let a = encryptData(pay, cookies.cookie_pb_1271);
-      return a;
-      // done(err, JSON.stringify(a));
+    const contentType = res.getHeader("Content-Type");
+    // ✅ If it's a file/stream response — skip encryption
+    if (
+      contentType?.includes("application/octet-stream") ||
+      (pay && typeof pay.pipe === "function") // detects streams
+    ) {
+      console.log(">>>>>>>>>>>", pay.pipe);
+
+      done(err, pay);
     } else {
-      // throw error;
-      if (req.method !== "OPTIONS") throw new Error("no cookies found");
-      // done(err, null);
+      if (cookies.cookie_pb_1271) {
+        console.log(pay);
+        let a = encryptData(pay, cookies.cookie_pb_1271);
+        return a;
+        // done(err, JSON.stringify(a));
+      } else {
+        // throw error;
+        if (req.method !== "OPTIONS") throw new Error("no cookies found");
+        // done(err, null);
+      }
     }
   }
 };

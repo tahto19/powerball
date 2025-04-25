@@ -34,6 +34,8 @@ const getErrorsStatus = (code: string) => {
       return "code is invalid";
     case "x71":
       return "Raffle ID already exists";
+    case "x72":
+      return "Image does not exists";
     case "x999":
       return "invalid credentials";
     case "x91c":

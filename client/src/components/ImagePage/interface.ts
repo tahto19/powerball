@@ -7,12 +7,17 @@ export interface DialogProps {
     onSubmit: () => void;
 }
 
+export interface ImageDrawerProps {
+    open: boolean;
+    onChoose: (value: ImageState) => void;
+    onClose: (value: boolean) => void;
+}
+
 export interface ImageState {
     id: number | null;
       name: string;
       description: string;
       file_location: string;
-      meta: string; //JSON
       status: boolean;
 }
 
@@ -21,7 +26,6 @@ export interface ImageState2 {
       name: string;
       description: string;
       file_location: string;
-      meta: string; //JSON
       status: boolean;
       file: File[]
 }
@@ -31,7 +35,6 @@ export const initialImageData: ImageState = {
       name: "",
       description: "",
       file_location: "",
-      meta: "",
       status: true,
 }
 
@@ -40,7 +43,6 @@ export const initialImageData2: ImageState2 = {
     name: "",
     description: "",
     file_location: "",
-    meta: "",
     status: true,
     file: []
 }

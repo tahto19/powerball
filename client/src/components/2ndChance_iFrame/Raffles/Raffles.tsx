@@ -21,6 +21,7 @@ import {
 } from "@/components/2ndChance_iFrame/Raffles/interface.ts";
 import { getRaffleEntry } from "@/redux/reducers/raffleEntry/asyncCalls";
 
+const endpoint = "http://localhost:5128/api/file/serve/image/"
 const Raffles = () => {
   const dispatch = useAppDispatch();
   const [list, setRaffleList] = useState<[]>([]);
@@ -79,12 +80,15 @@ const Raffles = () => {
           list.map((x, i) => (
             <Card key={i}>
               <Box sx={{ display: "flex", flexDirection: "column" }}>
-                <CardMedia
-                  component="img"
-                  sx={{ width: 300 }}
-                  image="https://picsum.photos/400/300"
-                  alt="Paella dish"
-                />
+                {x.fileInfo ? (
+                  <CardMedia
+                    component="img"
+                    sx={{ width: 300 }}
+                    image={endpoint + x.fileInfo.id}
+                    alt="Paella dish"
+                  />
+                ) : null}
+
                 <CardContent>
                   <div
                     style={{

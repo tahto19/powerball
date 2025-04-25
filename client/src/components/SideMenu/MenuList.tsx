@@ -7,31 +7,36 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Stack from "@mui/material/Stack";
-import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
-import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
-import GroupIcon from "@mui/icons-material/Group";
-import DisplaySettingsIcon from "@mui/icons-material/DisplaySettings";
-import ListAltIcon from "@mui/icons-material/ListAlt";
-import AttractionsIcon from "@mui/icons-material/Attractions";
-import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
-import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
+import {
+  HomeRounded,
+  Image,
+  PeopleOutline,
+  QrCodeScanner,
+  Attractions,
+  ListAlt,
+  DisplaySettings,
+  Group,
+  SettingsRounded
+} from '@mui/icons-material';
+
 const mainListItems = [
-  { text: "Home", icon: <HomeRoundedIcon />, path: "/dashboard" },
-  { text: "Administrator", icon: <GroupIcon />, path: "/administrator" },
-  { text: "Costumer", icon: <PeopleOutlineIcon />, path: "/costumer" },
+  { text: "Home", icon: <HomeRounded />, path: "/dashboard" },
+  { text: "Images", icon: <Image />, path: "/images" },
+  { text: "Administrator", icon: <Group />, path: "/administrator" },
+  { text: "Costumer", icon: <PeopleOutline />, path: "/costumer" },
   {
     text: "Game Maintenance",
-    icon: <DisplaySettingsIcon />,
+    icon: <DisplaySettings />,
     path: "/game-maintenance",
   },
-  { text: "Prize List", icon: <ListAltIcon />, path: "/prize-list" },
-  { text: "Raffle Draw", icon: <AttractionsIcon />, path: "/dashboard" },
-  { text: "Ticket Scan", icon: <QrCodeScannerIcon />, path: "/scan" },
-  { text: "My Ticket Scan", icon: <QrCodeScannerIcon />, path: "/myScan" },
+  { text: "Prize List", icon: <ListAlt />, path: "/prize-list" },
+  { text: "Raffle Draw", icon: <Attractions />, path: "/dashboard" },
+  { text: "Ticket Scan", icon: <QrCodeScanner />, path: "/scan" },
+  { text: "My Ticket Scan", icon: <QrCodeScanner />, path: "/myScan" },
 ];
 
 const secondaryListItems = [
-  { text: "System Defaults", icon: <SettingsRoundedIcon /> },
+  { text: "System Defaults", icon: <SettingsRounded /> },
 ];
 
 export default function MenuContent() {

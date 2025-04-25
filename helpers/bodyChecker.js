@@ -41,6 +41,18 @@ const bodyChecker = async (req, res) => {
         // }
         if (req.url.includes("create")) console.log(req.url, "her");
       }
+
+      if (req.method !== "GET" && formHeader) {
+        const cookie = req.cookies.cookie_pb_1271;
+        console.log("/////////////////", req.body.data);
+
+        let a = decryptData(req.body.data.value, cookie);
+        const file = req.body.file;
+        if (!a) throw new Error("ErrorCODE X891");
+        req.body = { ...JSON.parse(a), file };
+
+        console.log("/////////////////", req.body);
+      }
     }
   } catch (err) {
     throw err;

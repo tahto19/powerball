@@ -201,7 +201,7 @@ export const uploadImage2 = async (file, filename) => {
   let _path = getPath("/uploads/image_page/" + fName);
   let toBuffer_ = await file.toBuffer();
   let uploadeImage = await fs.writeFileSync(_path, toBuffer_);
-  return { uploadeImage, filename: fName };
+  return { uploadeImage, filename: fName, _path };
 };
 
 export const randomLetters = (length) => {

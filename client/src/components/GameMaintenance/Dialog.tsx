@@ -20,6 +20,15 @@ import PrizeListDialog from "./PrizeListDialog";
 import CustomizedDataGridBasic from "../CustomizedDataGridBasic";
 import { paginationModel } from "./DataGridDetails.ts";
 
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import ImageIcon from '@mui/icons-material/Image';
+import ImageDrawer from "@/components/ImageDrawer.tsx";
+
+
+
 const renderType = (status: 'minor' | 'major' | 'grand') => {
     const colors: { [index: string]: '#4FC3F7' | '#FFA726' | '#AB47BC' } = {
         minor: '#4FC3F7',
@@ -78,6 +87,8 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                 formData,
                 newPrizeList: selectedPrize.map(x => ({ id: Number(x.id), value: Number(x.value) }))
             }
+
+            console.log(formData)
             if (dialogType === 'Edit') {
                 res = await apiService.updateGM(payload, token);
                 message = "Record updated successfully."
@@ -87,7 +98,6 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
             }
 
             const d = bodyDecrypt(res.data, token)
-            console.log(">>>>>>>>>>>", d)
             if (d && d.success === 'success') {
                 dispatch(showToaster({
                     message: message,
@@ -166,6 +176,29 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
     }
     const handleOpenPrizeListDialog = () => {
         setOpenPrizeListDialog(true)
+    }
+
+    const [imageDrawer, setImageDrawer] = useState(false)
+    const handleImage = () => {
+        console.log('open')
+        setImageDrawer(true)
+    }
+
+    const handleImageDrawerClose = (value) => {
+        setImageDrawer(value)
+    }
+
+    const handleImageRow = (item) => {
+        const id = item.id;
+        setImageDrawer(false)
+        setData((prev) => ({
+            ...prev,
+            fileInfo: {
+                id: item.id,
+                name: item.name,
+                description: item.description,
+            }
+        }))
     }
     return (
         <>
@@ -275,6 +308,33 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                     </LocalizationProvider>
                                 </FormControl>
                             </Grid2>
+                            <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                                <FormControl>
+                                    <FormLabel htmlFor="value">Image</FormLabel>
+                                    <OutlinedInput
+                                        type='text'
+                                        value={formData.fileInfo ? formData.fileInfo.name : ""}
+                                        endAdornment={
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    onClick={handleImage}
+                                                    edge="end"
+                                                >
+                                                    <ImageIcon />
+                                                </IconButton>
+                                            </InputAdornment>
+                                        }
+                                        label="Image"
+                                        slotProps={{
+                                            input: {
+                                                readOnly: true,
+                                            },
+                                        }}
+                                    />
+                                </FormControl>
+                            </Grid2>
+
+
                             <Box sx={{
                                 display: "flex",
                                 justifyContent: "end",
@@ -379,6 +439,8 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                     </DialogActions>
                 </form>
             </Dialog>
+            <ImageDrawer open={imageDrawer} onChoose={handleImageRow} onClose={handleImageDrawerClose} />
+
         </>
     )
 }

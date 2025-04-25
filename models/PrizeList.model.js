@@ -33,7 +33,7 @@ PrizeList.init(
   {
     timestamps: true,
     sequelize: conn.sequelize,
-    modelName: "Prize List",
+    modelName: "Prize_List",
     paranoid: true,
     tableName: process.env.DB_PREFIX + "prize_list",
     indexes: [{ name: "prize_list_idx", fields: ["id"] }],

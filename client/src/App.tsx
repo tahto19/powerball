@@ -16,6 +16,9 @@ import Dashboard from "./components/dashboard/index";
 import Administrator from "./components/Administrator/index";
 import GameMaintenance from "./components/GameMaintenance/index";
 
+import Login from "@/components/2ndChance_iFrame/Login/Login";
+
+
 import Toaster_ from "./Global/toaster/Toaster_";
 import { getDeviceInfo } from "./utils/util";
 import { useEffect } from "react";
@@ -130,6 +133,11 @@ function AppRoutes() {
       <Route
         path="/iframe/2nd-chance/raffles"
         element={<Raffles />}
+      />
+
+      <Route
+        path="/iframe/2nd-chance/login"
+        element={<Login />}
       />
 
       {/* Catch-All Error Page */}

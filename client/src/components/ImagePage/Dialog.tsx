@@ -1,11 +1,15 @@
 
 import { initialImageData2, DialogProps, ImageState2 } from "./interface.ts"
-import { Typography, Box, Stack, Paper, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Button, FormLabel, FormControlLabel, Grid2 } from '@mui/material';
+import { Typography, Box, Stack, Paper, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Button, FormLabel, Grid2 } from '@mui/material';
 import MuiFormControl from '@mui/material/FormControl';
 import { styled } from '@mui/material/styles';
 import { useState, useEffect, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { bodyDecrypt } from "@/utils/util";
+import { showToaster } from "@/redux/reducers/global/globalSlice"
+import { useAppSelector, useAppDispatch } from "@/redux/hook";
+import apiService from "@/services/apiService";
 
 const FormControl = styled(MuiFormControl)(() => ({
     width: "100%"
@@ -13,14 +17,75 @@ const FormControl = styled(MuiFormControl)(() => ({
 
 
 const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: DialogProps) => {
+    const dispatch = useAppDispatch();
+    const { token } = useAppSelector((state) => state.token);
+
     const [formData, setData] = useState<ImageState2>(initialImageData2);
     const [dialog_type, setDialogType] = useState("")
 
-    const handleSubmit = (event: React.FocusEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FocusEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        if (!formData.file || formData.file.length === 0) {
+        if (!formData.file || formData.file.length === 0 && dialogType !== 'Edit') {
+            dispatch(showToaster({
+                message: "Image not found",
+                show: true,
+                variant: "error",
+                icon: null,
+            }))
             return;
+        }
+
+
+        if (!formData.name || formData.name.trim() === "") {
+            dispatch(showToaster({
+                message: "Name field is empty.",
+                show: true,
+                variant: "error",
+                icon: null,
+            }))
+            return;
+        }
+
+        let message;
+        let res;
+        const fd = new FormData();
+
+        fd.append("id", formData.status.toString())
+        fd.append("file_location", formData.file_location.toString())
+        fd.append("status", formData.status.toString())
+        fd.append("file", formData.file[0])
+        fd.append("description", formData.description)
+        fd.append("name", formData.name)
+
+        if (dialogType === 'Edit') {
+            res = await apiService.updateImage(formData, token);
+            message = "Record updated successfully."
+        } else {
+
+            res = await apiService.createImage(formData, token);
+            message = "Record created successfully."
+        }
+
+        const d = bodyDecrypt(res.data, token)
+
+        if (d && d.success === 'success') {
+            dispatch(showToaster({
+                message: message,
+                show: true,
+                variant: "success",
+                icon: null,
+            }))
+            onClose(false);
+            onSubmit()
+
+        } else {
+            dispatch(showToaster({
+                message: d.message,
+                show: true,
+                variant: "error",
+                icon: null,
+            }))
         }
 
         console.log(formData)
@@ -104,6 +169,11 @@ const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: DialogProps) =>
                                         }}
                                         value={formData.description}
                                         onChange={handleInputChange}
+                                        slotProps={{
+                                            input: {
+                                                readOnly: dialog_type === 'View',
+                                            },
+                                        }}
                                     />
                                 </FormControl>
                             </Grid2>
@@ -122,6 +192,11 @@ const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: DialogProps) =>
                                         value={formData.name}
                                         variant="outlined"
                                         onChange={handleInputChange}
+                                        slotProps={{
+                                            input: {
+                                                readOnly: dialog_type === 'View',
+                                            },
+                                        }}
                                     />
                                 </FormControl>
                             </Grid2>
@@ -134,6 +209,7 @@ const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: DialogProps) =>
                                         borderColor: "#cacfdb",
                                         padding: "2%",
                                         borderRadius: "25px",
+                                        display: dialogType === 'View' ? 'none' : 'static'
                                     }}
                                 >
                                     <div {...getRootProps()}>
@@ -178,7 +254,9 @@ const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: DialogProps) =>
 
                     </DialogContent>
 
-                    <DialogActions>
+                    <DialogActions sx={{
+                        display: dialogType === 'View' ? 'none' : 'static'
+                    }}>
                         <Button type="submit" variant="contained" sx={{ width: '100%' }}>Submit</Button>
                     </DialogActions>
                 </form>
