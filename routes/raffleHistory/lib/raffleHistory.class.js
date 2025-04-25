@@ -1,6 +1,7 @@
 import { col, fn } from "sequelize";
 import TicketHistory from "../../../models/TicketHistory.model.js";
 import { WhereFilters } from "../../../util/util.js";
+import WiningDrawDetails from "../../../models/WiningDrawDetails.model.js";
 
 class TicketHistory_class {
   constructor() {}
@@ -61,6 +62,20 @@ class TicketHistory_class {
 
     let r = await TicketHistory.findAll(query);
     return r;
+  }
+  async fetchTicketsInRaffle(id) {
+    if (!id) throw new Error("ErrorCODE x098");
+    let { count, rows } = await TicketHistory.findAndCountAll({
+      where: { raffle_id: id, "$wining_draw_detail.id$": null },
+      include: [
+        {
+          model: WiningDrawDetails,
+          required: false,
+        },
+      ],
+    });
+    if (count <= 0) throw new Error("x675");
+    return { list: rows.map((v) => v.toJSON()), count };
   }
 }
 

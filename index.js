@@ -61,6 +61,8 @@ const fastify = Fastify({
  * x268 no active ticket or no more entries
  * X984 invalid transaction in draw no prize_id or no raffle_id
  * X911 raffle is already have a winner
+ * x098 the query has no id
+ * x675 theres no entry on this ticket
  */
 
 /**

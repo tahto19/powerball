@@ -15,9 +15,8 @@ export const raffleDrawController = async (req, res) => {
     });
     if (checkRaffleWinner.count > 0) throw new Error("ErrorCODE X911");
 
-    const getTicketsWithRaffleId = await td.FetchAll(null, [
-      { field: "raffle_id", filter: raffle_id, type: "number" },
-    ]);
+    const getTicketsWithRaffleId = await td.fetchTicketsInRaffle(raffle_id);
+
     let getTicketNumber = getTicketsWithRaffleId.list.map(
       (v) => v.ticket_history_generate
     );
@@ -34,8 +33,16 @@ export const raffleDrawController = async (req, res) => {
       ticket_history_id: getWinnerTicketDetails.id,
       ticket_id: getWinnerTicketDetails.ticket_id,
     });
-
-    res.send(cSend(getWinnerTicketDetails));
+    console.log({
+      winnerDetails: getWinnerTicketDetails,
+      totalEtnries: getTicketsWithRaffleId.count,
+    });
+    res.send(
+      cSend({
+        winnerDetails: getWinnerTicketDetails,
+        totalEntries: getTicketsWithRaffleId.count,
+      })
+    );
   } catch (err) {
     console.log(err);
     throw err;
