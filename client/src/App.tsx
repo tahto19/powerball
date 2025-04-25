@@ -158,7 +158,7 @@ function AppRoutes() {
 function App() {
   return (
     <>
-      <Router basename="/cms">
+      <Router>
         <AppRoutes />
       </Router>
       <Toaster_></Toaster_>
