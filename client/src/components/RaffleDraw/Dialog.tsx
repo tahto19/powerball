@@ -17,9 +17,24 @@ import { TransitionProps } from '@mui/material/transitions';
 import CustomizedDataGridBasic from "../CustomizedDataGridBasic.tsx";
 import { paginationModel, columnHeader } from "./DataGridDetails.ts";
 
+
 import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 import moment from 'moment';
+import PrizeListDialog from './PrizeTypeDialog.tsx';
+import {
+    initialRaffleData,
+    PrizeInfoState,
+} from "@/components/GameMaintenance/interface.ts";
+import { TimeProps, initailTimeData } from "./interface.ts";
+
+import apiService from "@/services/apiService";
+
+import { capitalizeFirstLetter } from '@/utils/util.ts';
+import CountDown from './CountDown.tsx';
+import { useAppSelector, useAppDispatch } from "@/redux/hook";
+import { bodyDecrypt } from "@/utils/util";
+
 const endpoint = "http://localhost:5128/api/file/serve/image/"
 
 const Transition = forwardRef(function Transition(
@@ -33,31 +48,61 @@ const Transition = forwardRef(function Transition(
 
 const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
     const [isOpen, setOpen] = useState(open);
+    const [openPTDialog, setOpenPTDialog] = useState(false);
+    const [prizeData, setPrizeData] = useState<PrizeInfoState>(initialRaffleData.raffleSchedule[0].prizeInfo[0]);
+    const { token } = useAppSelector((state) => state.token);
+
+    const handlePrizeTypeChange = (value: string) => {
+        const prize_data = data.raffleSchedule[0].prizeInfo.find(x => x.Prize_List.type === value)
+        console.log("Prize Data >>>>>>>>>", prize_data)
+        if (prize_data) {
+            setPrizeData(prize_data)
+        }
+        setOpenPTDialog(false)
+    }
 
     const handleClose = () => {
         onClose(false)
     }
 
-    const [timeLeft, setTimeLeft] = useState({});
+    const handleDraw = async () => {
+        const raffle_id = data.raffleSchedule[0].raffle_id
+        const prize_id = prizeData.prize_id
+
+        if (!raffle_id) return;
+
+        const payload = {
+            raffle_id,
+            prize_id
+        }
+        const res = await apiService.ticketDraw(payload, token);
+
+        const d = bodyDecrypt(res.data, token);
+        if (d && d.success === "success") {
+            console.log(">>>>>>>>", d.data);
+        }
+    }
+
+    const [timeLeft, setTimeLeft] = useState<TimeProps>(initailTimeData);
 
     useEffect(() => {
         console.log(data)
         setOpen(open)
 
-        // const interval = setInterval(() => {
-        //     const now = moment();
-        //     const future = moment(data.raffleSchedule[0].schedule_date);
-        //     const duration = moment.duration(future.diff(now));
+        const interval = setInterval(() => {
+            const now = moment();
+            const future = moment(data.raffleSchedule[0].schedule_date);
+            const duration = moment.duration(future.diff(now));
 
-        //     setTimeLeft({
-        //       days: String(duration.days()).padStart(2, "0"),
-        //       hours: String(duration.hours()).padStart(2, "0"),
-        //       minutes: String(duration.minutes()).padStart(2, "0"),
-        //       seconds: String(duration.seconds()).padStart(2, "0"),
-        //     });
-        //   }, 1000);
+            setTimeLeft({
+                days: String(duration.days()).padStart(2, "0"),
+                hours: String(duration.hours()).padStart(2, "0"),
+                minutes: String(duration.minutes()).padStart(2, "0"),
+                seconds: String(duration.seconds()).padStart(2, "0"),
+            });
+        }, 1000);
 
-        //   return () => clearInterval(interval);
+        return () => clearInterval(interval);
 
     }, [open, data])
     return (
@@ -82,7 +127,6 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
                                 color: "white",
                             }}
                             onClick={handleClose}
-
                         >
                             <CloseIcon />
 
@@ -112,11 +156,12 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
                         }}
                     >
                         <Box sx={{ position: "relative" }}>
-                            <Typography sx={{ fontSize: "18px", fontWeight: "500" }}>Major Prize (PHP)</Typography>
+                            <Typography sx={{ fontSize: "18px", fontWeight: "500" }}>{capitalizeFirstLetter(prizeData.Prize_List.type)} Prize (PHP)</Typography>
                             <IconButton
                                 size="large"
                                 edge="start"
                                 color="inherit"
+                                onClick={() => setOpenPTDialog(true)}
                                 sx={{
                                     position: "absolute",
                                     right: "-45px",
@@ -136,7 +181,7 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
                             </IconButton>
 
                         </Box>
-                        <Typography sx={{ fontSize: "48px", fontWeight: "900" }}>10,000,000</Typography>
+                        <Typography sx={{ fontSize: "48px", fontWeight: "900" }}>{Number(prizeData.amount).toLocaleString()}</Typography>
                         <CardMedia
                             component="img"
                             sx={{ width: "auto", height: 200 }}
@@ -146,48 +191,8 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
                         <Card sx={{ position: "absolute", bottom: "-30px", width: "50%", padding: "10px 40px" }}>
                             <CardContent>
                                 <Box sx={{ display: "flex", gap: "20px", flexWrap: "wrap", justifyContent: "space-between" }}>
-                                    <Box sx={{ display: 'flex', alignItems: "center", flexWrap: "wrap", gap: "10px" }}>
-                                        <Typography sx={{ fontWeight: "500", fontSize: "20px", textWrap: "nowrap" }}>Draw closes in: </Typography>
-                                        <div style={{ display: 'flex', gap: "8px" }}>
-                                            <div style={{ display: 'flex', gap: "3px" }}>
-                                                <Typography sx={{
-                                                    borderRadius: "4px 4px 0px 0px",
-                                                    padding: "0 3px",
-                                                    backgroundColor: "rgb(220, 227, 231)",
-                                                    fontWeight: "600"
-                                                }}>13</Typography>
-                                                <Typography sx={{ color: "rgb(129, 133, 140)" }}>D</Typography>
-                                            </div>
-                                            <div style={{ display: 'flex', gap: "3px" }}>
-                                                <Typography sx={{
-                                                    borderRadius: "4px 4px 0px 0px",
-                                                    padding: "0 3px",
-                                                    backgroundColor: "rgb(220, 227, 231)",
-                                                    fontWeight: "600"
-                                                }}>01</Typography>
-                                                <Typography sx={{ color: "rgb(129, 133, 140)" }}>H</Typography>
-                                            </div>
-                                            <div style={{ display: 'flex', gap: "3px" }}>
-                                                <Typography sx={{
-                                                    borderRadius: "4px 4px 0px 0px",
-                                                    padding: "0 3px",
-                                                    backgroundColor: "rgb(220, 227, 231)",
-                                                    fontWeight: "600"
-                                                }}>17</Typography>
-                                                <Typography sx={{ color: "rgb(129, 133, 140)" }}>M</Typography>
-                                            </div>
-                                            <div style={{ display: 'flex', gap: "3px" }}>
-                                                <Typography sx={{
-                                                    borderRadius: "4px 4px 0px 0px",
-                                                    padding: "0 3px",
-                                                    backgroundColor: "rgb(220, 227, 231)",
-                                                    fontWeight: "600"
-                                                }}>41</Typography>
-                                                <Typography sx={{ color: "rgb(129, 133, 140)" }}>S</Typography>
-                                            </div>
-                                        </div>
-                                    </Box>
-                                    <Button variant="contained" sx={{ padding: "10px 40px" }}>Draw</Button>
+                                    <CountDown time={timeLeft} />
+                                    <Button onClick={handleDraw} variant="contained" sx={{ padding: "10px 40px" }}>Draw</Button>
                                 </Box>
                             </CardContent>
                         </Card>
@@ -210,6 +215,7 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
                         />
                     </Box>
                 </Box>
+                <PrizeListDialog open={openPTDialog} onChange={handlePrizeTypeChange} />
             </Dialog>
         </>
     );

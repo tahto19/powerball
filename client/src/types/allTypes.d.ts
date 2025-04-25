@@ -89,3 +89,9 @@ export interface LocationState {
     pathname: string;
   };
 }
+
+
+export interface TicketDraw {
+  raffle_id: number | null;
+  prize_id: number | null;
+}

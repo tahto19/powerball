@@ -16,11 +16,11 @@ RafflePrize.init(
       type: DataTypes.INTEGER,
       defaultValue: null,
     },
-    prize_id: {
-      allowNull: true,
-      type: DataTypes.BIGINT,
-      defaultValue: null,
-    },
+    // prize_id: {
+    //   allowNull: true,
+    //   type: DataTypes.BIGINT,
+    //   defaultValue: null,
+    // },
     status: {
       type: DataTypes.SMALLINT,
       allowNull: false,

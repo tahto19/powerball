@@ -18,7 +18,7 @@ import {
 import { getDeviceInfo } from "@/utils/util";
 import axios from "axios";
 import { veriyCode } from "./types/user";
-import { adminType, getData, getDataV2, ticketState } from "@/types/allTypes";
+import { adminType, getData, getDataV2, ticketState, TicketDraw } from "@/types/allTypes";
 import { enterEntries } from "@/components/2ndChance_iFrame/Raffles/interface";
 
 interface Credentials {
@@ -257,6 +257,11 @@ export const apiService = {
   postTicketList: async (data: ticketState, token: string | null) => {
     return apiClient.post("api/ticket", {
       data: bodyEncrypt(JSON.stringify({ ticket_id: data }), token),
+    });
+  },
+  ticketDraw: async (data: TicketDraw, token: string | null) => {
+    return apiClient.post("api/ticket/draw", {
+      data: bodyEncrypt(JSON.stringify(data), token),
     });
   },
   // for token

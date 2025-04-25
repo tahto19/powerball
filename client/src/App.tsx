@@ -12,9 +12,10 @@ import ErrorPage from "./components/errorPage/ErrorPage";
 import SignIn from "./components/signIn/index";
 import AppTheme from "@/theme/AppTheme";
 import MainLayout from "./layout/MainLayout";
-import Dashboard from "./components/dashboard/index";
+import Dashboard from "./components/Dashboard/Dashboard";
 import Administrator from "./components/Administrator/index";
 import GameMaintenance from "./components/GameMaintenance/index";
+import RaffleDraw from "./components/RaffleDraw/index";
 
 import Login from "@/components/2ndChance_iFrame/Login/Login";
 
@@ -42,6 +43,11 @@ const routes = [
     path: "/images",
     component: <ImagePage />,
     title: "Images",
+  },
+  {
+    path: "/raffle-draw",
+    component: <RaffleDraw />,
+    title: "Raffle Draw",
   },
   {
     path: "/prize-list",

@@ -18,14 +18,22 @@ export interface PrizeListDialogProps {
     onSubmit: (value: number[]) => void;
 }
 
-
+export interface PrizeListState {
+    id: number | null;
+    type: string;
+}
 export interface RaffleScheduleState {
     id: number | null;
+    raffle_id: number | null;
     prizeInfo: PrizeInfoState[]
+    schedule_date: string | null;
 }
 export interface PrizeInfoState {
     id: number | null;
     prize_id: number;
+    amount: number;
+    Prize_List: PrizeListState;
+    
 }
 
 export interface FileState {
@@ -70,6 +78,6 @@ export const initialRaffleData: RaffleState = {
         starting_date: moment().toISOString(),
         end_date: null,
         schedule_type: 1,
-        raffleSchedule: [{id: null, prizeInfo: [{id: null, prize_id: -1}]}],
+        raffleSchedule: [{id: null, raffle_id: null,schedule_date: moment().toISOString(), prizeInfo: [{id: null, prize_id: -1, amount: 0, Prize_List: {id: null, type: ""}}]}],
         fileInfo: null,
     }

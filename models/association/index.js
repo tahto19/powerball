@@ -5,6 +5,7 @@ import RaffleDetails from "../RaffleDetails.model.js";
 import RaffleSchedule from "../RaffleSchedule.model.js";
 import RafflePrize from "../RafflePrize.model.js";
 import Files from "../Files.model.js";
+import PrizeList from "../PrizeList.model.js";
 
 export default function Associations() {
   Users.hasMany(TicketDetails, {
@@ -59,6 +60,12 @@ export default function Associations() {
   /** RafflePrize */
   RafflePrize.belongsTo(RaffleSchedule, {
     foreignKey: "raffle_schedule_id",
+  });
+
+  RafflePrize.belongsTo(PrizeList, {
+    foreignKey: "prize_id",
+    targetKey: "id",
+    constraints: false,
   });
 
   RaffleDetails.belongsTo(Files, {

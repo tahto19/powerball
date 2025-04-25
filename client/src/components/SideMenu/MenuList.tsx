@@ -30,7 +30,7 @@ const mainListItems = [
     path: "/game-maintenance",
   },
   { text: "Prize List", icon: <ListAlt />, path: "/prize-list" },
-  { text: "Raffle Draw", icon: <Attractions />, path: "/dashboard" },
+  { text: "Raffle Draw", icon: <Attractions />, path: "/raffle-draw" },
   { text: "Ticket Scan", icon: <QrCodeScanner />, path: "/scan" },
   { text: "My Ticket Scan", icon: <QrCodeScanner />, path: "/myScan" },
 ];

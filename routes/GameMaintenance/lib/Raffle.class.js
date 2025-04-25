@@ -2,6 +2,7 @@ import RaffleDetails from "../../../models/RaffleDetails.model.js";
 import RafflePrize from "../../../models/RafflePrize.model.js";
 import RaffleSchedule from "../../../models/RaffleSchedule.model.js";
 import Files from "../../../models/Files.model.js";
+import PrizeList from "../../../models/PrizeList.model.js";
 
 import { WhereFilters } from "../../../util/util.js";
 
@@ -102,6 +103,34 @@ class Raffle_class {
   async FetchAll(sort = [["id", "ASC"]], filter = []) {
     let query = {
       order: sort,
+      include: [
+        {
+          model: RaffleSchedule,
+          order: [["id", "DESC"]],
+          as: "raffleSchedule",
+          include: [
+            {
+              model: RafflePrize,
+              order: [["id", "DESC"]],
+              as: "prizeInfo",
+              where: { status: 1 },
+              required: false, // This ensures the RaffleSchedule is included even if there's no matching RafflePrize
+              include: [
+                {
+                  model: PrizeList,
+                  required: false, // This ensures the RaffleSchedule is included even if there's no matching RafflePrize
+                },
+              ],
+            },
+          ],
+        },
+        {
+          model: Files,
+          order: [["id", "DESC"]],
+          as: "fileInfo",
+          attributes: ["id", "name", "description"],
+        },
+      ],
     };
 
     if (filter.length !== 0) query["where"] = WhereFilters(filter);

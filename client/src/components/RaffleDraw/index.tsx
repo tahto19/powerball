@@ -12,7 +12,7 @@ import MyDialog from "./Dialog.tsx";
 
 const endpoint = "http://localhost:5128/api/file/serve/image/"
 
-const Dashboard = () => {
+const RaffleDraw = () => {
   const dispatch = useAppDispatch();
   const [list, setRaffleList] = useState<[]>([]);
   const [data, setData] = useState(initialRaffleData);
@@ -36,7 +36,7 @@ const Dashboard = () => {
       sort: JSON.stringify([["id", "ASC"]]),
       filter: JSON.stringify([{ field: "active", filter: 1, type: "boolean" }]),
     };
-    const res = await apiService.get2ndChanceGMListAll(payload, token);
+    const res = await apiService.getGMListAll(payload, token);
 
     const d = bodyDecrypt(res.data, token);
     if (d && d.success === "success") {
@@ -100,4 +100,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default RaffleDraw;
