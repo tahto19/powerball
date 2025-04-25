@@ -1,3 +1,4 @@
+import auditTrailSave from "../lib/auditTrailSave.js";
 import { encryptData, getPath } from "../util/util.js";
 import fs from "fs";
 const bodyEncrypt = async (req, res, pay) => {
@@ -17,13 +18,14 @@ const bodyEncrypt = async (req, res, pay) => {
     return pay;
   } else {
     if (cookies.cookie_pb_1271) {
-      console.log(pay);
       let a = encryptData(pay, cookies.cookie_pb_1271);
+      auditTrailSave(req, pay);
       return a;
       // done(err, JSON.stringify(a));
     } else {
       // throw error;
-      if (req.method !== "OPTIONS") throw new Error("no cookies found");
+      if (req.method !== "OPTIONS") return payload;
+
       // done(err, null);
     }
   }

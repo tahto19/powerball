@@ -43,6 +43,24 @@ AuditTrail.init(
       type: DataTypes.TINYINT,
       defaultValue: 1,
     },
+    typeOfRequest: {
+      allowNull: false,
+      type: DataTypes.TINYINT,
+    },
+    typeOfRequestText: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        let getTypeOfRequest = this.getDataValue("typeOfRequest");
+        switch (getTypeOfRequest) {
+          case 1:
+            return "POST";
+          case 2:
+            return "PUT";
+          case 3:
+            return "DELETE";
+        }
+      },
+    },
     path: {
       allowNull: false,
       type: DataTypes.TEXT,

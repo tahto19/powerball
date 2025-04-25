@@ -23,7 +23,7 @@ import raffleHistory from "./routes/raffleHistory/raffleHistory.js";
 import auditTrailAdder from "./helpers/auditTrailAdder.js";
 
 const fastify = Fastify({
-  // trustProxy: true,
+  trustProxy: true,
   // logger: {
   //   transport: {
   //     target: "pino-pretty",

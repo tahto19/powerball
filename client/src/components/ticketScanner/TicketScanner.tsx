@@ -68,13 +68,17 @@ const TicketScanner = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const l = location?.pathname;
     dispatch(
-      getTicket({ filter, offset, limit, sort, location: location?.pathname })
+      getTicket({
+        filter,
+        offset: pagination.page,
+        limit: pagination.pageSize,
+        sort,
+        location: location?.pathname,
+      })
     );
-  }, [location]);
+  }, [location, pagination]);
   useEffect(() => {
-    console.log("here", loading, filter, offset, limit, sort, list, count);
     setPagination(() => {
       return { page: offset, pageSize: limit };
     });
