@@ -17,7 +17,6 @@ const bodyEncrypt = async (req, res, pay) => {
     // done(err, pay);
     return pay;
   } else {
-<<<<<<< HEAD
     if (cookies.cookie_pb_1271) {
       let a = encryptData(pay, cookies.cookie_pb_1271);
       auditTrailSave(req, pay);
@@ -28,28 +27,6 @@ const bodyEncrypt = async (req, res, pay) => {
       if (req.method !== "OPTIONS") return payload;
 
       // done(err, null);
-=======
-    const contentType = res.getHeader("Content-Type");
-    // ✅ If it's a file/stream response — skip encryption
-    if (
-      contentType?.includes("application/octet-stream") ||
-      (pay && typeof pay.pipe === "function") // detects streams
-    ) {
-      console.log(">>>>>>>>>>>", pay.pipe);
-
-      done(err, pay);
-    } else {
-      if (cookies.cookie_pb_1271) {
-        console.log(pay);
-        let a = encryptData(pay, cookies.cookie_pb_1271);
-        return a;
-        // done(err, JSON.stringify(a));
-      } else {
-        // throw error;
-        if (req.method !== "OPTIONS") throw new Error("no cookies found");
-        // done(err, null);
-      }
->>>>>>> 9cafc56034111830b0cc840c38a611911a3213ec
     }
   }
 };

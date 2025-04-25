@@ -14,6 +14,7 @@ import {
 } from "@/types/allTypes";
 import moment from "moment";
 import { useLocation } from "react-router-dom";
+import RandomString from "@/animated/RandomLetters";
 const headers: GridColDef[] = [
   {
     field: "fullname",
@@ -120,6 +121,7 @@ const TicketScanner = () => {
       limit: pageSize,
       sort: sort,
       filter: newFilterModel,
+      location: undefined,
     };
     console.log(query);
     // const res = await apiService.getPrizeList(query);
@@ -165,6 +167,15 @@ const TicketScanner = () => {
         >
           {location.pathname.includes("myScan") ? "My" : "All"} Ticket Details
         </Typography>
+        <RandomString
+          winner={"HEdJ1"}
+          seconds={50}
+        />
+        |||
+        <RandomString
+          winner={"WoOpX8(+"}
+          seconds={50}
+        />
       </Grid2>
       <Grid2 size={{ xs: 6, sm: 6, lg: 6 }}>
         <Button
