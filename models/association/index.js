@@ -6,6 +6,7 @@ import RaffleSchedule from "../RaffleSchedule.model.js";
 import RafflePrize from "../RafflePrize.model.js";
 import Files from "../Files.model.js";
 import PrizeList from "../PrizeList.model.js";
+import WiningDrawDetails from "../WiningDrawDetails.model.js";
 
 export default function Associations() {
   Users.hasMany(TicketDetails, {
@@ -72,5 +73,42 @@ export default function Associations() {
     foreignKey: "file_id",
     sourceKey: "id",
     as: "fileInfo",
+  });
+
+  // winningdraw details
+  Users.hasMany(WiningDrawDetails, {
+    foreignKey: "admin_id",
+    targetKey: "id",
+  });
+  WiningDrawDetails.belongsTo(Users, {
+    foreignKey: "admin_id",
+    targetKey: "id",
+  });
+  //
+  TicketHistory.hasOne(WiningDrawDetails, {
+    foreignKey: "ticket_history_id",
+    sourceKey: "id",
+  });
+  WiningDrawDetails.belongsTo(TicketHistory, {
+    foreignKey: "ticket_history_id",
+    sourceKey: "id",
+  });
+  // //
+  WiningDrawDetails.belongsTo(TicketDetails, {
+    foreignKey: "ticket_id",
+    sourceKey: "id",
+  });
+  TicketDetails.hasOne(WiningDrawDetails, {
+    foreignKey: "ticket_id",
+    sourceKey: "id",
+  });
+  //
+  WiningDrawDetails.belongsTo(RafflePrize, {
+    foreignKey: "raffle_prize_id",
+    sourceKey: "id",
+  });
+  RafflePrize.hasOne(WiningDrawDetails, {
+    foreignKey: "raffle_prize_id",
+    sourceKey: "id",
   });
 }

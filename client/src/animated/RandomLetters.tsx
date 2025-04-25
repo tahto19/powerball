@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 const characters =
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  "A~!@)_BCDELRSTUVWX$%^&(YZabcJKt678defghijklmnopqrsFGHIuvwxyz0123MNOPQ459";
 const splitCharacters = characters.split("");
 
 const RandomString = ({
@@ -45,7 +45,7 @@ const RandomString = ({
       //   await waitforme(100);
       for (const [ii, vv] of splitCharacters.entries()) {
         await waitForMe();
-        console.log(vv);
+
         setLetters((vw) => {
           let lettersSplit = vw.split("");
           lettersSplit[i] = vv;

@@ -19,7 +19,7 @@ const bodyEncrypt = async (req, res, pay) => {
   } else {
     if (cookies.cookie_pb_1271) {
       let a = encryptData(pay, cookies.cookie_pb_1271);
-      auditTrailSave(req, pay);
+      // auditTrailSave(req, pay);
       return a;
       // done(err, JSON.stringify(a));
     } else {

@@ -2,13 +2,42 @@ import cookieChecker from "../../../authentication/helper/cookieChecker.js";
 import random from "../../../lib/random.js";
 import { cSend } from "../../../util/util.js";
 import tc from "../lib/Ticket.class.js";
-export const raffleDrawController = (req, res) => {
+import td from "../../raffleHistory/lib/raffleHistory.class.js";
+import wc from "../../winnerEntries/lib/WinnerEntries.class.js";
+export const raffleDrawController = async (req, res) => {
   try {
-    const { tickets } = req.body;
+    const { raffle_id, prize_id } = req.body;
+    if (!raffle_id || prize_id === -1 || !prize_id)
+      throw new Error("Error X984");
+    // check first if the raffle is already done
+    let checkRaffleWinner = await wc.FetchOne({
+      where: { raffle_prize_id: prize_id },
+    });
+    if (checkRaffleWinner.count > 0) throw new Error("ErrorCODE X911");
 
-    let a = random(tickets);
-    res.send(cSend(a));
+    const getTicketsWithRaffleId = await td.FetchAll(null, [
+      { field: "raffle_id", filter: raffle_id, type: "number" },
+    ]);
+    let getTicketNumber = getTicketsWithRaffleId.list.map(
+      (v) => v.ticket_history_generate
+    );
+
+    // draw raffle here
+    let a = random(getTicketNumber);
+    let getWinnerTicketDetails = getTicketsWithRaffleId.list.find(
+      (v) => v.ticket_history_generate === a
+    );
+    // insert the winner prize ticket entry
+    let b = await wc.Insert({
+      admin_id: req.user_id,
+      raffle_prize_id: prize_id,
+      ticket_history_id: getWinnerTicketDetails.id,
+      ticket_id: getWinnerTicketDetails.ticket_id,
+    });
+
+    res.send(cSend(getWinnerTicketDetails));
   } catch (err) {
+    console.log(err);
     throw err;
   }
 };

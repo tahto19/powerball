@@ -167,15 +167,6 @@ const TicketScanner = () => {
         >
           {location.pathname.includes("myScan") ? "My" : "All"} Ticket Details
         </Typography>
-        <RandomString
-          winner={"HEdJ1"}
-          seconds={50}
-        />
-        |||
-        <RandomString
-          winner={"WoOpX8(+"}
-          seconds={50}
-        />
       </Grid2>
       <Grid2 size={{ xs: 6, sm: 6, lg: 6 }}>
         <Button

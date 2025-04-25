@@ -59,6 +59,8 @@ const fastify = Fastify({
  * X891 = body checker json error incorrect data
  * X369 = entries is more than the total remaining entries
  * x268 no active ticket or no more entries
+ * X984 invalid transaction in draw no prize_id or no raffle_id
+ * X911 raffle is already have a winner
  */
 
 /**
