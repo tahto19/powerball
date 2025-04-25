@@ -2,7 +2,7 @@
 import { IDetectedBarcode } from "@/types/allTypes";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import { useState, CSSProperties } from "react";
-import LoadingContent from "./loadingContent";
+import LoadingContent from "./LoadingContent";
 import {
   Button,
   Dialog,
