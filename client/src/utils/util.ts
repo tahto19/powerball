@@ -62,20 +62,20 @@ export const getMessage = (error: any) => {
     ? getErrorMessage
     : error?.response?.data?.message
     ? error?.response?.data?.message
+    : error.message
+    ? error.message
     : error;
-  console.log(errorMessage);
+
   return errorMessage;
 };
 
 export const getDeviceInfo = async () => {
-  console.log(mobileModel);
   const UserAgent = {
     model: mobileModel,
     platform: browserName,
     platformVersion: browserVersion,
   };
 
-  console.log(UserAgent);
   return UserAgent;
 };
 
@@ -149,9 +149,9 @@ export const bodyEncrypt = (
 };
 
 export const capitalizeFirstLetter = (str: string) => {
-  if(!str) return str;
+  if (!str) return str;
 
   return str.charAt(0).toLocaleUpperCase() + str.slice(1);
-}
+};
 
 export const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));

@@ -21,7 +21,7 @@ import Login from "@/components/2ndChance_iFrame/Login/Login";
 
 import Toaster_ from "./Global/toaster/Toaster_";
 import { getDeviceInfo } from "./utils/util";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PrizeList from "./components/PrizeList";
 import { useAppDispatch, useAppSelector } from "./redux/hook";
@@ -80,21 +80,31 @@ const routes = [
 function AppRoutes() {
   const dispatch = useAppDispatch();
   const nav = useNavigate();
-  const { loading, token } = useAppSelector((state) => state.token);
+  const { loading, token, doneLoading } = useAppSelector(
+    (state) => state.token
+  );
+  const hasRun = useRef(false);
   useEffect(() => {
+    if (hasRun.current) return; // already ran once, skip
+    hasRun.current = true;
     getDeviceInfo();
     if (loading) dispatch(getToken());
   }, []);
+
   useEffect(() => {
     const currentPath = window.location.pathname;
+
     if (
+      !loading &&
       token !== "" &&
       token &&
-      (currentPath === "/cms/" || currentPath === "/cms/sign-in")
+      (currentPath === "/sign-in" ||
+        currentPath === "/cms/" ||
+        currentPath === "/cms/sign-in")
     ) {
       nav("/prize-list");
     }
-  }, [token, nav]);
+  }, [loading]);
   return (
     <Routes>
       {/* Authentication Routes */}

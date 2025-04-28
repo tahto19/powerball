@@ -8,21 +8,33 @@ import {
   CardHeader,
   CircularProgress,
 } from "@mui/material";
-import { useAppDispatch } from "@/redux/hook";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { addTicket } from "@/redux/reducers/ticket/asyncCalls";
-import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { getToken } from "@/redux/reducers/token/asyncCalls";
+import { useNavigate } from "react-router-dom";
 const ScannerIframe = () => {
   const dispatch = useAppDispatch();
-  const { ticketSubmit } = useSelector((state: RootState) => state.ticket);
+  const navigate = useNavigate();
+  const { ticketSubmit } = useAppSelector((state: RootState) => state.ticket);
   const [scanned, setScanned] = useState<IDetectedBarcode | undefined | null>();
+  const { loading, token } = useAppSelector((state) => state.token);
   const handleScan = (e: IDetectedBarcode[]) => {
     setScanned(e[0]);
     if (e[0].rawValue) dispatch(addTicket(e[0].rawValue));
   };
+
   useEffect(() => {
     if (!ticketSubmit) setScanned(null);
   }, [ticketSubmit]);
+  useEffect(() => {
+    if (!loading) {
+      console.log(token);
+      if (token === null) {
+        navigate("/iframe/2nd-chance/login");
+      }
+    }
+  }, [loading]);
   return (
     <div
       style={{
