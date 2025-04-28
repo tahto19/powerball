@@ -25,7 +25,6 @@ export const getController = async (req, res) => {
   const { limit, offset, sort, filter } = req.body;
   let parsedSort = JSON.parse(sort);
   let parsedFilter = JSON.parse(filter);
-
   const new_offset = limit * offset; // Calculate offset
   parsedSort = parsedSort.length > 0 ? parsedSort : [["id", "ASC"]];
   let a = await rc.Fetch(new_offset, limit, parsedSort, parsedFilter);

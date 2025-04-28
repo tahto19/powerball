@@ -86,7 +86,7 @@ const start = async () => {
     //   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     // });
     await fastify.register(cors, {
-      origin: "http://localhost:5173",
+      origin: "https://18.138.76.86/",
       methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
       credentials: true, // ✅ Allow cookies
     });
@@ -142,14 +142,26 @@ const start = async () => {
     /**
      * routes
      */
-    fastify.register(LoginRoute, { prefix: "api/login" });
-    fastify.register(userRoute, { prefix: "api/users" });
-    fastify.register(PrizeListRoute, { prefix: "api/prize-list" });
-    fastify.register(GameMaintenace, { prefix: "api/game-maintenance" });
-    fastify.register(Ticket, { prefix: "api/ticket" });
-    fastify.register(OTPRoute, { prefix: "api/otp" });
-    fastify.register(raffleHistory, { prefix: "api/raffleHistory" });
-    fastify.register(FileEntries, { prefix: "api/file" });
+    fastify.register(LoginRoute, {
+      prefix: process.env.ROUTES_PREFIX + "login",
+    });
+    fastify.register(userRoute, {
+      prefix: process.env.ROUTES_PREFIX + "users",
+    });
+    fastify.register(PrizeListRoute, {
+      prefix: process.env.ROUTES_PREFIX + "prize-list",
+    });
+    fastify.register(GameMaintenace, {
+      prefix: process.env.ROUTES_PREFIX + "game-maintenance",
+    });
+    fastify.register(Ticket, { prefix: process.env.ROUTES_PREFIX + "ticket" });
+    fastify.register(OTPRoute, { prefix: process.env.ROUTES_PREFIX + "otp" });
+    fastify.register(raffleHistory, {
+      prefix: process.env.ROUTES_PREFIX + "raffleHistory",
+    });
+    fastify.register(FileEntries, {
+      prefix: process.env.ROUTES_PREFIX + "file",
+    });
 
     /**
      *error handler

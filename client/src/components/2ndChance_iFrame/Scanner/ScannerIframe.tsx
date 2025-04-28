@@ -2,7 +2,6 @@ import { IDetectedBarcode } from "@yudiel/react-qr-scanner";
 import { useEffect, useState } from "react";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import {
-  Button,
   Card,
   CardContent,
   CardHeader,
