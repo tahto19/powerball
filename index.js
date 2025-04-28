@@ -86,7 +86,7 @@ const start = async () => {
     //   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     // });
     await fastify.register(cors, {
-      origin: "http://localhost:5173",
+      origin: "https://18.138.76.86/",
       methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
       credentials: true, // ✅ Allow cookies
     });
