@@ -15,6 +15,7 @@ const initialState: ticketState = {
     filter: [],
     count: 0,
   },
+  ticketSubmit: true,
 };
 
 const ticketSlice = createSlice({
@@ -31,9 +32,11 @@ const ticketSlice = createSlice({
   extraReducers: (b) => {
     b.addCase(addTicket.pending, (state) => {
       state.loading = true;
+      state.ticketSubmit = true;
     });
     b.addCase(addTicket.fulfilled, (state) => {
       state.loading = false;
+      state.ticketSubmit = false;
     });
     b.addCase(getTicket.pending, (state) => {
       state.loading = true;

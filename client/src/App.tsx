@@ -19,7 +19,6 @@ import RaffleDraw from "./components/RaffleDraw/index";
 
 import Login from "@/components/2ndChance_iFrame/Login/Login";
 
-
 import Toaster_ from "./Global/toaster/Toaster_";
 import { getDeviceInfo } from "./utils/util";
 import { useEffect } from "react";
@@ -31,6 +30,7 @@ import TicketScanner from "./components/ticketScanner/TicketScanner";
 import Costumer from "./components/costumer/Costumer";
 import Raffles from "./components/2ndChance_iFrame/Raffles/Raffles";
 import ImagePage from "./components/ImagePage/Image";
+import ScannerIframe from "./components/2ndChance_iFrame/Scanner/ScannerIframe";
 
 const routes = [
   { path: "/dashboard", component: <Dashboard />, title: "Dashboard" },
@@ -140,7 +140,10 @@ function AppRoutes() {
         path="/iframe/2nd-chance/raffles"
         element={<Raffles />}
       />
-
+      <Route
+        path="/iframe/2nd-chance/scan"
+        element={<ScannerIframe />}
+      />
       <Route
         path="/iframe/2nd-chance/login"
         element={<Login />}
@@ -158,7 +161,7 @@ function AppRoutes() {
 function App() {
   return (
     <>
-      <Router basename="/cms">
+      <Router basename="/">
         <AppRoutes />
       </Router>
       <Toaster_></Toaster_>

@@ -10,7 +10,7 @@ import { bodyDecrypt } from "@/utils/util";
 
 export const addTicket = createAsyncThunk(
   "ticket/createTicket",
-  async (data: ticketState, { dispatch, getState }) => {
+  async (data: string, { dispatch, getState }) => {
     try {
       dispatch(disableBtn());
       const state = getState() as RootState;

@@ -61,6 +61,7 @@ export interface ticketState {
   ticket: string | null | undefined;
   loading: boolean | undefined;
   getData: _getState;
+  ticketSubmit: boolean;
 }
 export interface getTicketState {
   ticket_info: string | null;
@@ -89,7 +90,6 @@ export interface LocationState {
     pathname: string;
   };
 }
-
 
 export interface TicketDraw {
   raffle_id: number | null;
