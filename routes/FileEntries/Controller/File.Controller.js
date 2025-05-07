@@ -27,6 +27,8 @@ export const insertImageController = async (req, res) => {
         id: req.user_id,
         file_id: r,
       };
+
+      console.log(">>>>>>", query);
       let a = await uc.Edit(query);
     }
 
