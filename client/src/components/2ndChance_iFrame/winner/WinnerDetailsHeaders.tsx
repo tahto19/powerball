@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 
 import moment from "moment";

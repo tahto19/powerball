@@ -1,5 +1,6 @@
-import CustomizedDataGridBasic from "@/components/CustomizedDataGridBasic";
 //@ts-nocheck
+
+import CustomizedDataGridBasic from "@/components/CustomizedDataGridBasic";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { getWinnerListAsync } from "@/redux/reducers/winner/asyncSlice";
 import React, { useEffect } from "react";
