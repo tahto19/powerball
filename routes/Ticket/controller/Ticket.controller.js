@@ -51,12 +51,13 @@ export const raffleDrawController = async (req, res) => {
 export const fetchTicketController = async (req, res) => {
   try {
     const { limit, sort, offset, filter, location } = req.body;
-    console.log(filter);
+    let filter_ = filter ? filter : [];
     if (location && location.includes("myScan")) {
-      filter.push({ field: "user_id", filter: req.user_id, type: "number" });
+      filter_.push({ field: "user_id", filter: req.user_id, type: "number" });
     }
-    console.log(filter);
-    let r = await tc.Fetch(offset, limit, sort, filter);
+
+    let r = await tc.Fetch(offset, limit, sort, filter_);
+
     res.send(r);
   } catch (err) {
     console.log(err);
@@ -77,7 +78,13 @@ export const postTicketController = async (req, res) => {
 };
 export const ticketHistoryInEntriesController = async (req, res) => {
   try {
-    let r = await tc.getTotalEntries();
+    let filter = [];
+    if (req.url.includes("myEntries")) {
+      filter.push({ field: "user_id", filter: req.user_id, type: "number" });
+    }
+
+    let r = await tc.getTotalEntries(filter);
+
     res.send(cSend(r));
   } catch (err) {
     throw err;

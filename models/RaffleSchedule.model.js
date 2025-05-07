@@ -21,6 +21,20 @@ RaffleSchedule.init(
       allowNull: false,
       defaultValue: 2, //2 for active
     },
+    status_text: {
+      type: DataTypes.VIRTUAL,
+      allowNull: true,
+      get() {
+        switch (this.status) {
+          case 1:
+            return "done";
+          case 2:
+            return "active";
+          case 3:
+            return "inactive";
+        }
+      },
+    },
   },
   {
     timestamps: true,

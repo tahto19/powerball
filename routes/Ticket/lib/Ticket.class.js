@@ -53,7 +53,7 @@ class TicketDetails_class {
       attributes: [
         [fn("SUM", col("entries")), "totalEntries"],
         [fn("SUM", col("entries_used")), "totalUsedEntries"],
-        [fn("SUM", col("id")), "totalTicket"],
+        [fn("COUNT", col("id")), "totalTicket"],
       ],
       group: ["user_id"],
     };

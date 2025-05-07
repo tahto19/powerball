@@ -11,6 +11,7 @@ const Ticket = (app, opts, done) => {
   app.post("/admin", fetchTicketSchema);
   app.post("/", postTicketSchema);
   app.get("/entries", ticketHistoryInEntriesSchema);
+  app.get("/myEntries", ticketHistoryInEntriesSchema);
   done();
 };
 export default Ticket;

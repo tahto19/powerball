@@ -36,6 +36,7 @@ class AuditTrail_class {
   }
 
   async Edit(_data) {
+    console.log(_data);
     let count = await AuditTrail.count({ where: { id: _data.id } });
     if (count < 0) throw new Error("User Not found");
     const id = _data.id;

@@ -2,6 +2,7 @@ import AuditTrail from "../models/AuditTrail.js";
 import { decryptData, getPath } from "../util/util.js";
 import Ac from "../routes/AuditTrail/lib/AuditTrail.class.js";
 import fs from "fs";
+import { auditTrailSave } from "../lib/auditTrailSave.js";
 const bodyChecker = async (req, res) => {
   try {
     let formHeader = req.headers["content-type"]?.includes(
@@ -29,29 +30,20 @@ const bodyChecker = async (req, res) => {
         let a = decryptData(req.body.data, cookie);
 
         if (!a) throw new Error("ErrorCODE X891");
-        req.body = JSON.parse(a);
-        // const keysToCheckOfItsOnlyFetch = ["limit", "offset", "sort", "filter"];
-        // const hasAllKeys = keysToCheckOfItsOnlyFetch.every(
-        //   (key) => key in req.body
-        // );
-        // // save audit trail here if not fetch kind of post
+        let body = JSON.parse(a);
 
-        // if (!hasAllKeys) {
-        //   let saveTrail = await ac.Insert({ performedBy: req.user_id,targetId });
-        // }
-        if (req.url.includes("create")) console.log(req.url, "her");
+        req.body = body;
+        let auditTrailId = await auditTrailSave(req, body);
+        if (auditTrailId) req.audit_trail = auditTrailId;
       }
 
       if (req.method !== "GET" && formHeader) {
         const cookie = req.cookies.cookie_pb_1271;
-        console.log("/////////////////", req.body.data);
 
         let a = decryptData(req.body.data.value, cookie);
         const file = req.body.file;
         if (!a) throw new Error("ErrorCODE X891");
         req.body = { ...JSON.parse(a), file };
-
-        console.log("/////////////////", req.body);
       }
     }
   } catch (err) {

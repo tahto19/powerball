@@ -65,11 +65,15 @@ export const getRaffleEntryList = createAsyncThunk(
         return {
           createdAt: v.createdAt,
           ticket_history_generate: v.ticket_history_generate,
+          "$Raffle_Schedule.status_text$": v.Raffle_Schedule.status_text,
+          "$Raffle_Schedule.raffleDetails.name$":
+            v.Raffle_Schedule.raffleDetails.name,
+          "$Raffle_Schedule.schedule_date$": v.Raffle_Schedule.schedule_date,
         };
       });
 
       let toReturn = { ...r_data, ...getFilter, loading: false };
-      console.log(r_data);
+
       dispatch(addEntryList(toReturn));
       // dispatch(addTicketList(toReturn));
     } catch (err) {

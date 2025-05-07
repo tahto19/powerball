@@ -9,6 +9,7 @@ const sequelize = new Sequelize(
     host: process.env.DB_SERVER,
     port: process.env.DB_PORT,
     dialect: process.env.DB_DIALECT,
+    logging: false,
   }
 );
 
@@ -25,7 +26,7 @@ const auth = async () => {
 const sync = async () => {
   try {
     logger.info("Starting to Sync");
-    await sequelize.sync({ force: false, alter: true });
+    await sequelize.sync({ force: false, alter: false });
     logger.info("Sync was successful");
   } catch (err) {
     logger.error(err);

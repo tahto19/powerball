@@ -58,3 +58,21 @@ export const getRaffleHistoryController = async (req, res) => {
     throw err;
   }
 };
+export const getRaffleEntriesController = async (req, res) => {
+  try {
+    const { filter, offset, limit, sort } = req.body;
+
+    if (req.url.includes("myEntries")) {
+      filter.push({
+        field: "$ticket_detail.user_id$",
+        filter: req.user_id,
+        type: "number",
+      });
+    }
+    let _r = await th.FetchWithInclude(offset, limit, sort, filter);
+    res.send(_r);
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};

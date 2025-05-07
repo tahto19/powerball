@@ -1,4 +1,7 @@
-import auditTrailSave from "../lib/auditTrailSave.js";
+import {
+  updateAuditTrail,
+  updateErrorAuditTrail,
+} from "../lib/auditTrailSave.js";
 import { encryptData, getPath } from "../util/util.js";
 import fs from "fs";
 const bodyEncrypt = async (req, res, pay) => {
@@ -12,14 +15,19 @@ const bodyEncrypt = async (req, res, pay) => {
   });
   if (res.statusCode >= 400) {
     // done(null, pay);
+    await updateErrorAuditTrail(req, pay);
     return pay;
   } else if (findNoP) {
     // done(err, pay);
+
     return pay;
   } else {
     if (cookies.cookie_pb_1271) {
       let a = encryptData(pay, cookies.cookie_pb_1271);
-      // auditTrailSave(req, pay);
+      if (req.audit_trail) {
+        updateAuditTrail(req, pay);
+      }
+
       return a;
       // done(err, JSON.stringify(a));
     } else {

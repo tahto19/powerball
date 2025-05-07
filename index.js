@@ -86,8 +86,30 @@ const start = async () => {
     //   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     // });
     await fastify.register(cors, {
-      origin: "https://18.138.76.86/",
-      methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+      origin: (origin, cb) => {
+        if (!origin) {
+          // Allow no-origin requests (Postman, curl, some mobile apps)
+          return cb(null, true);
+        }
+
+        let hostname = "";
+        try {
+          hostname = new URL(origin).hostname;
+        } catch (err) {
+          console.error("Failed to parse Origin:", origin);
+          return cb(new Error("Invalid origin"));
+        }
+
+        const allowedHostnames = ["localhost", "18.138.76.86"];
+        if (allowedHostnames.includes(hostname)) {
+          return cb(null, true);
+        } else {
+          return cb(new Error("Not allowed by CORS"));
+        }
+      },
+      methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+      preflightContinue: false,
+      optionsSuccessStatus: 204,
       credentials: true, // ✅ Allow cookies
     });
     // jwt
@@ -138,7 +160,18 @@ const start = async () => {
     //   .register(fp(urlPatchChecker), {
     //     json: JSON.parse(urlpathcheckerconfig),
     //   });
+    // const auditTrailConfig = fs.readFileSync(
+    //   "./helpers/config/audittrailconfig.json",
+    //   "utf8"
+    // );
+    // // audit trail
+    // await fastify
+    //   .register(import("@fastify/middie"))
 
+    //   // register audit trail
+    //   .register(fp(auditTrailAdder), {
+    //     json: JSON.parse(auditTrailConfig),
+    //   });
     /**
      * routes
      */
@@ -161,6 +194,9 @@ const start = async () => {
     });
     fastify.register(FileEntries, {
       prefix: process.env.ROUTES_PREFIX + "file",
+    });
+    fastify.register(FileEntries, {
+      prefix: process.env.ROUTES_PREFIX + "winnerEntries",
     });
 
     /**

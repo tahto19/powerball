@@ -30,12 +30,12 @@ export default function Associations() {
     constraints: false,
   });
   // connection ng tickethistory at raffle details
-  RaffleDetails.hasMany(TicketHistory, {
+  RaffleSchedule.hasMany(TicketHistory, {
     foreignKey: "raffle_id",
     targetKey: "id",
     constraints: false,
   });
-  TicketHistory.belongsTo(RaffleDetails, {
+  TicketHistory.belongsTo(RaffleSchedule, {
     foreignKey: "raffle_id",
     targetKey: "id",
     constraints: false,

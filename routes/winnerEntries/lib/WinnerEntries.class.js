@@ -35,7 +35,7 @@ class WiningDrawDetails_class {
     let { count, rows } = await WiningDrawDetails.findAndCountAll(query);
 
     // let list = await WiningDrawDetails.findAll(query);
-    return { list: rows, total: count };
+    return { list: rows.map((v) => v.toJSON()), total: count };
   }
   async Insert(_data) {
     const create = await WiningDrawDetails.create(_data);

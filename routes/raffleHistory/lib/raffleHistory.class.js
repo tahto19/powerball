@@ -2,6 +2,10 @@ import { col, fn } from "sequelize";
 import TicketHistory from "../../../models/TicketHistory.model.js";
 import { WhereFilters } from "../../../util/util.js";
 import WiningDrawDetails from "../../../models/WiningDrawDetails.model.js";
+import TicketDetails from "../../../models/TicketDetails.model.js";
+import Users from "../../../models/Users.model.js";
+import RaffleSchedule from "../../../models/RaffleSchedule.model.js";
+import RaffleDetails from "../../../models/RaffleDetails.model.js";
 
 class TicketHistory_class {
   constructor() {}
@@ -76,6 +80,42 @@ class TicketHistory_class {
     });
     if (count <= 0) throw new Error("x675");
     return { list: rows.map((v) => v.toJSON()), count };
+  }
+  async FetchWithInclude(
+    offset = 0,
+    limit = 10,
+    sort = [["id", "ASC"]],
+    filter = []
+  ) {
+    let query = {
+      limit: parseInt(limit),
+      offset: parseInt(offset),
+      order: sort,
+    };
+
+    if (filter.length !== 0) query["where"] = WhereFilters(filter);
+    query["include"] = [
+      {
+        model: TicketDetails,
+        // required: true,
+        include: [
+          {
+            model: Users,
+          },
+        ],
+      },
+      {
+        model: RaffleSchedule,
+        // alias: "raffleSchedule",
+        include: [{ model: RaffleDetails, as: "raffleDetails" }],
+      },
+    ];
+    // ✅ Fetch both filtered list and total count
+    console.log(query);
+    let { count, rows } = await TicketHistory.findAndCountAll(query);
+
+    // let list = await TicketDetails.findAll(query);
+    return { list: rows, count };
   }
 }
 

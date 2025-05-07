@@ -1,4 +1,5 @@
 import {
+  getRaffleEntriesController,
   getRaffleHistoryController,
   insertRaffleHistoryController,
 } from "../Controller/raffleHistory.Controller.js";
@@ -23,5 +24,17 @@ export const getRaffleHistorySchema = {
       user_id: { type: "number" },
     },
     required: ["raffle_id"],
+  },
+};
+export const getRaffleEntriesSchema = {
+  handler: getRaffleEntriesController,
+  body: {
+    type: "object",
+    properties: {
+      filter: { type: "array" },
+      offset: { type: "number" },
+      limit: { type: "number" },
+      sort: { type: "array" },
+    },
   },
 };

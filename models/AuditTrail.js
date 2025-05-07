@@ -17,10 +17,16 @@ AuditTrail.init(
     changes: {
       type: DataTypes.TEXT("medium"),
       allowNull: true,
+      get() {
+        return this.getDataValue("changes");
+      },
+      set(val) {
+        this.setDataValue("changes", JSON.stringify(val));
+      },
     },
     targetId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     errorDetails: {
       allowNull: true,
@@ -32,6 +38,8 @@ AuditTrail.init(
       get() {
         const status = this.getDataValue("status");
         switch (status) {
+          case 0:
+            return "loading";
           case 1:
             return "success";
           case 2:
