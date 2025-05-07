@@ -168,7 +168,7 @@ function AppRoutes() {
       />
       <Route
         path="/iframe/2nd-chance/winner"
-        element={<TicketScannedList />}
+        element={<WinnerDetails />}
       />
 
       {/* Catch-All Error Page */}

@@ -65,6 +65,7 @@ export default function CustomizedDataGridBasic<T>({
         // "& .MuiDataGrid-cell": {
         //     padding: "10px", // ✅ Add padding inside cells
         // },
+        fontFamily: '"Outfit Variable", sans-serif !important',
       }}
       rowHeight={75}
       rows={data}

@@ -22,6 +22,7 @@ import Associations from "./models/association/index.js";
 import Ticket from "./routes/Ticket/Ticket.js";
 import raffleHistory from "./routes/raffleHistory/raffleHistory.js";
 import auditTrailAdder from "./helpers/auditTrailAdder.js";
+import winnerEntries from "./routes/winnerEntries/winnerEntries.route.js";
 
 const fastify = Fastify({
   trustProxy: true,
@@ -195,8 +196,8 @@ const start = async () => {
     fastify.register(FileEntries, {
       prefix: process.env.ROUTES_PREFIX + "file",
     });
-    fastify.register(FileEntries, {
-      prefix: process.env.ROUTES_PREFIX + "winnerEntries",
+    fastify.register(winnerEntries, {
+      prefix: process.env.ROUTES_PREFIX + "winner",
     });
 
     /**

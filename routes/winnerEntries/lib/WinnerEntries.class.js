@@ -1,6 +1,10 @@
 import { col, fn } from "sequelize";
 import WiningDrawDetails from "../../../models/WiningDrawDetails.model.js";
 import { WhereFilters } from "../../../util/util.js";
+import RafflePrize from "../../../models/RafflePrize.model.js";
+import TicketHistory from "../../../models/TicketHistory.model.js";
+import RaffleSchedule from "../../../models/RaffleSchedule.model.js";
+import RaffleDetails from "../../../models/RaffleDetails.model.js";
 
 class WiningDrawDetails_class {
   constructor() {}
@@ -68,6 +72,33 @@ class WiningDrawDetails_class {
 
     let r = await WiningDrawDetails.findAll(query);
     return r;
+  }
+  async FetchWithInclude(body) {
+    const { limit, sort, where, filter, url, offset } = body;
+    var query = {
+      limit: parseInt(limit),
+      offset: parseInt(offset),
+      order: sort,
+      include: [
+        {
+          model: RafflePrize,
+          include: [
+            {
+              model: RaffleSchedule,
+              include: [{ model: RaffleDetails, as: "raffleDetails" }],
+            },
+          ],
+        },
+        { model: TicketHistory },
+      ],
+    };
+    var getFilters = filter;
+    if (url !== undefined && url.includes("myWinners")) {
+      // getFilters.push()
+    }
+    query["wheres"] = WhereFilters(getFilters);
+    const { count, rows } = await WiningDrawDetails.findAndCountAll(query);
+    return { count, list: rows.map((v) => v.toJSON()) };
   }
 }
 

@@ -4,6 +4,7 @@ import {
   winnerListInterface,
 } from "@/types/allTypes";
 import { createSlice } from "@reduxjs/toolkit";
+import { getWinnerListAsync } from "./asyncSlice";
 const total: totalWinnerInterface = {
   t_loading: false,
   total_winner: null,
@@ -17,6 +18,7 @@ const winnerList: winnerListInterface = {
   filter: [],
   list: [],
   count: 0,
+  location: null,
 };
 const initialState: winnerInitialState = {
   total,
@@ -27,8 +29,17 @@ const winnerSlice = createSlice({
   initialState,
   reducers: {
     addWinnerList: (state, action) => {
+      console.log(action.payload);
       state.winnerList = action.payload;
     },
+  },
+  extraReducers: (d) => {
+    d.addCase(getWinnerListAsync.pending, (state) => {
+      state.winnerList._loading = true;
+    });
+    d.addCase(getWinnerListAsync.fulfilled, (state) => {
+      state.winnerList._loading = false;
+    });
   },
 });
 export const { addWinnerList } = winnerSlice.actions;

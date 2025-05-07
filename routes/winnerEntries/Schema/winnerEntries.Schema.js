@@ -1,4 +1,7 @@
-import { getDataController } from "../controller/winnerEntries.controller.js";
+import {
+  getDataController,
+  getWinnersTableController,
+} from "../controller/winnerEntries.controller.js";
 
 export const getDataSchema = {
   handler: getDataController,
@@ -7,6 +10,20 @@ export const getDataSchema = {
       type: "object",
       properties: {
         raffle_schedule_id: { type: "number" },
+      },
+    },
+  },
+};
+export const getWinnerTableSchema = {
+  handler: getWinnersTableController,
+  schema: {
+    body: {
+      type: "object",
+      properties: {
+        offset: { type: "number" },
+        limit: { type: "number" },
+        sort: { type: "array" },
+        filter: { type: "array" },
       },
     },
   },

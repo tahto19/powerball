@@ -90,7 +90,6 @@ export function MyEntries() {
         headers={headers}
         data={list}
         pagination={pagination}
-        sx={{ fontFamily: ' "Outfit Variable", sans-serif !important' }}
         // onTableChange={handleTableChange}
         // pageLength={count}
         // onEditAction={handleEditAction}
