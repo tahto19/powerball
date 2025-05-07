@@ -72,22 +72,45 @@ Users.init(
     indexes: [{ name: "fullname_idx", fields: ["firstname", "lastname"] }],
     hooks: {
       beforeSave: async (user) => {
-        console.log(user.previous().password);
-        let decrypted = await decryptPassword(user.previous().password);
-        console.log(user.changed("password") && decrypted !== user.password);
-        if (user.changed("password") && decrypted !== user.password) {
-          user.password =
-            user.password && user.password !== ""
-              ? await encrpytPassword(user.password)
-              : "";
-        } else if (!decrypted)
-          user.password =
-            user.password && user.password !== ""
-              ? await encrpytPassword(user.password)
-              : "";
-        else {
-          user.password = user.previous().password;
+        const prevPassword = user.previous().password;
+        const currentPassword = user.password;
+        console.log(prevPassword);
+        console.log(currentPassword);
+
+        // If password is empty or unchanged, skip processing
+        if (
+          !user.changed("password") ||
+          !currentPassword ||
+          currentPassword === ""
+        ) {
+          user.password = prevPassword; // Restore the old password
+          return;
         }
+
+        const decrypted = await decryptPassword(prevPassword);
+        console.log(decrypted);
+
+        if (decrypted !== currentPassword) {
+          user.password = await encrpytPassword(currentPassword);
+        } else {
+          user.password = prevPassword;
+        }
+        // console.log(user.previous().password);
+        // let decrypted = await decryptPassword(user.previous().password);
+        // console.log(user.changed("password") && decrypted !== user.password);
+        // if (user.changed("password") && decrypted !== user.password) {
+        //   user.password =
+        //     user.password && user.password !== ""
+        //       ? await encrpytPassword(user.password)
+        //       : "";
+        // } else if (!decrypted)
+        //   user.password =
+        //     user.password && user.password !== ""
+        //       ? await encrpytPassword(user.password)
+        //       : "";
+        // else {
+        //   user.password = user.previous().password;
+        // }
       },
     },
   }

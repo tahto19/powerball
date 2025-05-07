@@ -1,3 +1,4 @@
+//@ts-nocheck
 export type tokenType = {
   token: string | null;
 };

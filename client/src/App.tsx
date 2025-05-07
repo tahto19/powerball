@@ -12,6 +12,14 @@ import ErrorPage from "./components/errorPage/ErrorPage";
 import SignIn from "./components/signIn/index";
 import AppTheme from "@/theme/AppTheme";
 import MainLayout from "./layout/MainLayout";
+
+
+import AppTheme2 from "@/theme/2ndChanceAppTheme";
+import MainLayout2 from "./layout/2ndChanceMainLayout";
+
+
+
+
 import Dashboard from "./components/Dashboard/Dashboard";
 import Administrator from "./components/Administrator/index";
 import GameMaintenance from "./components/GameMaintenance/index";
@@ -29,6 +37,9 @@ import { getToken } from "./redux/reducers/token/asyncCalls";
 import TicketScanner from "./components/ticketScanner/TicketScanner";
 import Costumer from "./components/costumer/Costumer";
 import Raffles from "./components/2ndChance_iFrame/Raffles/Raffles";
+import Dashboard2 from "./components/2ndChance_iFrame/Dashboard";
+import UserProfile from "./components/2ndChance_iFrame/UserProfile";
+
 import ImagePage from "./components/ImagePage/Image";
 import ScannerIframe from "./components/2ndChance_iFrame/Scanner/ScannerIframe";
 import MyEntriesMain from "./components/2ndChance_iFrame/UserTicketDetails/MyEntriesMain";
@@ -67,6 +78,7 @@ const routes = [
     path: "/scan",
     component: <TicketScanner />,
     title: "Ticket Scanner",
+    title: "Ticket Scanner",
   },
   {
     path: "/MyScan",
@@ -77,6 +89,24 @@ const routes = [
     path: "/costumer",
     component: <Costumer />,
     title: "Costumer",
+  },
+];
+
+const routes2 = [
+  {
+    path: "/iframe/2nd-chance/",
+    component: <Dashboard2 />,
+    title: "Dashboard",
+  },
+  {
+    path: "/iframe/2nd-chance/raffles",
+    component: <Raffles />,
+    title: "Raffles",
+  },
+  {
+    path: "/iframe/2nd-chance/user-profile",
+    component: <UserProfile />,
+    title: "User Profile",
   },
 ];
 
@@ -145,14 +175,25 @@ function AppRoutes() {
         ))}
       </Route>
 
+      <Route >
+        {routes2.map(({ path, component, title }) => (
+          <Route
+            key={path}
+            path={path}
+            element={
+              <AppTheme2>
+                <MainLayout2 title={title}>{component}</MainLayout2>
+              </AppTheme2>
+            }
+          />
+        ))}
+      </Route>
+
+
       {/* Iframe Routes */}
       <Route
         path="/iframe/add-user"
         element={<AdduserMain />}
-      />
-      <Route
-        path="/iframe/2nd-chance/raffles"
-        element={<Raffles />}
       />
       <Route
         path="/iframe/2nd-chance/scan"

@@ -5,5 +5,6 @@
   { "path": "/otp", "method": "POST" },
   { "path": "/login", "method": "POST" },
   { "path": "/login/checkSession", "method": "GET" },
-  { "path": "/ticket", "method": "testing" }
+  { "path": "/ticket", "method": "testing" },
+  { "path": "/cron", "method": "GET" }
 ]

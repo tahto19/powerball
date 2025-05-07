@@ -1,9 +1,11 @@
 import fc from "../lib/File.Class.js";
 import { cSend, getPath, uploadImage2 } from "../../../util/util.js";
 import fs from "fs";
+import uc from "../../User/lib/User.class.js";
+
 export const insertImageController = async (req, res) => {
   try {
-    const { description, file, name } = req.body;
+    const { description, file, name, category } = req.body;
     if (!file.mimetype.startsWith("image/")) throw new Error("ErrorCODE x91c");
 
     let iUp = await uploadImage2(file);
@@ -17,7 +19,17 @@ export const insertImageController = async (req, res) => {
       file_location: iUp.filename,
       type: "image",
       mimetype: file.mimetype,
+      category: category && category !== "" ? category : "",
     });
+
+    if (category && category === "user-image") {
+      const query = {
+        id: req.user_id,
+        file_id: r,
+      };
+      let a = await uc.Edit(query);
+    }
+
     res.send(cSend(r));
   } catch (error) {
     throw error;

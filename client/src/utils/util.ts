@@ -50,6 +50,12 @@ const getErrorsStatus = (code: string) => {
       return "No Active Ticket or no more entries available";
     case "x741":
       return "Generated OTP but the system email sender has a problem please contact administrator";
+    case "X984":
+      return "invalid transaction in draw no prize_id or no raffle_id";
+    case "x911":
+      return "Already have a winner";
+    case "x675":
+      return "Theres no entry on this ticket";
     default:
       return false;
   }

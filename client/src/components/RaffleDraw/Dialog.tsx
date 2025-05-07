@@ -27,7 +27,7 @@ import {
     initialRaffleData,
     PrizeInfoState,
 } from "@/components/GameMaintenance/interface.ts";
-import { TimeProps, initailTimeData } from "./interface.ts";
+import { TimeProps, initailTimeData, WinnerDetailState, initailWinnerData } from "./interface.ts";
 
 import apiService from "@/services/apiService";
 
@@ -35,6 +35,8 @@ import { capitalizeFirstLetter } from '@/utils/util.ts';
 import CountDown from './CountDown.tsx';
 import { useAppSelector, useAppDispatch } from "@/redux/hook";
 import { bodyDecrypt } from "@/utils/util";
+import { showToaster } from "@/redux/reducers/global/globalSlice";
+import WinnerDialog from './WinnerDialog.tsx';
 
 const endpoint = "http://localhost:5128/api/file/serve/image/"
 
@@ -48,17 +50,33 @@ const Transition = forwardRef(function Transition(
 });
 
 const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
+    const dispatch = useAppDispatch();
+
     const [isOpen, setOpen] = useState(open);
     const [openPTDialog, setOpenPTDialog] = useState(false);
     const [prizeData, setPrizeData] = useState<PrizeInfoState>(initialRaffleData.raffleSchedule[0].prizeInfo[0]);
     const { token } = useAppSelector((state) => state.token);
+    const [allowDialog, setAllowDialog] = useState(false);
+    const [datePassed, setDatePassed] = useState(false);
+    const [winnerDetails, setWinnerDetails] = useState(initailWinnerData);
+    const [allowDraw, setAllowDraw] = useState(true);
+    const [winnerDialog, setWinnerDialog] = useState(false);
+    const [winnerList, setWinnerList] = useState([]);
+
+    const handleWinnerDialogClose = (value) => {
+        setWinnerDialog(!value)
+    }
 
     const handlePrizeTypeChange = (value: string) => {
         const prize_data = data.raffleSchedule[0].prizeInfo.find(x => x.Prize_List.type === value)
-        console.log("Prize Data >>>>>>>>>", prize_data)
         if (prize_data) {
             setPrizeData(prize_data)
         }
+        setAllowDialog(true)
+        setOpenPTDialog(false)
+    }
+
+    const handlePrizeClose = () => {
         setOpenPTDialog(false)
     }
 
@@ -66,21 +84,50 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
         onClose(false)
     }
 
-    const handleDraw = async () => {
-        const raffle_id = data.raffleSchedule[0].raffle_id
-        const prize_id = prizeData.prize_id
-
-        if (!raffle_id) return;
-
+    const getWinnerList = async () => {
         const payload = {
-            raffle_id,
-            prize_id
+            raffle_schedule_id: data.raffleSchedule[0].id
         }
-        const res = await apiService.ticketDraw(payload, token);
-
+        const res = await apiService.getWinner(payload, token);
         const d = bodyDecrypt(res.data, token);
+        console.log(">>>>>>>>", d.data);
         if (d && d.success === "success") {
-            console.log(">>>>>>>>", d.data);
+
+            setWinnerList(d.data.list)
+        }
+    }
+    const handleDraw = async () => {
+        try {
+            setAllowDraw(false)
+            const raffle_id = data.raffleSchedule[0].id
+            const prize_id = prizeData.id
+
+            if (!raffle_id) return;
+
+            const payload = {
+                raffle_id,
+                prize_id
+            }
+            const res = await apiService.ticketDraw(payload, token);
+
+            const d = bodyDecrypt(res.data, token);
+            if (d && d.success === "success") {
+                console.log(">>>>>>>>", d.data);
+                setWinnerDialog(true);
+                setWinnerDetails(d.data.winnerDetails)
+            }
+
+            setAllowDraw(true)
+        } catch (err) {
+            setAllowDraw(true)
+            dispatch(
+                showToaster({
+                    err,
+                    show: true,
+                    variant: "error",
+                    icon: null,
+                })
+            );
         }
     }
 
@@ -91,14 +138,34 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
         setOpen(open)
         setPrizeData(initialRaffleData.raffleSchedule[0].prizeInfo[0])
         setOpenPTDialog(true)
+        setAllowDialog(false)
+        setDatePassed(false)
 
         if (!open) {
             setOpenPTDialog(false)
         }
 
+        if (open) {
+            getWinnerList()
+        }
+
         const interval = setInterval(() => {
             const now = moment();
             const future = moment(data.raffleSchedule[0].schedule_date);
+
+            if (now.isSameOrAfter(future)) {
+                // Date has passed
+                setDatePassed(true)
+                clearInterval(interval); // stop the interval if needed
+                setTimeLeft({
+                    days: "00",
+                    hours: "00",
+                    minutes: "00",
+                    seconds: "00",
+                });
+                return;
+            }
+
             const duration = moment.duration(future.diff(now));
 
             setTimeLeft({
@@ -199,7 +266,7 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
                             <CardContent>
                                 <Box sx={{ display: "flex", gap: "20px", flexWrap: "wrap", justifyContent: "space-between" }}>
                                     <CountDown time={timeLeft} />
-                                    <Button onClick={handleDraw} variant="contained" sx={{ padding: "10px 40px" }}>Draw</Button>
+                                    <Button onClick={handleDraw} disabled={!datePassed || !allowDraw} variant="contained" sx={{ padding: "10px 40px", color: "white !important", opacity: !datePassed ? '0.6' : '1' }}>Draw</Button>
                                 </Box>
                             </CardContent>
                         </Card>
@@ -208,7 +275,6 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
                     <Box sx={{
                         marginTop: "60px",
                         marginBottom: "30px",
-
                     }}>
                         <CustomizedDataGridBasic
                             sx={{
@@ -222,7 +288,8 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
                         />
                     </Box>
                 </Box>
-                <PrizeListDialog open={openPTDialog} onChange={handlePrizeTypeChange} />
+                <PrizeListDialog open={openPTDialog} allowCloseDialog={allowDialog} onChange={handlePrizeTypeChange} onClose={handlePrizeClose} />
+                <WinnerDialog open={winnerDialog} ticket={winnerDetails.ticket_history_generate} onClose={handleWinnerDialogClose} />
             </Dialog>
         </>
     );

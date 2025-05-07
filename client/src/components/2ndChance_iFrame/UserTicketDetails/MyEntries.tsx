@@ -1,3 +1,4 @@
+//@ts-nocheck
 import CustomizedDataGrid from "@/components/CustomizedDataGrid";
 import {
   Box,

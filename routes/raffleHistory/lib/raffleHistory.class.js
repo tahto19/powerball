@@ -78,6 +78,7 @@ class TicketHistory_class {
         },
       ],
     });
+    console.log(count, id);
     if (count <= 0) throw new Error("x675");
     return { list: rows.map((v) => v.toJSON()), count };
   }
