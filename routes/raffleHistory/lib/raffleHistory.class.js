@@ -111,11 +111,11 @@ class TicketHistory_class {
       },
     ];
     // ✅ Fetch both filtered list and total count
-    console.log(query);
+
     let { count, rows } = await TicketHistory.findAndCountAll(query);
 
     // let list = await TicketDetails.findAll(query);
-    return { list: rows, count };
+    return { list: rows.map((v) => v.toJSON()), count };
   }
 }
 

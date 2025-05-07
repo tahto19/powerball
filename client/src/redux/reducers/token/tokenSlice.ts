@@ -33,11 +33,9 @@ const tokenSlice = createSlice({
   extraReducers: (b) => {
     b.addCase(getToken.fulfilled, (state) => {
       state.loading = false;
-      console.log(state.loading, "fulfilled");
     });
     b.addCase(getToken.pending, (state) => {
       state.loading = true;
-      console.log(state.loading, "pending");
     });
   },
 });

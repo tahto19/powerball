@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import headers from "./headers";
+import headers from "./headers.tsx";
 import CustomizedDataGridBasic from "@/components/CustomizedDataGridBasic";
 import { SimpleTable } from "@/components/SimpleTable";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
@@ -38,7 +38,6 @@ export function UserTicketDetails() {
   const navigate = useNavigate();
   useEffect(() => {
     if (!loading) {
-      console.log(token);
       if (token === null) {
         navigate("/iframe/2nd-chance/login");
       }
@@ -56,8 +55,11 @@ export function UserTicketDetails() {
     page: 0,
     pageSize: 10,
   });
-  const { getData } = useAppSelector((state: RootState) => state.ticket);
-  const { filter, offset, limit, sort, list, count } = getData;
+  const { raffleEntriesList } = useAppSelector(
+    (state: RootState) => state.raffleEntry
+  );
+  const { _loading, filter, offset, limit, sort, list, count } =
+    raffleEntriesList;
   useEffect(() => {
     if (token) {
       dispatch(
@@ -75,144 +77,24 @@ export function UserTicketDetails() {
     setPagination(() => {
       return { page: offset, pageSize: limit };
     });
-  }, [getData.loading]);
+  }, [limit, offset]);
+  useEffect(() => {
+    console.log(count, list);
+  }, [_loading]);
   return (
-    <Card>
-      <CardHeader
-        title="name here"
-        subheader="test"
-      ></CardHeader>
-      <CardContent>
-        <Grid2
-          container
-          spacing={1}
-        >
-          {/* <Grid2 size={{ xs: 12, md: 12 }}>
-            <Box sx={{ padding: "1rem" }}>
-              <Stack
-                direction="row"
-                spacing={1}
-                useFlexGap
-                sx={{ height: "6.5rem" }}
-                divider={
-                  <Divider
-                    orientation="vertical"
-                    flexItem
-                  />
-                }
-              >
-                <Paper
-                  elevation={1}
-                  sx={{ width: "49%", padding: ".7rem" }}
-                >
-                  <Box
-                    sx={{
-                      borderBottom: ".1px solid #dadada",
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        letterSpacing: "0.0938em",
-                        fontFamily: "Outfit Variable",
-                        fontWeight: "500",
-                      }}
-                    >
-                      Total Tickets
-                    </Typography>
-                  </Box>
-                  <Box>
-                    <Typography
-                      sx={{
-                        letterSpacing: "0.0938em",
-                        fontFamily: "Outfit Variable",
-                        textAlign: "center",
-                        fontWeight: "600",
-                        fontSize: "2rem",
-                      }}
-                    >
-                      {totalTicket}
-                    </Typography>
-                  </Box>
-                </Paper>
-                <Paper
-                  elevation={1}
-                  sx={{ width: "49%", padding: ".7rem" }}
-                >
-                  <Box sx={{ borderBottom: ".1px solid #dadada" }}>
-                    <Typography
-                      sx={{
-                        letterSpacing: "0.0938em",
-                        fontFamily: "Outfit Variable",
-                        fontWeight: "500",
-                      }}
-                    >
-                      Total Entries
-                    </Typography>
-                  </Box>
-                  <Box>
-                    <Typography
-                      sx={{
-                        letterSpacing: "0.0938em",
-                        fontFamily: "Outfit Variable",
-                        textAlign: "center",
-                        fontWeight: "600",
-                        fontSize: "2rem",
-                      }}
-                    >
-                      {totalEntries}
-                    </Typography>
-                  </Box>
-                </Paper>
-                <Paper
-                  elevation={1}
-                  sx={{ width: "49%", padding: ".7rem" }}
-                >
-                  <Box sx={{ borderBottom: ".1px solid #dadada" }}>
-                    <Typography
-                      sx={{
-                        letterSpacing: "0.0938em",
-                        fontFamily: "Outfit Variable",
-                        fontWeight: "500",
-                      }}
-                    >
-                      Used Entries
-                    </Typography>
-                  </Box>
-                  <Box>
-                    <Typography
-                      sx={{
-                        letterSpacing: "0.0938em",
-                        fontFamily: "Outfit Variable",
-                        textAlign: "center",
-                        fontWeight: "600",
-                        fontSize: "2rem",
-                      }}
-                    >
-                      {totalUsedEntries}
-                    </Typography>
-                  </Box>
-                </Paper>
-              </Stack>
-            </Box>
-          </Grid2> */}
-          <Grid2 size={{ md: 12, xs: 12 }}>
-            <Box sx={{ padding: "1rem" }}>
-              <CustomizedDataGrid
-                sx={{
-                  width: "100%",
-                }}
-                headers={headers}
-                data={list}
-                pagination={pagination}
-                // onTableChange={handleTableChange}
-                // pageLength={count}
-                // onEditAction={handleEditAction}
-                // onViewAction={handleViewAction}
-              />
-            </Box>
-          </Grid2>
-        </Grid2>
-      </CardContent>
-    </Card>
+    <>
+      <CustomizedDataGridBasic
+        sx={{
+          width: "100%",
+        }}
+        headers={headers}
+        data={list}
+        pagination={pagination}
+        // onTableChange={handleTableChange}
+        // pageLength={count}
+        // onEditAction={handleEditAction}
+        // onViewAction={handleViewAction}
+      />
+    </>
   );
 }

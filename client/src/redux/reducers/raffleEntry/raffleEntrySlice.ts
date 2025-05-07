@@ -13,11 +13,13 @@ const initialState: raffleEntries = {
   loading: true,
   btnLoading: false,
   raffleEntriesList: {
-    loading: true,
+    _loading: true,
     list: [],
     count: 0,
-    row: 0,
-    limit: 0,
+    offset: 0,
+    limit: 10,
+    filter: [],
+    sort: [],
   },
 };
 
@@ -31,8 +33,14 @@ const raffleEntriesSlice = createSlice({
       state.totalUsedEntries = parseInt(action.payload.totalUsedEntries);
     },
     addEntryList: (state, action) => {
-      console.log(action.payload);
+      // Object.assign(state.raffleEntriesList, action.payload);
       state.raffleEntriesList = action.payload;
+      console.log(action.payload);
+      // state.raffleEntriesList.list = action.payload.list;
+      // state.raffleEntriesList.count = action.payload.count;
+      // state.raffleEntriesList.row = action.payload.row;
+      // state.raffleEntriesList.limit = action.payload.limit;
+      // state.raffleEntriesList.loading = false;
     },
   },
   extraReducers: (b) => {
@@ -49,10 +57,11 @@ const raffleEntriesSlice = createSlice({
       state.btnLoading = true;
     });
     b.addCase(getRaffleEntryList.pending, (state) => {
-      state.raffleEntriesList.loading = true;
+      state.raffleEntriesList._loading = true;
     });
     b.addCase(getRaffleEntryList.fulfilled, (state) => {
-      state.raffleEntriesList.loading = false;
+      state.raffleEntriesList._loading = false;
+      console.log(state.raffleEntriesList._loading);
     });
   },
 });

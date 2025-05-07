@@ -79,11 +79,13 @@ export interface _getState {
   count: number | null;
 }
 export interface raffleEntriesList {
-  loading: boolean;
-  list: [];
-  count: 0;
-  row: 0;
-  limit: 0;
+  _loading: boolean;
+  list: Array<any>;
+  count: number;
+  offset: number;
+  limit: number;
+  sort: Array<any>;
+  filter: Array<any>;
 }
 export interface raffleEntries {
   btnLoading: boolean;

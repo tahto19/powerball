@@ -70,6 +70,7 @@ export const getRaffleEntriesController = async (req, res) => {
       });
     }
     let _r = await th.FetchWithInclude(offset, limit, sort, filter);
+    console.log(_r);
     res.send(_r);
   } catch (err) {
     console.log(err);
