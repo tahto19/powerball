@@ -88,7 +88,6 @@ export const bodyDecrypt = (
     console.error("Decryption failed: Empty data.");
     return null;
   }
-
   if (!token) {
     // Handle missing token
     console.error("Decryption failed: Missing token doesn't exists.");
@@ -114,7 +113,7 @@ export const bodyDecrypt = (
 
 export const bodyEncrypt = (
   d: string | null | undefined,
-  token: string | null
+  token: string
 ): any | null => {
   const data =
     typeof d === "string"

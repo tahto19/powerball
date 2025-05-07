@@ -1,6 +1,10 @@
 import { raffleEntries } from "@/types/allTypes";
 import { createSlice } from "@reduxjs/toolkit";
-import { getRaffleEntry, postRaffleEntry } from "./asyncCalls";
+import {
+  getRaffleEntry,
+  getRaffleEntryList,
+  postRaffleEntry,
+} from "./asyncCalls";
 
 const initialState: raffleEntries = {
   totalEntries: null,
@@ -8,6 +12,13 @@ const initialState: raffleEntries = {
   totalUsedEntries: null,
   loading: true,
   btnLoading: false,
+  raffleEntriesList: {
+    loading: true,
+    list: [],
+    count: 0,
+    row: 0,
+    limit: 0,
+  },
 };
 
 const raffleEntriesSlice = createSlice({
@@ -18,6 +29,10 @@ const raffleEntriesSlice = createSlice({
       state.totalEntries = parseInt(action.payload.totalEntries);
       state.totalTicket = parseInt(action.payload.totalTicket);
       state.totalUsedEntries = parseInt(action.payload.totalUsedEntries);
+    },
+    addEntryList: (state, action) => {
+      console.log(action.payload);
+      state.raffleEntriesList = action.payload;
     },
   },
   extraReducers: (b) => {
@@ -33,8 +48,14 @@ const raffleEntriesSlice = createSlice({
     b.addCase(postRaffleEntry.pending, (state) => {
       state.btnLoading = true;
     });
+    b.addCase(getRaffleEntryList.pending, (state) => {
+      state.raffleEntriesList.loading = true;
+    });
+    b.addCase(getRaffleEntryList.fulfilled, (state) => {
+      state.raffleEntriesList.loading = false;
+    });
   },
 });
 
 export default raffleEntriesSlice.reducer;
-export const { entriesChange } = raffleEntriesSlice.actions;
+export const { entriesChange, addEntryList } = raffleEntriesSlice.actions;

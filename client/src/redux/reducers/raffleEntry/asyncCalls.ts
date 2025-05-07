@@ -6,16 +6,16 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { showToaster } from "../global/globalSlice";
 import apiService from "@/services/apiService";
 import { RootState } from "@/redux/store";
-import { entriesChange } from "./raffleEntrySlice";
+import { addEntryList, entriesChange } from "./raffleEntrySlice";
 import { enterEntries } from "@/components/2ndChance_iFrame/Raffles/interface";
 
 export const getRaffleEntry = createAsyncThunk(
   "raffleEntry/getRaffle",
-  async (_, { dispatch, getState }) => {
+  async (type: string | undefined, { dispatch, getState }) => {
     try {
       const state = getState() as RootState;
       const token = state.token.token;
-      let _r = await apiService.getRaffleEntry();
+      let _r = await apiService.getRaffleEntry(type);
 
       let bd = bodyDecrypt(_r.data, token);
 
@@ -44,6 +44,36 @@ export const postRaffleEntry = createAsyncThunk(
       );
       dispatch(getRaffleEntry());
     } catch (err) {
+      dispatch(showToaster({ err, variant: "error", icon: "error" }));
+    }
+  }
+);
+export const getRaffleEntryList = createAsyncThunk(
+  "raffleEntry/getRaffleEntryList",
+  async (data: getDataV2, { dispatch, getState }) => {
+    try {
+      // console.log(data);
+      const state = getState() as RootState;
+      const token = state.token.token;
+
+      const url = data.location;
+      const getFilter = data ? data : state.ticket.getData;
+      let _r = await apiService.getRaffleEntryList(getFilter, token, url);
+      let r_data = bodyDecrypt(_r.data, token);
+      console.log(r_data.list);
+      r_data.list = r_data.list.map((v) => {
+        return {
+          createdAt: v.createdAt,
+          ticket_history_generate: v.ticket_history_generate,
+        };
+      });
+
+      let toReturn = { ...r_data, ...getFilter, loading: false };
+      console.log(r_data);
+      dispatch(addEntryList(toReturn));
+      // dispatch(addTicketList(toReturn));
+    } catch (err) {
+      console.log(err);
       dispatch(showToaster({ err, variant: "error", icon: "error" }));
     }
   }

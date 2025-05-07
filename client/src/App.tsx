@@ -31,6 +31,8 @@ import Costumer from "./components/costumer/Costumer";
 import Raffles from "./components/2ndChance_iFrame/Raffles/Raffles";
 import ImagePage from "./components/ImagePage/Image";
 import ScannerIframe from "./components/2ndChance_iFrame/Scanner/ScannerIframe";
+import { UserTicketDetails } from "./components/2ndChance_iFrame/UserTicketDetails/UserTicketDetails";
+import MyEntriesMain from "./components/2ndChance_iFrame/UserTicketDetails/MyEntriesMain";
 
 const routes = [
   { path: "/dashboard", component: <Dashboard />, title: "Dashboard" },
@@ -158,7 +160,10 @@ function AppRoutes() {
         path="/iframe/2nd-chance/login"
         element={<Login />}
       />
-
+      <Route
+        path="/iframe/2nd-chance/myTickets"
+        element={<UserTicketDetails />}
+      />
       {/* Catch-All Error Page */}
       <Route
         path="*"

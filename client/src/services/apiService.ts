@@ -36,8 +36,8 @@ let apiClient: any;
 async function initApiClient() {
   const getDI = await getDeviceInfo();
   apiClient = axios.create({
-    baseURL: "https://18.138.76.86/",
-    // baseURL: "http://localhost:5128/",
+    // baseURL: "https://18.138.76.86/",
+    baseURL: "http://localhost:5128/",
     headers: {
       "Content-Type": "application/json",
       "pm-scratch-it-m": getDI?.model || "none",
@@ -244,8 +244,18 @@ export const apiService = {
     });
   },
   // getRaffleEntry
-  getRaffleEntry: async () => {
-    return apiClient.get("api/ticket/entries");
+  getRaffleEntry: async (data: string | undefined) => {
+    if (data && data === "myEntries")
+      return apiClient.get("api/ticket/myEntries");
+    else return apiClient.get("api/ticket/entries");
+  },
+  getRaffleEntryList: async (data: getDataV2, token: string, url: string) => {
+    return apiClient.post(
+      `api/raffleHistory/${url === "myEntries" ? "myEntries" : "allEntries"}`,
+      {
+        data: bodyEncrypt(JSON.stringify(data), token),
+      }
+    );
   },
   // post raffleentry
   postRaffleEntry: async (data: enterEntries, token: string | null) => {
@@ -267,6 +277,12 @@ export const apiService = {
   },
   ticketDraw: async (data: TicketDraw, token: string | null) => {
     return apiClient.post("api/ticket/draw", {
+      data: bodyEncrypt(JSON.stringify(data), token),
+    });
+  },
+  // audit trail here
+  getAudit: async (data: getDataV2, token: string) => {
+    return apiClient.post("api/ticket", {
       data: bodyEncrypt(JSON.stringify(data), token),
     });
   },

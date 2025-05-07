@@ -78,12 +78,20 @@ export interface _getState {
   filter: Array<any> | null;
   count: number | null;
 }
+export interface raffleEntriesList {
+  loading: boolean;
+  list: [];
+  count: 0;
+  row: 0;
+  limit: 0;
+}
 export interface raffleEntries {
   btnLoading: boolean;
   totalEntries: number | null;
   totalTicket: number | null;
   totalUsedEntries: number | null;
   loading: boolean;
+  raffleEntriesList: raffleEntriesList;
 }
 export interface LocationState {
   from: {
