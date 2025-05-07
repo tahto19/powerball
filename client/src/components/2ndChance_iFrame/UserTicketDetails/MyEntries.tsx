@@ -28,7 +28,7 @@ const items = [
   { type: "test3", id: 2 },
   { type: "test3", id: 3 },
 ];
-export function UserTicketDetails() {
+export function MyEntries() {
   const { totalEntries, totalTicket, totalUsedEntries } = useAppSelector(
     (state) => state.raffleEntry
   );
