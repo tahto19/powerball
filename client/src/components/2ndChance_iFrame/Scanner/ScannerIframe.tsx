@@ -1,12 +1,8 @@
 import { IDetectedBarcode } from "@yudiel/react-qr-scanner";
 import { useEffect, useState } from "react";
 import { Scanner } from "@yudiel/react-qr-scanner";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CircularProgress,
-} from "@mui/material";
+import BarcodeScanner from "react-qr-barcode-scanner";
+import { Card, CardContent, CardHeader, CircularProgress } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { addTicket } from "@/redux/reducers/ticket/asyncCalls";
 import { RootState } from "@/redux/store";
@@ -16,11 +12,12 @@ const ScannerIframe = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { ticketSubmit } = useAppSelector((state: RootState) => state.ticket);
-  const [scanned, setScanned] = useState<IDetectedBarcode | undefined | null>();
+  const [scanned, setScanned] = useState<string | null>();
   const { loading, token } = useAppSelector((state) => state.token);
-  const handleScan = (e: IDetectedBarcode[]) => {
-    setScanned(e[0]);
-    if (e[0].rawValue) dispatch(addTicket(e[0].rawValue));
+  const handleScan = (e: string) => {
+    console.log(e);
+    setScanned(e);
+    if (e) dispatch(addTicket(e));
   };
 
   useEffect(() => {
@@ -55,11 +52,18 @@ const ScannerIframe = () => {
           }}
         >
           <div>
-            {scanned && scanned?.rawValue ? (
+            {scanned ? (
               <CircularProgress size="5rem" />
             ) : (
-              <Scanner
-                onScan={(result: IDetectedBarcode[]) => handleScan(result)}
+              // <Scanner
+              //   onScan={(result: IDetectedBarcode[]) => handleScan(result)}
+              // />
+              <BarcodeScanner
+                width={500}
+                height={500}
+                onUpdate={(err, result: any) => {
+                  if (result) handleScan(result?.text);
+                }}
               />
             )}
           </div>
