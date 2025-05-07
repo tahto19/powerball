@@ -54,6 +54,10 @@ const headers: GridColDef[] = [
     renderCell: (params: GridRenderCellParams<any>) => {
       return (
         <Chip
+          sx={{
+            fontFamily: ' "Outfit Variable", sans-serif !important',
+            textTransform: "capitalize",
+          }}
           label={params.value}
           color={params.value === "active" ? "success" : "error"}
         />
