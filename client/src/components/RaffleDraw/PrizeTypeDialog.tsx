@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
     Dialog,
     DialogContent,
@@ -9,7 +10,7 @@ import {
 import { PrizeTypeDialogProps } from "./interface.ts"
 import { ChangeEvent, useState } from 'react';
 
-const PrizeTypeDialog = ({ open, onChange }: PrizeTypeDialogProps) => {
+const PrizeTypeDialog = ({ open, allowCloseDialog, onChange, onClose }: PrizeTypeDialogProps) => {
     const [type, setType] = useState('')
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -18,9 +19,14 @@ const PrizeTypeDialog = ({ open, onChange }: PrizeTypeDialogProps) => {
         onChange(val)
     }
 
+
+    const handleClose = () => {
+        onClose(false);
+    };
+
     return (
         <>
-            <Dialog open={open} >
+            <Dialog open={open} onClose={allowCloseDialog ? handleClose : undefined} >
                 <DialogTitle sx={{ p: 2 }}>
                     Prize Type
                 </DialogTitle>

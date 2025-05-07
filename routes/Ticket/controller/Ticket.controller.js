@@ -13,6 +13,11 @@ export const raffleDrawController = async (req, res) => {
     let checkRaffleWinner = await wc.FetchOne({
       where: { raffle_prize_id: prize_id },
     });
+
+    console.log(prize_id);
+    console.log(raffle_id);
+
+    console.log(checkRaffleWinner);
     if (checkRaffleWinner.count > 0) throw new Error("ErrorCODE X911");
 
     const getTicketsWithRaffleId = await td.fetchTicketsInRaffle(raffle_id);

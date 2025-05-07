@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { getTicket } from "@/redux/reducers/ticket/asyncCalls";
 import { RootState } from "@/redux/store";

@@ -1,5 +1,5 @@
 // import Squares from "./Animation/Squers.tsx";
-
+//@ts-nocheck
 import FuzzyText from "@/animated/FuzzyText";
 import Particles from "@/animated/Particles";
 

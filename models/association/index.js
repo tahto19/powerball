@@ -74,7 +74,11 @@ export default function Associations() {
     sourceKey: "id",
     as: "fileInfo",
   });
-
+  Users.belongsTo(Files, {
+    foreignKey: "file_id",
+    sourceKey: "id",
+    as: "fileInfo",
+  });
   // winningdraw details
   Users.hasMany(WiningDrawDetails, {
     foreignKey: "admin_id",

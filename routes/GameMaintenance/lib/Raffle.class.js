@@ -3,8 +3,11 @@ import RafflePrize from "../../../models/RafflePrize.model.js";
 import RaffleSchedule from "../../../models/RaffleSchedule.model.js";
 import Files from "../../../models/Files.model.js";
 import PrizeList from "../../../models/PrizeList.model.js";
+import TicketHistory from "../../../models/TicketHistory.model.js";
+import TicketDetails from "../../../models/TicketDetails.model.js";
 
 import { WhereFilters } from "../../../util/util.js";
+import { fn, col } from "sequelize";
 
 /**
  * Filter structure:
@@ -70,12 +73,14 @@ class Raffle_class {
       include: [
         {
           model: RaffleSchedule,
+          separate: true,
           order: [["id", "DESC"]],
           as: "raffleSchedule",
           attributes: ["id"],
           include: [
             {
               model: RafflePrize,
+              separate: true,
               order: [["id", "DESC"]],
               as: "prizeInfo",
               attributes: ["id", "prize_id"],
@@ -106,12 +111,13 @@ class Raffle_class {
       include: [
         {
           model: RaffleSchedule,
-          order: [["id", "DESC"]],
           as: "raffleSchedule",
+          separate: true,
+          limit: 1,
+          order: [["id", "DESC"]],
           include: [
             {
               model: RafflePrize,
-              order: [["id", "DESC"]],
               as: "prizeInfo",
               where: { status: 1 },
               required: false, // This ensures the RaffleSchedule is included even if there's no matching RafflePrize
@@ -131,6 +137,14 @@ class Raffle_class {
           attributes: ["id", "name", "description"],
         },
       ],
+      // order: [
+      //   [
+      //     { model: RaffleSchedule, as: "raffleSchedule", limit: 1 },
+      //     { model: RafflePrize, as: "prizeInfo" },
+      //     "id",
+      //     "DESC",
+      //   ],
+      // ],
     };
 
     if (filter.length !== 0) query["where"] = WhereFilters(filter);
@@ -197,8 +211,16 @@ class Raffle_class {
     return id;
   }
 
-  async _2ndChanceFetchAll(sort = [["id", "ASC"]], filter = []) {
+  async _2ndChanceFetchAll(
+    offset = 0,
+    limit = 10,
+    sort = [["id", "ASC"]],
+    filter = [],
+    user_id
+  ) {
     let query = {
+      limit: parseInt(limit),
+      offset: parseInt(offset),
       order: sort,
       include: [
         {
@@ -221,7 +243,48 @@ class Raffle_class {
 
     // ✅ Fetch both filtered list and total count
     let { count, rows } = await RaffleDetails.findAndCountAll(query);
-    return { list: rows };
+
+    // 2. Collect raffleSchedule IDs
+    const scheduleIds = rows
+      .map((x) => x.raffleSchedule[0]?.id)
+      .filter(Boolean);
+
+    // 3. Query all TicketHistory records with TicketDetails included
+    const allTickets = await TicketHistory.findAll({
+      where: { raffle_id: scheduleIds },
+      include: [
+        {
+          model: TicketDetails,
+          required: false, // ensures no exclusion
+        },
+      ],
+    });
+
+    // 4. Build maps
+    const totalEntryMap = {};
+    const userEntryMap = {};
+
+    for (const ticket of allTickets) {
+      const id = ticket.raffle_id;
+      totalEntryMap[id] = (totalEntryMap[id] || 0) + 1;
+
+      // if it includes ticket_detail with matching user_id
+      if (ticket.ticket_detail && ticket.ticket_detail.user_id === user_id) {
+        userEntryMap[id] = (userEntryMap[id] || 0) + 1;
+      }
+    }
+
+    // 5. Merge into response
+    const new_rows = rows.map((x) => {
+      const raffleId = x.raffleSchedule[0]?.id;
+      return {
+        ...x.toJSON(),
+        totalEntries: totalEntryMap[raffleId] || 0,
+        yourEntries: userEntryMap[raffleId] || 0,
+      };
+    });
+
+    return { list: new_rows };
   }
   // async Delete(_data) {
   //   let count = await RaffleDetails.count({ where: { id: _data.id } });

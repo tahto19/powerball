@@ -30,6 +30,11 @@ Files.init(
       allowNull: true,
       defaultValue: null,
     },
+    category: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: "",
+    },
     type: {
       type: DataTypes.STRING,
       allowNull: false,

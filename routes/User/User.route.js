@@ -3,6 +3,7 @@ import {
   getSchema,
   insertSchema,
   updateSchema,
+  getUserSchema,
 } from "./Schema/User.Schema.js";
 
 const users = (app, opts, done) => {
@@ -11,6 +12,7 @@ const users = (app, opts, done) => {
   app.post("/users", getSchema);
   app.post("/", insertSchema);
   app.put("/", updateSchema);
+  app.get("/", getUserSchema);
 
   done();
 };

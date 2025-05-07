@@ -37,8 +37,8 @@ interface GridProps<T> {
     sortModel: GridSortModel;
     filterModel: GridFilterModel;
   }) => void;
-  onEditAction: (row: T) => void;
-  onViewAction: (row: T) => void;
+  onEditAction: (row: T) => void | null | undefined;
+  onViewAction: (row: T) => void | null | undefined;
   onDeleteAction?: (row: T) => void | null | undefined;
 }
 
@@ -83,45 +83,60 @@ export default function CustomizedDataGrid<T>({
         <Box
           sx={{ display: "flex", height: "100%", gap: 1, alignItems: "center" }}
         >
-          <IconButton
-            aria-label="edit"
-            size="small"
-            onClick={(event) => {
-              event.stopPropagation(); // ✅ Prevents row click from triggering sorting/filtering
-              onEditAction(params.row);
-            }}
-          >
-            <EditIcon
-              color="primary"
-              fontSize="inherit"
-            />
-          </IconButton>
-          <IconButton
-            aria-label="edit"
-            size="small"
-            onClick={(event) => {
-              event.stopPropagation(); // ✅ Prevents row click from triggering sorting/filtering
-              onViewAction(params.row);
-            }}
-          >
-            <RemoveRedEyeRoundedIcon
-              color="success"
-              fontSize="inherit"
-            />
-          </IconButton>
-          <IconButton
-            aria-label="delete"
-            size="small"
-            onClick={(event) => {
-              event.stopPropagation();
-              onDeleteAction(params.row);
-            }}
-          >
-            <DeleteIcon
-              color="error"
-              fontSize="inherit"
-            />
-          </IconButton>
+          {
+            onEditAction ? (
+              <IconButton
+                aria-label="edit"
+                size="small"
+                onClick={(event) => {
+                  event.stopPropagation(); // ✅ Prevents row click from triggering sorting/filtering
+                  onEditAction(params.row);
+                }}
+              >
+                <EditIcon
+                  color="primary"
+                  fontSize="inherit"
+                />
+              </IconButton>
+            ) : null
+          }
+
+          {
+            onViewAction ? (
+              <IconButton
+                aria-label="edit"
+                size="small"
+                onClick={(event) => {
+                  event.stopPropagation(); // ✅ Prevents row click from triggering sorting/filtering
+                  onViewAction(params.row);
+                }}
+              >
+                <RemoveRedEyeRoundedIcon
+                  color="success"
+                  fontSize="inherit"
+                />
+              </IconButton>
+            ) : null
+          }
+          {
+            onDeleteAction ? (
+              <IconButton
+                aria-label="delete"
+                size="small"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onDeleteAction(params.row);
+                }}
+              >
+                <DeleteIcon
+                  color="error"
+                  fontSize="inherit"
+                />
+              </IconButton>
+            ) : null
+          }
+
+
         </Box>
       ),
     },

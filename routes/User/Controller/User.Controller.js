@@ -97,3 +97,16 @@ export const checkUser = async (req, res) => {
     throw err;
   }
 };
+
+export const getUserController = async (req, res) => {
+  try {
+    var user_id = req.user_id;
+    let filter = [{ type: "number", field: "id", filter: user_id }];
+
+    const getUser = await uc.FetchOne(filter);
+    // getUser.password = "";
+    res.send(cSend(getUser));
+  } catch (err) {
+    throw err;
+  }
+};

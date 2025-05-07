@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { userState } from "@/components/addUser/TypesHere";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { addOTP, addUser } from "./userSlice";
+import { addOTP, addUser, addUserDetails } from "./userSlice";
 import apiService from "@/services/apiService";
 import { showToaster } from "../global/globalSlice";
 import { bodyDecrypt, bodyEncrypt, delay } from "@/utils/util";
@@ -180,6 +180,23 @@ export const getCostumer = createAsyncThunk(
       let c = bodyDecrypt(_r.data, token);
       console.log(c);
       dispatch(addListC_({ list: c.data.list.rows, count: c.data.list.count }));
+    } catch (err) {
+      dispatch(showToaster({ err, variant: "error", icon: "error" }));
+    }
+  }
+);
+
+export const getUser = createAsyncThunk(
+  "user/getUser",
+  async (data: getData, { dispatch, getState }) => {
+    try {
+      const state = getState() as RootState;
+      const token = state.token.token;
+   
+      const _r = await apiService.getUser();
+      let c = bodyDecrypt(_r.data, token);
+      console.log("11111111111111 ",c);
+      dispatch(addUserDetails(c.data));
     } catch (err) {
       dispatch(showToaster({ err, variant: "error", icon: "error" }));
     }

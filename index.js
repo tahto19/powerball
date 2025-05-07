@@ -12,6 +12,8 @@ import LoginRoute from "./routes/Login/Login.route.js";
 import PrizeListRoute from "./routes/PrizeList/PrizeList.route.js";
 import GameMaintenace from "./routes/GameMaintenance/Raffle.route.js";
 import FileEntries from "./routes/FileEntries/File.Route.js";
+import CronJobs from "./routes/CronJobs/Cron.Route.js";
+import winnerEntries from "./routes/winnerEntries/winnerEntries.route.js";
 
 import { logger } from "./util/util.js";
 import { auth } from "./authentication/auth.js";
@@ -195,8 +197,11 @@ const start = async () => {
     fastify.register(FileEntries, {
       prefix: process.env.ROUTES_PREFIX + "file",
     });
-    fastify.register(FileEntries, {
-      prefix: process.env.ROUTES_PREFIX + "winnerEntries",
+    fastify.register(winnerEntries, {
+      prefix: process.env.ROUTES_PREFIX + "winner",
+    });
+    fastify.register(CronJobs, {
+      prefix: process.env.ROUTES_PREFIX + "cron",
     });
 
     /**

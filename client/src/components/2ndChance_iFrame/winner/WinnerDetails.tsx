@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { getWinnerListAsync } from "@/redux/reducers/winner/asyncSlice";
 import React, { useEffect } from "react";

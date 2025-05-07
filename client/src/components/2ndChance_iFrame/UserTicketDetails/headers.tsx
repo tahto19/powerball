@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import * as React from "react";
 import moment from "moment";

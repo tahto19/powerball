@@ -230,8 +230,8 @@ export const apiService = {
   insertAdmin: async (data: adminType) => {
     return apiClient.post("/api/users", { data });
   },
-  updateAdmin: async (data: adminType) => {
-    return apiClient.put("api/users", { data });
+  updateAdmin: async (data: adminType, token: string | null) => {
+    return apiClient.put("api/users", { data: bodyEncrypt(JSON.stringify(data), token) });
   },
   getAdmin: async (data: getDataV2, token: string) => {
     return apiClient.post("/api/users/admin", {
@@ -242,6 +242,9 @@ export const apiService = {
     return apiClient.post("/api/users/users", {
       data: bodyEncrypt(JSON.stringify(data), token),
     });
+  },
+  getUser: async () => {
+    return apiClient.get("/api/users/");
   },
   // getRaffleEntry
   getRaffleEntry: async (data: string | undefined) => {
@@ -299,6 +302,13 @@ export const apiService = {
   // for token
   checkSession: async () => {
     return apiClient.get("/api/login/checkSession");
+  },
+
+  // winner here
+  getWinner: async (data, token: string) => {
+    return apiClient.post("api/winner/getDataAll", {
+      data: bodyEncrypt(JSON.stringify(data), token),
+    });
   },
 };
 

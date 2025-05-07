@@ -1,4 +1,4 @@
-import wc from "../lib/WinnerEntries.class";
+import wc from "../lib/WinnerEntries.class.js";
 export const getDataController = async (req, res) => {
   try {
     const { raffle_schedule_id } = req.body;

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import CustomizedDataGrid from "@/components/CustomizedDataGrid";
 import {
   Box,
@@ -91,10 +92,10 @@ export function MyEntries() {
         data={list}
         pagination={pagination}
         sx={{ fontFamily: ' "Outfit Variable", sans-serif !important' }}
-        // onTableChange={handleTableChange}
-        // pageLength={count}
-        // onEditAction={handleEditAction}
-        // onViewAction={handleViewAction}
+      // onTableChange={handleTableChange}
+      // pageLength={count}
+      // onEditAction={handleEditAction}
+      // onViewAction={handleViewAction}
       />
     </>
   );

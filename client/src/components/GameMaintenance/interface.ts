@@ -76,7 +76,7 @@ export const initialRaffleData: RaffleState = {
         more_details: "",
         active: true,
         starting_date: moment().toISOString(),
-        end_date: null,
+        end_date: moment().toISOString(),
         schedule_type: 1,
         raffleSchedule: [{id: null, raffle_id: null,schedule_date: moment().toISOString(), prizeInfo: [{id: null, prize_id: -1, amount: 0, Prize_List: {id: null, type: ""}}]}],
         fileInfo: null,

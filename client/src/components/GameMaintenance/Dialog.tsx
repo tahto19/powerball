@@ -272,6 +272,25 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                     />
                                 </FormControl>
                             </Grid2>
+
+                            <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+                                <FormControl>
+                                    <FormLabel htmlFor="value">Start Date</FormLabel>
+                                    <LocalizationProvider dateAdapter={AdapterMoment}>
+                                        <DateTimePicker name="starting_date" onChange={(date: any) => handleInputChange(date, "starting_date")} // Pass name explicitly
+                                            value={formData.starting_date ? moment(formData.starting_date) : moment()} />
+                                    </LocalizationProvider>
+                                </FormControl>
+                            </Grid2>
+                            <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+                                <FormControl>
+                                    <FormLabel htmlFor="value">End Date</FormLabel>
+                                    <LocalizationProvider dateAdapter={AdapterMoment}>
+                                        <DateTimePicker name="end_date" onChange={(date: any) => handleInputChange(date, "end_date")} // Pass name explicitly
+                                            value={formData.end_date ? moment(formData.end_date) : moment()} />
+                                    </LocalizationProvider>
+                                </FormControl>
+                            </Grid2>
                             <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
                                 <FormControl>
                                     <FormLabel htmlFor="schedule_type">Schedule Type</FormLabel>
@@ -300,15 +319,6 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                 </FormControl>
                             </Grid2>
                             <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
-                                <FormControl>
-                                    <FormLabel htmlFor="value">Start Date</FormLabel>
-                                    <LocalizationProvider dateAdapter={AdapterMoment}>
-                                        <DateTimePicker name="starting_date" onChange={(date: any) => handleInputChange(date, "starting_date")} // Pass name explicitly
-                                            value={formData.starting_date ? moment(formData.starting_date) : moment()} />
-                                    </LocalizationProvider>
-                                </FormControl>
-                            </Grid2>
-                            <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
                                 <FormControl>
                                     <FormLabel htmlFor="value">Image</FormLabel>
                                     <OutlinedInput

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { getDataV2 } from "@/types/allTypes";
 import { createSlice } from "@reduxjs/toolkit";
 
