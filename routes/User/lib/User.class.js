@@ -57,6 +57,7 @@ class User_class {
         {
           model: Files,
           as: "fileInfo",
+          required: false,
         },
       ],
     };
