@@ -36,6 +36,7 @@
     "mobile-device-detect": "^0.4.3",
     "moment": "^2.30.1",
     "mui-one-time-password-input": "^4.0.1",
+    "ogl": "^1.0.11",
     "react": "^19.0.0",
     "react-confetti": "^6.4.0",
     "react-dom": "^19.0.0",

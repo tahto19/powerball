@@ -105,3 +105,21 @@ export interface TicketDraw {
   raffle_id: number | null;
   prize_id: number | null;
 }
+export interface totalWinnerInterface {
+  t_loading: boolean;
+  total_winner: number | null;
+  total_entries: number | null;
+}
+export interface winnerListInterface {
+  _loading: boolean;
+  list: Array<any>;
+  offset: number;
+  limit: number;
+  count: number;
+  sort: Array<any> | null;
+  filter: Array<any> | null;
+}
+export interface winnerInitialState {
+  winnerList: winnerListInterface;
+  total: totalWinnerInterface;
+}
