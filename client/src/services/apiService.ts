@@ -36,8 +36,8 @@ let apiClient: any;
 async function initApiClient() {
   const getDI = await getDeviceInfo();
   apiClient = axios.create({
-    // baseURL: "https://18.138.76.86/",
-    baseURL: "http://localhost:5128/",
+    baseURL: "https://18.138.76.86/",
+    // baseURL: "http://localhost:5128/",
     headers: {
       "Content-Type": "application/json",
       "pm-scratch-it-m": getDI?.model || "none",
