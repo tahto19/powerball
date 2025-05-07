@@ -44,8 +44,8 @@ export const postAdminType = {
   dialogType: string | null | undefined,
 };
 export interface paginationType {
-  page: number | null;
-  pageSize: number | null;
+  page: number;
+  pageSize: number;
 }
 export type raffle = {
   ticketID: string | null;
@@ -118,6 +118,7 @@ export interface winnerListInterface {
   count: number;
   sort: Array<any> | null;
   filter: Array<any> | null;
+  location: null | undefined | string;
 }
 export interface winnerInitialState {
   winnerList: winnerListInterface;

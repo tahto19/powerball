@@ -286,6 +286,16 @@ export const apiService = {
       data: bodyEncrypt(JSON.stringify(data), token),
     });
   },
+  //winner api
+  getWinnerList: async (
+    data: getDataV2,
+    token: string | null,
+    url: string | undefined | null
+  ) => {
+    return apiClient.post(`api/winner/${url}`, {
+      data: bodyEncrypt(JSON.stringify(data), token),
+    });
+  },
   // for token
   checkSession: async () => {
     return apiClient.get("/api/login/checkSession");

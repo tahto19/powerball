@@ -8,6 +8,8 @@ import costumerSlice from "./reducers/user/costumerUsers";
 import ticketSlice from "./reducers/ticket/ticketSlice";
 import raffleEntrySlice from "./reducers/raffleEntry/raffleEntrySlice";
 import auditTrailSlice from "./reducers/auditTrail/auditTrailSlice";
+import winnerSlice from "./reducers/winner/winnerSlice";
+
 export const store = configureStore({
   reducer: {
     user: userReducer,
@@ -19,6 +21,7 @@ export const store = configureStore({
     ticket: ticketSlice,
     raffleEntry: raffleEntrySlice,
     auditTrail: auditTrailSlice,
+    winner: winnerSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

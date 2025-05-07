@@ -33,7 +33,11 @@ export function MyEntries() {
     (state) => state.raffleEntry
   );
   const { loading, token } = useAppSelector((state) => state.token);
-
+  const { raffleEntriesList } = useAppSelector(
+    (state: RootState) => state.raffleEntry
+  );
+  const { _loading, filter, offset, limit, sort, list, count } =
+    raffleEntriesList;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   useEffect(() => {
@@ -55,11 +59,7 @@ export function MyEntries() {
     page: 0,
     pageSize: 10,
   });
-  const { raffleEntriesList } = useAppSelector(
-    (state: RootState) => state.raffleEntry
-  );
-  const { _loading, filter, offset, limit, sort, list, count } =
-    raffleEntriesList;
+
   useEffect(() => {
     if (token) {
       dispatch(

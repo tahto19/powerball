@@ -40,7 +40,7 @@ export const getTicket = createAsyncThunk(
       let r_data = bodyDecrypt(r.data, token);
 
       let toReturn = { ...r_data, ...data, loading: false };
-      console;
+      console.log(toReturn);
       dispatch(addTicketList(toReturn));
     } catch (err) {
       console.log(err);
