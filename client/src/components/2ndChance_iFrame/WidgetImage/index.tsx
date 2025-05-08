@@ -5,8 +5,19 @@
 // import "@/assets/elementor/css/post-231.css";
 // import "@/assets/elementor/css/post-456.css";
 // import "@/assets/js/hello-frontend.min.js";
+// import "@/assets/js/sample.js";
 
 const widgetImage = () => {
+    // window.addEventListener("message", (event) => {
+    //     if (event.data.type === "resize" && event.data.height) {
+    //         const iframe = document.getElementById("myButtonIframe");
+    //         console.log(event.data.height)
+    //         // if (iframe) {
+    //         //     iframe.style.height = event.data.height + "px";
+    //         //     console.log(event.data.height)
+    //         // }
+    //     }
+    // });
     return (
         <>
             <div className="elementor-element elementor-element-4d89e254 e-flex e-con-boxed wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no e-con e-child" data-id="4d89e254" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classNameic&quot;,&quot;_ha_eqh_enable&quot;:false}">
@@ -19,6 +30,11 @@ const widgetImage = () => {
                     </div>
                 </div>
             </div>
+            <iframe id="myIframe" style={{
+                position: 'relative',
+                // height: '1px',
+                // width: '1px'
+            }} src="http://localhost:5173/iframe/2nd-chance/login-button"></iframe>
         </>
     );
 }
