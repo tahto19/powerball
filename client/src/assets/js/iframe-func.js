@@ -1,10 +1,10 @@
 window.addEventListener("message", function (event) {
   if (event.data && event.data.iframeStyle) {
     console.log(event.data.iframeStyle);
-    if (!document.getElementById("myIframe")) return;
-    document.getElementById("myIframe").style.height =
+    if (!document.getElementById("login-button-iframe")) return;
+    document.getElementById("login-button-iframe").style.height =
       event.data.iframeStyle.height + "px";
-    document.getElementById("myIframe").style.width =
+    document.getElementById("login-button-iframe").style.width =
       event.data.iframeStyle.width + 10 + "px";
   }
 });

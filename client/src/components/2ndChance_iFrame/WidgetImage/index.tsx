@@ -30,7 +30,7 @@ const widgetImage = () => {
                     </div>
                 </div>
             </div>
-            <iframe allowTransparency id="myIframe" style={{
+            <iframe allowTransparency id="login-button-iframe" style={{
                 position: 'relative',
                 // height: '1px',
                 // width: '1px'
