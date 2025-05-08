@@ -131,7 +131,8 @@ function AppRoutes() {
     console.log(currentPath)
     console.log(isInIframe)
     console.log(window.location)
-
+    console.log(skipTokenPaths.includes(currentPath))
+    console.log(!skipTokenPaths.includes(currentPath))
     // Only call getToken if not in iframe
     if (!isInIframe || !skipTokenPaths.includes(currentPath)) {
       getDeviceInfo();
