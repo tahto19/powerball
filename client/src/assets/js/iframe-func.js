@@ -5,6 +5,6 @@ window.addEventListener("message", function (event) {
     document.getElementById("myIframe").style.height =
       event.data.iframeStyle.height + "px";
     document.getElementById("myIframe").style.width =
-      event.data.iframeStyle.width + 1 + "px";
+      event.data.iframeStyle.width + 10 + "px";
   }
 });
