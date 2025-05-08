@@ -128,13 +128,11 @@ function AppRoutes() {
     const isInIframe = window.self !== window.top;
     const skipTokenPaths = ["/cms/iframe/2nd-chance/widget-image", "/cms/iframe/2nd-chance/login-button"];
     const currentPath = window.location.pathname;
-    console.log(currentPath)
-    console.log(isInIframe)
+
     console.log(window.location)
-    console.log(skipTokenPaths.includes(currentPath))
-    console.log(!skipTokenPaths.includes(currentPath))
+
     // Only call getToken if not in iframe
-    if (!isInIframe || !skipTokenPaths.includes(currentPath)) {
+    if (!isInIframe && !skipTokenPaths.includes(currentPath)) {
       getDeviceInfo();
       if (loading) dispatch(getToken());
     }
