@@ -126,7 +126,7 @@ function AppRoutes() {
 
 
     const isInIframe = window.self !== window.top;
-    const skipTokenPaths = ["/iframe/2nd-chance/widget-image", "/iframe/2nd-chance/login-button"];
+    const skipTokenPaths = ["/cms/iframe/2nd-chance/widget-image", "/cms/iframe/2nd-chance/login-button"];
     const currentPath = window.location.pathname;
     console.log(currentPath)
     console.log(isInIframe)
