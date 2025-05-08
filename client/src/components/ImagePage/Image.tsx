@@ -11,7 +11,8 @@ import CustomizedDataGrid from "../CustomizedDataGrid.tsx";
 import { Card, CardMedia } from '@mui/material';
 
 import { ImageState } from "./interface.ts"
-const apiEndpoint = "http://localhost:5128/api/file/serve/image/";
+const base_url = import.meta.env.VITE_API_BASE_URL;
+const apiEndpoint = base_url + "api/file/serve/image/"
 const renderImage = (id: number) => {
 
     const img = apiEndpoint + id
