@@ -123,8 +123,20 @@ function AppRoutes() {
   useEffect(() => {
     if (hasRun.current) return; // already ran once, skip
     hasRun.current = true;
-    getDeviceInfo();
-    if (loading) dispatch(getToken());
+
+
+    const isInIframe = window.self !== window.top;
+    const skipTokenPaths = ["/iframe/2nd-chance/widget-image", "/iframe/2nd-chance/login-button"];
+    const currentPath = window.location.pathname;
+    console.log(currentPath)
+    console.log(isInIframe)
+    console.log(window.location)
+
+    // Only call getToken if not in iframe
+    if (!isInIframe || !skipTokenPaths.includes(currentPath)) {
+      getDeviceInfo();
+      if (loading) dispatch(getToken());
+    }
   }, []);
 
   useEffect(() => {
