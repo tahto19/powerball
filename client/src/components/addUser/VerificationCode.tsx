@@ -48,7 +48,7 @@ const VerificationCode = () => {
           </Typography>
         </Grid2>
         <Grid2 size={{ md: 12, sm: 12 }}>
-          <Typography>We've sent a code to email here</Typography>
+          <Typography>We've sent a verification code to your email. Please enter it below.</Typography>
         </Grid2>
         <Grid2 size={{ md: 5, sm: 8 }}>
           <MuiOtpInputStyled
