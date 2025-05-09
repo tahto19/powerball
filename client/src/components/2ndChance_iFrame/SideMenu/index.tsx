@@ -54,7 +54,7 @@ export default function SideMenu() {
     return (
         <>
             <Drawer
-                open={open}
+                open={!isSmallScreen ? true : open}
                 onClose={() => dispatch(openNav(!open))}
                 variant={isSmallScreen ? "temporary" : "persistent"} // Change variant based on screen size
                 sx={{

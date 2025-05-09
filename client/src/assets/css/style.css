@@ -1,0 +1,21 @@
+#iframe-login-button {
+    text-decoration: none;
+    border-radius: 30px !important;
+    background: #2555A6 !important;
+    color: #fff !important;
+}
+
+#iframe-login-button:hover {
+    background: #61CE70 !important;
+}
+
+
+#iframe-dashboard-button {
+    text-decoration: none;
+    font-weight: 600 !important;
+    color: #fff !important;
+}
+
+#iframe-dashboard-button:hover {
+    color: #ffde01 !important;
+}

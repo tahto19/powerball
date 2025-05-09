@@ -41,7 +41,7 @@ const Login = () => {
             if (res.data.result == "success") {
                 // Redirect to dashboard after login
                 // navigate("https://18.138.76.86/?page_id=279");
-                window.location.href = "https://18.138.76.86/?page_id=279"
+                window.parent.location.href = "https://18.138.76.86/powerball-scratchit-second-chance/"
             }
             dispatch(
                 showToaster({

@@ -3,12 +3,15 @@ import { IDetectedBarcode } from "@yudiel/react-qr-scanner";
 import { useEffect, useState } from "react";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import BarcodeScanner from "react-qr-barcode-scanner";
-import { Card, CardContent, CardHeader, CircularProgress } from "@mui/material";
+import { Card, CardContent, CardHeader, CircularProgress, Button, Typography, AppBar, Box, Toolbar, IconButton } from "@mui/material";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { addTicket } from "@/redux/reducers/ticket/asyncCalls";
 import { RootState } from "@/redux/store";
 import { getToken } from "@/redux/reducers/token/asyncCalls";
 import { useNavigate } from "react-router-dom";
+const base_url = import.meta.env.VITE_API_BASE_URL;
+const endpoint = base_url + "member-area/"
 const ScannerIframe = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -20,7 +23,18 @@ const ScannerIframe = () => {
     setScanned(e);
     if (e) dispatch(addTicket(e));
   };
-
+  const handleBackTo = () => {
+    window.history.back();
+    // const params = new URLSearchParams(window.location.search);
+    // const from = params.get('from');
+    // if (from) {
+    //   window.location.href = base_url + from;
+    // } else {
+    //   // fallback
+    //   // navigate("2nd-chance/");
+    //   window.history.back();
+    // }
+  }
   useEffect(() => {
     if (!ticketSubmit) setScanned(null);
   }, [ticketSubmit]);
@@ -28,56 +42,56 @@ const ScannerIframe = () => {
     if (!loading) {
       console.log(token);
       if (token === null) {
-        navigate("/iframe/2nd-chance/login");
+        navigate(endpoint);
       }
     }
   }, [loading]);
   return (
-    <div
-      style={{
-        display: "flex",
-        gap: "20px",
-        flexWrap: "wrap",
-        justifyContent: "center",
-        height: "100%",
-      }}
-    >
-      <Card style={{ width: "50%", height: "50%", justifyItems: "center" }}>
-        <CardHeader title="Scan QR code" />
-        <CardContent
-          style={{
-            justifyItems: "center",
-            width: "60%",
-            height: "60%",
-            alignContent: "center",
-          }}
-        >
-          <div>
-            {scanned ? (
-              <CircularProgress size="5rem" />
-            ) : (
-              // <Scanner
-              //   onScan={(result: IDetectedBarcode[]) => handleScan(result)}
-              // />
-              <BarcodeScanner
-                width={500}
-                height={500}
-                onUpdate={(err, result: any) => {
-                  if (result) handleScan(result?.text);
-                }}
-              />
-            )}
-          </div>
-          {/* <Button
-            onClick={() => {
-              handleScan([{ rawValue: "test" }]);
+    <>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static" sx={{ background: '#F26A21' }}>
+          <Toolbar>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              sx={{ mr: 2 }}
+              onClick={handleBackTo}
+            >
+              <ArrowBackIosIcon />
+            </IconButton>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Scanner
+            </Typography>
+          </Toolbar>
+        </AppBar>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          gap: "20px",
+          flexWrap: "wrap",
+          height: 'calc(100% - 64px)',
+          justifyContent: "center",
+          '& video': {
+            objectFit: "cover",
+          }
+        }}
+      >
+        {scanned ? (
+          <CircularProgress size="5rem" />
+        ) : (
+          // <Scanner
+          //   onScan={(result: IDetectedBarcode[]) => handleScan(result)}
+          // />
+          <BarcodeScanner
+            onUpdate={(err, result: any) => {
+              if (result) handleScan(result?.text);
             }}
-          >
-            test
-          </Button> */}
-        </CardContent>
-      </Card>
-    </div>
+          />
+        )}
+      </Box>
+    </>
   );
 };
 

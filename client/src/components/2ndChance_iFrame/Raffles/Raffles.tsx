@@ -146,82 +146,92 @@ const Raffles = () => {
         {isFetching ? (
           <CircularProgress color="inherit" />
         ) :
-          list &&
-          list.map((x, i) => (
-            <Card key={i}
-              sx={{
-                width: '258px',
-                height: '288px',
-                padding: '12px',
-                borderRadius: '20px',
-                background: '#FFF',
-                boxShadow: '0px 14px 42px 0px rgba(8, 15, 52, 0.06)',
-              }}
-            >
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
-                {x.fileInfo ? (
-                  <CardMedia
-                    component="img"
-                    sx={{ height: '113px' }}
-                    image={endpoint + x.fileInfo.id}
-                    alt="Paella dish"
-                  />
-                ) : null}
+          list && list.length > 0 ? (
+            list &&
+            list.map((x, i) => (
+              <Card key={i}
+                sx={{
+                  width: '258px',
+                  height: '288px',
+                  padding: '12px',
+                  borderRadius: '20px',
+                  background: '#FFF',
+                  boxShadow: '0px 14px 42px 0px rgba(8, 15, 52, 0.06)',
+                }}
+              >
+                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                  {x.fileInfo ? (
+                    <CardMedia
+                      component="img"
+                      sx={{ height: '113px' }}
+                      image={endpoint + x.fileInfo.id}
+                      alt="Paella dish"
+                    />
+                  ) : null}
 
-                <CardContent>
-                  <div
-                    style={{
-                      padding: '10px 0',
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Typography
-                      sx={{ color: "text.secondary", fontSize: '14px', fontWeight: '500' }}
+                  <CardContent>
+                    <div
+                      style={{
+                        padding: '10px 0',
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
                     >
-                      {x.name}
-                    </Typography>
-                  </div>
+                      <Typography
+                        sx={{ color: "text.secondary", fontSize: '14px', fontWeight: '500' }}
+                      >
+                        {x.name}
+                      </Typography>
+                    </div>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                    }}
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <Typography
+                        sx={{ color: "text.secondary", fontSize: '14px' }}
+                      >
+                        Total Entries: {x.totalEntries}
+                      </Typography>
+                      <Typography
+                        sx={{ color: "text.secondary", fontSize: '14px' }}
+                      >
+                        Your Entries: {x.yourEntries}
+                      </Typography>
+                      <Typography
+                        sx={{ color: "text.secondary", fontSize: '14px' }}
+                      >
+                        Draw on{" "}
+                        {moment(x.raffleSchedule[0].schedule_date).format(
+                          "MMMM D, YYYY h:mm A"
+                        )}
+                      </Typography>
+                    </div>
+                  </CardContent>
+                </Box>
+                <CardActions sx={{ mt: '10px' }}>
+                  <Button
+                    onClick={() => handleParticipate(x)}
+                    variant="contained"
+                    sx={{ width: "100%" }}
                   >
-                    <Typography
-                      sx={{ color: "text.secondary", fontSize: '14px' }}
-                    >
-                      Total Entries: {x.totalEntries}
-                    </Typography>
-                    <Typography
-                      sx={{ color: "text.secondary", fontSize: '14px' }}
-                    >
-                      Your Entries: {x.yourEntries}
-                    </Typography>
-                    <Typography
-                      sx={{ color: "text.secondary", fontSize: '14px' }}
-                    >
-                      Draw on{" "}
-                      {moment(x.raffleSchedule[0].schedule_date).format(
-                        "MMMM D, YYYY h:mm A"
-                      )}
-                    </Typography>
-                  </div>
-                </CardContent>
-              </Box>
-              <CardActions sx={{ mt: '10px' }}>
-                <Button
-                  onClick={() => handleParticipate(x)}
-                  variant="contained"
-                  sx={{ width: "100%" }}
-                >
-                  Participate
-                </Button>
-              </CardActions>
-            </Card>
-          ))
+                    Participate
+                  </Button>
+                </CardActions>
+              </Card>
+            ))
+          ) : (
+            <Box>
+              <Typography
+                sx={{ padding: "40px", color: "text.secondary", fontSize: '14px', fontWeight: '500' }}
+              >
+                No Raffle Available
+              </Typography>
+            </Box>
+          )
         }
       </div>
       <MyDialog

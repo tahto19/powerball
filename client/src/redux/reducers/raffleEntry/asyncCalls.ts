@@ -22,7 +22,7 @@ export const getRaffleEntry = createAsyncThunk(
       if (bd.result === "error") throw new Error(bd.message);
       dispatch(entriesChange(bd.data[0]));
     } catch (err) {
-      dispatch(showToaster({ err, variant: "error", icon: "error" }));
+      // dispatch(showToaster({ err, variant: "error", icon: "error" }));
     }
   }
 );

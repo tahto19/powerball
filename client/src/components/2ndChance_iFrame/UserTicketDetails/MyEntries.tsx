@@ -84,18 +84,43 @@ export function MyEntries() {
   }, [_loading]);
   return (
     <>
-      <CustomizedDataGridBasic
-        sx={{
-          width: "100%",
-        }}
-        headers={headers}
-        data={list}
-        pagination={pagination}
+      <Box sx={{
+        background: "#fff",
+        borderRadius: '20px',
+        boxShadow: '0px 14px 42px 0px rgba(8, 15, 52, 0.06)',
+        padding: '30px',
+      }}>
+        <Box
+          sx={{
+            display: 'flex',
+            gap: '10px',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            mb: '20px'
+          }}>
+          <Typography sx={{
+            fontSize: '24px',
+            fontWeight: '600'
+          }} >
+            My Entries
+          </Typography>
+
+        </Box>
+        <CustomizedDataGridBasic
+          sx={{
+            width: "100%",
+          }}
+          headers={headers}
+          data={list}
+          pagination={pagination}
         // onTableChange={handleTableChange}
         // pageLength={count}
         // onEditAction={handleEditAction}
         // onViewAction={handleViewAction}
-      />
+        />
+
+      </Box>
+
     </>
   );
 }

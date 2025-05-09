@@ -5,6 +5,6 @@ window.addEventListener("message", function (event) {
     document.getElementById("login-button-iframe").style.height =
       event.data.iframeStyle.height + "px";
     document.getElementById("login-button-iframe").style.width =
-      event.data.iframeStyle.width + 10 + "px";
+      event.data.iframeStyle.width + 1 + "px";
   }
 });

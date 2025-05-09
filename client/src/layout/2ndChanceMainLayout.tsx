@@ -6,10 +6,11 @@ import SideMenu from "@/components/2ndChance_iFrame/SideMenu";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 // import Header from "@/components/Header/NavbarBreadCrumbs";
-import AppNavBar from "@/components/Header/AppNavBar";
+import AppNavBar from "@/components/2ndChance_iFrame/Header/AppNavBar";
 import { styled } from "@mui/material/styles";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { getUser } from "@/redux/reducers/user/asnycCalls";
@@ -68,7 +69,8 @@ function MainLayout2({ title, children }: { title: string; children: any }) {
   const { open } = useSelector((state: RootState) => state.navBar);
   const { token } = useSelector((state: RootState) => state.token);
   const dispatch = useAppDispatch();
-
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   useEffect(() => {
     if (token) {
       dispatch(
@@ -82,7 +84,7 @@ function MainLayout2({ title, children }: { title: string; children: any }) {
         <SideMenu />
         {/* Main content */}
         <Main
-          open={open}
+          open={!isSmallScreen ? true : open}
           sx={(theme) => ({
             flexGrow: 1,
             backgroundColor: theme
@@ -101,7 +103,8 @@ function MainLayout2({ title, children }: { title: string; children: any }) {
             }}
           >
             {/* <Header /> */}
-            {/* <AppNavBar title={title} /> */}
+            {isSmallScreen && <AppNavBar title={title} />}
+
             {/* <DrawerHeader /> */}
             <Main open={open}>{children}</Main>
           </Stack>

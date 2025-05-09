@@ -16,6 +16,7 @@ import play from '@/assets/icon/play.png'
 import { useNavigate } from "react-router-dom";
 import { MyEntries } from "../UserTicketDetails/MyEntries";
 import TicketScannedList from "@/components/ticketScanner/TicketScannedList";
+import WinnerDetails from "@/components/2ndChance_iFrame/winner/WinnerDetails";
 
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const endpoint = base_url + "api/file/serve/image/"
@@ -48,7 +49,7 @@ const tabs = [
 const Dashboard = () => {
     const navigate = useNavigate();
     const handleNavigation = () => {
-        navigate("/iframe/2nd-chance/scan");
+        navigate("/scanner");
     };
     return (
         <>
@@ -148,56 +149,9 @@ const Dashboard = () => {
                     padding: '0 15px',
                     marginTop: '24px'
                 }}>
-                <Box sx={{
-                    background: "#fff",
-                    borderRadius: '20px',
-                    boxShadow: '0px 14px 42px 0px rgba(8, 15, 52, 0.06)',
-                    padding: '30px',
-                }}>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            gap: '10px',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            mb: '20px'
-                        }}>
-                        <Typography sx={{
-                            fontSize: '24px',
-                            fontWeight: '600'
-                        }} >
-                            My Entries
-                        </Typography>
-
-                    </Box>
-                    <MyEntries />
-
-                </Box>
-                <Box sx={{
-                    background: "#fff",
-                    borderRadius: '20px',
-                    boxShadow: '0px 14px 42px 0px rgba(8, 15, 52, 0.06)',
-                    padding: '30px'
-                }}>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            gap: '10px',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            mb: '20px'
-                        }}>
-                        <Typography sx={{
-                            fontSize: '24px',
-                            fontWeight: '600'
-                        }} >
-                            Ticket Scanned
-                        </Typography>
-
-                    </Box>
-                    <TicketScannedList />
-
-                </Box>
+                <MyEntries />
+                <TicketScannedList />
+                <WinnerDetails />
             </Box>
         </>
     )

@@ -5,7 +5,7 @@
 // import "@/assets/elementor/css/post-231.css";
 // import "@/assets/elementor/css/post-456.css";
 // import "@/assets/js/hello-frontend.min.js";
-// import "@/assets/js/sample.js";
+import "@/assets/js/iframe-func.js";
 
 const widgetImage = () => {
     // window.addEventListener("message", (event) => {

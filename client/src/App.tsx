@@ -31,7 +31,7 @@ import WidgetImage from "@/components/2ndChance_iFrame/WidgetImage";
 
 import Toaster_ from "./Global/toaster/Toaster_";
 import { getDeviceInfo } from "./utils/util";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PrizeList from "./components/PrizeList";
 import { useAppDispatch, useAppSelector } from "./redux/hook";
@@ -96,26 +96,51 @@ const routes = [
 
 const routes2 = [
   {
-    path: "/iframe/2nd-chance/",
+    path: "/2nd-chance/",
     component: <Dashboard2 />,
     title: "Dashboard",
   },
   {
-    path: "/iframe/2nd-chance/raffles",
+    path: "/2nd-chance/raffles",
     component: <Raffles />,
     title: "Raffles",
   },
   {
-    path: "/iframe/2nd-chance/user-profile",
+    path: "/2nd-chance/user-profile",
     component: <UserProfile />,
     title: "User Profile",
   },
+  {
+    path: "/2nd-chance/scanned-list",
+    component: <TicketScannedList />,
+    title: "Ticket Scanned",
+  },
+  {
+    path: "/2nd-chance/my-entries",
+    component: <MyEntries />,
+    title: "My Entries",
+  },
+  {
+    path: "/2nd-chance/winners",
+    component: <WinnerDetails />,
+    title: "Winner list",
+  },
+  {
+    path: "/2nd-chance/scan",
+    component: <TicketScanner />,
+    title: "Ticket Scanner",
+    title: "Ticket Scanner",
+  },
 ];
 
+
+const skipTokenPaths = ["/cms/iframe/2nd-chance/widget-image", "/cms/iframe/2nd-chance/login-button"];
+const currentPath = window.location.pathname;
 // Component to handle routing with conditional rendering
 function AppRoutes() {
   const dispatch = useAppDispatch();
   const nav = useNavigate();
+
   const { loading, token, doneLoading } = useAppSelector(
     (state) => state.token
   );
@@ -126,20 +151,17 @@ function AppRoutes() {
 
 
     const isInIframe = window.self !== window.top;
-    const skipTokenPaths = ["/cms/iframe/2nd-chance/widget-image", "/cms/iframe/2nd-chance/login-button"];
-    const currentPath = window.location.pathname;
-
     console.log(window.location)
 
     // Only call getToken if not in iframe
-    if (!isInIframe && !skipTokenPaths.includes(currentPath)) {
-      getDeviceInfo();
-      if (loading) dispatch(getToken());
-    }
+    // if (!isInIframe && !skipTokenPaths.includes(currentPath)) {
+    getDeviceInfo();
+    if (loading) dispatch(getToken());
+    // }
   }, []);
 
   useEffect(() => {
-    const currentPath = window.location.pathname;
+    // const currentPath = window.location.pathname;
 
     if (
       !loading &&
@@ -209,20 +231,12 @@ function AppRoutes() {
         element={<AdduserMain />}
       />
       <Route
-        path="/iframe/2nd-chance/scan"
+        path="/scanner"
         element={<ScannerIframe />}
       />
       <Route
         path="/iframe/2nd-chance/login"
         element={<Login />}
-      />
-      <Route
-        path="/iframe/2nd-chance/myTickets"
-        element={<MyEntries />}
-      />
-      <Route
-        path="/iframe/2nd-chance/winner"
-        element={<WinnerDetails />}
       />
       <Route
         path="/iframe/2nd-chance/login-button"
@@ -251,7 +265,7 @@ function App() {
       <Router basename={basename}>
         <AppRoutes />
       </Router>
-      <Toaster_></Toaster_>
+      {!skipTokenPaths.includes(currentPath) && <Toaster_></Toaster_>}
     </>
   );
 }
