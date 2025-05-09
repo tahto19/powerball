@@ -72,7 +72,7 @@ const loginButton = () => {
                         </span>
                     </a>
                 ) : (
-                    <a id="iframe-dashboard-button" href="https://18.138.76.86/terms-and-conditions/" className="elementor-item">Dashboard</a>
+                    <a id="iframe-dashboard-button" href="https://18.138.76.86/cms/2nd-chance/" target="_top" rel="noopener noreferrer" className="elementor-item">Dashboard</a>
                 )}
             </div>
         </>
