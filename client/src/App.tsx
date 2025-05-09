@@ -26,6 +26,8 @@ import GameMaintenance from "./components/GameMaintenance/index";
 import RaffleDraw from "./components/RaffleDraw/index";
 
 import Login from "@/components/2ndChance_iFrame/Login/Login";
+import LoginButton from "@/components/2ndChance_iFrame/LoginButton";
+import WidgetImage from "@/components/2ndChance_iFrame/WidgetImage";
 
 import Toaster_ from "./Global/toaster/Toaster_";
 import { getDeviceInfo } from "./utils/util";
@@ -121,8 +123,19 @@ function AppRoutes() {
   useEffect(() => {
     if (hasRun.current) return; // already ran once, skip
     hasRun.current = true;
-    getDeviceInfo();
-    if (loading) dispatch(getToken());
+
+
+    const isInIframe = window.self !== window.top;
+    const skipTokenPaths = ["/cms/iframe/2nd-chance/widget-image", "/cms/iframe/2nd-chance/login-button"];
+    const currentPath = window.location.pathname;
+
+    console.log(window.location)
+
+    // Only call getToken if not in iframe
+    if (!isInIframe && !skipTokenPaths.includes(currentPath)) {
+      getDeviceInfo();
+      if (loading) dispatch(getToken());
+    }
   }, []);
 
   useEffect(() => {
@@ -211,6 +224,16 @@ function AppRoutes() {
         path="/iframe/2nd-chance/winner"
         element={<WinnerDetails />}
       />
+      <Route
+        path="/iframe/2nd-chance/login-button"
+        element={<LoginButton />}
+      />
+      <Route
+        path="/iframe/2nd-chance/widget-image"
+        element={<WidgetImage />}
+      />
+
+
 
       {/* Catch-All Error Page */}
       <Route
@@ -222,9 +245,10 @@ function AppRoutes() {
 }
 
 function App() {
+  const basename = import.meta.env.VITE_ROUTER_BASENAME
   return (
     <>
-      <Router basename="/cms">
+      <Router basename={basename}>
         <AppRoutes />
       </Router>
       <Toaster_></Toaster_>

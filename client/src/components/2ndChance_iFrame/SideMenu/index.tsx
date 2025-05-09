@@ -90,7 +90,7 @@ export default function SideMenu() {
                     <Avatar
                         sizes="small"
                         alt="Riley Carter"
-                        src={data.fileInfo.id ? endpoint + data.fileInfo.id + `?t=${refreshKey}` : ""}
+                        src={data.fileInfo && data.fileInfo.id ? endpoint + data.fileInfo.id + `?t=${refreshKey}` : ""}
                         sx={{ width: "100px", height: "100px" }}
                     />
                     <Box sx={{ mr: 'auto', textAlign: 'center', width: '100%' }}>

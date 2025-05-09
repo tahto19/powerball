@@ -31,13 +31,12 @@ interface Credentials {
 }
 
 let apiClient: any;
-
+const base_url = import.meta.env.VITE_API_BASE_URL;
 // Initialize apiClient asynchronously
 async function initApiClient() {
   const getDI = await getDeviceInfo();
   apiClient = axios.create({
-    // baseURL: "https://18.138.76.86/",
-    baseURL: "http://localhost:5128/",
+    baseURL: base_url,
     headers: {
       "Content-Type": "application/json",
       "pm-scratch-it-m": getDI?.model || "none",

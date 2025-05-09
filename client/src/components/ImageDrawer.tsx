@@ -9,8 +9,8 @@ import { Skeleton, Box, Drawer, List, Divider, ListItem, ListItemButton, CardMed
 
 import { ImageState } from "@/components/ImagePage/interface"
 
-
-const apiEndpoint = "http://localhost:5128/api/file/serve/image/";
+const base_url = import.meta.env.VITE_API_BASE_URL;
+const apiEndpoint = base_url + "api/file/serve/image/"
 const ImageDrawer = ({ open, onChoose, onClose }: ImageDrawerProps) => {
     const { token } = useAppSelector((state) => state.token);
     const [list, setImageList] = useState<ImageState[]>([]);

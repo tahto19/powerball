@@ -162,7 +162,7 @@ const main = () => {
                             <Avatar
                                 sizes="small"
                                 alt="Riley Carter"
-                                src={formData.fileInfo.id ? endpoint + formData.fileInfo.id + `?t=${refreshKey}` : ""}
+                                src={formData.fileInfo && formData.fileInfo.id ? endpoint + formData.fileInfo.id + `?t=${refreshKey}` : ""}
                                 sx={{ width: "100px", height: "100px" }}
                             />
 
