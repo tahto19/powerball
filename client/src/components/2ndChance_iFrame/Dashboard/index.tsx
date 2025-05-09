@@ -58,7 +58,7 @@ const Dashboard = () => {
                     position: 'relative',
                     height: '181px',
                     alignSelf: 'stretch',
-                    background: `url(${endpoint + 11}) transparent 50% / contain no-repeat`,
+                    background: `url(${endpoint + 5}) transparent 50% / contain no-repeat`,
                 }}
             >
                 {/* <CardMedia

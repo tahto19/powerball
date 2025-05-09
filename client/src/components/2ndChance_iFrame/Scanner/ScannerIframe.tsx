@@ -42,7 +42,8 @@ const ScannerIframe = () => {
     if (!loading) {
       console.log(token);
       if (token === null) {
-        navigate(endpoint);
+        window.parent.location.href = endpoint
+        // navigate("/member-area");
       }
     }
   }, [loading]);
