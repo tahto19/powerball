@@ -6,7 +6,7 @@ import "@/assets/css/style.css";
 // import "@/assets/elementor/css/post-456.css";
 // import "@/assets/js/hello-frontend.min.js";
 import { useEffect } from "react";
-import { useAppSelector, useAppDispatch } from "@/redux/hook";
+import { useAppSelector } from "@/redux/hook";
 
 const loginButton = () => {
     const { token } = useAppSelector((state) => state.token);
