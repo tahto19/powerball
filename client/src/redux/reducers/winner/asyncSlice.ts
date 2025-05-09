@@ -18,9 +18,20 @@ export const getWinnerListAsync = createAsyncThunk(
 
       const _r = await apiService.getWinnerList(getFilter, token, url);
       const _rData = bodyDecrypt(_r.data, token);
+      console.log(_rData);
+      _rData["list"] = _rData.list.map((v) => {
+        return {
+          id: v.id,
+          "$ticket_history.ticket_history_generate$":
+            v.ticket_history.ticket_history_generate,
+          "$Raffle_Prize.Raffle_Schedule.raffleDetails.name$":
+            v.Raffle_Prize.Raffle_Schedule.raffleDetails.name,
+          Status: "unclaimed",
+        };
+      });
       const toReturn = { ..._rData, ...getFilter, loading: false };
-      console.log(toReturn);
-      //   dispatch(addWinnerList(toReturn));
+
+      dispatch(addWinnerList(toReturn));
     } catch (err) {
       console.log(err);
       dispatch(showToaster({ err, variant: "error", icon: "error" }));

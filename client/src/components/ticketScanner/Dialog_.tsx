@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { useAppDispatch } from "@/redux/hook";
 import { addTicket } from "@/redux/reducers/ticket/asyncCalls";
+import ScannerIframe from "../2ndChance_iFrame/Scanner/ScannerIframe";
 
 const Dialog_ = ({ open, data, dialogType, onClose }) => {
   const [scannedData, setScannedData] = useState<
@@ -38,14 +39,15 @@ const Dialog_ = ({ open, data, dialogType, onClose }) => {
     >
       <DialogTitle>{dialogType} Scanning</DialogTitle>
       <DialogContent>
-        {scannedData?.rawValue}
+        <ScannerIframe />
+        {/* {scannedData?.rawValue}
         {scannedData && scannedData?.rawValue ? (
           <>
             <LoadingContent />
           </>
         ) : (
           <Scanner onScan={(result: IDetectedBarcode[]) => scanned(result)} />
-        )}
+        )} */}
       </DialogContent>
       <DialogActions>
         <Button onClick={() => mimicsend()}>Sending</Button>

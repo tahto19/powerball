@@ -5,6 +5,7 @@ import RafflePrize from "../../../models/RafflePrize.model.js";
 import TicketHistory from "../../../models/TicketHistory.model.js";
 import RaffleSchedule from "../../../models/RaffleSchedule.model.js";
 import RaffleDetails from "../../../models/RaffleDetails.model.js";
+import PrizeList from "../../../models/PrizeList.model.js";
 
 class WiningDrawDetails_class {
   constructor() {}
@@ -87,6 +88,7 @@ class WiningDrawDetails_class {
               model: RaffleSchedule,
               include: [{ model: RaffleDetails, as: "raffleDetails" }],
             },
+            { model: PrizeList },
           ],
         },
         { model: TicketHistory },

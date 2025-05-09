@@ -35,7 +35,6 @@ export const LoginController = async (req, res) => {
       })
       .send({ result: "success", token: encryptToken });
   } catch (err) {
-    console.log(err);
     throw err;
   }
 };
@@ -50,6 +49,7 @@ export const getMyDetailsController = async (req, res) => {
 };
 export const checkSessionController = async (req, res) => {
   try {
+    await cookieChecker(req);
     res.send(req.cookies.cookie_pb_1271);
   } catch (err) {
     throw err;

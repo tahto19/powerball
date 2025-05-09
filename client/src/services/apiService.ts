@@ -36,8 +36,8 @@ let apiClient: any;
 async function initApiClient() {
   const getDI = await getDeviceInfo();
   apiClient = axios.create({
-    baseURL: "https://18.138.76.86/", 
-    // baseURL: "http://localhost:5128/",
+    // baseURL: "https://18.138.76.86/",
+    baseURL: "http://localhost:5128/",
     headers: {
       "Content-Type": "application/json",
       "pm-scratch-it-m": getDI?.model || "none",
@@ -231,7 +231,9 @@ export const apiService = {
     return apiClient.post("/api/users", { data });
   },
   updateAdmin: async (data: adminType, token: string | null) => {
-    return apiClient.put("api/users", { data: bodyEncrypt(JSON.stringify(data), token) });
+    return apiClient.put("api/users", {
+      data: bodyEncrypt(JSON.stringify(data), token),
+    });
   },
   getAdmin: async (data: getDataV2, token: string) => {
     return apiClient.post("/api/users/admin", {
@@ -283,6 +285,7 @@ export const apiService = {
       data: bodyEncrypt(JSON.stringify(data), token),
     });
   },
+
   // audit trail here
   getAudit: async (data: getDataV2, token: string) => {
     return apiClient.post("api/ticket", {
@@ -305,7 +308,7 @@ export const apiService = {
   },
 
   // winner here
-  getWinner: async (data, token: string) => {
+  getWinner: async (data, token: string | null) => {
     return apiClient.post("api/winner/getDataAll", {
       data: bodyEncrypt(JSON.stringify(data), token),
     });

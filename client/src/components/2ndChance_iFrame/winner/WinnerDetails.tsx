@@ -4,7 +4,7 @@ import CustomizedDataGridBasic from "@/components/CustomizedDataGridBasic";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { getWinnerListAsync } from "@/redux/reducers/winner/asyncSlice";
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import WinnerDetailsHeaders from "./WinnerDetailsHeaders";
 const WinnerDetails = ({ url }: { url: string | undefined }) => {
@@ -15,8 +15,17 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
   const dispatch = useAppDispatch();
   // const
   const location = useLocation();
+  const navigate = useNavigate();
   useEffect(() => {
-    if (list.length === 0 && token !== null) {
+    if (!loading) {
+      console.log(token);
+      if (token === null) {
+        navigate("/iframe/2nd-chance/login");
+      }
+    }
+  }, [loading]);
+  useEffect(() => {
+    if (token !== null) {
       dispatch(
         getWinnerListAsync({
           sort,
@@ -27,7 +36,7 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
         })
       );
     }
-  }, [loading, token, list, location]);
+  }, [loading, token, location]);
   return (
     <>
       <CustomizedDataGridBasic

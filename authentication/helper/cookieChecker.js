@@ -19,13 +19,14 @@ export const cookieChecker = async (req) => {
     if (!getCookeDetails) throw new Error("ErrorCODE x33");
 
     let userDetails = await UserClass.FetchOne([
-      { filter: getCookeDetails.id, type: "string", field: "id" },
+      { filter: getCookeDetails.id, type: "number", field: "id" },
       {
         filter: getCookeDetails.emailAddress,
         type: "string",
         field: "emailAddress",
       },
     ]);
+
     if (userDetails === null) throw new Error("ErrorCODE X55");
     return userDetails.toJSON();
   } catch (err) {

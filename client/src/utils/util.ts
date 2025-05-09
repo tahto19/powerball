@@ -50,12 +50,15 @@ const getErrorsStatus = (code: string) => {
       return "No Active Ticket or no more entries available";
     case "x741":
       return "Generated OTP but the system email sender has a problem please contact administrator";
-    case "X984":
+    case "x984":
       return "invalid transaction in draw no prize_id or no raffle_id";
     case "x911":
       return "Already have a winner";
     case "x675":
       return "Theres no entry on this ticket";
+    case "x268":
+      return "no active ticket or no more entries";
+
     default:
       return false;
   }
@@ -160,3 +163,9 @@ export const capitalizeFirstLetter = (str: string) => {
 };
 
 export const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+export const formatToPesos = (number: number) => {
+  return new Intl.NumberFormat("fil-PH", {
+    style: "currency",
+    currency: "PHP",
+  }).format(number);
+};
