@@ -36,7 +36,13 @@ const loginButton = () => {
     }, [token]);
     return (
         <>
-            {/* <div style={{
+            <div
+                style={{
+                    width: '100%',
+                    background: '#F26A21'
+                }}
+            >
+                {/* <div style={{
                 display: 'flex',
                 height: 'auto',
                 padding: 0,
@@ -57,18 +63,18 @@ const loginButton = () => {
                 </div>
             </div> */}
 
-            {!token ? (
-                <a id="iframe-login-button" className="elementor-button elementor-button-link elementor-size-sm elementor-animation-grow" href="https://18.138.76.86/member-area/" target="_top" rel="noopener noreferrer">
-                    <span className="elementor-button-content-wrapper">
-                        <span className="elementor-button-icon">
-                            <svg aria-hidden="true" className="e-font-icon-svg e-fas-angle-double-right" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34zm192-34l-136-136c-9.4-9.4-24.6-9.4-33.9 0l-22.6 22.6c-9.4 9.4-9.4 24.6 0 33.9l96.4 96.4-96.4 96.4c-9.4 9.4-9.4 24.6 0 33.9l22.6 22.6c9.4 9.4 24.6 9.4 33.9 0l136-136c9.4-9.2 9.4-24.4 0-33.8z"></path></svg>			</span>
-                        <span className="elementor-button-text">Log In</span>
-                    </span>
-                </a>
-            ) : (
-                <a id="iframe-dashboard-button" href="https://18.138.76.86/terms-and-conditions/" className="elementor-item">Dashboard</a>
-            )}
-
+                {!token ? (
+                    <a id="iframe-login-button" className="elementor-button elementor-button-link elementor-size-sm elementor-animation-grow" href="https://18.138.76.86/member-area/" target="_top" rel="noopener noreferrer">
+                        <span className="elementor-button-content-wrapper">
+                            <span className="elementor-button-icon">
+                                <svg aria-hidden="true" className="e-font-icon-svg e-fas-angle-double-right" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34zm192-34l-136-136c-9.4-9.4-24.6-9.4-33.9 0l-22.6 22.6c-9.4 9.4-9.4 24.6 0 33.9l96.4 96.4-96.4 96.4c-9.4 9.4-9.4 24.6 0 33.9l22.6 22.6c9.4 9.4 24.6 9.4 33.9 0l136-136c9.4-9.2 9.4-24.4 0-33.8z"></path></svg>			</span>
+                            <span className="elementor-button-text">Log In</span>
+                        </span>
+                    </a>
+                ) : (
+                    <a id="iframe-dashboard-button" href="https://18.138.76.86/terms-and-conditions/" className="elementor-item">Dashboard</a>
+                )}
+            </div>
         </>
     );
 }
