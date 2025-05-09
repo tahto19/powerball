@@ -8,7 +8,8 @@ import { dataGridCustomizations } from './customizations2/dataGrid';
 import { surfacesCustomizations } from './customizations2/surfaces';
 import { dialogCustomizations } from './customizations2/dialog';
 
-import { colorSchemes, typography, shadows, shape } from './themePrimitives2';
+// import { colorSchemes, typography, shadows, shape } from './themePrimitives2';
+import { typography, shadows, shape } from './themePrimitives2';
 
 
 interface AppThemeProps {
