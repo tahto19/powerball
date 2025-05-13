@@ -134,7 +134,7 @@ const routes2 = [
 ];
 
 
-const skipTokenPaths = ["/cms/iframe/2nd-chance/widget-image", "/cms/iframe/2nd-chance/login-button"];
+const skipTokenPaths = ["/cms/iframe/2nd-chance/widget-image", "/cms/iframe/2nd-chance/login-button", "/create-an-account/"];
 const currentPath = window.location.pathname;
 // Component to handle routing with conditional rendering
 function AppRoutes() {

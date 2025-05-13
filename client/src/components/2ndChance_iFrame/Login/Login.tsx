@@ -13,12 +13,14 @@ import TextField from "@mui/material/TextField";
 import apiService from "@/services/apiService";
 
 import { showToaster } from "@/redux/reducers/global/globalSlice";
-import { useAppDispatch } from "@/redux/hook";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 
 const Login = () => {
 
     const dispatch = useAppDispatch();
     // const navigate = useNavigate();
+    const { token } = useAppSelector((state) => state.token);
+
     const [emailError, setEmailError] = React.useState(false);
     const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
     const [passwordError, setPasswordError] = React.useState(false);
@@ -90,6 +92,12 @@ const Login = () => {
         setPasswordErrorMessage("");
         return isValid;
     };
+
+    React.useEffect(() => {
+        if (token) {
+            window.parent.location.href = "https://18.138.76.86/create-an-account/"
+        }
+    }, [token])
     return (
         <>
             <div className="wp-singular page-template-default page page-id-514 wp-embed-responsive wp-theme-hello-elementor theme-default elementor-default elementor-kit-6 elementor-page elementor-page-514 elementor-page-231 e--ua-blink e--ua-chrome e--ua-webkit">
@@ -181,7 +189,7 @@ const Login = () => {
                                                     <div className="elementor-element elementor-element-6f398ca elementor-align-center elementor-widget elementor-widget-button" data-id="6f398ca" data-element_type="widget" data-widget_type="button.default">
                                                         <div className="elementor-widget-container">
                                                             <div className="elementor-button-wrapper">
-                                                                <a className="elementor-button elementor-button-link elementor-size-sm" href="#">
+                                                                <a href="https://18.138.76.86/create-an-account/" className="elementor-button elementor-button-link elementor-size-sm">
                                                                     <span className="elementor-button-content-wrapper">
                                                                         <span className="elementor-button-text">Here</span>
                                                                     </span>
