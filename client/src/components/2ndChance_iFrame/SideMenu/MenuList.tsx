@@ -9,10 +9,6 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Stack from "@mui/material/Stack";
 
-import {
-  SettingsRounded,
-} from '@mui/icons-material';
-
 const mainListItems = [
   {
     text: "Dashboard", icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
