@@ -95,7 +95,7 @@ const Login = () => {
 
     React.useEffect(() => {
         if (token) {
-            window.parent.location.href = "https://18.138.76.86/create-an-account/"
+            window.parent.location.href = "https://18.138.76.86/powerball-scratchit-second-chance/"
         }
     }, [token])
     return (
