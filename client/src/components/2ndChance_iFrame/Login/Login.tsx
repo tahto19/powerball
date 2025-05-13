@@ -93,6 +93,9 @@ const Login = () => {
         return isValid;
     };
 
+    const handleSignUp = () => {
+        window.parent.location.href = "https://18.138.76.86/create-an-account/"
+    }
     React.useEffect(() => {
         if (token) {
             window.parent.location.href = "https://18.138.76.86/powerball-scratchit-second-chance/"
@@ -189,7 +192,7 @@ const Login = () => {
                                                     <div className="elementor-element elementor-element-6f398ca elementor-align-center elementor-widget elementor-widget-button" data-id="6f398ca" data-element_type="widget" data-widget_type="button.default">
                                                         <div className="elementor-widget-container">
                                                             <div className="elementor-button-wrapper">
-                                                                <a href="https://18.138.76.86/create-an-account/" className="elementor-button elementor-button-link elementor-size-sm">
+                                                                <a onClick={() => handleSignUp()} className="elementor-button elementor-button-link elementor-size-sm">
                                                                     <span className="elementor-button-content-wrapper">
                                                                         <span className="elementor-button-text">Here</span>
                                                                     </span>

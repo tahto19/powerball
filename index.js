@@ -24,6 +24,7 @@ import Associations from "./models/association/index.js";
 import Ticket from "./routes/Ticket/Ticket.js";
 import raffleHistory from "./routes/raffleHistory/raffleHistory.js";
 import auditTrailAdder from "./helpers/auditTrailAdder.js";
+import LogoutRoute from "./routes/Logout/Logout.route.js";
 
 const fastify = Fastify({
   trustProxy: true,
@@ -203,7 +204,9 @@ const start = async () => {
     fastify.register(CronJobs, {
       prefix: process.env.ROUTES_PREFIX + "cron",
     });
-
+    fastify.register(LogoutRoute, {
+      prefix: process.env.ROUTES_PREFIX + "logout",
+    });
     /**
      *error handler
      */

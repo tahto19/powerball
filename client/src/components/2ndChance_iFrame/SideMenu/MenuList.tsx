@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import Cookies from 'js-cookie';
+import apiService from "@/services/apiService";
 
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -8,6 +8,9 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Stack from "@mui/material/Stack";
+import { showToaster } from "@/redux/reducers/global/globalSlice";
+import { useAppDispatch } from "@/redux/hook";
+
 
 const mainListItems = [
   {
@@ -64,6 +67,8 @@ const secondaryListItems = [
 ];
 
 export default function MenuContent() {
+  const dispatch = useAppDispatch();
+
   const navigate = useNavigate();
   const [selected, useSelected] = React.useState(0);
   const handleNavigation = (path: string, index: number) => {
@@ -71,10 +76,33 @@ export default function MenuContent() {
     navigate(path);
   };
 
-  const handleNavigation2 = (path: string, index: number) => {
+  const handleNavigation2 = async (path: string, index: number) => {
     useSelected(index);
+    console.log(path)
     if (path === 'logout') {
-      Cookies.remove('cookie_pb_1271')
+      try {
+        const res = await apiService.logout();
+        if (res.data.result == "success") {
+          window.parent.location.href = "https://18.138.76.86/member-area/"
+        }
+        dispatch(
+          showToaster({
+            message: "Logged out!",
+            show: true,
+            variant: "success",
+            icon: null,
+          })
+        );
+      } catch (err) {
+        dispatch(
+          showToaster({
+            err,
+            show: true,
+            variant: "error",
+            icon: null,
+          })
+        );
+      }
     }
 
   };
@@ -132,10 +160,15 @@ export default function MenuContent() {
             disablePadding
             sx={{ display: "block", }}
           >
-            <ListItemButton sx={{ color: item.path === 'logout' ? '#F13E3E' : '#702DFF !important' }}
-              onClick={() => handleNavigation2(item.path, index)}>
+            <ListItemButton sx={{
+              opacity: "1 !important",
+            }} onClick={() => handleNavigation2(item.path, index)}>
               <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
+              <ListItemText sx={{
+                '& .MuiTypography-root': {
+                  color: item.path === 'logout' ? '#F13E3E !important' : 'initial'
+                }
+              }} primary={item.text} />
             </ListItemButton>
           </ListItem>
         ))}

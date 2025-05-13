@@ -87,9 +87,10 @@ export const apiService = {
     return response;
   },
   // Logout (Clears token)
-  logout: () => {
+  logout: async () => {
     // setAuthToken(null);
-    localStorage.removeItem("token");
+    const response = await apiClient.post("/api/logout", {});
+    return response;
   },
 
   createPrizeList: async (d: PrizeState, token: string | null) => {

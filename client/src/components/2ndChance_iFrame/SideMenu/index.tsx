@@ -39,6 +39,7 @@ export default function SideMenu() {
     const dispatch = useDispatch<AppDispatch>();
     const userDetails = useSelector((state: RootState) => state.user);
     const [data, setData] = useState(userDetails)
+    const { loading, token } = useSelector((state) => state.token);
 
     const { open } = useSelector((state: RootState) => state.navBar);
     const theme = useTheme();
@@ -51,6 +52,19 @@ export default function SideMenu() {
         setData(userDetails)
         refreshImage()
     }, [userDetails])
+
+    useEffect(() => {
+        if (!loading) {
+            console.log(token);
+            if (token === null) {
+                window.parent.location.href = base_url + "member-area/"
+                // navigate("/member-area");
+            }
+        }
+    }, [loading]);
+
+
+
     return (
         <>
             <Drawer
