@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -57,7 +58,13 @@ const mainListItems = [
 
 
 const secondaryListItems = [
-  { text: "Logout", icon: <SettingsRounded /> },
+  {
+    text: "Logout", icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
+      <path d="M5.93311 5.54C6.13977 3.14 7.37311 2.16 10.0731 2.16H10.1598C13.1398 2.16 14.3331 3.35333 14.3331 6.33333V10.68C14.3331 13.66 13.1398 14.8533 10.1598 14.8533H10.0731C7.39311 14.8533 6.15977 13.8867 5.93977 11.5267" stroke="#F13E3E" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M10.0002 8.5H2.41357" stroke="#F13E3E" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M3.89984 6.26667L1.6665 8.5L3.89984 10.7333" stroke="#F13E3E" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>, path: 'logout'
+  },
 ];
 
 export default function MenuContent() {
@@ -66,6 +73,14 @@ export default function MenuContent() {
   const handleNavigation = (path: string, index: number) => {
     useSelected(index);
     navigate(path);
+  };
+
+  const handleNavigation2 = (path: string, index: number) => {
+    useSelected(index);
+    if (path === 'logout') {
+      Cookies.remove('cookie_pb_1271')
+    }
+
   };
   return (
     <Stack sx={{ flexGrow: 1, p: 1, justifyContent: "space-between" }}>
@@ -119,9 +134,10 @@ export default function MenuContent() {
           <ListItem
             key={index}
             disablePadding
-            sx={{ display: "block" }}
+            sx={{ display: "block", }}
           >
-            <ListItemButton>
+            <ListItemButton sx={{ color: item.path === 'logout' ? '#F13E3E' : '#702DFF !important' }}
+              onClick={() => handleNavigation2(item.path, index)}>
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>
