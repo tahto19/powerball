@@ -52,6 +52,7 @@ export default function CustomizedDataGrid<T>({
   },
   pageLength = 10,
   rowHeight = 75,
+  isAction = true,
   onTableChange,
   onEditAction,
   onViewAction,
@@ -71,7 +72,7 @@ export default function CustomizedDataGrid<T>({
   );
 
   // Modify column to add "Actions" header
-  modifiedHeaders = [
+  modifiedHeaders = !isAction ? modifiedHeaders : [
     ...modifiedHeaders,
     {
       field: "actions",

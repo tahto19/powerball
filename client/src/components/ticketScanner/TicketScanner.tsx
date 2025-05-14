@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { getTicket } from "@/redux/reducers/ticket/asyncCalls";
 import { RootState } from "@/redux/store";
 import { Button, Grid2, Typography } from "@mui/material";
-import CustomizedDataGrid from "../CustomizedDataGrid";
+import CustomizedDataGridBasic from "../CustomizedDataGridBasic";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import {
   getDataV2,
@@ -171,7 +171,7 @@ const TicketScanner = () => {
         </Typography>
       </Grid2>
       <Grid2 size={{ xs: 6, sm: 6, lg: 6 }}>
-        <Button
+        {/* <Button
           sx={{
             float: "right",
           }}
@@ -182,10 +182,10 @@ const TicketScanner = () => {
           }}
         >
           Scan
-        </Button>
+        </Button> */}
       </Grid2>
       <Grid2 size={12}>
-        <CustomizedDataGrid
+        <CustomizedDataGridBasic
           sx={{
             width: "100%",
           }}

@@ -121,6 +121,40 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
       setWinnerList(d.data.list);
     }
   };
+  const handleDraw2 = async () => {
+    try {
+      setAllowDraw(false);
+      const raffle_id = data.raffleSchedule[0].id;
+      const prize_id = prizeData.id;
+
+      if (!raffle_id) return;
+
+      const payload = {
+        raffle_id,
+        prize_id,
+      };
+      const res = await apiService.ticketDraw(payload, token);
+
+      const d = bodyDecrypt(res.data, token);
+      if (d && d.success === "success") {
+        console.log(">>>>>>>>", d.data);
+        setWinnerDialog(true);
+        setWinnerDetails(d.data.winnerDetails);
+      }
+
+      setAllowDraw(true);
+    } catch (err) {
+      setAllowDraw(true);
+      dispatch(
+        showToaster({
+          err,
+          show: true,
+          variant: "error",
+          icon: null,
+        })
+      );
+    }
+  };
   const handleDraw = async () => {
     try {
       setAllowDraw(false);
@@ -328,6 +362,18 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
                   }}
                 >
                   <CountDown time={timeLeft} />
+                  <Button
+                    onClick={handleDraw2}
+                    // disabled={!datePassed || !allowDraw}
+                    variant="contained"
+                    sx={{
+                      padding: "10px 40px",
+                      color: "white !important",
+                      opacity: !datePassed ? "0.6" : "1",
+                    }}
+                  >
+                    Draw Now
+                  </Button>
                   <Button
                     onClick={handleDraw}
                     disabled={!datePassed || !allowDraw}

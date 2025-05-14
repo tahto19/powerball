@@ -159,8 +159,9 @@ const Costumer = () => {
           pagination={pagination}
           onTableChange={handleTableChange}
           pageLength={count}
-          onEditAction={handleEditAction}
-          onViewAction={handleViewAction}
+          isAction={false}
+        // onEditAction={handleEditAction}
+        // onViewAction={handleViewAction}
         />
       </Grid2>
       <MyDialog

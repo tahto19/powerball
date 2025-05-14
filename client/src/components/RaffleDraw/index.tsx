@@ -50,6 +50,7 @@ const RaffleDraw = () => {
   }
 
   const handleCardClick = (item: RaffleState) => {
+    console.log("Detialss", item)
     setOpen(true)
     setCardData(item)
   }
