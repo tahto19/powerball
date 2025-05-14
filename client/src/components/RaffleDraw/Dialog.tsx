@@ -363,7 +363,7 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
                     sx={{
                       padding: "10px 40px",
                       color: "white !important",
-                      opacity: !datePassed ? "0.6" : "1",
+                      // opacity: !datePassed ? "0.6" : "1",
                     }}
                   >
                     Draw Now
