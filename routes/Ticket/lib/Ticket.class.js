@@ -12,7 +12,7 @@ class TicketDetails_class {
     };
 
     if (filter.length !== 0) query["where"] = WhereFilters(filter);
-    console.log(query);
+
     // ✅ Fetch both filtered list and total count
     let r = await TicketDetails.findAndCountAll();
     let { count, rows } = await TicketDetails.findAndCountAll(query);

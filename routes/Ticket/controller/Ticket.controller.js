@@ -14,10 +14,6 @@ export const raffleDrawController = async (req, res) => {
       where: { raffle_prize_id: prize_id },
     });
 
-    console.log(prize_id);
-    console.log(raffle_id);
-
-    console.log(checkRaffleWinner);
     if (checkRaffleWinner.count > 0) throw new Error("ErrorCODE X911");
 
     const getTicketsWithRaffleId = await td.fetchTicketsInRaffle(raffle_id);
@@ -76,7 +72,11 @@ export const postTicketController = async (req, res) => {
       entries: 2,
       user_id: req.user_id,
     });
-    res.send({ message: "success", data: r });
+    res.send({
+      message: `You've entered a ticket with 2 entries.`,
+      data: r,
+      result: "success",
+    });
   } catch (err) {
     throw err;
   }

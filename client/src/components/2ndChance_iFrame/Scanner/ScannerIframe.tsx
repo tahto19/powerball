@@ -3,15 +3,26 @@ import { IDetectedBarcode } from "@yudiel/react-qr-scanner";
 import { useEffect, useState } from "react";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import BarcodeScanner from "react-qr-barcode-scanner";
-import { Card, CardContent, CardHeader, CircularProgress, Button, Typography, AppBar, Box, Toolbar, IconButton } from "@mui/material";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CircularProgress,
+  Button,
+  Typography,
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+} from "@mui/material";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { addTicket } from "@/redux/reducers/ticket/asyncCalls";
 import { RootState } from "@/redux/store";
 import { getToken } from "@/redux/reducers/token/asyncCalls";
 import { useNavigate } from "react-router-dom";
 const base_url = import.meta.env.VITE_API_BASE_URL;
-const endpoint = base_url + "member-area/"
+const endpoint = base_url + "member-area/";
 const ScannerIframe = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -34,15 +45,14 @@ const ScannerIframe = () => {
     //   // navigate("2nd-chance/");
     //   window.history.back();
     // }
-  }
+  };
   useEffect(() => {
     if (!ticketSubmit) setScanned(null);
   }, [ticketSubmit]);
   useEffect(() => {
     if (!loading) {
-      console.log(token);
       if (token === null) {
-        window.parent.location.href = endpoint
+        window.parent.location.href = endpoint;
         // navigate("/member-area");
       }
     }
@@ -50,7 +60,10 @@ const ScannerIframe = () => {
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" sx={{ background: '#F26A21' }}>
+        <AppBar
+          position="static"
+          sx={{ background: "#F26A21" }}
+        >
           <Toolbar>
             <IconButton
               size="large"
@@ -61,7 +74,11 @@ const ScannerIframe = () => {
             >
               <ArrowBackIosIcon />
             </IconButton>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ flexGrow: 1 }}
+            >
               Scanner
             </Typography>
           </Toolbar>
@@ -72,11 +89,11 @@ const ScannerIframe = () => {
           display: "flex",
           gap: "20px",
           flexWrap: "wrap",
-          height: 'calc(100% - 64px)',
+          height: "calc(100% - 64px)",
           justifyContent: "center",
-          '& video': {
+          "& video": {
             objectFit: "cover",
-          }
+          },
         }}
       >
         {scanned ? (
