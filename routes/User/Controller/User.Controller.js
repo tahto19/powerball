@@ -13,11 +13,10 @@ import uc from "../lib/User.class.js";
 import fs from "fs";
 export const getController = async (req, res) => {
   const { offset, limit, sort, filter } = req.body;
-  console.log(req.url);
-  let changeFilter =
-    req.url === "/api/users/admin"
-      ? [...filter, { field: "isAdmin", filter: true, type: "boolean" }]
-      : [...filter, { field: "isAdmin", filter: false, type: "boolean" }];
+
+  let changeFilter = req.url.includes("api/users/admin")
+    ? [...filter, { field: "isAdmin", filter: true, type: "boolean" }]
+    : [...filter, { field: "isAdmin", filter: false, type: "boolean" }];
   let r = await uc.FetchAndCount(offset, limit, sort, changeFilter);
   res.send(cSend(r));
 };
