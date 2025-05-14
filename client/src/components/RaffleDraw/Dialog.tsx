@@ -48,7 +48,8 @@ import { getData } from "@/redux/reducers/RaffleDraw/asyncCalls.ts";
 import { getDataV2 } from "@/types/allTypes.js";
 import { RootState } from "@/redux/store.ts";
 
-const endpoint = "http://localhost:5128/api/file/serve/image/";
+const base_url = import.meta.env.VITE_API_BASE_URL;
+const endpoint = base_url + "api/file/serve/image/";
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
