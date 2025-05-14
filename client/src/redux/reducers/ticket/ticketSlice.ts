@@ -14,6 +14,7 @@ const initialState: ticketState = {
     sort: [],
     filter: [],
     count: 0,
+    location: null,
   },
   ticketSubmit: true,
 };
