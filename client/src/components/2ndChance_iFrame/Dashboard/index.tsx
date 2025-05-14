@@ -150,7 +150,7 @@ const Dashboard = () => {
                     marginTop: '24px'
                 }}>
                 <MyEntries />
-                <TicketScannedList />
+                <TicketScannedList url="myScan" />
                 <WinnerDetails />
             </Box>
         </>
