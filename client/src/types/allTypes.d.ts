@@ -78,6 +78,7 @@ export interface _getState {
   sort: Array<any> | null;
   filter: Array<any> | null;
   count: number | null;
+  location: string | null;
 }
 export interface raffleEntriesList {
   _loading: boolean;

@@ -7,9 +7,7 @@ import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import CustomizedDataGridBasic from "../CustomizedDataGridBasic";
-import {
-  Box, Typography
-} from "@mui/material";
+import { Box, Typography } from "@mui/material";
 const headers: GridColDef[] = [
   {
     field: "entries",
@@ -35,7 +33,11 @@ const headers: GridColDef[] = [
     },
   },
 ];
-export default function TicketScannedList() {
+export default function TicketScannedList({
+  url,
+}: {
+  url: undefined | string;
+}) {
   const dispatch = useAppDispatch();
   const { token } = useAppSelector((state) => state.token);
   const { getData } = useAppSelector((state) => state.ticket);
@@ -52,7 +54,7 @@ export default function TicketScannedList() {
           offset: pagination.page,
           limit: pagination.pageSize,
           sort,
-          location: location?.pathname,
+          location: url ? url : location?.pathname,
         })
       );
   }, [location, pagination, token]);
@@ -100,27 +102,31 @@ export default function TicketScannedList() {
     // const res = await apiService.getPrizeList(query);
   };
   return (
-    <Box sx={{
-      background: "#fff",
-      borderRadius: '20px',
-      boxShadow: '0px 14px 42px 0px rgba(8, 15, 52, 0.06)',
-      padding: '30px'
-    }}>
+    <Box
+      sx={{
+        background: "#fff",
+        borderRadius: "20px",
+        boxShadow: "0px 14px 42px 0px rgba(8, 15, 52, 0.06)",
+        padding: "30px",
+      }}
+    >
       <Box
         sx={{
-          display: 'flex',
-          gap: '10px',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          mb: '20px'
-        }}>
-        <Typography sx={{
-          fontSize: '24px',
-          fontWeight: '600'
-        }} >
+          display: "flex",
+          gap: "10px",
+          alignItems: "center",
+          justifyContent: "space-between",
+          mb: "20px",
+        }}
+      >
+        <Typography
+          sx={{
+            fontSize: "24px",
+            fontWeight: "600",
+          }}
+        >
           Ticket Scanned
         </Typography>
-
       </Box>
       <CustomizedDataGridBasic
         headers={headers}
@@ -131,6 +137,5 @@ export default function TicketScannedList() {
         pageLength={count}
       />
     </Box>
-
   );
 }

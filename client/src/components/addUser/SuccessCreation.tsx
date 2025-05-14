@@ -9,7 +9,7 @@ import { useAppDispatch } from "@/redux/hook";
 const SuccessCreation = () => {
   const { width, height } = useWindowSize();
   const nav = useNavigate();
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   return (
     <AnimatedContent
       distance={25}
@@ -31,10 +31,13 @@ const SuccessCreation = () => {
           textAlign: "center",
         }}
       >
-        <Confetti width={width ? width : 100} height={height ? height : 100} />
+        <Confetti
+          width={width ? width : 100}
+          height={height ? height : 100}
+        />
         <Grid2 size={{ md: 12, sm: 12 }}>
           <Typography sx={{ fontWeight: "bolder", fontSize: "2.2em" }}>
-            Congratualtions successfully created an account!!
+            Congratulations! You have successfully created an account!
           </Typography>
         </Grid2>
         <Grid2 size={{ md: 6, sm: 12 }}>
@@ -53,9 +56,14 @@ const SuccessCreation = () => {
           >
             Login Now
           </Button>
-          <Button onClick={()=>{
-            dispatch(returnToVerification())
-          }}> return</Button>
+          <Button
+            onClick={() => {
+              dispatch(returnToVerification());
+            }}
+          >
+            {" "}
+            return
+          </Button>
         </Grid2>
       </Grid2>
     </AnimatedContent>
