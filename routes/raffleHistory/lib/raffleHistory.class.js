@@ -17,7 +17,7 @@ class TicketHistory_class {
     };
 
     if (filter.length !== 0) query["where"] = WhereFilters(filter);
-    console.log(query);
+
     // ✅ Fetch both filtered list and total count
     let r = await TicketHistory.findAndCountAll();
     let { count, rows } = await TicketHistory.findAndCountAll(query);
@@ -78,7 +78,7 @@ class TicketHistory_class {
         },
       ],
     });
-    console.log(count, id);
+
     if (count <= 0) throw new Error("x675");
     return { list: rows.map((v) => v.toJSON()), count };
   }
@@ -110,6 +110,7 @@ class TicketHistory_class {
         // alias: "raffleSchedule",
         include: [{ model: RaffleDetails, as: "raffleDetails" }],
       },
+      { model: WiningDrawDetails, required: false },
     ];
     // ✅ Fetch both filtered list and total count
 

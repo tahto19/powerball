@@ -87,12 +87,8 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
   const handleWinnerDialogClose = (value) => {
     setWinnerDialog(!value);
   };
-  useEffect(() => {
-    console.log(list, getDataLoading);
-  }, [getDataLoading]);
+  useEffect(() => {}, [getDataLoading]);
   const handlePrizeTypeChange = (value: string) => {
-    console.log(value);
-    console.log(data.raffleSchedule[0].prizeInfo)
     const prize_data = data.raffleSchedule[0].prizeInfo.find(
       (x) => x.Prize_List.type === value
     );
@@ -117,7 +113,7 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
     };
     const res = await apiService.getWinner(payload, token);
     const d = bodyDecrypt(res.data, token);
-    console.log(">>>>>>>>", d.data);
+
     if (d && d.success === "success") {
       setWinnerList(d.data.list);
     }
@@ -138,7 +134,6 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
 
       const d = bodyDecrypt(res.data, token);
       if (d && d.success === "success") {
-        console.log(">>>>>>>>", d.data);
         setWinnerDialog(true);
         setWinnerDetails(d.data.winnerDetails);
       }
@@ -172,7 +167,6 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
 
       const d = bodyDecrypt(res.data, token);
       if (d && d.success === "success") {
-        console.log(">>>>>>>>", d.data);
         setWinnerDialog(true);
         setWinnerDetails(d.data.winnerDetails);
       }
@@ -199,7 +193,6 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
     offset: 0,
   });
   useEffect(() => {
-    console.log(data);
     setOpen(open);
     setPrizeData(initialRaffleData.raffleSchedule[0].prizeInfo[0]);
     setOpenPTDialog(true);
@@ -208,24 +201,6 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
 
     if (!open) {
       setOpenPTDialog(false);
-    }
-
-    if (open) {
-      //   getWinnerList(); // comment by crisanto
-      //   {
-      //     raffle_schedule_id: data.raffleSchedule[0].id,
-      //   }
-      const copy = { ...query };
-      copy.filter = [
-        {
-          filter: data.raffleSchedule[0].id,
-          fields: "raffle_schedule_id",
-          type: "number",
-        },
-      ];
-      setQuery(copy);
-
-      dispatch(getData(query));
     }
 
     const interval = setInterval(() => {
@@ -258,6 +233,24 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
 
     return () => clearInterval(interval);
   }, [open, data]);
+  useEffect(() => {
+    if (open) {
+      //   getWinnerList(); // comment by crisanto
+      //   {
+      //     raffle_schedule_id: data.raffleSchedule[0].id,
+      //   }
+      const copy = { ...query };
+      copy.filter = [
+        {
+          filter: data.raffleSchedule[0].id,
+          field: "$Raffle_Prize.raffle_schedule_id$",
+          type: "number",
+        },
+      ];
+
+      dispatch(getData(copy));
+    }
+  }, [open]);
 
   return (
     <>

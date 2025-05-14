@@ -66,7 +66,10 @@ export const getRaffleEntryList = createAsyncThunk(
           id: v.id,
           createdAt: v.createdAt,
           ticket_history_generate: v.ticket_history_generate,
-          "$Raffle_Schedule.status_text$": v.Raffle_Schedule.status_text,
+          "$Raffle_Schedule.status_text$":
+            v.wining_draw_detail !== null
+              ? "Winner"
+              : v.Raffle_Schedule.status_text,
           "$Raffle_Schedule.raffleDetails.name$":
             v.Raffle_Schedule.raffleDetails.name,
           "$Raffle_Schedule.schedule_date$": v.Raffle_Schedule.schedule_date,

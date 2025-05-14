@@ -2,7 +2,8 @@
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import * as React from "react";
 import moment from "moment";
-import { Button, Chip } from "@mui/material";
+import { Avatar, Button, Chip } from "@mui/material";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 const headers: GridColDef[] = [
   {
     field: "ticket_history_generate",
@@ -53,16 +54,25 @@ const headers: GridColDef[] = [
     flex: 1,
     minWidth: 200,
     renderCell: (params: GridRenderCellParams<any>) => {
-      return (
-        <Chip
-          sx={{
-            fontFamily: ' "Outfit Variable", sans-serif !important',
-            textTransform: "capitalize",
-          }}
-          label={params.value}
-          color={params.value === "active" ? "success" : "error"}
-        />
-      );
+      if (params.value.toLowerCase() !== "winner")
+        return (
+          <Chip
+            sx={{
+              fontFamily: ' "Outfit Variable", sans-serif !important',
+              textTransform: "capitalize",
+            }}
+            label={params.value}
+            color={params.value === "active" ? "success" : "error"}
+          />
+        );
+      else
+        return (
+          <Chip
+            icon={<EmojiEventsIcon />}
+            label="Winner"
+            color="warning"
+          />
+        );
     },
   },
 ];

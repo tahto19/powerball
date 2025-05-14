@@ -17,6 +17,7 @@ export const getController = async (req, res) => {
   let changeFilter = req.url.includes("api/users/admin")
     ? [...filter, { field: "isAdmin", filter: true, type: "boolean" }]
     : [...filter, { field: "isAdmin", filter: false, type: "boolean" }];
+
   let r = await uc.FetchAndCount(offset, limit, sort, changeFilter);
   res.send(cSend(r));
 };
@@ -61,7 +62,6 @@ export const createUser = async (req, res) => {
     } = req.body;
 
     let fields = [];
-    console.log(req.body);
 
     if (!file.mimetype.startsWith("image/")) throw new Error("ErrorCODE x91c");
 

@@ -3,13 +3,12 @@ import th from "../lib/raffleHistory.class.js";
 export const insertRaffleHistoryController = async (req, res) => {
   try {
     const { raffle_id, entries } = req.body;
-    console.log(raffle_id);
+
     // first check if the entries are not more than the total entries available
     let r = await td.getTotalEntries([
       { field: "user_id", type: "number", filter: req.user_id },
       { field: "active", type: "boolean", filter: true },
     ]);
-    console.log(r);
 
     // console.log(r[0].toJSON());
     if (!!!r || r.length === 0) throw new Error("ERRORCODE x268");

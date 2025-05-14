@@ -95,10 +95,13 @@ class WiningDrawDetails_class {
       ],
     };
     var getFilters = filter;
-    if (url !== undefined && url.includes("myWinners")) {
-      // getFilters.push()
-    }
-    query["wheres"] = WhereFilters(getFilters);
+
+    // if (url !== undefined && url.includes("myWinners")) {
+    //   // getFilters.push()
+    // }
+    console.log(getFilters);
+    query["where"] = WhereFilters(getFilters);
+    console.log(query);
     const { count, rows } = await WiningDrawDetails.findAndCountAll(query);
     return { count, list: rows.map((v) => v.toJSON()) };
   }

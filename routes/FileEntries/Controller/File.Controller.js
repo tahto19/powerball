@@ -79,31 +79,34 @@ export const getController = async (req, res) => {
 
 export const serveImageController = async (req, res) => {
   const { id } = req.params;
-  console.log(">>>>>>>>>>>>>>>>", id);
-  /** Check Raffle ID */
-  const findImage = await fc.FetchOne([
-    { filter: id, field: "id", type: "number" },
-  ]);
-  if (findImage === null) throw new Error("ErrorCODE x72");
-  /** END Check */
-  let _path = getPath(
-    "/uploads/image_page/" + findImage.dataValues.file_location
-  );
+  if (id === "undefined" || id === undefined || !id) {
+    throw new Error("id is undefined");
+  } else {
+    /** Check Raffle ID */
+    const findImage = await fc.FetchOne([
+      { filter: id, field: "id", type: "number" },
+    ]);
+    if (findImage === null) throw new Error("ErrorCODE x72");
+    /** END Check */
+    let _path = getPath(
+      "/uploads/image_page/" + findImage.dataValues.file_location
+    );
 
-  // Check if file exists
-  if (!fs.existsSync(_path)) {
-    res.code(404).send("Image not found");
-    return;
-  }
+    // Check if file exists
+    if (!fs.existsSync(_path)) {
+      res.code(404).send("Image not found");
+      return;
+    }
 
-  try {
-    const buffer = fs.readFileSync(_path);
-    res.header("Content-Type", findImage.dataValues.mimetype || "image/jpeg"); // or your mimetype
-    res.header("Content-Length", buffer.length);
-    res.raw.writeHead(200); // needed to finalize headers for raw response
-    res.raw.end(buffer); // send buffer manually
-  } catch (err) {
-    console.error("Error reading file:", err);
-    res.code(500).send("Error reading image");
+    try {
+      const buffer = fs.readFileSync(_path);
+      res.header("Content-Type", findImage.dataValues.mimetype || "image/jpeg"); // or your mimetype
+      res.header("Content-Length", buffer.length);
+      res.raw.writeHead(200); // needed to finalize headers for raw response
+      res.raw.end(buffer); // send buffer manually
+    } catch (err) {
+      // console.error("Error reading file:", err);
+      res.code(500).send("Error reading image");
+    }
   }
 };
