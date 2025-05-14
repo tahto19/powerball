@@ -90,6 +90,8 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
     console.log(list, getDataLoading);
   }, [getDataLoading]);
   const handlePrizeTypeChange = (value: string) => {
+    console.log(value);
+    console.log(data.raffleSchedule[0].prizeInfo)
     const prize_data = data.raffleSchedule[0].prizeInfo.find(
       (x) => x.Prize_List.type === value
     );
