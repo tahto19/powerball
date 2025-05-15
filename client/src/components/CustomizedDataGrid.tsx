@@ -9,6 +9,7 @@ import {
   GridRowsProp,
   GridColDef,
   getGridStringOperators,
+  GridRowProps
 } from "@mui/x-data-grid";
 import debounce from "lodash.debounce";
 import Box from "@mui/material/Box";

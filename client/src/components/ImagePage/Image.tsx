@@ -1,3 +1,4 @@
+//@ts-nocheck
 import apiService from "@/services/apiService";
 import { bodyDecrypt } from "@/utils/util";
 import { useState } from "react";
@@ -103,7 +104,7 @@ const ImagePage = () => {
                 return x;
             })
         }
-        newFilterModel = [...newFilterModel, { field: 'type', filter: 'image', type: 'string' }, { field: 'category', filter: '', type: 'string' }]
+        newFilterModel = [...newFilterModel, { field: 'type', filter: 'image', type: 'string' }, { field: 'category', filter: '', type: 'string_eq' }]
 
         const query: getDataV2 = {
             offset: page, limit: pageSize, sort: sort, filter: newFilterModel, location: null
