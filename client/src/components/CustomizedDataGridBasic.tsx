@@ -31,6 +31,7 @@ export default function CustomizedDataGridBasic<T>({
   },
   checkboxSelection = false,
   selectedModel,
+  loading = false,
   onRowSelection,
 }: GridProps<T>) {
   // Get only "contains" operator for filtering
@@ -84,7 +85,12 @@ export default function CustomizedDataGridBasic<T>({
       disableColumnResize
       checkboxSelection={checkboxSelection}
       density="compact"
+      loadin={loading}
       slotProps={{
+        loadingOverlay: {
+          variant: 'skeleton',
+          noRowsVariant: 'skeleton',
+        },
         filterPanel: {
           filterFormProps: {
             logicOperatorInputProps: {

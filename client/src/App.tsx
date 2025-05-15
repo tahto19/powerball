@@ -5,6 +5,7 @@ import {
   Routes,
   Route,
   useNavigate,
+  useLocation
 } from "react-router-dom";
 
 import AdduserMain from "./components/addUser/AdduserMain";
@@ -135,15 +136,16 @@ const routes2 = [
 
 
 const skipTokenPaths = ["/cms/iframe/2nd-chance/login", "/cms/iframe/2nd-chance/login-button", "/cms/iframe/add-user"];
-const currentPath = window.location.pathname;
 // Component to handle routing with conditional rendering
+
 function AppRoutes() {
   const dispatch = useAppDispatch();
   const nav = useNavigate();
-
+  const location = useLocation();
   const { loading, token, doneLoading } = useAppSelector(
     (state) => state.token
   );
+
   const hasRun = useRef(false);
   useEffect(() => {
     if (hasRun.current) return; // already ran once, skip
@@ -161,19 +163,22 @@ function AppRoutes() {
   }, []);
 
   useEffect(() => {
-    // const currentPath = window.location.pathname;
+    // const loginPages = ["/sign-in", "/cms/", "/cms/sign-in"];
+    // const isLoginPage = loginPages.includes(location.pathname);
+    // console.log(loading)
+    // if (!loading && token && isLoginPage) {
+    //   nav("/prize-list");
+    // }
 
-    if (
-      !loading &&
-      token !== "" &&
-      token &&
-      (currentPath === "/sign-in" ||
-        currentPath === "/cms/" ||
-        currentPath === "/cms/sign-in")
-    ) {
-      nav("/prize-list");
+    const loginPages = ["/sign-in", "/cms/", "/cms/sign-in"];
+    const isLoginPage = loginPages.includes(location.pathname);
+
+    if (!loading && token && isLoginPage) {
+      const redirectPath = localStorage.getItem("pb_paths") || "/prize-list";
+      localStorage.removeItem("pb_paths"); // clean it up
+      nav(redirectPath);
     }
-  }, [loading]);
+  }, [loading, token, location.pathname, nav]);
   return (
     <Routes>
       {/* Authentication Routes */}
@@ -260,6 +265,8 @@ function AppRoutes() {
 
 function App() {
   const basename = import.meta.env.VITE_ROUTER_BASENAME
+  let currentPath = window.location.pathname;
+
   return (
     <>
       <Router basename={basename}>

@@ -56,7 +56,7 @@ class User_class {
       include: [
         {
           model: Files,
-
+          as: "fileInfo",
           required: false,
         },
       ],

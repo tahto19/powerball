@@ -103,7 +103,7 @@ const ImagePage = () => {
                 return x;
             })
         }
-        newFilterModel = [...newFilterModel, { field: 'type', filter: 'image', type: 'string' }]
+        newFilterModel = [...newFilterModel, { field: 'type', filter: 'image', type: 'string' }, { field: 'category', filter: '', type: 'string' }]
 
         const query: getDataV2 = {
             offset: page, limit: pageSize, sort: sort, filter: newFilterModel, location: null

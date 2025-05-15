@@ -10,7 +10,7 @@ import {
     TextField,
     FormHelperText
 } from "@mui/material";
-import { Edit } from '@mui/icons-material';
+import { CameraAlt } from '@mui/icons-material';
 import rectangle from '@/assets/images/Rectangle 6691.png'
 import { useSelector } from "react-redux";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
@@ -156,7 +156,7 @@ const main = () => {
                                 color: '#fff',
                                 zIndex: 100,
                             }}>
-                                <Edit />
+                                <CameraAlt />
                             </Button>
 
                             <Avatar

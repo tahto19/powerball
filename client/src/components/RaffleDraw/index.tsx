@@ -111,9 +111,9 @@ const RaffleDraw = () => {
     }
   };
 
-  useEffect(() => {
-    getRafflesList();
-  }, [token]);
+  // useEffect(() => {
+  //   getRafflesList();
+  // }, [token]);
 
   return (
     <>

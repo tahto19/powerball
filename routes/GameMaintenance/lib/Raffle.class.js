@@ -83,9 +83,15 @@ class Raffle_class {
               separate: true,
               order: [["id", "DESC"]],
               as: "prizeInfo",
-              attributes: ["id", "prize_id"],
+              // attributes: ["id", "prize_id", "type", "name"],
               where: { status: 1 },
               required: false, // This ensures the RaffleSchedule is included even if there's no matching RafflePrize
+              include: [
+                {
+                  model: PrizeList,
+                  required: false, // This ensures the RaffleSchedule is included even if there's no matching RafflePrize
+                },
+              ],
             },
           ],
         },

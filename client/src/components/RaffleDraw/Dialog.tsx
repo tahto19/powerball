@@ -18,7 +18,7 @@ import {
   Slide,
 } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
-import CustomizedDataGridBasic from "../CustomizedDataGridBasic.tsx";
+import CustomizedDataGrid from "../CustomizedDataGrid.tsx";
 import { paginationModel, columnHeader } from "./DataGridDetails.ts";
 
 import CloseIcon from "@mui/icons-material/Close";
@@ -84,10 +84,8 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
   const { list, getDataLoading } = useAppSelector(
     (state: RootState) => state.raffleDraw.getData
   );
-  const handleWinnerDialogClose = (value) => {
-    setWinnerDialog(!value);
-  };
-  useEffect(() => {}, [getDataLoading]);
+
+  useEffect(() => { }, [getDataLoading]);
   const handlePrizeTypeChange = (value: string) => {
     const prize_data = data.raffleSchedule[0].prizeInfo.find(
       (x) => x.Prize_List.type === value
@@ -233,22 +231,31 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
 
     return () => clearInterval(interval);
   }, [open, data]);
+
+  const handleWinnerDialogClose = (value) => {
+    setWinnerDialog(!value);
+    fetchDraw()
+  };
+
+  const fetchDraw = () => {
+    const copy = { ...query };
+    copy.filter = [
+      {
+        filter: data.raffleSchedule[0].id,
+        field: "$Raffle_Prize.raffle_schedule_id$",
+        type: "number",
+      },
+    ];
+
+    dispatch(getData(copy));
+  }
   useEffect(() => {
     if (open) {
       //   getWinnerList(); // comment by crisanto
       //   {
       //     raffle_schedule_id: data.raffleSchedule[0].id,
       //   }
-      const copy = { ...query };
-      copy.filter = [
-        {
-          filter: data.raffleSchedule[0].id,
-          field: "$Raffle_Prize.raffle_schedule_id$",
-          type: "number",
-        },
-      ];
-
-      dispatch(getData(copy));
+      fetchDraw()
     }
   }, [open]);
 
@@ -391,11 +398,13 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
               marginBottom: "30px",
             }}
           >
-            <CustomizedDataGridBasic
+            <CustomizedDataGrid
               sx={{
                 width: "50%",
                 margin: "0 auto",
               }}
+              loading={!getDataLoading}
+              isAction={false}
               data={list}
               headers={columnHeader}
               pagination={paginationModel}

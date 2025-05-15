@@ -140,7 +140,8 @@ const Raffles = () => {
           display: "flex",
           gap: "18px",
           justifyContent: "center",
-          alignItems: 'center'
+          alignItems: 'center',
+          flexWrap: 'wrap'
         }}
       >
         {isFetching ? (

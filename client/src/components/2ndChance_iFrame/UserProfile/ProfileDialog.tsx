@@ -1,5 +1,5 @@
 import { DialogContentText, Box, Dialog, DialogContent, DialogTitle, Button } from '@mui/material';
-import { Edit } from '@mui/icons-material';
+import { CameraAlt } from '@mui/icons-material';
 import { useDropzone } from "react-dropzone";
 import { useCallback, useEffect, useState } from 'react';
 import { initialImageData, ProfileDialogProps } from "./interface.ts"
@@ -154,7 +154,7 @@ const ProfileDialog = ({ open, fileInfo, onClose, onSubmit }: ProfileDialogProps
                                 color: '#fff',
                                 zIndex: 100,
                             }}>
-                                <Edit />
+                                <CameraAlt />
                             </Button>
                             <Avatar
                                 sizes="small"

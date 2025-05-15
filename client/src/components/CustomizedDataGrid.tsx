@@ -31,6 +31,8 @@ interface GridProps<T> {
   pagination: PaginationProps;
   pageLength: number | null;
   rowHeight: number;
+  isActions: boolean;
+  loading: boolean;
   onTableChange?: (params: {
     page: number;
     pageSize: number;
@@ -52,7 +54,9 @@ export default function CustomizedDataGrid<T>({
   },
   pageLength = 10,
   rowHeight = 75,
+  allowAction = [],
   isAction = true,
+  loading = false,
   onTableChange,
   onEditAction,
   onViewAction,
@@ -227,7 +231,12 @@ export default function CustomizedDataGrid<T>({
       pageSizeOptions={[1, 2, 10, 20, 50]}
       disableColumnResize
       density="compact"
+      loading={loading}
       slotProps={{
+        loadingOverlay: {
+          variant: 'skeleton',
+          noRowsVariant: 'skeleton',
+        },
         filterPanel: {
           filterFormProps: {
             logicOperatorInputProps: {

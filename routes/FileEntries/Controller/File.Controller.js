@@ -13,24 +13,20 @@ export const insertImageController = async (req, res) => {
 
     if (!name || name.trim() === "") throw new Error("Image Name is not set");
 
-    let r = await fc.InsertImage({
+    let query = {
       description: description,
       name: name,
       file_location: iUp.filename,
       type: "image",
       mimetype: file.mimetype,
       category: category && category !== "" ? category : "",
-    });
+    };
 
     if (category && category === "user-image") {
-      const query = {
-        id: req.user_id,
-        file_id: r,
-      };
-
-      console.log(">>>>>>", query);
-      let a = await uc.Edit(query);
+      query["user_id"] = req.user_id;
     }
+
+    let r = await fc.InsertImage(query);
 
     res.send(cSend(r));
   } catch (error) {

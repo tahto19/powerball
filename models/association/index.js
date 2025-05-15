@@ -75,11 +75,13 @@ export default function Associations() {
     as: "fileInfo",
   });
   Users.hasOne(Files, {
-    foreignKey: "file_id",
+    foreignKey: "user_id",
+    as: "fileInfo",
     sourceKey: "id",
   });
   Files.belongsTo(Users, {
-    foreignKey: "file_id",
+    foreignKey: "user_id",
+    as: "fileInfo",
     sourceKey: "id",
   });
   // winningdraw details
