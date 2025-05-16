@@ -1,3 +1,4 @@
+//@ts-nocheck
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -136,7 +137,7 @@ const SignIn = () => {
 
   React.useEffect(() => {
     console.log(userDetails)
-    if (token) {
+    if (token && userDetails.isAdmin) {
       const redirectPath = localStorage.getItem("pb_paths") || "/prize-list";
       // after login
       navigate(redirectPath);

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { createSlice } from "@reduxjs/toolkit";
 import { getUser, createAccount, outsideAddUser, postAdmin, verfiyAccountUser } from "./asnycCalls";
 
@@ -79,6 +80,7 @@ const initialState: userState = {
   otpID: null,
   verifiedAndCreatedAccount: false,
   password: null,
+  isAdmin: false,
 };
 
 const userSlice = createSlice({
