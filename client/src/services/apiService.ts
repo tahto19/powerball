@@ -228,7 +228,7 @@ export const apiService = {
     return apiClient.post("/api/otp/verify", data);
   },
   insertAdmin: async (data: adminType) => {
-    return apiClient.post("/api/users", { ...data });
+    return apiClient.post("/api/users", data);
   },
   updateAdmin: async (data: adminType, token: string | null) => {
     return apiClient.put("api/users", {

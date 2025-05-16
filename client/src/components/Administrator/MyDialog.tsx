@@ -90,9 +90,8 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
     }, [data, dialogType])
     const onSubmit: SubmitHandler<DataProps> = (data) => {
         let toSend = { ...data, 'isAdmin': true }
-        // dispatch(postAdmin({ data: toSend, dialogType }))
 
-        dispatch(postAdmin({ toSend, dialogType }))
+        dispatch(postAdmin({ data: toSend, dialogType }))
     };
 
     return (
