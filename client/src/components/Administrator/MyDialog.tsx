@@ -80,7 +80,7 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
     React.useEffect(() => {
         setData(data)
         setDialogType(dialogType)
-       
+
         if (dialogType?.toLowerCase() !== "add") {
             Object.keys(data).forEach((v) => {
                 let val = v === 'password' ? '' : data[v]
@@ -90,8 +90,9 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
     }, [data, dialogType])
     const onSubmit: SubmitHandler<DataProps> = (data) => {
         let toSend = { ...data, 'isAdmin': true }
-        
-        dispatch(postAdmin({ data: toSend, dialogType }))
+        // dispatch(postAdmin({ data: toSend, dialogType }))
+
+        dispatch(postAdmin({ toSend, dialogType }))
     };
 
     return (
@@ -269,7 +270,7 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
                                         },
                                     }}
                                     {...register("password", {
-                                        required:dialog_type === 'add' ?  true:false,
+                                        required: dialog_type === 'add' ? true : false,
                                         minLength: {
                                             value: 6,
                                             message: "At least 6 characters required",
