@@ -13,8 +13,10 @@ import uc from "../lib/User.class.js";
 import fs from "fs";
 export const getController = async (req, res) => {
   const { offset, limit, sort, filter } = req.body;
+  console.log(req.url);
 
-  let changeFilter = req.url.includes("api/users/admin")
+  console.log(req.url.includes("/users/admin"));
+  let changeFilter = req.url.includes("/users/admin")
     ? [...filter, { field: "isAdmin", filter: true, type: "boolean" }]
     : [...filter, { field: "isAdmin", filter: false, type: "boolean" }];
 
