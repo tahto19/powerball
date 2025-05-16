@@ -9,9 +9,13 @@ export const auth = async (req, res) => {
 
     // authentication below
     let p = getPath("/authentication/pathThatDontNeedAuth.json");
+    console.log(p);
     let PTDNA = JSON.parse(fs.readFileSync(p, "utf8"));
     let findNoP = PTDNA.find((x) => {
+      console.log(req.url);
       let regex = new RegExp(x.path.toString(), "i").test(req.url.toString());
+      console.log(regex);
+      console.log(req.method);
       if (regex && x.method.toLowerCase() === req.method.toLowerCase())
         return x;
     });
