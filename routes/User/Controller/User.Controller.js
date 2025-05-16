@@ -15,8 +15,8 @@ export const getController = async (req, res) => {
   const { offset, limit, sort, filter } = req.body;
   console.log(req.url);
 
-  console.log(req.url.includes("api/users/admin"));
-  let changeFilter = req.url.includes("api/users/admin")
+  console.log(req.url.includes("/users/admin"));
+  let changeFilter = req.url.includes("/users/admin")
     ? [...filter, { field: "isAdmin", filter: true, type: "boolean" }]
     : [...filter, { field: "isAdmin", filter: false, type: "boolean" }];
 
@@ -27,6 +27,7 @@ export const getController = async (req, res) => {
 export const insertController = async (req, res) => {
   const { firstname, lastname, password, emailAddress, mobileNumber, isAdmin } =
     req.body;
+  console.log(JSON.stringify(req.body));
   let a = await uc.Insert({
     firstname,
     lastname,
