@@ -142,6 +142,8 @@ function AppRoutes() {
   const dispatch = useAppDispatch();
   const nav = useNavigate();
   const location = useLocation();
+  const userDetails = useAppSelector((state: RootState) => state.user);
+
   const { loading, token, doneLoading } = useAppSelector(
     (state) => state.token
   );
@@ -162,23 +164,23 @@ function AppRoutes() {
     // }
   }, []);
 
-  useEffect(() => {
-    // const loginPages = ["/sign-in", "/cms/", "/cms/sign-in"];
-    // const isLoginPage = loginPages.includes(location.pathname);
-    // console.log(loading)
-    // if (!loading && token && isLoginPage) {
-    //   nav("/prize-list");
-    // }
+  // useEffect(() => {
+  //   // const loginPages = ["/sign-in", "/cms/", "/cms/sign-in"];
+  //   // const isLoginPage = loginPages.includes(location.pathname);
+  //   // console.log(loading)
+  //   // if (!loading && token && isLoginPage) {
+  //   //   nav("/prize-list");
+  //   // }
 
-    const loginPages = ["/sign-in", "/cms/", "/cms/sign-in"];
-    const isLoginPage = loginPages.includes(location.pathname);
+  //   const loginPages = ["/sign-in", "/cms/", "/cms/sign-in"];
+  //   const isLoginPage = loginPages.includes(location.pathname);
 
-    if (!loading && token && isLoginPage) {
-      const redirectPath = localStorage.getItem("pb_paths") || "/prize-list";
-      localStorage.removeItem("pb_paths"); // clean it up
-      nav(redirectPath);
-    }
-  }, [loading, token, location.pathname, nav]);
+  //   if (!loading && token && isLoginPage) {
+  //     const redirectPath = localStorage.getItem("pb_paths") || "/prize-list";
+  //     localStorage.removeItem("pb_paths"); // clean it up
+  //     nav(redirectPath);
+  //   }
+  // }, [loading, token, location.pathname, nav]);
   return (
     <Routes>
       {/* Authentication Routes */}

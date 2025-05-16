@@ -73,13 +73,13 @@ function MainLayout({ title, children }: { title: string; children: any }) {
   useEffect(() => {
     console.log(userDetails)
   }, [userDetails])
-  useEffect(() => {
-    if (token) {
-      dispatch(
-        getUser()
-      )
-    }
-  }, [token])
+  // useEffect(() => {
+  //   if (token) {
+  //     dispatch(
+  //       getUser()
+  //     )
+  //   }
+  // }, [token])
   return (
     <>
       <Box sx={{ display: "flex" }}>

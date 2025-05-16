@@ -63,7 +63,7 @@ const initialState: userState = {
   lastname: null,
   emailAddress: null,
   birthdate: null,
-  loading: false,
+  loading: true,
   outside: false,
   file: null,
   fileInfo: {
