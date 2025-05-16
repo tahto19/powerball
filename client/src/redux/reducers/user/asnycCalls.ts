@@ -143,10 +143,10 @@ export const postAdmin = createAsyncThunk(
       const token = state.token.token;
       console.log(data, dialogType);
       if (dialogType.toLowerCase() === "add")
-        await apiService.insertAdmin({...data}, token);
+        await apiService.insertAdmin(data, token);
         // await apiService.insertAdmin(bodyEncrypt(data, token));
       else if (dialogType.toLowerCase() === "edit")
-        await apiService.updateAdmin({...data}, token);
+        await apiService.updateAdmin(data, token);
         // await apiService.updateAdmin(bodyEncrypt(data, token));
       setTimeout(() => {
         dispatch(getAdmin());
