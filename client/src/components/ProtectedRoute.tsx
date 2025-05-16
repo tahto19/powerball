@@ -51,7 +51,7 @@ const ProtectedRoute = () => {
   // if (!token && !userDetails.isAdmin) return <Navigate to="/sign-in" replace />;
   if (!doneLoading) return <>..loading</>;
   if (!token) return <Navigate to="/sign-in" replace />;
-  if (!userDetails.isAdmin) return <Navigate to="/sign-in" replace />;
+  if (doneLoading && token && !userDetails.isAdmin) return <Navigate to="/sign-in" replace />;
 
   return <Outlet />
 };
