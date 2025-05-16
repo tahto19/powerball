@@ -140,7 +140,7 @@ export const postAdmin = createAsyncThunk(
   async ({ data, dialogType }: postAdminType, { dispatch, getState }) => {
     try {
       const state = getState() as RootState;
-      const token = state.token.token;
+      const token = state.token.token; 
       console.log(data, dialogType);
       if (dialogType.toLowerCase() === "add")
         await apiService.insertAdmin(data, token);
