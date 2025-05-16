@@ -142,8 +142,6 @@ function AppRoutes() {
   const dispatch = useAppDispatch();
   const nav = useNavigate();
   const location = useLocation();
-  const userDetails = useAppSelector((state: RootState) => state.user);
-
   const { loading, token, doneLoading } = useAppSelector(
     (state) => state.token
   );

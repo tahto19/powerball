@@ -1,4 +1,3 @@
-//@ts-nocheck
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -15,8 +14,7 @@ import { styled } from "@mui/material/styles";
 import apiService from "@/services/apiService";
 
 import { showToaster } from "@/redux/reducers/global/globalSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { RootState } from "@/redux/store";
+import { useAppDispatch } from "@/redux/hook";
 
 const NewCard = styled(Card)(({ theme }) => ({
   display: "flex",
@@ -63,10 +61,6 @@ const SignIn = () => {
   const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
-  const userDetails = useAppSelector((state: RootState) => state.user);
-  const { token } = useAppSelector(
-    (state) => state.token
-  ); // Check if token exists
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
@@ -83,8 +77,7 @@ const SignIn = () => {
       const res = await apiService.login({ email, password });
 
       if (res.data.result == "success") {
-        // Redirect to dashboard after 
-        console.log("Login success!")
+        // Redirect to dashboard after login
         navigate("/prize-list");
       }
       dispatch(
@@ -134,17 +127,6 @@ const SignIn = () => {
     setPasswordErrorMessage("");
     return isValid;
   };
-
-  React.useEffect(() => {
-    console.log(userDetails)
-    if (token && userDetails.isAdmin) {
-      const redirectPath = localStorage.getItem("pb_paths") || "/prize-list";
-      // after login
-      navigate(redirectPath);
-      localStorage.removeItem("pb_paths");
-    }
-
-  }, [userDetails, token])
   return (
     <SignInContainer direction="column" justifyContent="space-between">
       <NewCard variant="outlined">
