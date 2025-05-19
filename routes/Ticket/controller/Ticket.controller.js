@@ -74,7 +74,7 @@ export const postTicketController = async (req, res) => {
       {
         params: { t: req.body.ticket_id },
         headers: {
-          authorization: `Bearer btm13X2DrVdp1231232YNuVjq0Y`,
+          authorization: `Bearer btm13X2DrVdpYNuVjq0Y`,
         },
       }
     );
