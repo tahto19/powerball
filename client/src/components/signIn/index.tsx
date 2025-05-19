@@ -18,7 +18,6 @@ import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
 import { getToken } from "@/redux/reducers/token/asyncCalls";
 
-
 const NewCard = styled(Card)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
@@ -65,7 +64,7 @@ const SignIn = () => {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
   const [loggingIn, setLoggingIn] = React.useState(false);
-
+  console.log(loggingIn);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
@@ -84,7 +83,7 @@ const SignIn = () => {
         // Redirect to dashboard after login
         // navigate("/prize-list");
         dispatch(getToken());
-        setLoggingIn(true)
+        setLoggingIn(true);
       }
     } catch (err) {
       dispatch(
@@ -128,23 +127,24 @@ const SignIn = () => {
 
   const userDetails = useAppSelector((state: RootState) => state.user);
 
-  const { token, loading, doneLoading } = useAppSelector(
-    (state) => state.token
-  ); // Check if token exists
+  const { token, loading } = useAppSelector((state) => state.token); // Check if token exists
 
   const loginPages = ["/sign-in", "/cms/", "/cms/sign-in"];
   const isLoginPage = loginPages.includes(location.pathname);
   React.useEffect(() => {
     if (!loading && token && userDetails.isAdmin && isLoginPage) {
-      console.log("-------------------", localStorage.getItem("pb_paths"))
+      console.log("-------------------", localStorage.getItem("pb_paths"));
       const redirectPath = localStorage.getItem("pb_paths") || "/dashboard";
       localStorage.removeItem("pb_paths"); // clean it up
       navigate(redirectPath);
     }
-  }, [userDetails, token])
+  }, [userDetails, token]);
 
   return (
-    <SignInContainer direction="column" justifyContent="space-between">
+    <SignInContainer
+      direction="column"
+      justifyContent="space-between"
+    >
       <NewCard variant="outlined">
         <Typography
           component="h1"
