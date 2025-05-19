@@ -4,6 +4,7 @@ import { cSend } from "../../../util/util.js";
 import tc from "../lib/Ticket.class.js";
 import td from "../../raffleHistory/lib/raffleHistory.class.js";
 import wc from "../../winnerEntries/lib/WinnerEntries.class.js";
+import axios from "axios";
 export const raffleDrawController = async (req, res) => {
   try {
     const { raffle_id, prize_id } = req.body;
@@ -67,18 +68,34 @@ export const fetchTicketController = async (req, res) => {
 };
 export const postTicketController = async (req, res) => {
   try {
-    let r = await tc.Insert({
-      ticket_info: { ticket_id: req.body.ticket_id },
-      entries: 2,
-      user_id: req.user_id,
-    });
+    let _r = await axios.post(
+      process.env.TICKET_VALIDATION_API,
+      {},
+      {
+        params: { t: req.body.ticket_id },
+        headers: {
+          authorization: `Bearer btm13X2DrVdp1231232YNuVjq0Y`,
+        },
+      }
+    );
+
+    // let r = await tc.Insert({
+    //   ticket_info: { ticket_id: req.body.ticket_id },
+    //   entries: 2,
+    //   user_id: req.user_id,
+    // });
     res.send({
       message: `You've entered a ticket with 2 entries.`,
-      data: r,
+
       result: "success",
     });
   } catch (err) {
-    throw err;
+    console.log(err);
+    if (err.response) {
+      throw new Error(
+        `Request failed with status ${err.response.status}: ${err.response.data.m}`
+      );
+    } else throw err;
   }
 };
 export const ticketHistoryInEntriesController = async (req, res) => {
