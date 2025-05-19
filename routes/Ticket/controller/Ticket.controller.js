@@ -78,15 +78,17 @@ export const postTicketController = async (req, res) => {
         },
       }
     );
-    console.log(_r);
-    // let r = await tc.Insert({
-    //   ticket_info: { ticket_id: req.body.ticket_id },
-    //   entries: 2,
-    //   user_id: req.user_id,
-    // });
 
+    if (_r.data.r === "This is a non-winning ticket.") {
+      throw new Error(_r.data.r);
+    }
+    let r = await tc.Insert({
+      ticket_info: { ticket_id: req.body.ticket_id },
+      entries: r.data.a,
+      user_id: req.user_id,
+    });
     res.send({
-      message: `You've entered a ticket with 2 entries.`,
+      message: `You've entered a ticket with ${r.data.a} entries.`,
       result: "success",
     });
   } catch (err) {
