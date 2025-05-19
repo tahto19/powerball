@@ -34,6 +34,8 @@ import Toaster_ from "./Global/toaster/Toaster_";
 import { getDeviceInfo } from "./utils/util";
 import { useEffect, useRef, useState } from "react";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AuthLoader from "./components/AuthLoader";
+
 import PrizeList from "./components/PrizeList";
 import { useAppDispatch, useAppSelector } from "./redux/hook";
 import { getToken } from "./redux/reducers/token/asyncCalls";
@@ -182,37 +184,39 @@ function AppRoutes() {
   return (
     <Routes>
       {/* Authentication Routes */}
-      <Route
-        path="/sign-in"
-        element={
-          <AppTheme>
-            <SignIn />
-          </AppTheme>
-        }
-      />
-      <Route
-        path="/"
-        element={
-          <Navigate
-            to="/sign-in"
-            replace
-          />
-        }
-      />
+      <Route element={<AuthLoader />}>
+        <Route
+          path="/sign-in"
+          element={
+            <AppTheme>
+              <SignIn />
+            </AppTheme>
+          }
+        />
+        <Route
+          path="/"
+          element={
+            <Navigate
+              to="/sign-in"
+              replace
+            />
+          }
+        />
 
-      {/* Protected Routes */}
-      <Route element={<ProtectedRoute />}>
-        {routes.map(({ path, component, title }) => (
-          <Route
-            key={path}
-            path={path}
-            element={
-              <AppTheme>
-                <MainLayout title={title}>{component}</MainLayout>
-              </AppTheme>
-            }
-          />
-        ))}
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoute />}>
+          {routes.map(({ path, component, title }) => (
+            <Route
+              key={path}
+              path={path}
+              element={
+                <AppTheme>
+                  <MainLayout title={title}>{component}</MainLayout>
+                </AppTheme>
+              }
+            />
+          ))}
+        </Route>
       </Route>
 
       <Route >

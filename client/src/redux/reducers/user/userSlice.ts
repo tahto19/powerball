@@ -55,6 +55,7 @@ interface userState {
   verifiedAndCreatedAccount: boolean;
   otpID: number | null;
   password: string | null;
+  isAdmin: boolean;
 }
 
 const initialState: userState = {
@@ -79,6 +80,7 @@ const initialState: userState = {
   otpID: null,
   verifiedAndCreatedAccount: false,
   password: null,
+  isAdmin: false,
 };
 
 const userSlice = createSlice({

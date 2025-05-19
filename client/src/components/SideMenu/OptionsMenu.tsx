@@ -10,12 +10,19 @@ import ListItemIcon, { listItemIconClasses } from '@mui/material/ListItemIcon';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import MenuButton from '@/components/MenuButton';
+import { showToaster } from "@/redux/reducers/global/globalSlice";
+import { useAppDispatch } from "@/redux/hook";
+import apiService from "@/services/apiService";
+import { useNavigate } from 'react-router-dom';
+import { userLogout } from "@/redux/reducers/token/asyncCalls";
 
 const MenuItem = styled(MuiMenuItem)({
     margin: '2px 0',
 });
 
 export default function OptionsMenu() {
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -24,6 +31,52 @@ export default function OptionsMenu() {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const handleLogout = async () => {
+        try {
+            dispatch(userLogout())
+            dispatch(
+                showToaster({
+                    message: "Logged out!",
+                    show: true,
+                    variant: "success",
+                    icon: null,
+                })
+            );
+        } catch (err) {
+            dispatch(
+                showToaster({
+                    err,
+                    variant: "success",
+                    icon: null,
+                })
+            );
+        }
+        // try {
+        //     const res = await apiService.logout();
+        //     if (res.data.result == "success") {
+        //         // navigate("/sign-in")
+        //     }
+        //     dispatch(
+        //         showToaster({
+        //             message: "Logged out!",
+        //             show: true,
+        //             variant: "success",
+        //             icon: null,
+        //         })
+        //     );
+        // } catch (err) {
+        //     dispatch(
+        //         showToaster({
+        //             err,
+        //             show: true,
+        //             variant: "error",
+        //             icon: null,
+        //         })
+        //     );
+        // }
+
+    }
     return (
         <React.Fragment>
             <MenuButton
@@ -54,13 +107,13 @@ export default function OptionsMenu() {
                 }}
             >
                 {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                {/* <MenuItem onClick={handleClose}>My account</MenuItem> */}
                 {/* <Divider />
                 <MenuItem onClick={handleClose}>Add another account</MenuItem>
                 <MenuItem onClick={handleClose}>Settings</MenuItem> */}
                 <Divider />
                 <MenuItem
-                    onClick={handleClose}
+                    onClick={handleLogout}
                     sx={{
                         [`& .${listItemIconClasses.root}`]: {
                             ml: 'auto',

@@ -35,7 +35,8 @@ export default function SideMenu() {
     const { open } = useSelector((state: RootState) => state.navBar);
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-
+    const userDetails = useSelector((state: RootState) => state.user);
+    console.log(userDetails)
 
     return (
         <>
@@ -85,15 +86,14 @@ export default function SideMenu() {
                     <Avatar
                         sizes="small"
                         alt="Riley Carter"
-                        src="/static/images/avatar/7.jpg"
                         sx={{ width: 36, height: 36 }}
-                    />
+                    >{userDetails.firstname?.charAt(0).toUpperCase()}</Avatar>
                     <Box sx={{ mr: 'auto' }}>
                         <Typography variant="body2" sx={{ fontWeight: 500, lineHeight: '16px' }}>
-                            Riley Carter
+                            {userDetails.fullname}
                         </Typography>
                         <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                            riley@email.com
+                            {userDetails.emailAddress}
                         </Typography>
                     </Box>
                     <OptionsMenu />

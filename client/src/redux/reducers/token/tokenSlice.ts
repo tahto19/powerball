@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getToken } from "./asyncCalls";
+import { getToken, userLogout } from "./asyncCalls";
 interface tokenFace {
   token: string | null;
   loading: boolean;
@@ -35,6 +35,12 @@ const tokenSlice = createSlice({
       state.loading = false;
     });
     b.addCase(getToken.pending, (state) => {
+      state.loading = true;
+    });
+     b.addCase(userLogout.fulfilled, (state) => {
+      state.loading = false;
+    });
+    b.addCase(userLogout.pending, (state) => {
       state.loading = true;
     });
   },

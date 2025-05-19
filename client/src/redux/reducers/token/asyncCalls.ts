@@ -24,3 +24,24 @@ export const getToken = createAsyncThunk(
     }
   }
 );
+
+export const userLogout = createAsyncThunk(
+  "token/userLogout",
+  async (_, { dispatch }) => {
+    try {
+      dispatch(startLoading_());
+       await apiService.logout();
+      dispatch(addToken(null));
+      dispatch(doneLoading_());
+    } catch (err) {
+      dispatch(doneLoading_());
+      dispatch(
+        showToaster({
+          err,
+          variant: "success",
+          icon: "success",
+        })
+      );
+    }
+  }
+);

@@ -65,14 +65,10 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 function MainLayout({ title, children }: { title: string; children: any }) {
   const { open } = useSelector((state: RootState) => state.navBar);
-  console.log(location);
-
   const { token } = useSelector((state: RootState) => state.token);
   const dispatch = useDispatch();
   const userDetails = useSelector((state: RootState) => state.user);
-  useEffect(() => {
-    console.log(userDetails)
-  }, [userDetails])
+
   // useEffect(() => {
   //   if (token) {
   //     dispatch(

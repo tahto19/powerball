@@ -14,10 +14,7 @@ import { styled } from "@mui/material/styles";
 import apiService from "@/services/apiService";
 
 import { showToaster } from "@/redux/reducers/global/globalSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { RootState } from "@/redux/store";
-import { getToken } from "@/redux/reducers/token/asyncCalls";
-
+import { useAppDispatch } from "@/redux/hook";
 
 const NewCard = styled(Card)(({ theme }) => ({
   display: "flex",
@@ -64,7 +61,6 @@ const SignIn = () => {
   const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
-  const [loggingIn, setLoggingIn] = React.useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
@@ -82,10 +78,16 @@ const SignIn = () => {
 
       if (res.data.result == "success") {
         // Redirect to dashboard after login
-        // navigate("/prize-list");
-        dispatch(getToken());
-        setLoggingIn(true)
+        navigate("/prize-list");
       }
+      dispatch(
+        showToaster({
+          message: "Login success!",
+          show: true,
+          variant: "success",
+          icon: null,
+        })
+      );
     } catch (err) {
       dispatch(
         showToaster({
@@ -125,24 +127,6 @@ const SignIn = () => {
     setPasswordErrorMessage("");
     return isValid;
   };
-
-  const userDetails = useAppSelector((state: RootState) => state.user);
-
-  const { token, loading, doneLoading } = useAppSelector(
-    (state) => state.token
-  ); // Check if token exists
-
-  const loginPages = ["/sign-in", "/cms/", "/cms/sign-in"];
-  const isLoginPage = loginPages.includes(location.pathname);
-  React.useEffect(() => {
-    if (!loading && token && userDetails.isAdmin && isLoginPage) {
-      console.log("-------------------", localStorage.getItem("pb_paths"))
-      const redirectPath = localStorage.getItem("pb_paths") || "/dashboard";
-      localStorage.removeItem("pb_paths"); // clean it up
-      navigate(redirectPath);
-    }
-  }, [userDetails, token])
-
   return (
     <SignInContainer direction="column" justifyContent="space-between">
       <NewCard variant="outlined">
