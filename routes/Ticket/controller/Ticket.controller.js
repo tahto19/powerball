@@ -74,19 +74,19 @@ export const postTicketController = async (req, res) => {
       {
         params: { t: req.body.ticket_id },
         headers: {
-          authorization: `Bearer btm13X2DrVdpYNuVjq0Y`,
+          authorization: `Bearer ${process.env.TICKET_VALIDATION_TOKEN}`,
         },
       }
     );
-
+    console.log(_r);
     // let r = await tc.Insert({
     //   ticket_info: { ticket_id: req.body.ticket_id },
     //   entries: 2,
     //   user_id: req.user_id,
     // });
+
     res.send({
       message: `You've entered a ticket with 2 entries.`,
-
       result: "success",
     });
   } catch (err) {
