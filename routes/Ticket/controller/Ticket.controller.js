@@ -92,7 +92,7 @@ export const postTicketController = async (req, res) => {
       user_id: req.user_id,
     });
     res.send({
-      message: `You've entered a ticket with ${r.data.a} entries.`,
+      message: `You've entered a ticket with ${_r.data.a} entries.`,
       result: "success",
     });
   } catch (err) {
