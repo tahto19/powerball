@@ -68,24 +68,24 @@ export const fetchTicketController = async (req, res) => {
 };
 export const postTicketController = async (req, res) => {
   try {
-    // let _r = await axios.post(
-    //   process.env.TICKET_VALIDATION_API,
-    //   {},
-    //   {
-    //     params: { t: req.body.ticket_id },
-    //     headers: {
-    //       authorization: `Bearer ${process.env.TICKET_VALIDATION_TOKEN}`,
-    //     },
-    //   }
-    // );
+    let _r = await axios.post(
+      process.env.TICKET_VALIDATION_API,
+      {},
+      {
+        params: { t: req.body.ticket_id },
+        headers: {
+          authorization: `Bearer ${process.env.TICKET_VALIDATION_TOKEN}`,
+        },
+      }
+    );
 
-    // if (
-    //   _r.data.r.trim() === "This is a non-winning ticket." ||
-    //   _r.data.r.trim() === "Error checking ticket."
-    // ) {
-    //   throw new Error(_r.data.r);
-    // }
-    let _r = { data: { a: 3 } };
+    if (
+      _r.data.r.trim() === "This is a non-winning ticket." ||
+      _r.data.r.trim() === "Error checking ticket."
+    ) {
+      throw new Error(_r.data.r);
+    }
+    // let _r = { data: { a: 3 } };
     let r = await tc.Insert({
       ticket_info: { ticket_id: req.body.ticket_id },
       entries: _r.data.a,
