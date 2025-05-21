@@ -82,9 +82,10 @@ export const postTicketController = async (req, res) => {
     if (_r.data.r.trim() === "This is a non-winning ticket.") {
       throw new Error(_r.data.r);
     }
+    console.log(_r);
     let r = await tc.Insert({
       ticket_info: { ticket_id: req.body.ticket_id },
-      entries: r.data.a,
+      entries: _r.data.a,
       user_id: req.user_id,
     });
     res.send({
@@ -92,7 +93,6 @@ export const postTicketController = async (req, res) => {
       result: "success",
     });
   } catch (err) {
-    console.log(err);
     if (err.response) {
       throw new Error(
         `Request failed with status ${err.response.status}: ${err.response.data.m}`
