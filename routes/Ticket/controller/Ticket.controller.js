@@ -79,10 +79,13 @@ export const postTicketController = async (req, res) => {
       }
     );
 
-    if (_r.data.r.trim() === "This is a non-winning ticket.") {
+    if (
+      _r.data.r.trim() === "This is a non-winning ticket." ||
+      _r.data.r.trim() === "Error checking ticket."
+    ) {
       throw new Error(_r.data.r);
     }
-    console.log(_r);
+
     let r = await tc.Insert({
       ticket_info: { ticket_id: req.body.ticket_id },
       entries: _r.data.a,
