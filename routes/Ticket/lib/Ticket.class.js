@@ -60,7 +60,10 @@ class TicketDetails_class {
     if (filter.length !== 0) query["where"] = WhereFilters(filter);
 
     let r = await TicketDetails.findAll(query);
-    return r;
+
+    return r.length === 0
+      ? [{ totalEntries: 0, totalUsedEntries: 0, totalTicket: 0 }]
+      : r;
   }
 }
 
