@@ -62,7 +62,7 @@ class TicketDetails_class {
     let r = await TicketDetails.findAll(query);
 
     return r.length === 0
-      ? [{ totalEntries: 0, totalUsedEntries: 0, totalTicket: 0 }]
+      ? [{ totalEntries: 0, totalUsedEntries: 0, totalTicket: 0, error: true }]
       : r;
   }
 }
