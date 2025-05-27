@@ -249,14 +249,20 @@ export const apiService = {
     return apiClient.get("/api/users/");
   },
   // getRaffleEntry
-  getRaffleEntry: async ({data, alpha_code}:{data: string | undefined; alpha_code: string | undefined}) => {
-    let params = alpha_code ? {alpha_code}: {};
-    console.log(data)
-        console.log(alpha_code)
+  getRaffleEntry: async ({
+    data,
+    alpha_code,
+  }: {
+    data: string | undefined;
+    alpha_code: string | undefined;
+  }) => {
+    let params = alpha_code ? { alpha_code } : {};
+    console.log(data);
+    console.log(alpha_code);
 
     if (data && data === "myEntries")
       return apiClient.get("api/ticket/myEntries");
-    else return apiClient.get("api/ticket/entries",{params});
+    else return apiClient.get("api/ticket/myEntries", { params });
   },
   getRaffleEntryList: async (data: getDataV2, token: string, url: string) => {
     return apiClient.post(

@@ -85,15 +85,15 @@ class TicketHistory_class {
   async FetchWithInclude(
     offset = 0,
     limit = 10,
-    sort = [["id", "ASC"]],
+    sort = [["id", "DESC"]],
     filter = []
   ) {
     let query = {
       limit: parseInt(limit),
       offset: parseInt(offset),
-      order: sort,
+      order: sort.length === 0 ? [["id", "DESC"]] : sort,
     };
-
+    console.log(sort);
     if (filter.length !== 0) query["where"] = WhereFilters(filter);
     query["include"] = [
       {

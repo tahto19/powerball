@@ -1,1 +1,10 @@
-[{ "path": "/raffle/" }, { "path": "/ticket/entries", "method": "GET" }]
+[
+  { "path": "/raffle/" },
+  { "path": "/ticket/entries", "method": "GET" },
+  { "path": "/ticket/draw", "method": "POST" },
+  { "path": "/ticket/admin", "method": "POST" },
+  { "path": "/user/", "method": "POST" },
+  { "path": "/user/", "method": "GET" },
+  { "path": "/user/", "method": "GET" },
+  { "path": "/user/", "method": "POST" }
+]
