@@ -2,8 +2,8 @@
 export interface DialogProps {
   open: boolean;
   data: RaffleState;
-  // totalUsedEntries: number | null;
-  // totalEntries: number | null;
+  totalUsedEntries: number | null;
+  totalEntries: number | null;
   onClose: (value: boolean) => void | null | undefined;
   onSubmit: () => void | null | undefined;
 }

@@ -5,7 +5,7 @@ import {
   enterEntries,
   RaffleState,
 } from "@/components/2ndChance_iFrame/Raffles/interface.ts";
-import { useAppSelector, useAppDispatch } from "@/redux/hook";
+import { useAppDispatch } from "@/redux/hook";
 import { postRaffleEntry } from "@/redux/reducers/raffleEntry/asyncCalls";
 import {
   Chip,
@@ -25,7 +25,6 @@ import {
 import MuiFormControl from "@mui/material/FormControl";
 import { styled } from "@mui/material/styles";
 import { useState, useEffect } from "react";
-import { getRaffleEntry } from "@/redux/reducers/raffleEntry/asyncCalls";
 
 const FormControl = styled(MuiFormControl)(() => ({
   width: "100%",
@@ -35,9 +34,9 @@ const MyDialog = ({
   data,
   onClose,
   onSubmit,
-  // totalEntries,
-  // totalUsedEntries,
-  // btnLoading,
+  totalEntries,
+  totalUsedEntries,
+  btnLoading,
 }: DialogProps) => {
   const dispatch = useAppDispatch();
   const [formData, setData] = useState<RaffleState>(data);
@@ -53,15 +52,9 @@ const MyDialog = ({
     console.log(entriesDetails);
     dispatch(postRaffleEntry(entriesDetails));
   };
-
-  const { btnLoading, loading, totalUsedEntries, totalTicket, totalEntries } =
-    useAppSelector((state) => state.raffleEntry);
-
-
   useEffect(() => {
     if (open) {
       console.log(data)
-      dispatch(getRaffleEntry({ type: "entries", alpha_code: data.alpha_code }));
       setData(data);
       setTotalEntriesDetails((prev) => ({
         ...prev,

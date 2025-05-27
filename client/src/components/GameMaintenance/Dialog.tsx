@@ -274,16 +274,16 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                             </Grid2>
                             <Grid2 size={{ xs: 6, sm: 6, md: 6, lg: 6 }}>
                                 <FormControl>
-                                    <FormLabel htmlFor="alphacode">Alpha Code</FormLabel>
+                                    <FormLabel htmlFor="alpha_code">Alpha Code</FormLabel>
                                     <TextField
-                                        id="alphacode"
+                                        id="alpha_code"
                                         type="text"
-                                        name="alphacode"
+                                        name="alpha_code"
                                         placeholder=""
                                         autoFocus
                                         required
                                         fullWidth
-                                        value={formData.alphacode}
+                                        value={formData.alpha_code}
                                         onChange={(event) => handleInputChange(event)}
                                         variant="outlined"
                                         slotProps={{

@@ -9,17 +9,25 @@ import { RootState } from "@/redux/store";
 import { addEntryList, entriesChange } from "./raffleEntrySlice";
 import { enterEntries } from "@/components/2ndChance_iFrame/Raffles/interface";
 
+interface GetRaffleParams {
+  type: string | undefined; 
+  alpha_code: string | undefined
+}
+
 export const getRaffleEntry = createAsyncThunk(
   "raffleEntry/getRaffle",
-  async (type: string | undefined, { dispatch, getState }) => {
+  async (data:GetRaffleParams, { dispatch, getState }) => {
     try {
+      console.log("------------", data.alpha_code)
       const state = getState() as RootState;
       const token = state.token.token;
-      let _r = await apiService.getRaffleEntry(type);
+      let _r = await apiService.getRaffleEntry({data: data.type, alpha_code: data.alpha_code});
 
       let bd = bodyDecrypt(_r.data, token);
 
       if (bd.result === "error") throw new Error(bd.message);
+      console.log(bd.data[0])
+
       dispatch(entriesChange(bd.data[0]));
     } catch (err) {
       // dispatch(showToaster({ err, variant: "error", icon: "error" }));

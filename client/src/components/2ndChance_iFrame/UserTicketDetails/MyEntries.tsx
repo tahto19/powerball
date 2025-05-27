@@ -52,7 +52,7 @@ export function MyEntries() {
   useEffect(() => {
     if (totalTicket === null && token !== null) {
       // this total ticket entry get
-      dispatch(getRaffleEntry("myEntries"));
+      dispatch(getRaffleEntry({ type: "myEntries" }));
     }
   }, [totalTicket, token]);
 

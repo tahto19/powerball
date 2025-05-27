@@ -93,8 +93,14 @@ const Raffles = () => {
   const { btnLoading, loading, totalUsedEntries, totalTicket, totalEntries } =
     useAppSelector((state) => state.raffleEntry);
   useEffect(() => {
+    if (token) {
+      dispatch(getRaffleEntry());
+    }
     getRafflesList();
   }, [token, pagination.page]);
+  useEffect(() => {
+    console.log(loading, totalUsedEntries, totalTicket, totalEntries);
+  }, [open]);
 
   return (
     <>
@@ -233,6 +239,9 @@ const Raffles = () => {
         open={open}
         data={data}
         onClose={handleOnClose}
+        totalEntries={totalEntries}
+        totalUsedEntries={totalUsedEntries}
+        btnLoading={btnLoading}
       />
     </>
   );

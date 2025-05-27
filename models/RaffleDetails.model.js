@@ -28,7 +28,7 @@ RaffleDetails.init(
         },
       },
     },
-    alphacode: {
+    alpha_code: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
@@ -37,8 +37,8 @@ RaffleDetails.init(
         },
       },
       get() {
-        if (this.getDataValue("alphacode").trim() !== "") {
-          return this.getDataValue("alphacode").toUpperCase();
+        if (this.getDataValue("alpha_code").trim() !== "") {
+          return this.getDataValue("alpha_code").toUpperCase();
         }
       },
     },
