@@ -26,7 +26,7 @@ export const getRaffleEntry = createAsyncThunk(
       let bd = bodyDecrypt(_r.data, token);
 
       if (bd.result === "error") throw new Error(bd.message);
-      console.log(bd.data[0])
+      console.log("ppppppppppp",bd)
 
       dispatch(entriesChange(bd.data[0]));
     } catch (err) {

@@ -261,8 +261,8 @@ export const apiService = {
     console.log(alpha_code);
 
     if (data && data === "myEntries")
-      return apiClient.get("api/ticket/myEntries");
-    else return apiClient.get("api/ticket/myEntries", { params });
+      return apiClient.get("api/ticket/myEntries",{params});
+    else return apiClient.get("api/ticket/entries",{params});
   },
   getRaffleEntryList: async (data: getDataV2, token: string, url: string) => {
     return apiClient.post(

@@ -60,7 +60,6 @@ const MyDialog = ({
 
   useEffect(() => {
     if (open) {
-      console.log(data)
       dispatch(getRaffleEntry({ type: "entries", alpha_code: data.alpha_code }));
       setData(data);
       setTotalEntriesDetails((prev) => ({
