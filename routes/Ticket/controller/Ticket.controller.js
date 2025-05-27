@@ -69,8 +69,8 @@ export const postTicketController = async (req, res) => {
       process.env.TICKET_VALIDATION_API,
       {},
       {
-        // params: { t: req.body.ticket_id },
-        params: { t: 1962993600019698859342 },
+        params: { t: req.body.ticket_id },
+        // params: { t: 1962993600019698859342 },
         headers: {
           authorization: `Bearer ${process.env.TICKET_VALIDATION_TOKEN}`,
         },
