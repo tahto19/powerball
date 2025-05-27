@@ -28,6 +28,20 @@ RaffleDetails.init(
         },
       },
     },
+    alphacode: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "Please enter Alpha Code",
+        },
+      },
+      get() {
+        if (this.getDataValue("alphacode").trim() !== "") {
+          return this.getDataValue("alphacode").toUpperCase();
+        }
+      },
+    },
     more_details: {
       type: DataTypes.STRING,
       allowNull: true,

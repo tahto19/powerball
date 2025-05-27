@@ -36,6 +36,8 @@ const getErrorsStatus = (code: string) => {
       return "Raffle ID already exists";
     case "x72":
       return "Image does not exists";
+    case "x73":
+      return "End date must be set in the future. Please choose a valid end date.";
     case "x999":
       return "invalid credentials";
     case "x91c":
