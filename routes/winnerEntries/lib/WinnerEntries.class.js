@@ -17,7 +17,7 @@ class WiningDrawDetails_class {
     };
 
     if (filter.length !== 0) query["where"] = WhereFilters(filter);
-    console.log(query);
+
     // ✅ Fetch both filtered list and total count
     let r = await WiningDrawDetails.findAndCountAll();
     let { count, rows } = await WiningDrawDetails.findAndCountAll(query);
@@ -99,9 +99,9 @@ class WiningDrawDetails_class {
     // if (url !== undefined && url.includes("myWinners")) {
     //   // getFilters.push()
     // }
-    console.log(getFilters);
+
     query["where"] = WhereFilters(getFilters);
-    console.log(query);
+
     const { count, rows } = await WiningDrawDetails.findAndCountAll(query);
     return { count, list: rows.map((v) => v.toJSON()) };
   }

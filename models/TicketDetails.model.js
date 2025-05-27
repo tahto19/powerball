@@ -31,6 +31,11 @@ TicketDetails.init(
       type: DataTypes.BOOLEAN,
       defaultValue: true,
     },
+    alpha_code: {
+      allowNull: false,
+      type: DataTypes.TEXT("medium"),
+      defaultValue: "NA",
+    },
   },
   {
     timestamps: true,

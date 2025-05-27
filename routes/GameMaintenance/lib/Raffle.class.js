@@ -76,7 +76,7 @@ class Raffle_class {
           separate: true,
           order: [["id", "DESC"]],
           as: "raffleSchedule",
-          attributes: ["id"],
+          // attributes: ["id"],
           include: [
             {
               model: RafflePrize,
@@ -105,7 +105,7 @@ class Raffle_class {
     };
 
     if (filter.length !== 0) query["where"] = WhereFilters(filter);
-
+    console.log(query["where"]);
     // ✅ Fetch both filtered list and total count
     let { count, rows } = await RaffleDetails.findAndCountAll(query);
 
@@ -302,5 +302,12 @@ class Raffle_class {
 
   //   return id;
   // }
+  async getRaffleSchedule(filter = []) {
+    let query = { include: [{ model: RaffleDetails, as: "raffleDetails" }] };
+    if (filter.length !== 0) query["where"] = WhereFilters(filter);
+    let r = await RaffleSchedule.findOne(query);
+
+    return !r ? [] : r.toJSON();
+  }
 }
 export default new Raffle_class();

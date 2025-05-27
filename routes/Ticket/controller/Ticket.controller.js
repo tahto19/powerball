@@ -35,10 +35,7 @@ export const raffleDrawController = async (req, res) => {
       ticket_history_id: getWinnerTicketDetails.id,
       ticket_id: getWinnerTicketDetails.ticket_id,
     });
-    console.log({
-      winnerDetails: getWinnerTicketDetails,
-      totalEtnries: getTicketsWithRaffleId.count,
-    });
+
     res.send(
       cSend({
         winnerDetails: getWinnerTicketDetails,
@@ -105,13 +102,19 @@ export const postTicketController = async (req, res) => {
 };
 export const ticketHistoryInEntriesController = async (req, res) => {
   try {
+    const { alpha_code } = req.query;
     let filter = [];
+
+    if (alpha_code) {
+      filter = [{ field: "alpha_code", filter: alpha_code, type: "string_eq" }];
+    }
+
     if (req.url.includes("myEntries")) {
       filter.push({ field: "user_id", filter: req.user_id, type: "number" });
     }
 
     let r = await tc.getTotalEntries(filter);
-
+    console.log(r, "here", filter);
     res.send(cSend(r));
   } catch (err) {
     throw err;

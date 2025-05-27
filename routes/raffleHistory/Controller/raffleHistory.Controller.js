@@ -1,16 +1,24 @@
+import RaffleClass from "../../GameMaintenance/lib/Raffle.class.js";
 import td from "../../Ticket/lib/Ticket.class.js";
 import th from "../lib/raffleHistory.class.js";
 export const insertRaffleHistoryController = async (req, res) => {
   try {
     const { raffle_id, entries } = req.body;
+    if (entries === "") throw new Error("ERRORCode X921");
+    const getRaffleInfo = await RaffleClass.getRaffleSchedule([
+      { field: "id", filter: raffle_id, type: "number" },
+    ]);
+    let getAlphaCode = getRaffleInfo.raffleDetails.alpha_code;
 
+    if (!entries || entries === "") throw new Error("ErrorCode X921");
     // first check if the entries are not more than the total entries available
+
     let r = await td.getTotalEntries([
       { field: "user_id", type: "number", filter: req.user_id },
       { field: "active", type: "boolean", filter: true },
+      { field: "alpha_code", type: "string_eq", filter: getAlphaCode },
     ]);
 
-    // console.log(r[0].toJSON());
     if (!!!r || r.length === 0) throw new Error("ERRORCODE x268");
     let totalEntries = r[0].toJSON();
     let totalEntriesRemaining =
@@ -20,6 +28,7 @@ export const insertRaffleHistoryController = async (req, res) => {
     const getUserTicketDetails = await td.FetchAll(null, [
       { field: "user_id", type: "number", filter: req.user_id },
       { field: "active", type: "boolean", filter: true },
+      { field: "alpha_code", type: "string_eq", filter: getAlphaCode },
     ]);
 
     for (let val of getUserTicketDetails.list) {
@@ -47,6 +56,7 @@ export const insertRaffleHistoryController = async (req, res) => {
       //   update the ticket details
       await td.Edit(v);
     }
+    res.send(getUserTicketDetails);
   } catch (err) {
     throw err;
   }
@@ -71,7 +81,7 @@ export const getRaffleEntriesController = async (req, res) => {
       });
     }
     let _r = await th.FetchWithInclude(offset, limit, sort, filter);
-    console.log(_r);
+
     res.send(_r);
   } catch (err) {
     console.log(err);

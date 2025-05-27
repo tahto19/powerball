@@ -68,6 +68,8 @@ const fastify = Fastify({
  * X911 raffle is already have a winner
  * x098 the query has no id
  * x675 theres no entry on this ticket
+ * X930 no alpha code
+ * X921 no entries insert
  */
 
 /**
@@ -228,6 +230,8 @@ const start = async () => {
         process.exit(1);
       }
       // Server is now listening on ${address}
+
+      fastify.log.info(` Server is now listening on ${address}`);
     });
 
     const connected = await conn.auth();
