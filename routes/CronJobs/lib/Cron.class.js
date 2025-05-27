@@ -40,6 +40,13 @@ class Cron_class {
     return { list: rows, total: count };
   }
 
+  async EditRafflesActiveStatus(_ids) {
+    await RaffleDetails.update(
+      { active: false },
+      { where: { id: _ids }, individualHooks: true }
+    );
+  }
+
   async CreateRaffleSched(_data) {
     //======== Create Raffle schedule data ===============//
     const old_schedule_date = _data.raffleSchedule[0].schedule_date;

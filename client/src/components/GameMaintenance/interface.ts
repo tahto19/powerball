@@ -47,6 +47,7 @@ export interface RaffleState {
     id: number | null;
     details: string;
     name: string;
+    alphacode: string;
     more_details: string;
     active: boolean;
     starting_date: string | null;
@@ -73,6 +74,7 @@ export const initialRaffleData: RaffleState = {
       id: null,
         details: "",
         name: "",
+        alphacode: "",
         more_details: "",
         active: true,
         starting_date: moment().toISOString(),

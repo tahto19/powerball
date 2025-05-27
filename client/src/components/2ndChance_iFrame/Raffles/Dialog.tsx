@@ -54,6 +54,7 @@ const MyDialog = ({
   };
   useEffect(() => {
     if (open) {
+      console.log(data)
       setData(data);
       setTotalEntriesDetails((prev) => ({
         ...prev,
@@ -122,8 +123,8 @@ const MyDialog = ({
                       }));
                     }}
                     helperText={`Total Entries Remaining: ${totalEntries !== null && totalUsedEntries !== null
-                        ? totalEntries - totalUsedEntries
-                        : "loading" + totalUsedEntries + totalEntries
+                      ? totalEntries - totalUsedEntries
+                      : "loading" + totalUsedEntries + totalEntries
                       }`}
                   />
                 </FormControl>

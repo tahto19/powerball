@@ -1,3 +1,4 @@
+import moment from "moment";
 import { cSend } from "../../../util/util.js";
 import rc from "../lib/Raffle.class.js";
 
@@ -12,6 +13,12 @@ export const insertController = async (req, res) => {
       { filter: details, field: "details", type: "string_eq" },
     ]);
     if (findRaffle !== null) throw new Error("ErrorCODE x71");
+    /** END Check */
+
+    /** Check End Date validation */
+    const now = moment();
+    const end_date = moment(formData.end_date);
+    if (now.isSameOrAfter(end_date)) throw new Error("ErrorCODE x73");
     /** END Check */
 
     const a = await rc.Insert(formData, newPrizeList);
@@ -44,6 +51,11 @@ export const getControllerAll = async (req, res) => {
 export const updateController = async (req, res) => {
   if (!req.body) throw new Error("ErrorCODE X2");
   const { formData, newPrizeList } = req.body;
+  /** Check End Date validation */
+  const now = moment();
+  const end_date = moment(formData.end_date);
+  if (now.isSameOrAfter(end_date)) throw new Error("ErrorCODE x73");
+  /** END Check */
   let a = await rc.Edit(formData, newPrizeList);
   res.send(cSend(a));
 };
