@@ -34,7 +34,6 @@ TicketDetails.init(
     alpha_code: {
       allowNull: false,
       type: DataTypes.TEXT("medium"),
-      defaultValue: "NA",
     },
   },
   {
