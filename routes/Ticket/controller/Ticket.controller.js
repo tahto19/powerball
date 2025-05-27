@@ -85,9 +85,10 @@ export const postTicketController = async (req, res) => {
     }
     // let _r = { data: { a: 3 } };
     let r = await tc.Insert({
-      ticket_info: { ticket_id: req.body.ticket_id },
+      ticket_info: { ticket_id: req.body.ticket_id, ..._r.data },
       entries: _r.data.a,
       user_id: req.user_id,
+      alpha_code: _r.data.t.split("-")[0],
     });
     res.send({
       message: `You've entered a ticket with ${_r.data.a} entries.`,
@@ -115,7 +116,7 @@ export const ticketHistoryInEntriesController = async (req, res) => {
     }
 
     let r = await tc.getTotalEntries(filter);
-
+    console.log(r, filter, "here#");
     res.send(cSend(r));
   } catch (err) {
     throw err;
