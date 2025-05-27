@@ -60,7 +60,12 @@ const getErrorsStatus = (code: string) => {
       return "Theres no entry on this ticket";
     case "x268":
       return "no active ticket or no more entries";
-
+    case "x930":
+      return "No Alpha Code On this Game";
+    case "x138":
+      return "This is Invalid URL";
+    case "x921":
+      return "No Entries Inserted";
     default:
       return false;
   }

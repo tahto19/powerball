@@ -1,1 +1,1 @@
-[{ "path": "/raffle/" }]
+[{ "path": "/raffle/" }, { "path": "/ticket/entries", "method": "GET" }]

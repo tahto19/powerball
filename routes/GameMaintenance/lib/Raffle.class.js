@@ -105,7 +105,7 @@ class Raffle_class {
     };
 
     if (filter.length !== 0) query["where"] = WhereFilters(filter);
-    console.log(query["where"]);
+
     // ✅ Fetch both filtered list and total count
     let { count, rows } = await RaffleDetails.findAndCountAll(query);
 

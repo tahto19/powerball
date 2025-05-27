@@ -69,6 +69,7 @@ const fastify = Fastify({
  * x098 the query has no id
  * x675 theres no entry on this ticket
  * X930 no alpha code
+ * x138 the use is not admin
  * X921 no entries insert
  */
 
