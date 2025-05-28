@@ -51,7 +51,7 @@ const SuccessCreation = () => {
             }}
             fullWidth
             onClick={() => {
-              window.location.href = "https://18.138.76.86/member-area/";
+              nav("/iframe/2nd-chance/login");
             }}
           >
             Login Now
@@ -61,6 +61,7 @@ const SuccessCreation = () => {
               dispatch(returnToVerification());
             }}
           >
+            {" "}
             return
           </Button>
         </Grid2>
