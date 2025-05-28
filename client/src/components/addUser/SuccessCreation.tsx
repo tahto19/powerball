@@ -51,7 +51,7 @@ const SuccessCreation = () => {
             }}
             fullWidth
             onClick={() => {
-              nav("/");
+              window.location.href = "https://18.138.76.86/member-area/";
             }}
           >
             Login Now
@@ -61,7 +61,6 @@ const SuccessCreation = () => {
               dispatch(returnToVerification());
             }}
           >
-            {" "}
             return
           </Button>
         </Grid2>
