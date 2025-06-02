@@ -149,14 +149,14 @@ const start = async () => {
     // authentication part here
 
     fastify
-      // .decorate("fastify1", fastify)
+      .decorate("fastify1", fastify)
       .decorateRequest("jwtVerfiy", {
         getter() {
           return fastify.jwt.verify;
         },
       })
       .addHook("onRequest", auth)
-      .addHook("preHandler", bodyChecker)
+      .addHook("preParsing", bodyChecker)
       .addHook("onSend", bodyEncrypt);
     // .addHook("onResponse", auditTrailAdder);
 
@@ -221,6 +221,7 @@ const start = async () => {
      *error handler
      */
     fastify.setErrorHandler((err, req, res) => {
+      console.log(err);
       if (err.code === undefined) {
         res.status(400).send({ result: "error", message: err.message });
       } else {

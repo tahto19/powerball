@@ -3,12 +3,20 @@ import { decryptData, getPath } from "../util/util.js";
 import Ac from "../routes/AuditTrail/lib/AuditTrail.class.js";
 import fs from "fs";
 import { auditTrailSave } from "../lib/auditTrailSave.js";
-const bodyChecker = async (req, res) => {
+import { Readable } from "stream";
+const bodyChecker = async (req, res, payload) => {
   try {
-    console.log("here");
     let formHeader = req.headers["content-type"]?.includes(
       "multipart/form-data;"
     );
+    const chunks = [];
+
+    for await (const chunk of payload) {
+      chunks.push(chunk);
+    }
+    const rawBody = Buffer.concat(chunks).toString("utf8");
+    let parsed = JSON.parse(rawBody);
+
     let p = getPath("/authentication/pathThatDontNeedAuth.json");
     let PTDNA = JSON.parse(fs.readFileSync(p, "utf8"));
     let findNoP = PTDNA.find((x) => {
@@ -18,37 +26,45 @@ const bodyChecker = async (req, res) => {
     });
 
     if (findNoP === undefined) {
-      if (req.method === "POST" && !req.body && !formHeader)
+      if (req.method === "POST" && !parsed && !formHeader)
         throw new Error("ErrorCODE X2");
-      if (req.method === "PUT" && !req.body && !formHeader)
+      if (req.method === "PUT" && !parsed && !formHeader)
         throw new Error("ErrorCODE X3");
-      if (req.method === "DELETE" && !req.body && !formHeader)
+      if (req.method === "DELETE" && !parsed && !formHeader)
         throw new Error("ErrorCODE X4");
       if (req.method.includes(acceptedMethods))
         throw new Error("ErrorCODE X41");
       if (req.method !== "GET" && !formHeader) {
         const cookie = req.cookies.cookie_pb_1271;
 
-        let a = decryptData(req.body.data, cookie);
+        let a = decryptData(parsed.data, cookie);
 
         if (!a) throw new Error("ErrorCODE X891");
         let body = JSON.parse(a);
+        const byteLength = Buffer.byteLength(a, "utf8");
+        req.headers["content-length"] = byteLength.toString();
 
-        req.body = body;
         let auditTrailId = await auditTrailSave(req, body);
         if (auditTrailId) req.audit_trail = auditTrailId;
+        return Readable.from([a]);
       }
 
       if (req.method !== "GET" && formHeader) {
         const cookie = req.cookies.cookie_pb_1271;
 
-        let a = decryptData(req.body.data.value, cookie);
-        const file = req.body.file;
+        let a = decryptData(parsed.data.value, cookie);
+
+        const file = parsed.file;
         if (!a) throw new Error("ErrorCODE X891");
-        req.body = { ...JSON.parse(a), file };
+        let body = JSON.parse(a);
+        const byteLength = Buffer.byteLength(a, "utf8");
+        req.headers["content-length"] = byteLength.toString();
+        return Readable.from([a]);
+        // parsed = { ...JSON.parse(a), file };
       }
     }
   } catch (err) {
+    console.log(err);
     throw err;
   }
 };
