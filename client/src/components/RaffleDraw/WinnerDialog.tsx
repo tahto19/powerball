@@ -1,5 +1,6 @@
 //@ts-nocheck
 import {
+    Button,
     Dialog,
     DialogContent,
     DialogTitle,
@@ -56,7 +57,23 @@ const WinnerDialog = ({ open, ticket, onClose }: WinnerDialogProps) => {
                         <RandomLetters winner={ticket} seconds={3} onDone={handleDone} />
                     </div>
                     {/* <TestRandom /> */}
+                    <div style={{
+                        display: allowCLose ? "flex" : "none",
+                        justifyContent: "center",
+                        marginTop: "10px"
+                    }}>
 
+                        <Button
+
+                            variant="contained"
+                            sx={{
+                                padding: "10px 40px",
+                                color: "white !important",
+                            }}
+                        >
+                            Close
+                        </Button>
+                    </div>
                 </DialogContent>
 
             </Dialog>
