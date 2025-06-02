@@ -9,15 +9,15 @@ import nodemailer from "nodemailer";
 import moment from "moment";
 import fs from "fs";
 const transport = nodemailer.createTransport({
-  service: process.env.EMAILHOST,
-  port: 587,
-  secure: false,
+  host: process.env.EMAILHOST,
+  port: 465,
+  secure: true,
   auth: {
     user: process.env.EMAILUSERNAME,
     pass: process.env.EMAILPASSWORD,
   },
   tls: {
-    rejectUnauthorized: false,
+    rejectUnauthorized: true,
   },
 });
 export const logger = pino({
@@ -170,19 +170,23 @@ export const generateRandomChar = (n_) => {
 };
 
 export const emailSender = async (data) => {
-  console.log(data);
-  const { from, to, subject, text, html } = data;
-  if (!subject || !to) throw new Error("ErrorCODE x231");
-
-  const info = await transport.sendMail({
-    from: !from ? "crisanto.tubelleja@eacomm.com" : from, // Sender address
-    to: to, // Receiver email
-    subject: subject, // Email subject
-    text: text, // Plain text
-    html: html, // HTML body
-  });
-  console.log(info, "here2");
-  return info;
+  try {
+    const { from, to, subject, text, html } = data;
+    if (!subject || !to) throw new Error("ErrorCODE x231");
+    logger.info("Sending Email to: " + to);
+    const info = await transport.sendMail({
+      from: !from ? process.env.EMAILUSERNAME : from, // Sender address
+      to: to, // Receiver email
+      subject: subject, // Email subject
+      text: text, // Plain text
+      html: html, // HTML body
+    });
+    logger.info("Sending Email Successfull");
+    return info;
+  } catch (err) {
+    logger.error(err);
+    throw err;
+  }
 };
 export const uploadImage = async (file, filename) => {
   let fName = filename;

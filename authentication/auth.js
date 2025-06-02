@@ -30,7 +30,7 @@ export const auth = async (req, res) => {
       // if admin paths found check for the cookieChecker if the user is admin
       if (findNoAP) {
         let isAdmin = c_checkerDetails.isAdmin;
-        if (isAdmin) {
+        if (!isAdmin) {
           throw new Error("ErrorCODE x138");
         }
       }

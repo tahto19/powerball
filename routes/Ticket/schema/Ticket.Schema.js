@@ -7,6 +7,16 @@ import {
 
 export const raffleDrawSchema = {
   handler: raffleDrawController,
+  schema: {
+    body: {
+      type: "object",
+      required: ["raffle_id", "prize_id"],
+      properties: {
+        raffle_id: { type: "number" },
+        prize_id: { type: "number" },
+      },
+    },
+  },
 };
 export const fetchTicketSchema = {
   handler: fetchTicketController,
@@ -24,10 +34,12 @@ export const fetchTicketSchema = {
 };
 export const postTicketSchema = {
   handler: postTicketController,
-  body: {
-    type: "object",
-    properties: {
-      ticket_id: { type: "string" },
+  schema: {
+    body: {
+      type: "object",
+      properties: {
+        ticket_id: { type: "string" },
+      },
     },
   },
 };
