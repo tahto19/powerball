@@ -34,7 +34,6 @@ export const auth = async (req, res) => {
           throw new Error("ErrorCODE x138");
         }
       }
-    } else {
     }
   } catch (err) {
     throw err;

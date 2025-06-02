@@ -8,6 +8,7 @@ import axios from "axios";
 export const raffleDrawController = async (req, res) => {
   try {
     const { raffle_id, prize_id } = req.body;
+    console.log(req.body);
     if (!raffle_id || prize_id === -1 || !prize_id)
       throw new Error("Error X984");
     // check first if the raffle is already done
@@ -116,7 +117,7 @@ export const ticketHistoryInEntriesController = async (req, res) => {
     }
 
     let r = await tc.getTotalEntries(filter);
-    console.log(r, filter, "here#");
+
     res.send(cSend(r));
   } catch (err) {
     throw err;

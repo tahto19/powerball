@@ -224,7 +224,7 @@ const start = async () => {
       if (err.code === undefined) {
         res.status(400).send({ result: "error", message: err.message });
       } else {
-        logger.error(err);
+        // logger.error(err);
         if (err.code === "FST_ERR_VALIDATION") {
           res
             .status(err.statusCode)

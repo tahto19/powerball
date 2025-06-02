@@ -5,6 +5,7 @@ import fs from "fs";
 import { auditTrailSave } from "../lib/auditTrailSave.js";
 const bodyChecker = async (req, res) => {
   try {
+    console.log("here");
     let formHeader = req.headers["content-type"]?.includes(
       "multipart/form-data;"
     );
@@ -15,6 +16,7 @@ const bodyChecker = async (req, res) => {
       if (regex && x.method.toLowerCase() === req.method.toLowerCase())
         return x;
     });
+
     if (findNoP === undefined) {
       if (req.method === "POST" && !req.body && !formHeader)
         throw new Error("ErrorCODE X2");
