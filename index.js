@@ -224,12 +224,12 @@ const start = async () => {
       if (err.code === undefined) {
         res.status(400).send({ result: "error", message: err.message });
       } else {
+        logger.error(err);
         if (err.code === "FST_ERR_VALIDATION") {
           res
             .status(err.statusCode)
             .send({ result: "error", message: "ErrorCode x923" });
         } else {
-          logger.error(err);
           res
             .status(err.statusCode)
             .send({ result: "error", message: "server Error", err });
