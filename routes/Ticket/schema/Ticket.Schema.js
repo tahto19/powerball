@@ -10,7 +10,7 @@ export const raffleDrawSchema = {
   schema: {
     body: {
       type: "object",
-      required: ["prize_id", "raffle_id"],
+      required: ["prize_id", "raffle_id", "testing"],
       properties: {
         raffle_id: { type: "number" },
         prize_id: { type: "number" },
@@ -23,6 +23,7 @@ export const fetchTicketSchema = {
   schema: {
     body: {
       type: "object",
+      required: ["sort", "filter", "offset", "limit"],
       properties: {
         sort: { type: "array" },
         offset: { type: "number" },
@@ -37,6 +38,7 @@ export const postTicketSchema = {
   schema: {
     body: {
       type: "object",
+      required: ["ticket_id"],
       properties: {
         ticket_id: { type: "string" },
       },

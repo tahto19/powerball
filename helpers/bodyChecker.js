@@ -9,13 +9,6 @@ const bodyChecker = async (req, res, payload) => {
     let formHeader = req.headers["content-type"]?.includes(
       "multipart/form-data;"
     );
-    const chunks = [];
-
-    for await (const chunk of payload) {
-      chunks.push(chunk);
-    }
-    const rawBody = Buffer.concat(chunks).toString("utf8");
-    let parsed = JSON.parse(rawBody);
 
     let p = getPath("/authentication/pathThatDontNeedAuth.json");
     let PTDNA = JSON.parse(fs.readFileSync(p, "utf8"));
@@ -26,6 +19,14 @@ const bodyChecker = async (req, res, payload) => {
     });
 
     if (findNoP === undefined) {
+      const chunks = [];
+
+      for await (const chunk of payload) {
+        chunks.push(chunk);
+      }
+      const rawBody = Buffer.concat(chunks).toString("utf8");
+
+      let parsed = rawBody === "" ? false : JSON.parse(rawBody);
       if (req.method === "POST" && !parsed && !formHeader)
         throw new Error("ErrorCODE X2");
       if (req.method === "PUT" && !parsed && !formHeader)
