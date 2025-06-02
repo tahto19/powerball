@@ -45,10 +45,9 @@ const PrizeTypeDialog = ({ open, allowCloseDialog, onChange, onClose }: PrizeTyp
                         onChange={handleInputChange}
                         sx={{ width: "100%" }}
                     >
-                        <MenuItem value={'minor'}>Minor</MenuItem>
-                        <MenuItem value={'major'}>Major Prize</MenuItem>
                         <MenuItem value={'grand'}>Grand</MenuItem>
-
+                        <MenuItem value={'major'}>Major</MenuItem>
+                        <MenuItem value={'minor'}>Minor</MenuItem>
                     </TextField>
                 </DialogContent>
 

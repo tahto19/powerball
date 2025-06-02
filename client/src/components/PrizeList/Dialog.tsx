@@ -143,8 +143,8 @@ const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: MyDialogProps) 
 
                                     >
                                         <MenuItem value={'grand'}>Grand</MenuItem>
+                                        <MenuItem value={'major'}>Major</MenuItem>
                                         <MenuItem value={'minor'}>Minor</MenuItem>
-                                        <MenuItem value={'major'}>Major Prize</MenuItem>
                                     </TextField>
                                 </FormControl>
                             </Grid2>

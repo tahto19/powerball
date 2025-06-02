@@ -14,11 +14,12 @@ import { bodyDecrypt } from "@/utils/util";
 import { showToaster } from "@/redux/reducers/global/globalSlice";
 import { useAppDispatch } from "@/redux/hook";
 import { getData } from "@/types/allTypes"
+import { capitalizeFirstLetter } from "@/utils/util.ts"
 //Temporary data
 const sampleHeaders = [
     { field: 'name', headerName: 'Name', flex: 1, minWidth: 200 },
     { field: 'value', headerName: 'Value', flex: 1, minWidth: 200 },
-    { field: 'type', headerName: 'Type', flex: 1, minWidth: 200 }
+    { field: 'type', headerName: 'Type', flex: 1, minWidth: 200, renderCell: (params) => { return capitalizeFirstLetter(params.value) } }
 ]
 //Temporary data
 const samplePagination = { page: 0, pageSize: 10 }
