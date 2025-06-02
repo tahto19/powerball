@@ -25,6 +25,7 @@ import Ticket from "./routes/Ticket/Ticket.js";
 import raffleHistory from "./routes/raffleHistory/raffleHistory.js";
 import auditTrailAdder from "./helpers/auditTrailAdder.js";
 import LogoutRoute from "./routes/Logout/Logout.route.js";
+import TestingRoutes from "./routes/TestingRoutes/Test.route.js";
 
 const fastify = Fastify({
   trustProxy: true,
@@ -71,6 +72,7 @@ const fastify = Fastify({
  * X930 no alpha code
  * x138 the use is not admin
  * X921 no entries insert
+ * x923 schema body is missing
  */
 
 /**
@@ -212,17 +214,27 @@ const start = async () => {
     fastify.register(LogoutRoute, {
       prefix: process.env.ROUTES_PREFIX + "logout",
     });
+    fastify.register(TestingRoutes, {
+      prefix: process.env.ROUTES_PREFIX + "testingroutes",
+    });
     /**
      *error handler
      */
     fastify.setErrorHandler((err, req, res) => {
-      // logger.error(err);
       if (err.code === undefined) {
         res.status(400).send({ result: "error", message: err.message });
-      } else
-        res
-          .status(err.code)
-          .send({ result: "error", message: err.message, err });
+      } else {
+        if (err.code === "FST_ERR_VALIDATION") {
+          res
+            .status(err.statusCode)
+            .send({ result: "error", message: "ErrorCode x923" });
+        } else {
+          logger.error(err);
+          res
+            .status(err.statusCode)
+            .send({ result: "error", message: "server Error", err });
+        }
+      }
     });
 
     fastify.listen({ port: process.env.PORT }, function (err, address) {

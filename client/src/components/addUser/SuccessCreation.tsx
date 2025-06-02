@@ -61,7 +61,6 @@ const SuccessCreation = () => {
               dispatch(returnToVerification());
             }}
           >
-            {" "}
             return
           </Button>
         </Grid2>

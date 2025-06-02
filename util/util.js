@@ -9,11 +9,11 @@ import nodemailer from "nodemailer";
 import moment from "moment";
 import fs from "fs";
 const transport = nodemailer.createTransport({
-  host: "smtp.gmail.com",
+  host: process.env.EMAILHOST,
   secure: true,
   auth: {
-    user: "crisanto.tubelleja@eacomm.com",
-    pass: "dgzlreovyxzkciog",
+    user: process.env.EMAILUSERNAME,
+    pass: process.env.EMAILPASSWORD,
   },
   tls: {
     rejectUnauthorized: false,

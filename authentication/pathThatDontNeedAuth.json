@@ -7,5 +7,6 @@
   { "path": "/logout", "method": "POST" },
   { "path": "/login/checkSession", "method": "GET" },
   { "path": "/ticket", "method": "testing" },
-  { "path": "/cron", "method": "GET" }
+  { "path": "/cron", "method": "GET" },
+  { "path": "/testingroutes(?:/.*)?$", "method": "POST" }
 ]
