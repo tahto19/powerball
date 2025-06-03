@@ -77,6 +77,7 @@ export const postTicketController = async (req, res) => {
         },
       }
     );
+    console.log(">>>>>>>", _r.data);
     console.log("qrcode is: ", req.body.ticket_id);
     if (
       _r.data.r.trim() === "This is a non-winning ticket." ||

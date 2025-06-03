@@ -21,10 +21,11 @@ const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: MyDialogProps) 
     const [dialog_type, setDialogType] = React.useState("")
     const [formData, setData] = React.useState<PrizeState>(data);
     const { token } = useAppSelector((state) => state.token);
+    const [submitting, setSubmitting] = React.useState(false);
 
     const handleSubmit = async (e: React.FocusEvent<HTMLFormElement>) => {
         e.preventDefault();
-
+        setSubmitting(true);
         try {
             let message;
             let res;
@@ -49,6 +50,7 @@ const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: MyDialogProps) 
                 onClose(false);
                 onSubmit()
             } else {
+                setSubmitting(false);
                 showToaster({
                     message: d.message,
                     show: true,
@@ -57,6 +59,7 @@ const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: MyDialogProps) 
                 })
             }
         } catch (err) {
+            setSubmitting(false);
             dispatch(showToaster({ err, variant: "error", icon: "error" }));
             return false;
         }
@@ -79,6 +82,7 @@ const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: MyDialogProps) 
     React.useEffect(() => {
         setData(data)
         setDialogType(dialogType)
+        setSubmitting(false);
     }, [data, dialogType])
 
 
@@ -173,10 +177,20 @@ const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: MyDialogProps) 
                             </Grid2>
                         </Grid2>
                     </DialogContent>
+
                     <DialogActions>
                         <Button onClick={handleClose}>Cancel</Button>
-                        <Button type="submit">Submit</Button>
+                        {
+                            dialog_type === 'View' ? null : (
+                                <Button type="submit" disabled={submitting}>Submit</Button>
+                            )
+                        }
                     </DialogActions>
+
+                    {/* <DialogActions>
+                        <Button onClick={handleClose}>Cancel</Button>
+                        <Button type="submit">Submit</Button>
+                    </DialogActions> */}
                 </form>
             </Dialog>
         </>

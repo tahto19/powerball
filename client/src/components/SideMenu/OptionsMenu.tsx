@@ -111,7 +111,6 @@ export default function OptionsMenu() {
         {/* <Divider />
                 <MenuItem onClick={handleClose}>Add another account</MenuItem>
                 <MenuItem onClick={handleClose}>Settings</MenuItem> */}
-        <Divider />
         <MenuItem
           onClick={handleLogout}
           sx={{
@@ -121,10 +120,14 @@ export default function OptionsMenu() {
             },
           }}
         >
-          <ListItemText>Logout</ListItemText>
           <ListItemIcon>
-            <LogoutRoundedIcon fontSize="small" />
+            <LogoutRoundedIcon sx={{
+              color: 'rgb(241, 62, 62)'
+            }} fontSize="small" />
           </ListItemIcon>
+          <ListItemText sx={{
+            color: 'rgb(241, 62, 62)'
+          }}>Logout</ListItemText>
         </MenuItem>
       </Menu>
     </React.Fragment>

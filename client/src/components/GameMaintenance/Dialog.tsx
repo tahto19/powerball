@@ -109,6 +109,7 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                 onSubmit()
 
             } else {
+                setSubmitting(false);
                 dispatch(showToaster({
                     message: d.message,
                     show: true,
@@ -467,7 +468,11 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
 
                     <DialogActions>
                         <Button onClick={handleClose}>Cancel</Button>
-                        <Button type="submit" disabled={submitting}>Submit</Button>
+                        {
+                            dialog_type === 'View' ? null : (
+                                <Button type="submit" disabled={submitting}>Submit</Button>
+                            )
+                        }
                     </DialogActions>
                 </form>
             </Dialog>
