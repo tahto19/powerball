@@ -79,7 +79,7 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
   const [datePassed, setDatePassed] = useState(false);
   const [winnerDetails, setWinnerDetails] = useState(initailWinnerData);
   const [allowDraw, setAllowDraw] = useState(true);
-  const [winnerDialog, setWinnerDialog] = useState(true);
+  const [winnerDialog, setWinnerDialog] = useState(false);
   const [winnerList, setWinnerList] = useState([]);
   const { list, getDataLoading } = useAppSelector(
     (state: RootState) => state.raffleDraw.getData

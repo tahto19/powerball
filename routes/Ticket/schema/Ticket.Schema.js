@@ -10,7 +10,7 @@ export const raffleDrawSchema = {
   schema: {
     body: {
       type: "object",
-      required: ["prize_id", "raffle_id", "testing"],
+      required: ["prize_id", "raffle_id"],
       properties: {
         raffle_id: { type: "number" },
         prize_id: { type: "number" },

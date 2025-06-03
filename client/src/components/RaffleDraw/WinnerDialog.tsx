@@ -64,7 +64,7 @@ const WinnerDialog = ({ open, ticket, onClose }: WinnerDialogProps) => {
                     }}>
 
                         <Button
-
+                            onClick={handleClose}
                             variant="contained"
                             sx={{
                                 padding: "10px 40px",

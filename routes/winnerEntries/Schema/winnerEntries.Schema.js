@@ -8,7 +8,7 @@ export const getDataSchema = {
   schema: {
     body: {
       type: "object",
-      required: ["raffle_schedule_id"],
+      // required: ["raffle_schedule_id"],
       properties: {
         raffle_schedule_id: { type: "number" },
       },
