@@ -101,9 +101,11 @@ const Login = () => {
         "https://18.138.76.86/powerball-scratchit-second-chance/";
     }
   }, [token]);
+
+
   return (
     <>
-      <div className="wp-singular page-template-default page page-id-514 wp-embed-responsive wp-theme-hello-elementor theme-default elementor-default elementor-kit-6 elementor-page elementor-page-514 elementor-page-231 e--ua-blink e--ua-chrome e--ua-webkit">
+      <div id="iframe-login" className="wp-singular page-template-default page page-id-514 wp-embed-responsive wp-theme-hello-elementor theme-default elementor-default elementor-kit-6 elementor-page elementor-page-514 elementor-page-231 e--ua-blink e--ua-chrome e--ua-webkit">
         <div
           data-elementor-type="single-page"
           data-elementor-id="231"
@@ -130,14 +132,14 @@ const Login = () => {
                   data-elementor-settings='{"ha_cmc_init_switcher":"no"}'
                   data-elementor-post-type="page"
                 >
-                  <div
+                  {/* <div
                     className="elementor-element elementor-element-7fa96ec e-flex e-con-boxed wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no e-con e-parent e-lazyloaded"
                     data-id="7fa96ec"
                     data-element_type="container"
                     data-settings='{"_ha_eqh_enable":false}'
                   >
                     <div className="e-con-inner"></div>
-                  </div>
+                  </div> */}
                   <section
                     className="elementor-section elementor-top-section elementor-element elementor-element-4b9d4b03 elementor-section-content-middle elementor-section-boxed elementor-section-height-default elementor-section-height-default wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no"
                     data-id="4b9d4b03"

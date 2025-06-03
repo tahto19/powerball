@@ -171,7 +171,8 @@ body .elementor-514 .elementor-element.elementor-element-938a465 .elementor-fiel
     }
 
     .elementor-514 .elementor-element.elementor-element-4b9d4b03 {
-        padding: 30px 0px 53px 0px;
+        /* padding: 30px 0px 53px 0px; */
+        padding: 0 0 0 0;
     }
 
     .elementor-514 .elementor-element.elementor-element-483ef2bd:not(.elementor-motion-effects-element-type-background)>.elementor-widget-wrap,
@@ -214,5 +215,11 @@ body .elementor-514 .elementor-element.elementor-element-938a465 .elementor-fiel
 
     .elementor-514 .elementor-element.elementor-element-483ef2bd {
         width: 100%;
+    }
+}
+
+@media(max-width:1000px) {
+    .elementor-514 .elementor-element.elementor-element-483ef2bd:not(.elementor-motion-effects-element-type-background)>.elementor-widget-wrap {
+        background-image: none;
     }
 }

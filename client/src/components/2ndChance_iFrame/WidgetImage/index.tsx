@@ -30,7 +30,7 @@ const widgetImage = () => {
                     </div>
                 </div>
             </div>
-            <iframe allowTransparency className="login-button-iframe" style={{
+            {/* <iframe allowTransparency className="login-button-iframe" style={{
                 position: 'relative',
                 // height: '1px',
                 // width: '1px'
@@ -39,7 +39,13 @@ const widgetImage = () => {
                 position: 'relative',
                 // height: '1px',
                 // width: '1px'
-            }} src="http://localhost:5173/iframe/2nd-chance/login-button"></iframe>
+            }} src="http://localhost:5173/iframe/2nd-chance/login-button"></iframe> */}
+
+            <iframe allowTransparency className="login-iframe" style={{
+                position: 'relative',
+                height: '70vh',
+                width: '100%'
+            }} src="http://localhost:5173/iframe/2nd-chance/login"></iframe>
         </>
     );
 }

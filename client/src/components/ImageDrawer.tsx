@@ -121,13 +121,13 @@ const ImageDrawer = ({ open, onChoose, onClose }: ImageDrawerProps) => {
                                                                 loading="lazy"  // Native lazy loading for images
                                                             />
                                                         </div>
-                                                        <Box sx={{}}>
+                                                        <Box sx={{ width: "100%", }}>
                                                             <Typography variant="subtitle2" sx={{
                                                                 padding: "15px 0",
-                                                                // width: "calc(100% - 150px)",
-                                                                // whiteSpace: "nowrap",
-                                                                // textOverflow: 'ellipsis',
-                                                                // overflow: 'hidden'
+                                                                width: "100%",
+                                                                whiteSpace: "nowrap",
+                                                                textOverflow: 'ellipsis',
+                                                                overflow: 'hidden'
                                                             }}> {item.name}</Typography>
                                                         </Box>
                                                     </ListItemButton>

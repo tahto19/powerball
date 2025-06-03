@@ -20,6 +20,7 @@ const loginButton = () => {
                 const width = el.getBoundingClientRect().width;
 
                 const myStyle = {
+                    iframeType: "login-button",
                     height,
                     width
                 }
