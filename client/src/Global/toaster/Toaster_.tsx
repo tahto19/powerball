@@ -8,6 +8,7 @@ const Toaster_ = () => {
     (state: RootState) => state.global.toasterShow
   );
   useEffect(() => {
+    console.log(count, message);
     toast(message, {
       type: variant === null || variant === undefined ? "success" : variant,
     });

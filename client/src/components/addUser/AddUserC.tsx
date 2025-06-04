@@ -78,7 +78,7 @@ const AddUserC = () => {
       setValue("mobileNumber", mobileNumber, { shouldValidate: true });
     } else {
       register("birthdate", { required: true });
-      register("file", { required: true });
+      register("file", { required: false });
       register("mobileNumber", { required: true });
     }
   }, []);
@@ -99,9 +99,15 @@ const AddUserC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const onError: SubmitErrorHandler<userState> = (error) => console.log(error);
   return (
-    <Grid container spacing={1}>
-      <form onSubmit={handleSubmit(onSubmit, onError)} id="my-form"></form>
-      <Grid size={{ md: 4, xs: 12 }}>
+    <Grid
+      container
+      spacing={1}
+    >
+      <form
+        onSubmit={handleSubmit(onSubmit, onError)}
+        id="my-form"
+      ></form>
+      <Grid size={{ md: 7, xs: 12 }}>
         <Grid
           container
           spacing={2}
@@ -117,8 +123,11 @@ const AddUserC = () => {
             </Typography>
           </Grid>
           <Grid size={11}>
-            <Grid container spacing={1}>
-              <Grid size={{ xs: 12, md: 6 }}>
+            <Grid
+              container
+              spacing={1}
+            >
+              <Grid size={{ xs: 12, md: 7 }}>
                 <TextField
                   sx={{ width: "100%" }}
                   id="outlined-basic"
@@ -160,7 +169,10 @@ const AddUserC = () => {
           </Grid>
 
           <Grid size={11}>
-            <Grid container spacing={1}>
+            <Grid
+              container
+              spacing={1}
+            >
               <Grid size={{ xs: 12, md: 6 }}>
                 <TextField
                   fullWidth
@@ -264,10 +276,10 @@ const AddUserC = () => {
                     minHeight: "40px",
                     height:
                       errors &&
-                        errors.mobileNumber &&
-                        errors.mobileNumber &&
-                        errors.mobileNumber.type &&
-                        errors.mobileNumber.type === "required"
+                      errors.mobileNumber &&
+                      errors.mobileNumber &&
+                      errors.mobileNumber.type &&
+                      errors.mobileNumber.type === "required"
                         ? "70%"
                         : "100%",
                   }}
@@ -338,7 +350,10 @@ const AddUserC = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid size={{ md: 7, xs: 12 }} sx={{ justifyContent: "center" }}>
+      <Grid
+        size={{ md: 4, xs: 12 }}
+        sx={{ justifyContent: "center" }}
+      >
         <Stack spacing={1}>
           <Box>
             <Typography sx={{ fontSize: "1.5rem", fontWeight: "bold" }}>
@@ -411,8 +426,14 @@ const AddUserC = () => {
           </Box>
         </Stack>
       </Grid>
-      <Grid size={12} sx={{ marginTop: "25px" }}></Grid>
-      <Grid size={{ md: 2, xs: 12 }} sx={{ textAlign: "center" }}>
+      <Grid
+        size={12}
+        sx={{ marginTop: "25px" }}
+      ></Grid>
+      <Grid
+        size={{ md: 2, xs: 12 }}
+        sx={{ textAlign: "center" }}
+      >
         <Typography>
           By creating an account or signing you agree to our{" "}
           <Tooltip title="Click me!">
