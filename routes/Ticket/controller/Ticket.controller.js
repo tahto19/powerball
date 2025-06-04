@@ -101,6 +101,7 @@ export const postTicketController = async (req, res) => {
         [["id", "ASC"]],
         [{ field: "ticket_code", filter: _r.data.t, type: "string_eq" }]
       );
+      console.log(getTicket);
       if (getTicket.length > 0) {
         throw new Error("This ticket has already been entered into the raffle");
       } else {
