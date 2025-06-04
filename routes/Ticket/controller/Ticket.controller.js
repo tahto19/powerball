@@ -8,7 +8,7 @@ import axios from "axios";
 export const raffleDrawController = async (req, res) => {
   try {
     const { raffle_id, prize_id } = req.body;
-    console.log(req.body);
+
     if (!raffle_id || prize_id === -1 || !prize_id)
       throw new Error("Error X984");
     // check first if the raffle is already done
@@ -79,23 +79,45 @@ export const postTicketController = async (req, res) => {
     );
     console.log(">>>>>>>", _r.data);
     console.log("qrcode is: ", req.body.ticket_id);
-    if (
-      _r.data.r.trim() === "This is a non-winning ticket." ||
-      _r.data.r.trim() === "Error checking ticket."
-    ) {
+    // _r.data.r.trim() === "This is a non-winning ticket." ||
+    if (_r.data.r.trim() === "Error checking ticket.") {
       throw new Error(_r.data.r);
+    } else if (_r.data.r.trim().toLowerCase() === "this is a winning ticket") {
+      throw new Error(
+        "This is a winning ticket and is not eligible for raffle draw"
+      );
+    } else if (_r.data.r.trim().toLowerCase() === "error checking ticket") {
+      throw new Error(
+        "Scan Error. Please call (0917) 188 5885 or (0919) 099 1999 for assistance"
+      );
+    } else if (_r.data.r.trim().toLowerCase() === "error checking ticket") {
+      throw new Error(
+        "This is a winning ticket and is not eligible for the raffle draw."
+      );
+    }
+    if (_r.data.t) {
+      // check if the ticket is exists
+      let getTicket = await tc.FetchAll(
+        [["id", "ASC"]],
+        [{ field: "ticket_code", filter: _r.data.t, type: "string_eq" }]
+      );
+      if (getTicket.length > 0) {
+        throw new Error("This ticket has already been entered into the raffle");
+      } else {
+        let r = await tc.Insert({
+          ticket_info: { ticket_id: req.body.ticket_id, ..._r.data },
+          entries: !_r.data.a ? 2 : _r.data.a,
+          user_id: req.user_id,
+          alpha_code: _r.data.t.split("-")[0],
+          ticket_code: _r.data.t,
+        });
+      }
+      res.send({
+        message: `Congratulations, your ticket has been successfully registered!`,
+        result: "success",
+      });
     }
     // let _r = { data: { a: 3 } };
-    let r = await tc.Insert({
-      ticket_info: { ticket_id: req.body.ticket_id, ..._r.data },
-      entries: _r.data.a,
-      user_id: req.user_id,
-      alpha_code: _r.data.t.split("-")[0],
-    });
-    res.send({
-      message: `You've entered a ticket with ${_r.data.a} entries.`,
-      result: "success",
-    });
   } catch (err) {
     if (err.response) {
       throw new Error(

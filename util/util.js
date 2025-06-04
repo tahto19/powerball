@@ -10,7 +10,7 @@ import moment from "moment";
 import fs from "fs";
 const transport = nodemailer.createTransport({
   host: process.env.EMAILHOST,
-  port: process.env.EMAIPORT,
+  port: process.env.EMAILPORT,
   secure: true,
   auth: {
     user: process.env.EMAILUSERNAME,
