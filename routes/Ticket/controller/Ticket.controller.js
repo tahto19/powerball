@@ -101,17 +101,17 @@ export const postTicketController = async (req, res) => {
         [["id", "ASC"]],
         [{ field: "ticket_code", filter: _r.data.t, type: "string_eq" }]
       );
-      console.log(getTicket);
-      if (getTicket.length > 0) {
+
+      if (getTicket.list.length > 0) {
         throw new Error("This ticket has already been entered into the raffle");
       } else {
-        // let r = await tc.Insert({
-        //   ticket_info: { ticket_id: req.body.ticket_id, ..._r.data },
-        //   entries: !_r.data.a ? 2 : _r.data.a,
-        //   user_id: req.user_id,
-        //   alpha_code: _r.data.t.split("-")[0],
-        //   ticket_code: _r.data.t,
-        // });
+        let r = await tc.Insert({
+          ticket_info: { ticket_id: req.body.ticket_id, ..._r.data },
+          entries: !_r.data.a ? 2 : _r.data.a,
+          user_id: req.user_id,
+          alpha_code: _r.data.t.split("-")[0],
+          ticket_code: _r.data.t,
+        });
         res.send({
           message: `Congratulations, your ticket has been successfully registered!`,
           result: "success",

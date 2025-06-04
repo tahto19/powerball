@@ -30,7 +30,6 @@ const ScannerIframe = () => {
   const [scanned, setScanned] = useState<string | null>();
   const { loading, token } = useAppSelector((state) => state.token);
   const handleScan = (e: string) => {
-    console.log(e);
     setScanned(e);
     if (e) dispatch(addTicket(e));
   };
