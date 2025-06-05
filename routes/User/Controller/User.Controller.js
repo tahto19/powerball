@@ -39,12 +39,41 @@ export const insertController = async (req, res) => {
   res.send(cSend(a));
 };
 export const updateController = async (req, res) => {
-  const { firstname, lastname, password, emailAddress, mobileNumber } =
-    req.body;
+  const {
+    id,
+    firstname,
+    file,
+    lastname,
+    mobileNumber,
+    birthdate,
+    emailAddress,
+    password,
+  } = req.body;
 
-  let a = await uc.Edit(req.body);
+  console.log(file);
+  if (!file.mimetype.startsWith("image/")) throw new Error("ErrorCODE x91c");
+
+  let newFileName = `${moment().format(
+    "MM-DD-YYYY"
+  )}-${generateRandomNumber()}-${generateRandomChar(5)}-${file.filename}`;
+  let _path = getPath("/uploads/ids/" + newFileName);
+
+  let iUp = await uploadImage(file);
+
+  const data = {
+    id,
+    firstname,
+    lastname,
+    password,
+    emailAddress,
+    mobileNumber,
+    birthdate,
+    idPath: iUp.filename,
+  };
+  let a = await uc.Edit(data);
   res.send(cSend(a));
 };
+
 export const createUser = async (req, res) => {
   try {
     let platform = req.headers.platform;

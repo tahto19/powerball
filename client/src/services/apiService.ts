@@ -38,7 +38,6 @@ async function initApiClient() {
   apiClient = axios.create({
     baseURL: base_url,
     headers: {
-      "Content-Type": "application/json",
       "pm-scratch-it-m": getDI?.model || "none",
       platformVersion: getDI?.platformVersion || "none",
       platform: getDI?.platform || "none",
@@ -46,7 +45,22 @@ async function initApiClient() {
     withCredentials: true,
   });
 }
-
+function fileToBase64(file: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === "string") {
+        // Strip prefix data:*/*;base64,
+        const base64String = reader.result.split(",")[1];
+        resolve(base64String);
+      } else {
+        reject(new Error("Unexpected reader result type"));
+      }
+    };
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+}
 // Call the initialization function
 initApiClient();
 
@@ -178,11 +192,24 @@ export const apiService = {
 
     fd.append("data", bodyEncrypt(d, token));
     fd.append("file", d.file[0]);
-    const res = apiClient.put("/api/file/image", fd, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    console.log(d.file[0])
+    const res = apiClient.put("/api/file/image", fd, {});
+// const file = d.file[0];
+// const base64File = await fileToBase64(file);
+
+// const jsonPayload = {
+//   data: bodyEncrypt(d, token),
+//   file: {
+//     filename: file.name,
+//     mimetype: file.type,
+//     base64: base64File,
+//   },
+// };
+
+// const res = await apiClient.put("/api/file/image", jsonPayload, {
+//   headers: { "Content-Type": "application/json" },
+// });
+
     return res;
   },
 
@@ -230,10 +257,15 @@ export const apiService = {
   insertAdmin: async (data: adminType) => {
     return apiClient.post("/api/users", data);
   },
-  updateAdmin: async (data: adminType, token: string | null) => {
-    return apiClient.put("api/users", {
-      data: bodyEncrypt(JSON.stringify(data), token),
-    });
+  updateAdmin: async (d: adminType, token: string | null) => {
+    const data = ['firstname', 'lastname', 'emailAddress', 'birthdate', 'file', 'mobileNumber', 'password',]
+     const fd = new FormData();
+     console.log(d)
+   
+    fd.append("data", bodyEncrypt(d, token));
+    fd.append("file", d.file[0]);
+    
+    return apiClient.put("api/users", fd);
   },
   getAdmin: async (data: getDataV2, token: string) => {
     return apiClient.post("/api/users/admin", {

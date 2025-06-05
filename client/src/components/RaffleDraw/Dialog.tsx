@@ -337,7 +337,7 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
               </IconButton>
             </Box>
             <Typography sx={{ fontSize: "48px", fontWeight: "900" }}>
-              {Number(prizeData.amount).toLocaleString()}
+              {Number(prizeData.amount) ? Number(prizeData.amount).toLocaleString() : prizeData.amount}
             </Typography>
             <CardMedia
               component="img"

@@ -17,6 +17,8 @@ import { useNavigate } from "react-router-dom";
 import { MyEntries } from "../UserTicketDetails/MyEntries";
 import TicketScannedList from "@/components/ticketScanner/TicketScannedList";
 import WinnerDetails from "@/components/2ndChance_iFrame/winner/WinnerDetails";
+import { useAppSelector } from "@/redux/hook";
+
 
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const endpoint = base_url + "api/file/serve/image/"
@@ -47,6 +49,9 @@ const tabs = [
 ]
 
 const Dashboard = () => {
+    const { totalEntries } = useAppSelector(
+        (state) => state.raffleEntry
+    );
     const navigate = useNavigate();
     const handleNavigation = () => {
         navigate("/scanner");
@@ -70,40 +75,61 @@ const Dashboard = () => {
 
                 </CardMedia> */}
 
-                <Box
-                    onClick={handleNavigation}
-                    sx={{
-                        position: 'absolute',
-                        bottom: '0',
-                        left: '0',
-                        display: 'inline-flex',
-                        height: '36px',
-                        padding: '8px 12px',
-                        alignItems: 'center',
-                        gap: '12px',
-                        flexShrink: '0',
-                        borderRadius: '40px',
-                        background: '#202020',
-                        color: '#fff',
-                        cursor: 'pointer',
-                        '&:hover': {
-                            opacity: '0.9'
-                        }
-                    }}>
-                    Enter Ticket
-                    <div style={{
-                        display: 'flex',
-                        width: '20px',
-                        height: '20px',
-                        padding: '6px',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        gap: '10px',
-                        borderRadius: '50px',
-                        background: '#FFF'
-                    }}>
-                        <img src={play} />
-                    </div>
+                <Box sx={{
+                    position: 'absolute',
+                    bottom: '0',
+                    left: '0',
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '20px'
+                }}>
+                    <Box
+                        onClick={handleNavigation}
+                        sx={{
+                            display: 'inline-flex',
+                            height: '36px',
+                            padding: '8px 12px',
+                            alignItems: 'center',
+                            gap: '12px',
+                            flexShrink: '0',
+                            borderRadius: '40px',
+                            background: '#202020',
+                            color: '#fff',
+                            cursor: 'pointer',
+                            '&:hover': {
+                                opacity: '0.9'
+                            }
+                        }}>
+                        Enter Ticket
+                        <div style={{
+                            display: 'flex',
+                            width: '20px',
+                            height: '20px',
+                            padding: '6px',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            gap: '10px',
+                            borderRadius: '50px',
+                            background: '#FFF'
+                        }}>
+                            <img src={play} />
+                        </div>
+                    </Box>
+                    <Box
+                        sx={{
+                            display: 'inline-flex',
+                            height: '36px',
+                            padding: '8px 12px',
+                            alignItems: 'center',
+                            gap: '12px',
+                            flexShrink: '0',
+                            borderRadius: '40px',
+                            background: '#F26A21',
+                            color: '#fff',
+                        }}>
+                        Available Raffle Ticket: {totalEntries}
+
+                    </Box>
                 </Box>
             </Box>
 

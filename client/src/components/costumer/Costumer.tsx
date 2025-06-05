@@ -132,7 +132,7 @@ const Costumer = () => {
           component="h2"
           variant="h6"
         >
-          Costumer
+          Customer
         </Typography>
       </Grid2>
       {/* <Grid2 size={{ xs: 6, sm: 6, lg: 6 }}>

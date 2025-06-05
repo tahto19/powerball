@@ -50,6 +50,7 @@ const Raffles = () => {
       limit: pagination.pageSize,
       sort: JSON.stringify([["name", "ASC"]]),
       filter: JSON.stringify([{ field: "active", filter: 1, type: "boolean" }, { field: "alpha_code", type: "not_empty_string" }]),
+      // filter: JSON.stringify([{ field: "active", filter: 1, type: "boolean" }, { field: "starting_date", type: "future_date" }, { field: "alpha_code", type: "not_empty_string" }]),
     };
     const res = await apiService.get2ndChanceGMListAll(payload, token);
 
@@ -212,6 +213,7 @@ const Raffles = () => {
                     onClick={() => handleParticipate(x)}
                     variant="contained"
                     sx={{ width: "100%" }}
+                    disabled={moment(x.raffleSchedule[0].schedule_date).isSameOrBefore(moment())}
                   >
                     Participate
                   </Button>
