@@ -317,6 +317,7 @@ const AddUserC = () => {
             <LocalizationProvider dateAdapter={AdapterMoment}>
               <DemoContainer components={["DatePicker"]}>
                 <DatePicker
+                  views={['year', 'month', 'day']}
                   label="Birthdate"
                   value={moment(getValues("birthdate"))}
                   sx={{ width: "100%" }}
