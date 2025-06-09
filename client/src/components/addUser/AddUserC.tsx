@@ -31,6 +31,7 @@ import "react-phone-input-2/lib/style.css";
 import { userState } from "./TypesHere.ts";
 import { useAppDispatch } from "@/redux/hook.ts";
 import { outsideAddUser } from "@/redux/reducers/user/asnycCalls.ts";
+import NewDatePicker from "./NewDatePicker.tsx";
 const AddUserC = () => {
   const dispatch = useAppDispatch();
   const {
@@ -127,7 +128,7 @@ const AddUserC = () => {
               container
               spacing={1}
             >
-              <Grid size={{ xs: 12, md: 7 }}>
+              <Grid size={{ xs: 4, md: 6 }}>
                 <TextField
                   sx={{ width: "100%" }}
                   id="outlined-basic"
@@ -326,11 +327,16 @@ const AddUserC = () => {
             </Grid>
           </Grid>
           <Grid size={11}>
+            {getValues("birthdate")}
             <LocalizationProvider dateAdapter={AdapterMoment}>
               <DemoContainer components={["DatePicker"]}>
                 <DatePicker
                   label="Birthdate"
-                  value={moment(getValues("birthdate"))}
+                  value={
+                    getValues("birthdate") === ""
+                      ? moment(getValues("birthdate"))
+                      : null
+                  }
                   sx={{ width: "100%" }}
                   onChange={(e) => {
                     setValue("birthdate", moment(e).toISOString(), {
@@ -347,6 +353,9 @@ const AddUserC = () => {
               errors.birthdate.type === "required" && (
                 <FormHelperText sx={{ color: "red" }}>Required</FormHelperText>
               )}
+          </Grid>
+          <Grid size={11}>
+            <NewDatePicker />
           </Grid>
         </Grid>
       </Grid>
