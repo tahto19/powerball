@@ -11,6 +11,9 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  ssr: {
+    noExternal: ["html5-qrcode"],
+  },
   build: {
     rollupOptions: {
       output: {
