@@ -17,16 +17,17 @@ const bodyChecker = async (req, res, payload) => {
       if (regex && x.method.toLowerCase() === req.method.toLowerCase())
         return x;
     });
-
+    let parsed = false;
     if (findNoP === undefined) {
       const chunks = [];
+      if (!formHeader) {
+        for await (const chunk of payload) {
+          chunks.push(chunk);
+        }
+        const rawBody = Buffer.concat(chunks).toString("utf8");
 
-      for await (const chunk of payload) {
-        chunks.push(chunk);
+        parsed = rawBody === "" ? false : JSON.parse(rawBody);
       }
-      const rawBody = Buffer.concat(chunks).toString("utf8");
-
-      let parsed = rawBody === "" ? false : JSON.parse(rawBody);
       if (req.method === "POST" && !parsed && !formHeader)
         throw new Error("ErrorCODE X2");
       if (req.method === "PUT" && !parsed && !formHeader)
@@ -51,16 +52,14 @@ const bodyChecker = async (req, res, payload) => {
       }
 
       if (req.method !== "GET" && formHeader) {
-        const cookie = req.cookies.cookie_pb_1271;
-
-        let a = decryptData(parsed.data.value, cookie);
-
-        const file = parsed.file;
-        if (!a) throw new Error("ErrorCODE X891");
-        let body = JSON.parse(a);
-        const byteLength = Buffer.byteLength(a, "utf8");
-        req.headers["content-length"] = byteLength.toString();
-        return Readable.from([a]);
+        // const cookie = req.cookies.cookie_pb_1271;
+        // let a = decryptData(parsed.data.value, cookie);
+        // const file = parsed.file;
+        // if (!a) throw new Error("ErrorCODE X891");
+        // let body = JSON.parse(a);
+        // const byteLength = Buffer.byteLength(a, "utf8");
+        // req.headers["content-length"] = byteLength.toString();
+        // return Readable.from([a]);
         // parsed = { ...JSON.parse(a), file };
       }
     }

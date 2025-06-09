@@ -15,7 +15,7 @@ export type PrizeListAll = {
 export interface PrizeState {
     id: string | null;
     name: string;
-    value: number;
+    value: string;
     type: string;
 }
 
@@ -34,6 +34,6 @@ export const initialPrizeListData: PrizeListAll = {
 export const initialData: PrizeState = {
     id: null,
     name: "",
-    value: 0,
+    value: "",
     type: ""
 }

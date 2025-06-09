@@ -1,6 +1,6 @@
 //@ts-nocheck
 import * as React from "react";
-import { useAppSelector } from "@/redux/hook";
+import { useAppSelector, useAppDispatch } from "@/redux/hook";
 import { showToaster } from "@/redux/reducers/global/globalSlice"
 
 import { TextField, MenuItem, Dialog, DialogActions, DialogContent, DialogTitle, Button, FormLabel, Grid2 } from '@mui/material';
@@ -18,6 +18,7 @@ const FormControl = styled(MuiFormControl)(({ theme }) => ({
 
 const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: MyDialogProps) => {
     // const [isOpen, setOpen] = React.useState(open);
+    const dispatch = useAppDispatch();
     const [dialog_type, setDialogType] = React.useState("")
     const [formData, setData] = React.useState<PrizeState>(data);
     const { token } = useAppSelector((state) => state.token);
@@ -41,22 +42,22 @@ const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: MyDialogProps) 
             const d = bodyDecrypt(res.data, token)
 
             if (d && d.success === 'success') {
-                showToaster({
+                dispatch(showToaster({
                     message: message,
                     show: true,
                     variant: "success",
                     icon: null,
-                })
+                }))
                 onClose(false);
                 onSubmit()
             } else {
                 setSubmitting(false);
-                showToaster({
+                dispatch(showToaster({
                     message: d.message,
                     show: true,
                     variant: "error",
                     icon: null,
-                })
+                }))
             }
         } catch (err) {
             setSubmitting(false);
@@ -157,7 +158,7 @@ const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: MyDialogProps) 
                                     <FormLabel htmlFor="value">Value</FormLabel>
                                     <TextField
                                         id="value"
-                                        type="number"
+                                        type="string"
                                         name="value"
                                         placeholder="1000"
                                         autoComplete="value"

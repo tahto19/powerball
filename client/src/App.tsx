@@ -91,9 +91,9 @@ const routes = [
     title: "My Ticket",
   },
   {
-    path: "/costumer",
+    path: "/customer",
     component: <Costumer />,
-    title: "Costumer",
+    title: "Customer",
   },
 ];
 

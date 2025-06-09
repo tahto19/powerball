@@ -8,7 +8,7 @@ RafflePrize.init(
   {
     amount: {
       allowNull: true,
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING,
       defaultValue: null,
     },
     raffle_schedule_id: {

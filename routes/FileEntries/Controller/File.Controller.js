@@ -36,16 +36,18 @@ export const insertImageController = async (req, res) => {
 
 export const updateImageController = async (req, res) => {
   try {
+    console.log("Route - req.body:", req.body);
     const { id, description, file, name } = req.body;
     let query;
-
     query = {
       id: id,
       description: description,
       name: name,
     };
 
-    if (file.mimetype.startsWith("image/")) {
+    console.log(file);
+
+    if (file.mimetype && file.mimetype.startsWith("image/")) {
       let iUp = await uploadImage2(file);
       query = {
         ...query,

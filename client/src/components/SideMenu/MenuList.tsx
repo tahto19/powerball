@@ -23,7 +23,7 @@ const mainListItems = [
   { text: "Home", icon: <HomeRounded />, path: "/dashboard" },
   { text: "Images", icon: <Image />, path: "/images" },
   { text: "Administrator", icon: <Group />, path: "/administrator" },
-  { text: "Costumer", icon: <PeopleOutline />, path: "/costumer" },
+  { text: "Customer", icon: <PeopleOutline />, path: "/customer" },
   {
     text: "Game Maintenance",
     icon: <DisplaySettings />,

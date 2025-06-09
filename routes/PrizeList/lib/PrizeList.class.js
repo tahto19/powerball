@@ -1,5 +1,6 @@
 import PrizeList from "../../../models/PrizeList.model.js";
 import { WhereFilters } from "../../../util/util.js";
+import RafflePrize from "../../../models/RafflePrize.model.js";
 
 class PrizeList_class {
   constructor() {}
@@ -43,6 +44,11 @@ class PrizeList_class {
     delete _data.id;
 
     await PrizeList.update(_data, { where: { id }, individualHooks: true });
+
+    await RafflePrize.update(
+      { amount: _data.value },
+      { where: { prize_id: id }, individualHooks: true }
+    );
 
     return id;
   }

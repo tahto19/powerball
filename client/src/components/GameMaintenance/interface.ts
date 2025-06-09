@@ -31,7 +31,7 @@ export interface RaffleScheduleState {
 export interface PrizeInfoState {
     id: number | null;
     prize_id: number;
-    amount: number;
+    amount: string;
     Prize_List: PrizeListState;
     
 }
@@ -80,6 +80,6 @@ export const initialRaffleData: RaffleState = {
         starting_date: moment().toISOString(),
         end_date: moment().toISOString(),
         schedule_type: 1,
-        raffleSchedule: [{id: null, raffle_id: null,schedule_date: moment().toISOString(), prizeInfo: [{id: null, prize_id: -1, amount: 0, Prize_List: {id: null, type: ""}}]}],
+        raffleSchedule: [{id: null, raffle_id: null,schedule_date: moment().toISOString(), prizeInfo: [{id: null, prize_id: -1, amount: "", Prize_List: {id: null, type: ""}}]}],
         fileInfo: null,
     }

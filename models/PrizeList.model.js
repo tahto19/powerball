@@ -8,7 +8,7 @@ PrizeList.init(
   {
     value: {
       allowNull: true,
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       defaultValue: null,
     },
     name: {

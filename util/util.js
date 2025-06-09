@@ -98,6 +98,12 @@ export const WhereFilters = (filters = []) => {
         case "isnot":
           wherefilters[f.field] = { [Op.ne]: f.filter };
           break;
+        case "future_date":
+          const currentDate = moment().startOf("day").format("YYYY-MM-DD");
+          wherefilters[f.field] = {
+            [Op.gt]: `${currentDate} 23:59:59`,
+          };
+          break;
         case "date":
           if (
             f.filter.start &&

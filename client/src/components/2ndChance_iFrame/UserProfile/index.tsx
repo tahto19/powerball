@@ -1,3 +1,4 @@
+
 //@ts-nocheck
 import {
     Card,
@@ -8,7 +9,9 @@ import {
     FormControl,
     FormLabel,
     TextField,
-    FormHelperText
+    FormHelperText,
+    Stack,
+    Paper
 } from "@mui/material";
 import { CameraAlt } from '@mui/icons-material';
 import rectangle from '@/assets/images/Rectangle 6691.png'
@@ -24,10 +27,14 @@ import Avatar from '@mui/material/Avatar';
 
 import { RootState } from "@/redux/store";
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import apiService from "@/services/apiService";
 import { bodyDecrypt } from "@/utils/util";
 import ProfileDialog from "./ProfileDialog";
+
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { useDropzone } from "react-dropzone";
+
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const endpoint = base_url + "api/file/serve/image/"
 
@@ -112,6 +119,23 @@ const main = () => {
         refreshImage()
     }
 
+    const onDrop = useCallback((acceptedFiles: File[]) => {
+        // Do something with the files
+        setFormData((prev) => ({
+            ...prev,
+            file: acceptedFiles
+        }))
+
+    }, []);
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+        accept: {
+            "image/png": [".png"],
+            "image/jpg": [".jpg"],
+            "image/jpeg": [".jpeg"],
+        },
+        onDrop,
+        multiple: false,
+    });
     return (
         <>
             <Box>
@@ -288,7 +312,7 @@ const main = () => {
                                 <FormControl fullWidth >
                                     <FormLabel htmlFor="birthdate">Birth Date</FormLabel>
                                     <LocalizationProvider dateAdapter={AdapterMoment}>
-                                        <DatePicker name="birthdate" onChange={(date: any) => handleInputChange(date, 'birthdate')} // Pass name explicitly
+                                        <DatePicker views={['year', 'month', 'day']} name="birthdate" onChange={(date: any) => handleInputChange(date, 'birthdate')} // Pass name explicitly
                                             value={formData.birthdate ? moment(formData.birthdate) : moment()} />
                                     </LocalizationProvider>
                                     {/* <TextField
@@ -325,6 +349,57 @@ const main = () => {
                                         disabled
                                     />
                                 </FormControl>
+                            </Grid2>
+                            <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+                                <FormLabel htmlFor="details">Upload valid ID</FormLabel>
+                                <Paper
+                                    elevation={0}
+                                    sx={{
+                                        borderStyle: "dashed",
+                                        borderWidth: "4px",
+                                        borderColor: "#cacfdb",
+                                        padding: "2%",
+                                        borderRadius: "25px",
+                                        marginTop: 1
+                                    }}
+                                >
+                                    <div {...getRootProps()}>
+                                        {isDragActive ? (
+                                            <p>Drop the files here ...</p>
+                                        ) : (
+                                            <Stack
+                                                spacing={0}
+                                                sx={{ justifyContent: "center", textAlign: "center" }}
+                                            >
+                                                <Box>
+                                                    <CloudUploadIcon sx={{ fontSize: 45 }} />
+                                                </Box>
+                                                <Box>
+                                                    <Button
+                                                        variant="outlined"
+                                                        sx={{
+                                                            borderRadius: "30px",
+                                                            color: "black",
+                                                            fontWeight: "bold",
+                                                            borderColor: "#cacfdb",
+                                                            borderWidth: "medium",
+                                                        }}
+                                                    >{formData.file && formData.file.length > 0 ? formData.file[0].name : "Browse File"}
+                                                    </Button>
+                                                </Box>
+                                                <Box>
+                                                    <Typography>{formData.file && formData.file.length > 0 ? "Change " : "Choose "}
+                                                        a file or drag & drop it here
+                                                    </Typography>
+                                                    <Typography sx={{ color: "#cacfdb" }}>
+                                                        JPEG,PNG formats, up to 50MB
+                                                    </Typography>
+                                                </Box>
+                                            </Stack>
+                                        )}
+                                    </div>
+                                    <input {...getInputProps()} />
+                                </Paper>
                             </Grid2>
                             <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
                                 <Button type="submit" variant="contained" color="info" sx={{ px: 4 }} >Edit</Button>
