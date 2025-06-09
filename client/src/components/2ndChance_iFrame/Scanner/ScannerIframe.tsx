@@ -101,11 +101,31 @@ const ScannerIframe = () => {
           // <Scanner
           //   onScan={(result: IDetectedBarcode[]) => handleScan(result)}
           // />
-          <BarcodeScanner
-            onUpdate={(err, result: any) => {
-              if (result) handleScan(result?.text);
+          <Box
+            sx={{
+              position: "relative",
+              width: "500px",
+              height: "400px",
             }}
-          />
+          >
+            <BarcodeScanner
+              onUpdate={(err, result: any) => {
+                if (result) handleScan(result?.text);
+              }}
+            />
+            <Box
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                width: "450px",
+                height: "200px",
+                border: "2px solid black",
+                transform: "translate(-50%, -50%)",
+                pointerEvents: "none",
+              }}
+            ></Box>
+          </Box>
         )}
       </Box>
     </>
