@@ -13,7 +13,6 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      external: ["html5-qrcode"],
       output: {
         globals: {
           "html5-qrcode": "Html5QrcodeScanner", // or just 'html5Qrcode'
