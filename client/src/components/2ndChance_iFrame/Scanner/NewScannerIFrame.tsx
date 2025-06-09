@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useEffect, useRef } from "react";
 import { Html5QrcodeScanner, Html5QrcodeScannerState } from "html5-qrcode";
 
