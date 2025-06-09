@@ -13,6 +13,7 @@ import {
 import { useAppDispatch } from "@/redux/hook";
 import { addTicket } from "@/redux/reducers/ticket/asyncCalls";
 import ScannerIframe from "../2ndChance_iFrame/Scanner/ScannerIframe";
+import NewScannerIFrame from "../2ndChance_iFrame/Scanner/NewScannerIFrame";
 
 const Dialog_ = ({ open, data, dialogType, onClose }) => {
   const [scannedData, setScannedData] = useState<
@@ -32,6 +33,13 @@ const Dialog_ = ({ open, data, dialogType, onClose }) => {
   const handleClose = () => {
     onClose();
   };
+  const handleScanSuccess = (decodedText: string, decodedResult: any) => {
+    console.log("✅ QR Code:", decodedText);
+  };
+
+  const handleScanFailure = (error: string) => {
+    // Optional: console.warn('Scan error:', error);
+  };
   return (
     <Dialog
       open={open}
@@ -39,7 +47,10 @@ const Dialog_ = ({ open, data, dialogType, onClose }) => {
     >
       <DialogTitle>{dialogType} Scanning</DialogTitle>
       <DialogContent>
-        <ScannerIframe />
+        <NewScannerIFrame
+          onScanSuccess={handleScanSuccess}
+          onScanFailure={handleScanFailure}
+        />
         {/* {scannedData?.rawValue}
         {scannedData && scannedData?.rawValue ? (
           <>
