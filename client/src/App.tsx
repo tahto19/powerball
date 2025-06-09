@@ -5,7 +5,7 @@ import {
   Routes,
   Route,
   useNavigate,
-  useLocation
+  useLocation,
 } from "react-router-dom";
 
 import AdduserMain from "./components/addUser/AdduserMain";
@@ -14,12 +14,8 @@ import SignIn from "./components/signIn/index";
 import AppTheme from "@/theme/AppTheme";
 import MainLayout from "./layout/MainLayout";
 
-
 import AppTheme2 from "@/theme/2ndChanceAppTheme";
 import MainLayout2 from "./layout/2ndChanceMainLayout";
-
-
-
 
 import Dashboard from "./components/Dashboard/Dashboard";
 import Administrator from "./components/Administrator/index";
@@ -153,9 +149,8 @@ function AppRoutes() {
     if (hasRun.current) return; // already ran once, skip
     hasRun.current = true;
 
-
     const isInIframe = window.self !== window.top;
-    console.log(window.location)
+    console.log(window.location);
 
     // Only call getToken if not in iframe
     // if (!isInIframe && !skipTokenPaths.includes(currentPath)) {
@@ -219,7 +214,7 @@ function AppRoutes() {
         </Route>
       </Route>
 
-      <Route >
+      <Route>
         {routes2.map(({ path, component, title }) => (
           <Route
             key={path}
@@ -232,7 +227,6 @@ function AppRoutes() {
           />
         ))}
       </Route>
-
 
       {/* Iframe Routes */}
       <Route
@@ -256,8 +250,6 @@ function AppRoutes() {
         element={<WidgetImage />}
       />
 
-
-
       {/* Catch-All Error Page */}
       <Route
         path="*"
@@ -268,7 +260,7 @@ function AppRoutes() {
 }
 
 function App() {
-  const basename = import.meta.env.VITE_ROUTER_BASENAME
+  const basename = import.meta.env.VITE_ROUTER_BASENAME;
   let currentPath = window.location.pathname;
 
   return (
