@@ -82,8 +82,6 @@ const GameMaintenace = () => {
     const refreshTable = () => setRefreshKey((prev) => prev + 1);
 
     const handleTableChange = async ({ page, pageSize, sortModel, filterModel }: any) => {
-        console.log("Table Changed:", { page, pageSize, sortModel, filterModel });
-
         setPagination({ page, pageSize })
 
         let sort = [['id', 'DESC']];
@@ -113,7 +111,6 @@ const GameMaintenace = () => {
 
         const d = bodyDecrypt(res.data, token)
         if (d && d.success === 'success') {
-            console.log(d.data.list)
             setRaffleList(d.data.list)
             setListCount(d.data.total)
         }
@@ -130,7 +127,6 @@ const GameMaintenace = () => {
     }
 
     const handleEditAction = (row: RaffleState) => {
-        console.log("-------", row)
         setDialogType("Edit");
         setDataRow({ ...row })
         setOpen(true)

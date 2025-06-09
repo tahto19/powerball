@@ -11,7 +11,7 @@ import {
 
 const getErrorsStatus = (code: string) => {
   if (!code) return false;
-  const c_ = code.toLowerCase().replace("errorcode", "").trim();
+  const c_ = code.toLowerCase().replace(/errorcode|error/g, "").trim();
   switch (c_) {
     case "x1":
       return "Filter is not set";
@@ -53,7 +53,7 @@ const getErrorsStatus = (code: string) => {
     case "x741":
       return "Generated OTP but the system email sender has a problem please contact administrator";
     case "x984":
-      return "invalid transaction in draw no prize_id or no raffle_id";
+      return "Invalid draw. Prize not found.";
     case "x911":
       return "Already have a winner";
     case "x675":

@@ -1,6 +1,7 @@
 import moment from "moment";
 import { cSend } from "../../../util/util.js";
 import rc from "../lib/Raffle.class.js";
+import { fn, col, literal } from "sequelize";
 
 export const insertController = async (req, res) => {
   try {
@@ -64,9 +65,14 @@ export const get2ndChanceControllerAll = async (req, res) => {
   const { limit, offset, sort, filter, user_id } = req.body;
   let parsedSort = !sort ? [["id", "DESC"]] : JSON.parse(sort);
   let parsedFilter = !filter ? [] : JSON.parse(filter);
-  parsedSort = parsedSort.length > 0 ? parsedSort : [["id", "DESC"]];
+
+  parsedSort = [
+    [literal(`CASE WHEN starting_date > NOW() THEN 0 ELSE 1 END`), "ASC"],
+  ];
+
   const new_offset = limit * offset; // Calculate offset
   console.log(">>>>>>>>>>>>-----", req.user_id);
+
   let a = await rc._2ndChanceFetchAll(
     new_offset,
     limit,

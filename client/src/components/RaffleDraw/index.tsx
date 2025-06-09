@@ -50,14 +50,11 @@ const RaffleDraw = () => {
   }
 
   const handleCardClick = (item: RaffleState) => {
-    console.log("Detialss", item)
     setOpen(true)
     setCardData(item)
   }
 
   const handleTableChange = async ({ page, pageSize, sortModel, filterModel }: any) => {
-    console.log("Table Changed:", { page, pageSize, sortModel, filterModel });
-
     setPagination({ page, pageSize })
 
     let sort = [['id', 'DESC']];
@@ -89,7 +86,6 @@ const RaffleDraw = () => {
 
     const d = bodyDecrypt(res.data, token)
     if (d && d.success === 'success') {
-      console.log(d.data.list)
       setRaffleList(d.data.list)
       setListCount(d.data.total)
     }
@@ -106,7 +102,6 @@ const RaffleDraw = () => {
 
     const d = bodyDecrypt(res.data, token);
     if (d && d.success === "success") {
-      console.log(">>>>>>>>", d.data);
       setRaffleList(d.data.list);
     }
   };

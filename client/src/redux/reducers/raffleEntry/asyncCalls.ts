@@ -6,7 +6,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { showToaster } from "../global/globalSlice";
 import apiService from "@/services/apiService";
 import { RootState } from "@/redux/store";
-import { addEntryList, entriesChange } from "./raffleEntrySlice";
+import { OverallTotalEntries, addEntryList, entriesChange } from "./raffleEntrySlice";
 import { enterEntries } from "@/components/2ndChance_iFrame/Raffles/interface";
 
 interface GetRaffleParams {
@@ -28,7 +28,11 @@ export const getRaffleEntry = createAsyncThunk(
       if (bd.result === "error") throw new Error(bd.message);
       console.log("ppppppppppp",bd)
 
+      if(!data.alpha_code){
+      dispatch(OverallTotalEntries(bd.data[0]));
+      } else {
       dispatch(entriesChange(bd.data[0]));
+      }
     } catch (err) {
       // dispatch(showToaster({ err, variant: "error", icon: "error" }));
     }

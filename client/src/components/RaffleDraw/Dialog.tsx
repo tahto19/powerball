@@ -92,6 +92,15 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
     );
     if (prize_data) {
       setPrizeData(prize_data);
+    } else {
+      dispatch(
+        showToaster({
+          message: `No prize found for the selected prize type.`,
+          show: true,
+          variant: "error",
+          icon: null,
+        })
+      );
     }
     setAllowDialog(true);
     setOpenPTDialog(false);

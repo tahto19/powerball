@@ -49,7 +49,7 @@ const tabs = [
 ]
 
 const Dashboard = () => {
-    const { totalEntries } = useAppSelector(
+    const { overallTotalEntries, totalEntries } = useAppSelector(
         (state) => state.raffleEntry
     );
     const navigate = useNavigate();
@@ -127,7 +127,7 @@ const Dashboard = () => {
                             background: '#F26A21',
                             color: '#fff',
                         }}>
-                        Available Raffle Ticket: {totalEntries}
+                        Available Raffle Ticket: {overallTotalEntries}
 
                     </Box>
                 </Box>

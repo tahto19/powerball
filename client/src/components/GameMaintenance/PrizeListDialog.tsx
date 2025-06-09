@@ -29,7 +29,6 @@ const PrizeListDialog = ({ open, prizeList, selectedPrize, onClose, onSubmit }: 
         onClose(false);
     };
     const handleSubmit = () => {
-        console.log("*****", selectedPrizes)
         onSubmit(selectedPrizes);
         onClose(false);
     };

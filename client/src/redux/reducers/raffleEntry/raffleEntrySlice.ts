@@ -7,6 +7,7 @@ import {
 } from "./asyncCalls";
 
 const initialState: raffleEntries = {
+  overallTotalEntries: null,
   totalEntries: null,
   totalTicket: null,
   totalUsedEntries: null,
@@ -27,6 +28,9 @@ const raffleEntriesSlice = createSlice({
   name: "raffleEntry",
   initialState,
   reducers: {
+    OverallTotalEntries: (state, action) => {
+      state.overallTotalEntries = parseInt(action.payload.totalEntries);
+    },
     entriesChange: (state, action) => {
       state.totalEntries = parseInt(action.payload.totalEntries);
       state.totalTicket = parseInt(action.payload.totalTicket);
@@ -67,4 +71,4 @@ const raffleEntriesSlice = createSlice({
 });
 
 export default raffleEntriesSlice.reducer;
-export const { entriesChange, addEntryList } = raffleEntriesSlice.actions;
+export const { OverallTotalEntries, entriesChange, addEntryList } = raffleEntriesSlice.actions;

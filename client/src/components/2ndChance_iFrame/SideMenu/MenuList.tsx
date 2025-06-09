@@ -10,6 +10,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Stack from "@mui/material/Stack";
 import { showToaster } from "@/redux/reducers/global/globalSlice";
 import { useAppDispatch } from "@/redux/hook";
+import { openNav } from '@/redux/reducers/navBarSlice';
 
 
 const mainListItems = [
@@ -72,6 +73,7 @@ export default function MenuContent() {
   const navigate = useNavigate();
   const [selected, useSelected] = React.useState(0);
   const handleNavigation = (path: string, index: number) => {
+    dispatch(openNav(false))
     useSelected(index);
     navigate(path);
   };
@@ -106,6 +108,8 @@ export default function MenuContent() {
     }
 
   };
+
+
   return (
     <Stack sx={{ flexGrow: 1, p: 1, justifyContent: "space-between" }}>
       <List

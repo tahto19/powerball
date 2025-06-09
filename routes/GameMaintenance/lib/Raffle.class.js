@@ -224,6 +224,8 @@ class Raffle_class {
     filter = [],
     user_id
   ) {
+    console.log(sort);
+
     let query = {
       limit: parseInt(limit),
       offset: parseInt(offset),

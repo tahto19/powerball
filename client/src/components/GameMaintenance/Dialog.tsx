@@ -300,7 +300,7 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                 <FormControl>
                                     <FormLabel htmlFor="value">Start Date</FormLabel>
                                     <LocalizationProvider dateAdapter={AdapterMoment}>
-                                        <DateTimePicker views={['year', 'month', 'day']} name="starting_date" onChange={(date: any) => handleInputChange(date, "starting_date")} // Pass name explicitly
+                                        <DateTimePicker views={['year', 'month', 'day', 'hours', 'minutes']} name="starting_date" onChange={(date: any) => handleInputChange(date, "starting_date")} // Pass name explicitly
                                             value={formData.starting_date ? moment(formData.starting_date) : moment()} />
                                     </LocalizationProvider>
                                 </FormControl>
@@ -309,7 +309,7 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                 <FormControl>
                                     <FormLabel htmlFor="value">End Date</FormLabel>
                                     <LocalizationProvider dateAdapter={AdapterMoment}>
-                                        <DateTimePicker views={['year', 'month', 'day']} name="end_date" onChange={(date: any) => handleInputChange(date, "end_date")} // Pass name explicitly
+                                        <DateTimePicker views={['year', 'month', 'day', 'hours', 'minutes']} name="end_date" onChange={(date: any) => handleInputChange(date, "end_date")} // Pass name explicitly
                                             value={formData.end_date ? moment(formData.end_date) : moment()} />
                                     </LocalizationProvider>
                                 </FormControl>

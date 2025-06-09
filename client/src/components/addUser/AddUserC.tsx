@@ -280,10 +280,10 @@ const AddUserC = () => {
                     minHeight: "40px",
                     height:
                       errors &&
-                      errors.mobileNumber &&
-                      errors.mobileNumber &&
-                      errors.mobileNumber.type &&
-                      errors.mobileNumber.type === "required"
+                        errors.mobileNumber &&
+                        errors.mobileNumber &&
+                        errors.mobileNumber.type &&
+                        errors.mobileNumber.type === "required"
                         ? "70%"
                         : "100%",
                   }}

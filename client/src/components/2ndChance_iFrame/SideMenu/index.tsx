@@ -55,7 +55,6 @@ export default function SideMenu() {
 
     useEffect(() => {
         if (!loading) {
-            console.log(token);
             if (token === null) {
                 window.parent.location.href = base_url + "member-area/"
                 // navigate("/member-area");

@@ -91,6 +91,7 @@ export interface raffleEntriesList {
 }
 export interface raffleEntries {
   btnLoading: boolean;
+  overallTotalEntries: number | null;
   totalEntries: number | null;
   totalTicket: number | null;
   totalUsedEntries: number | null;
