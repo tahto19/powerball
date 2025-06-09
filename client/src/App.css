@@ -1,3 +1,4 @@
-video {
-  filter: grayscale(1);
+.react-datepicker-wrapper {
+  width: 100% !important;
+  box-sizing: border-box; /* to include padding/border */
 }

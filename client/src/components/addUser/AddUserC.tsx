@@ -98,6 +98,9 @@ const AddUserC = () => {
     else dispatch(editDetails(data));
   };
   const [showPassword, setShowPassword] = useState(false);
+  const changeDate = (d: Date | null) => {
+    console.log(d);
+  };
   const onError: SubmitErrorHandler<userState> = (error) => console.log(error);
   return (
     <Grid
@@ -326,8 +329,7 @@ const AddUserC = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid size={11}>
-            {getValues("birthdate")}
+          {/* <Grid size={11}>
             <LocalizationProvider dateAdapter={AdapterMoment}>
               <DemoContainer components={["DatePicker"]}>
                 <DatePicker
@@ -348,15 +350,28 @@ const AddUserC = () => {
                 />
               </DemoContainer>
             </LocalizationProvider>
+          </Grid> */}
+          <Grid size={11}>
+            <NewDatePicker
+              label="Birthdate"
+              selectDate={
+                getValues("birthdate") === ""
+                  ? moment(getValues("birthdate")).format("MMMM DD YYYY")
+                  : moment().format("MMMM DD YYYY")
+              }
+              onChangeDate={(e: Date | null) => {
+                setValue("birthdate", moment(e).toISOString(), {
+                  shouldValidate: true,
+                  shouldDirty: true,
+                });
+              }}
+            />
             {errors &&
               errors.birthdate &&
               errors.birthdate.type &&
               errors.birthdate.type === "required" && (
                 <FormHelperText sx={{ color: "red" }}>Required</FormHelperText>
               )}
-          </Grid>
-          <Grid size={11}>
-            <NewDatePicker />
           </Grid>
         </Grid>
       </Grid>

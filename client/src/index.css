@@ -29,3 +29,6 @@ body,
 .elementor-size-sm:hover {
   background-color: red;
 }
+.react-datepicker-wrapper {
+  width: 100% !important;
+}

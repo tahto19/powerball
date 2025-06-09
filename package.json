@@ -38,6 +38,7 @@
     "fastify": "^5.2.1",
     "fastify-multipart": "^5.3.1",
     "fastify-plugin": "^5.0.1",
+    "html5-qrcode": "^2.3.8",
     "lodash": "^4.17.21",
     "mariadb": "^3.4.0",
     "moment": "^2.30.1",
