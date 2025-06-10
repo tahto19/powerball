@@ -4,11 +4,12 @@ import { WhereFilters } from "../../../util/util.js";
 
 class TicketDetails_class {
   constructor() {}
-  async Fetch(offset = 0, limit = 10, sort = [["id", "ASC"]], filter = []) {
+  async Fetch(offset = 0, limit = 10, sort = [["id", "DESC"]], filter = []) {
+    const sort_ = sort.length === 0 ? [["id", "DESC"]] : sort;
     let query = {
       limit: parseInt(limit),
       offset: parseInt(offset),
-      order: sort,
+      order: sort_,
     };
 
     if (filter.length !== 0) query["where"] = WhereFilters(filter);

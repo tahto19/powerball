@@ -55,7 +55,7 @@ export const fetchTicketController = async (req, res) => {
     if (location && location.includes("myScan")) {
       filter_.push({ field: "user_id", filter: req.user_id, type: "number" });
     }
-
+    console.log(sort);
     let r = await tc.Fetch(offset, limit, sort, filter_);
 
     res.send(r);
