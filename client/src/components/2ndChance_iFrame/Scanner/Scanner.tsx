@@ -31,7 +31,6 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess }) => {
       );
 
       setTimeout(() => {
-        console.log(scannerRef.current);
         if (!scannerRef.current) scannerRef.current = scanner;
       }, 500);
     }

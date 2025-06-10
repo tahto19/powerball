@@ -31,7 +31,7 @@ const ScannerIframe = () => {
   const [scanned, setScanned] = useState<string | null>();
   const { loading, token } = useAppSelector((state) => state.token);
   const handleScan = (e: string) => {
-    console.log(e);
+    console.log(e, "here3");
     // setScanned(e);
     // if (e) dispatch(addTicket(e));
   };
@@ -109,8 +109,8 @@ const ScannerIframe = () => {
 
           <Scanner
             onScanSuccess={(result: any) => {
-              console.log(result);
-              if (result) handleScan(result?.text);
+              console.log(result, "here");
+              if (result) handleScan(result?.decodedText);
             }}
           />
         )}
