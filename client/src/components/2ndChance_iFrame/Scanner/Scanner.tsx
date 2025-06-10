@@ -23,6 +23,11 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess }) => {
           qrbox: { width: 300, height: 150 },
           formatsToSupport: [Html5QrcodeSupportedFormats.PDF_417],
           useBarCodeDetectorIfSupported: true,
+          aspectRatio: 16 / 9,
+          rememberLastUsedCamera: true,
+          experimentalFeatures: {
+            useBarCodeDetectorIfSupported: true, // uses native barcode scanning if available
+          },
         },
         true
       );
