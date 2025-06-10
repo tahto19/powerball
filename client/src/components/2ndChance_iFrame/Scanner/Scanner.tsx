@@ -7,7 +7,7 @@ interface QrScannerProps {
   onScanFailure?: (error: string) => void;
 }
 
-const Scanner: React.FC<QrScannerProps> = () => {
+const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess }) => {
   const scannerRef = useRef<Html5QrcodeScanner | null>(null);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const Scanner: React.FC<QrScannerProps> = () => {
 
       scanner.render(
         (decodedText, decodedResult) => {
-          console.log("Success:", decodedText);
+          onScanSuccess(decodedResult);
         },
         (error) => {
           // Optional failure callback
