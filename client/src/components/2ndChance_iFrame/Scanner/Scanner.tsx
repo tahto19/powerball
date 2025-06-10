@@ -16,7 +16,7 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess }) => {
         "qr-reader",
         {
           fps: 10,
-          qrbox: { width: 500, height: 250 },
+          qrbox: { width: 300, height: 150 },
         },
         false
       );
