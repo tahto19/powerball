@@ -51,6 +51,15 @@ RaffleDetails.init(
       type: DataTypes.BOOLEAN,
       defaultValue: true,
     },
+    draw_date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "Please enter Draw Date",
+        },
+      },
+    },
     starting_date: {
       type: DataTypes.DATE,
       allowNull: false,

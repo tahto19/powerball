@@ -228,7 +228,7 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                             spacing={2}
                             columns={12}
                         >
-                            <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                            <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
                                 <FormControl>
                                     <FormLabel htmlFor="name">Raffle Name</FormLabel>
                                     <TextField
@@ -273,6 +273,33 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                     />
                                 </FormControl>
                             </Grid2>
+                            <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+                                <FormControl>
+                                    <FormLabel htmlFor="schedule_type">Schedule Type</FormLabel>
+                                    <TextField
+                                        select
+                                        id="schedule_type"
+                                        type="text"
+                                        name="schedule_type"
+                                        autoComplete="schedule_type"
+                                        autoFocus
+                                        required
+                                        fullWidth
+                                        variant="outlined"
+                                        value={formData.schedule_type}
+                                        onChange={(event) => handleInputChange(event)}
+                                        slotProps={{
+                                            input: {
+                                                readOnly: dialog_type === 'View',
+                                            },
+                                        }}
+
+                                    >
+                                        <MenuItem value={'1'}>Daily</MenuItem>
+                                        <MenuItem value={'2'}>Weekly</MenuItem>
+                                    </TextField>
+                                </FormControl>
+                            </Grid2>
                             <Grid2 size={{ xs: 6, sm: 6, md: 6, lg: 6 }}>
                                 <FormControl>
                                     <FormLabel htmlFor="alpha_code">Alpha Code</FormLabel>
@@ -280,7 +307,7 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                         id="alpha_code"
                                         type="text"
                                         name="alpha_code"
-                                        placeholder=""
+                                        placeholder="i.e GB, G20, RH"
                                         autoFocus
                                         required
                                         fullWidth
@@ -316,29 +343,11 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                             </Grid2>
                             <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
                                 <FormControl>
-                                    <FormLabel htmlFor="schedule_type">Schedule Type</FormLabel>
-                                    <TextField
-                                        select
-                                        id="schedule_type"
-                                        type="text"
-                                        name="schedule_type"
-                                        autoComplete="schedule_type"
-                                        autoFocus
-                                        required
-                                        fullWidth
-                                        variant="outlined"
-                                        value={formData.schedule_type}
-                                        onChange={(event) => handleInputChange(event)}
-                                        slotProps={{
-                                            input: {
-                                                readOnly: dialog_type === 'View',
-                                            },
-                                        }}
-
-                                    >
-                                        <MenuItem value={'1'}>Daily</MenuItem>
-                                        <MenuItem value={'2'}>Weekly</MenuItem>
-                                    </TextField>
+                                    <FormLabel htmlFor="value">Draw Date</FormLabel>
+                                    <LocalizationProvider dateAdapter={AdapterMoment}>
+                                        <DateTimePicker views={['year', 'month', 'day', 'hours', 'minutes']} name="draw_date" onChange={(date: any) => handleInputChange(date, "draw_date")} // Pass name explicitly
+                                            value={formData.draw_date ? moment(formData.draw_date) : moment()} />
+                                    </LocalizationProvider>
                                 </FormControl>
                             </Grid2>
                             <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>

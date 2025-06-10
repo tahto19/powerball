@@ -170,7 +170,10 @@ class Raffle_class {
     delete _data.fileInfo;
 
     await RaffleDetails.update(_data, { where: { id }, individualHooks: true });
-
+    await RaffleSchedule.update(
+      { schedule_date: _data.draw_date },
+      { where: { raffle_id: id }, individualHooks: true }
+    );
     const prizeInfo = _data.raffleSchedule[0].prizeInfo;
 
     // Update prize info status to 2 if the old prize info is not present in the new prize info.

@@ -50,17 +50,7 @@ export const updateController = async (req, res) => {
     password,
   } = req.body;
 
-  console.log(file);
-  if (!file.mimetype.startsWith("image/")) throw new Error("ErrorCODE x91c");
-
-  let newFileName = `${moment().format(
-    "MM-DD-YYYY"
-  )}-${generateRandomNumber()}-${generateRandomChar(5)}-${file.filename}`;
-  let _path = getPath("/uploads/ids/" + newFileName);
-
-  let iUp = await uploadImage(file);
-
-  const data = {
+  let data = {
     id,
     firstname,
     lastname,
@@ -68,8 +58,23 @@ export const updateController = async (req, res) => {
     emailAddress,
     mobileNumber,
     birthdate,
-    idPath: iUp.filename,
   };
+
+  if (file) {
+    if (!file.mimetype.startsWith("image/")) throw new Error("ErrorCODE x91c");
+
+    let newFileName = `${moment().format(
+      "MM-DD-YYYY"
+    )}-${generateRandomNumber()}-${generateRandomChar(5)}-${file.filename}`;
+    let _path = getPath("/uploads/ids/" + newFileName);
+
+    let iUp = await uploadImage(file);
+    data = {
+      ...data,
+      idPath: iUp.filename,
+    };
+  }
+
   let a = await uc.Edit(data);
   res.send(cSend(a));
 };
