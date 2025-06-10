@@ -104,13 +104,13 @@ const ScannerIframe = () => {
           <CircularProgress size="5rem" />
         ) : (
           <Scanner
-            onScan={(result: IDetectedBarcode[]) => handleScan(result)}
+            onScanSuccess={(result: any) => {
+              if (result) handleScan(result?.decodedText);
+            }}
           />
 
           // <Scanner2ndTest
-          //   onScanSuccess={(result: any) => {
-          //     if (result) handleScan(result?.decodedText);
-          //   }}
+
           // />
         )}
       </Box>
