@@ -7,7 +7,7 @@ interface QrScannerProps {
   onScanFailure?: (error: string) => void;
 }
 
-const ScannerIframe: React.FC<QrScannerProps> = () => {
+const Scanner: React.FC<QrScannerProps> = () => {
   const scannerRef = useRef<Html5QrcodeScanner | null>(null);
 
   useEffect(() => {
@@ -56,4 +56,4 @@ const ScannerIframe: React.FC<QrScannerProps> = () => {
   );
 };
 
-export default ScannerIframe;
+export default Scanner;

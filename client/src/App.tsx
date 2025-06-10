@@ -42,7 +42,7 @@ import Dashboard2 from "./components/2ndChance_iFrame/Dashboard";
 import UserProfile from "./components/2ndChance_iFrame/UserProfile";
 
 import ImagePage from "./components/ImagePage/Image";
-import ScannerIframe from "./components/2ndChance_iFrame/Scanner/Scanner";
+import ScannerIframe from "./components/2ndChance_iFrame/Scanner/ScannerIframe";
 import MyEntriesMain from "./components/2ndChance_iFrame/UserTicketDetails/MyEntriesMain";
 import { MyEntries } from "./components/2ndChance_iFrame/UserTicketDetails/MyEntries";
 import WinnerDetails from "./components/2ndChance_iFrame/winner/WinnerDetails";
