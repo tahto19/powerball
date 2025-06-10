@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { useAppDispatch } from "@/redux/hook";
 import { addTicket } from "@/redux/reducers/ticket/asyncCalls";
-import ScannerIframe from "../2ndChance_iFrame/Scanner/ScannerIframe";
+import ScannerIframe from "../2ndChance_iFrame/Scanner/Scanner";
 
 const Dialog_ = ({ open, data, dialogType, onClose }) => {
   const [scannedData, setScannedData] = useState<

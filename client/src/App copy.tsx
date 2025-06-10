@@ -30,7 +30,7 @@ import TicketScanner from "./components/ticketScanner/TicketScanner";
 import Costumer from "./components/costumer/Costumer";
 import Raffles from "./components/2ndChance_iFrame/Raffles/Raffles";
 import ImagePage from "./components/ImagePage/Image";
-import ScannerIframe from "./components/2ndChance_iFrame/Scanner/ScannerIframe";
+import ScannerIframe from "./components/2ndChance_iFrame/Scanner/Scanner";
 
 const routes = [
   { path: "/dashboard", component: <Dashboard />, title: "Dashboard" },
