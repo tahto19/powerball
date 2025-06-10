@@ -1,10 +1,6 @@
 //@ts-nocheck
 import React, { useEffect, useRef } from "react";
-import {
-  Html5QrcodeScanner,
-  Html5QrcodeScannerState,
-  Html5QrcodeSupportedFormats,
-} from "html5-qrcode";
+import { Html5QrcodeScanner, Html5QrcodeScannerState } from "html5-qrcode";
 
 interface QrScannerProps {
   onScanSuccess: (decodedText: string, decodedResult: any) => void;
@@ -19,19 +15,11 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess }) => {
       const scanner = new Html5QrcodeScanner(
         "qr-reader",
         {
-          fps: 60,
+          fps: 10,
           qrbox: { width: 300, height: 150 },
-          aspectRatio: 16 / 9,
           rememberLastUsedCamera: true,
           experimentalFeatures: {
-            useBarCodeDetectorIfSupported: true,
-          },
-          formatsToSupport: [Html5QrcodeSupportedFormats.PDF_417],
-          videoConstraints: {
-            width: { ideal: 1920 },
-            height: { ideal: 1080 },
-            facingMode: "environment",
-            deviceId: cameraId,
+            useBarCodeDetectorIfSupported: true, // uses native barcode scanning if available
           },
         },
         false
