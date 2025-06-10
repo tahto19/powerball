@@ -21,7 +21,7 @@ import { RootState } from "@/redux/store";
 import { getToken } from "@/redux/reducers/token/asyncCalls";
 import { useNavigate } from "react-router-dom";
 import Scanner from "./Scanner";
-import { Scanner2ndTest } from "./Scanner2ndTest";
+// import { Scanner2ndTest } from "./Scanner2ndTest";
 
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const endpoint = base_url + "member-area/";
