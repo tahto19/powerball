@@ -36,6 +36,7 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess }) => {
 
       scanner.render(
         (decodedText, decodedResult) => {
+          console.log(decodedResult);
           onScanSuccess(decodedResult);
         },
         (error) => {
@@ -63,7 +64,7 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess }) => {
 
   return (
     <div
-      style={{ width: "500px", height: "300px" }}
+      style={{ width: "100%", height: "100%" }}
       id="qr-reader"
     />
   );
