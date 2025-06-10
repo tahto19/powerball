@@ -80,7 +80,7 @@ const AddUserC = () => {
       setValue("mobileNumber", mobileNumber, { shouldValidate: true });
     } else {
       register("birthdate", { required: true });
-      register("file", { required: true });
+      register("file", { required: false });
       register("mobileNumber", { required: true });
     }
   }, []);
