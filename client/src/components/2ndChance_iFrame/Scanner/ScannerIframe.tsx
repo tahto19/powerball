@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { IDetectedBarcode, Scanner } from "@yudiel/react-qr-scanner";
+
 import { useEffect, useState } from "react";
 
 import {
@@ -20,6 +20,7 @@ import { addTicket } from "@/redux/reducers/ticket/asyncCalls";
 import { RootState } from "@/redux/store";
 import { getToken } from "@/redux/reducers/token/asyncCalls";
 import { useNavigate } from "react-router-dom";
+import Scanner from "./Scanner";
 
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const endpoint = base_url + "member-area/";
