@@ -13,6 +13,7 @@ import {
 import { useAppDispatch } from "@/redux/hook";
 import { addTicket } from "@/redux/reducers/ticket/asyncCalls";
 import ScannerIframe from "../2ndChance_iFrame/Scanner/Scanner";
+import { Scanner2ndTest } from "../2ndChance_iFrame/Scanner/Scanner2ndTest";
 
 const Dialog_ = ({ open, data, dialogType, onClose }) => {
   const [scannedData, setScannedData] = useState<
@@ -46,10 +47,11 @@ const Dialog_ = ({ open, data, dialogType, onClose }) => {
     >
       <DialogTitle>{dialogType} Scanning</DialogTitle>
       <DialogContent>
-        <ScannerIframe
+        {/* <ScannerIframe
           onScanSuccess={handleScanSuccess}
           onScanFailure={handleScanFailure}
-        />
+        /> */}
+        <Scanner2ndTest />
         {/* {scannedData?.rawValue}
         {scannedData && scannedData?.rawValue ? (
           <>

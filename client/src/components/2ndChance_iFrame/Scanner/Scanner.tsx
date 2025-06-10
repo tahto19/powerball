@@ -17,6 +17,16 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess }) => {
         {
           fps: 10,
           qrbox: { width: 300, height: 150 },
+          rememberLastUsedCamera: true,
+          experimentalFeatures: {
+            useBarCodeDetectorIfSupported: true,
+          },
+          videoConstraints: {
+            width: { ideal: 1920 },
+            height: { ideal: 1080 },
+            facingMode: "environment",
+            deviceId: cameraId,
+          },
         },
         false
       );
