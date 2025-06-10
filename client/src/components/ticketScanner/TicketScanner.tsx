@@ -19,14 +19,11 @@ import { useLocation } from "react-router-dom";
 import RandomString from "@/animated/RandomLetters";
 const headers: GridColDef[] = [
   {
-    field: "fullname",
-    headerName: "Full Name",
+    field: "ticket_code",
+    headerName: "Ticket Code",
     flex: 1,
     minWidth: 200,
     editable: true,
-    renderCell: (params: GridRenderCellParams<any, Date>) => {
-      return <>{moment(params.value).format("MMMM DD yyyy hh:mm A")}</>;
-    },
   },
   {
     field: "entries",
