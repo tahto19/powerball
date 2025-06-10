@@ -59,7 +59,7 @@ const ScannerIframe = () => {
   }, [loading]);
 
   //html 5 qr code
-  new Html5QrcodeScanner();
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
