@@ -107,7 +107,8 @@ const ScannerIframe = () => {
           // />
 
           <Scanner
-            onScanSuccess={(err, result: any) => {
+            onScanSuccess={(result: any) => {
+              console.log(result);
               if (result) handleScan(result?.text);
             }}
           />
