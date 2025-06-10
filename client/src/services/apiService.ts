@@ -263,7 +263,9 @@ export const apiService = {
      console.log(d)
    
     fd.append("data", bodyEncrypt(d, token));
-    fd.append("file", d.file[0]);
+    if(d.file){
+      fd.append("file", d.file[0]);
+    }
     
     return apiClient.put("api/users", fd);
   },

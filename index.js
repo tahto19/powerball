@@ -58,6 +58,7 @@ const fastify = Fastify({
  * x71 = Raffle ID already exists
  * x72 = Image does not exists
  * x73 = End date must be set in the future. Please choose a valid end date.
+ * x74 = Draw date must be between the start date and end date.
  * X999 = login wrong credentials
  * x91c = not image
  * x909 = Email already exists error

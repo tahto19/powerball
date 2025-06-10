@@ -1,4 +1,4 @@
-import { DialogContentText, Box, Dialog, DialogContent, DialogTitle, Button } from '@mui/material';
+import { CircularProgress, DialogContentText, Box, Dialog, DialogContent, DialogTitle, Button } from '@mui/material';
 import { CameraAlt } from '@mui/icons-material';
 import { useDropzone } from "react-dropzone";
 import { useCallback, useEffect, useState } from 'react';
@@ -14,12 +14,11 @@ const endpoint = base_url + "api/file/serve/image/"
 const ProfileDialog = ({ open, fileInfo, onClose, onSubmit }: ProfileDialogProps) => {
     const [imageData, setImageData] = useState(initialImageData);
     const [preview, setPreview] = useState<string | null>(null);
-
+    const [load, setLoad] = useState(false);
     const dispatch = useAppDispatch();
     const { token } = useAppSelector((state) => state.token);
 
     const handleSubmit = async () => {
-
         if (!imageData.file || imageData.file.length === 0) {
             dispatch(showToaster({
                 message: "Image not found",
@@ -30,7 +29,7 @@ const ProfileDialog = ({ open, fileInfo, onClose, onSubmit }: ProfileDialogProps
             return;
         }
 
-
+        setLoad(true)
         let message;
         let res;
 
@@ -43,7 +42,7 @@ const ProfileDialog = ({ open, fileInfo, onClose, onSubmit }: ProfileDialogProps
         }
 
         const d = bodyDecrypt(res.data, token)
-
+        setLoad(false)
         if (d && d.success === 'success') {
             dispatch(showToaster({
                 message: message,
@@ -180,7 +179,7 @@ const ProfileDialog = ({ open, fileInfo, onClose, onSubmit }: ProfileDialogProps
                     width: "100%",
                     mt: 4
                 }}>
-                    <Button onClick={handleSubmit} variant="contained" color="info" sx={{ px: 4 }}>Save Image</Button>
+                    <Button onClick={handleSubmit} disabled={load} variant="contained" color="info" sx={{ px: 4 }}>{load ? (<CircularProgress size="1.5rem" />) : "Save Image"}</Button>
                 </Box>
             </DialogContent>
         </Dialog>

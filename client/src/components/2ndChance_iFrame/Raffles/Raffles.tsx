@@ -50,6 +50,7 @@ const Raffles = () => {
       limit: pagination.pageSize,
       sort: JSON.stringify([["name", "ASC"]]),
       filter: JSON.stringify([{ field: "active", filter: 1, type: "boolean" }, { field: "alpha_code", type: "not_empty_string" }]),
+      // filter: JSON.stringify([{ field: "active", filter: 1, type: "boolean" }, { field: "alpha_code", type: "not_empty_string" }, { field: "starting_date", type: "current_or_after" }]),
       // filter: JSON.stringify([{ field: "active", filter: 1, type: "boolean" }, { field: "starting_date", type: "future_date" }, { field: "alpha_code", type: "not_empty_string" }]),
     };
     const res = await apiService.get2ndChanceGMListAll(payload, token);

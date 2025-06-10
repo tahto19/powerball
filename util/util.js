@@ -104,6 +104,11 @@ export const WhereFilters = (filters = []) => {
             [Op.gt]: `${currentDate} 23:59:59`,
           };
           break;
+        case "current_or_after":
+          wherefilters[f.field] = {
+            [Op.lte]: moment().format("YYYY-MM-DD HH:mm:ss"), // current datetime
+          };
+          break;
         case "date":
           if (
             f.filter.start &&
