@@ -23,8 +23,10 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess }) => {
           qrbox: { width: 300, height: 150 },
           formatsToSupport: [Html5QrcodeSupportedFormats.PDF_417],
           // useBarCodeDetectorIfSupported: true,
-          aspectRatio: 16 / 9,
-          // rememberLastUsedCamera: true,
+          aspectRatio: 4 / 3,
+          disableFlip: false,
+          rememberLastUsedCamera: true,
+          showTorchButtonIfSupported: true,
           // experimentalFeatures: {
           //   useBarCodeDetectorIfSupported: true, // uses native barcode scanning if available
           // },
@@ -37,6 +39,7 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess }) => {
           onScanSuccess(decodedResult);
         },
         (error) => {
+          console.log(error);
           // Optional failure callback
         }
       );
