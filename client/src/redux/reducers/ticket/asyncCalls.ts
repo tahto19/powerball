@@ -13,6 +13,13 @@ export const addTicket = createAsyncThunk(
   async (data: string, { dispatch, getState }) => {
     try {
       dispatch(disableBtn());
+      dispatch(
+        showToaster({
+          message: "Checking Ticket..",
+          variant: "info",
+          icon: "info",
+        })
+      );
       const state = getState() as RootState;
       const token = state.token.token;
       let r = await apiService.postTicketList(data, token);
