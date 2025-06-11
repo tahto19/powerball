@@ -28,6 +28,10 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess }) => {
           rememberLastUsedCamera: true,
           showTorchButtonIfSupported: true,
           useBarCodeDetectorIfSupported: true,
+          videoConstraints: {
+            width: { ideal: 1920 },
+            height: { ideal: 1080 },
+          },
           // experimentalFeatures: {
           //   useBarCodeDetectorIfSupported: true, // uses native barcode scanning if available
           // },
