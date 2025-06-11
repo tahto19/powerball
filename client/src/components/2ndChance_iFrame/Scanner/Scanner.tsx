@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from "react";
 import {
   Html5QrcodeScanner,
   Html5QrcodeScannerState,
+  Html5QrcodeScanType,
   Html5QrcodeSupportedFormats,
 } from "html5-qrcode";
 
@@ -20,7 +21,8 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess }) => {
         "qr-reader",
         {
           fps: 60,
-          qrbox: { width: 150, height: 85 },
+          qrbox: { width: 250, height: 250 },
+          supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
           formatsToSupport: [Html5QrcodeSupportedFormats.PDF_417],
           // useBarCodeDetectorIfSupported: true,
           aspectRatio: 1.7777778,
@@ -29,6 +31,7 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess }) => {
           showTorchButtonIfSupported: true,
           useBarCodeDetectorIfSupported: true,
           videoConstraints: {
+            facingMode: { exact: "environment" },
             width: { ideal: 1920 },
             height: { ideal: 1080 },
           },
