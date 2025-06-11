@@ -55,6 +55,21 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess }) => {
       setTimeout(() => {
         if (!scannerRef.current) scannerRef.current = scanner;
       }, 500);
+      setTimeout(() => {
+        // 👇 Access the internal Html5Qrcode instance
+        const html5QrCode = scanner.html5QrCode;
+
+        if (html5QrCode?.getRunningTrack) {
+          const track = html5QrCode.getRunningTrack();
+          const settings = track.getSettings();
+
+          alert("Camera resolution:");
+          alert("Width:", settings.width);
+          alert("Height:", settings.height);
+        } else {
+          alert("Could not access internal camera track.");
+        }
+      }, 2000);
     }
 
     return () => {
