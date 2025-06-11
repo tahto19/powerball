@@ -19,8 +19,8 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess }) => {
       const scanner = new Html5QrcodeScanner(
         "qr-reader",
         {
-          fps: 10,
-          qrbox: { width: 250, height: 100 },
+          fps: 60,
+          qrbox: { width: 250, height: 250 },
           formatsToSupport: [Html5QrcodeSupportedFormats.PDF_417],
           videoConstraints: {
             width: { ideal: 1280 },
