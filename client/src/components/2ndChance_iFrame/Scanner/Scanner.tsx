@@ -21,7 +21,7 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess }) => {
         "qr-reader",
         {
           fps: 60,
-          qrbox: { width: 250, height: 250 },
+          qrbox: { width: 350, height: 350 },
           supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
           formatsToSupport: [Html5QrcodeSupportedFormats.PDF_417],
           // useBarCodeDetectorIfSupported: true,
