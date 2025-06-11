@@ -32,8 +32,8 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess }) => {
           useBarCodeDetectorIfSupported: true,
           videoConstraints: {
             facingMode: { exact: "environment" },
-            width: { ideal: 1920 },
-            height: { ideal: 1080 },
+            width: { ideal: 800 },
+            height: { ideal: 800 },
           },
           // experimentalFeatures: {
           //   useBarCodeDetectorIfSupported: true, // uses native barcode scanning if available
@@ -53,24 +53,7 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess }) => {
       );
 
       setTimeout(() => {
-        if (!scannerRef.current) {
-          scannerRef.current = scanner;
-          setTimeout(() => {
-            // 👇 Access the internal Html5Qrcode instance
-            const html5QrCode = scanner.html5QrCode;
-
-            if (html5QrCode?.getRunningTrack) {
-              const track = html5QrCode.getRunningTrack();
-              const settings = track.getSettings();
-
-              alert("Camera resolution:");
-              alert("Width:", settings.width);
-              alert("Height:", settings.height);
-            } else {
-              alert("Could not access internal camera track.");
-            }
-          }, 5000);
-        }
+        if (!scannerRef.current) scannerRef.current = scanner;
       }, 500);
     }
 
