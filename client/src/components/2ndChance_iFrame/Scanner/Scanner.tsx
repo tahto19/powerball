@@ -69,7 +69,7 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess }) => {
             } else {
               alert("Could not access internal camera track.");
             }
-          }, 2000);
+          }, 5000);
         }
       }, 500);
     }
