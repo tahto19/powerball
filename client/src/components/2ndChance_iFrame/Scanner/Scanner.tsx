@@ -26,7 +26,7 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess }) => {
             width: { ideal: 1280 },
             height: { ideal: 720 },
           },
-          aspectRatio: 4 / 3,
+          aspectRatio: 1.7777778,
           disableFlip: false,
           rememberLastUsedCamera: true,
           showTorchButtonIfSupported: true,
