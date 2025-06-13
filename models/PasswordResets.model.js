@@ -1,12 +1,15 @@
 import "dotenv/config";
 import conn from "../dbConnections/conn.js";
 import { Model, DataTypes } from "sequelize";
+import { emailSender } from "../util/util.js";
 
 class PasswordResets extends Model {
   async emailPasswordResetLink() {
     const url = "http://localhost:5173/iframe/2nd-chance/widget-image?token=";
     try {
       console.log("here");
+      console.log(this.User.emailAddress);
+      console.log(this.id);
       await emailSender({
         from: null,
         to: this.User.emailAddress,
