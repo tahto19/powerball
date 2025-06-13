@@ -15,17 +15,15 @@ class PasswordResets extends Model {
         to: this.User.emailAddress,
         subject: "Password Reset Request",
         html: `
-              Hello ${this.User.firstname},
-
-      We received a request to reset your password. Click the link below to choose a new password:
-
-      🔗 <a href="${url + this.token}">Click Here</a>
-
-      This link will expire in 15 minutes. If you didn't request a password reset, you can safely ignore this email.
-
-      Thank you,
-      Powerball Team
-
+              Hello ${this.User.firstname},<br /><br /><br />
+              We received a request to reset your password. Click the link below to choose a new password:
+              <br /><br />
+              🔗 <a href="${url + this.token}">Click Here</a>
+              <br /><br />
+              This link will expire in 15 minutes. If you didn't request a password reset, you can safely ignore this email.
+              <br /><br /><br />
+              Thank you,<br />
+              Powerball Team
               `,
       });
       return true;
