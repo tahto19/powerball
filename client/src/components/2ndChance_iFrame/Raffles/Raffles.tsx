@@ -232,7 +232,7 @@ const Raffles = () => {
                     sx={{ width: "100%" }}
                     disabled={moment(x.raffleSchedule[0].schedule_date).isSameOrBefore(moment())}
                   >
-                    Participate
+                    {moment(x.raffleSchedule[0].schedule_date).isSameOrBefore(moment()) ? "Ended" : "Participate"}
                   </Button>
                 </CardActions>
               </Card>
