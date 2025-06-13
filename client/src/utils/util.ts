@@ -40,6 +40,16 @@ const getErrorsStatus = (code: string) => {
       return "End date must be set in the future. Please choose a valid end date.";
     case "x74":
       return "Draw date must be between the start date and end date.";
+    case "x75":
+      return "Email does not exists";
+    case "x761":
+      return "Invalid token.";
+    case "x762":
+      return "Reset token has already been used.";
+    case "x763":
+      return "Password reset link has expired. Please request a new one.";
+    case "x764":
+      return "Empty password";
     case "x999":
       return "invalid credentials";
     case "x91c":

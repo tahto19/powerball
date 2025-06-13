@@ -8,5 +8,6 @@
   { "path": "/login/checkSession", "method": "GET" },
   { "path": "/ticket", "method": "testing" },
   { "path": "/cron", "method": "GET" },
-  { "path": "/testingroutes(?:/.*)?$", "method": "POST" }
+  { "path": "/testingroutes(?:/.*)?$", "method": "POST" },
+  { "path": "/password-reset", "method": "POST" }
 ]

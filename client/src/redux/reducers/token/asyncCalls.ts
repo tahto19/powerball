@@ -14,13 +14,13 @@ export const getToken = createAsyncThunk(
       dispatch(doneLoading_());
     } catch (err) {
       dispatch(doneLoading_());
-      dispatch(
-        showToaster({
-          err,
-          variant: "success",
-          icon: "success",
-        })
-      );
+      // dispatch(
+      //   showToaster({
+      //     err,
+      //     variant: "success",
+      //     icon: "success",
+      //   })
+      // );
     }
   }
 );

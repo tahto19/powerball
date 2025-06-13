@@ -40,6 +40,8 @@ import Costumer from "./components/costumer/Costumer";
 import Raffles from "./components/2ndChance_iFrame/Raffles/Raffles";
 import Dashboard2 from "./components/2ndChance_iFrame/Dashboard";
 import UserProfile from "./components/2ndChance_iFrame/UserProfile";
+import ForgotPassword from "./components/2ndChance_iFrame/ForgotPassword";
+import ResetPassword from "./components/2ndChance_iFrame/ForgotPassword/ResetPassword";
 
 import ImagePage from "./components/ImagePage/Image";
 import ScannerIframe from "./components/2ndChance_iFrame/Scanner/ScannerIframe";
@@ -132,8 +134,7 @@ const routes2 = [
   },
 ];
 
-const skipTokenPaths = [];
-// const skipTokenPaths = ["/cms/iframe/2nd-chance/login", "/cms/iframe/2nd-chance/login-button", "/cms/iframe/add-user"];
+const skipTokenPaths = ["/cms/iframe/2nd-chance/login-button"];
 // Component to handle routing with conditional rendering
 
 function AppRoutes() {
@@ -240,6 +241,14 @@ function AppRoutes() {
       <Route
         path="/iframe/2nd-chance/login"
         element={<Login />}
+      />
+      <Route
+        path="/iframe/2nd-chance/forgot-password"
+        element={<ForgotPassword />}
+      />
+      <Route
+        path="/iframe/2nd-chance/reset-password"
+        element={<ResetPassword />}
       />
       <Route
         path="/iframe/2nd-chance/login-button"

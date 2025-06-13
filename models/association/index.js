@@ -7,6 +7,7 @@ import RafflePrize from "../RafflePrize.model.js";
 import Files from "../Files.model.js";
 import PrizeList from "../PrizeList.model.js";
 import WiningDrawDetails from "../WiningDrawDetails.model.js";
+import PasswordResets from "../PasswordResets.model.js";
 
 export default function Associations() {
   Users.hasMany(TicketDetails, {
@@ -119,5 +120,15 @@ export default function Associations() {
   RafflePrize.hasOne(WiningDrawDetails, {
     foreignKey: "raffle_prize_id",
     sourceKey: "id",
+  });
+  Users.hasMany(PasswordResets, {
+    foreignKey: "user_id",
+    targetKey: "id",
+    constraints: false,
+  });
+  PasswordResets.belongsTo(Users, {
+    foreignKey: "user_id",
+    targetKey: "id",
+    constraints: false,
   });
 }

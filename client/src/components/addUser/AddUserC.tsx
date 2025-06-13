@@ -281,10 +281,10 @@ const AddUserC = () => {
                     minHeight: "40px",
                     height:
                       errors &&
-                      errors.mobileNumber &&
-                      errors.mobileNumber &&
-                      errors.mobileNumber.type &&
-                      errors.mobileNumber.type === "required"
+                        errors.mobileNumber &&
+                        errors.mobileNumber &&
+                        errors.mobileNumber.type &&
+                        errors.mobileNumber.type === "required"
                         ? "70%"
                         : "100%",
                   }}
@@ -376,7 +376,7 @@ const AddUserC = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid
+      {/* <Grid
         size={{ md: 7, xs: 12 }}
         sx={{ justifyContent: "center" }}
       >
@@ -451,7 +451,7 @@ const AddUserC = () => {
             </Paper>
           </Box>
         </Stack>
-      </Grid>
+      </Grid> */}
       <Grid
         size={12}
         sx={{ marginTop: "25px" }}

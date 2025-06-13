@@ -46,6 +46,13 @@ const widgetImage = () => {
                 height: '70vh',
                 width: '100%'
             }} src="http://localhost:5173/iframe/2nd-chance/login"></iframe>
+
+
+            <iframe className="reset-password-iframe" style={{
+                position: 'relative',
+                height: '70vh',
+                width: '100%'
+            }} src="http://localhost:5173/iframe/2nd-chance/reset-password"></iframe>
         </>
     );
 }

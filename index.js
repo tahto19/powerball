@@ -26,6 +26,7 @@ import raffleHistory from "./routes/raffleHistory/raffleHistory.js";
 import auditTrailAdder from "./helpers/auditTrailAdder.js";
 import LogoutRoute from "./routes/Logout/Logout.route.js";
 import TestingRoutes from "./routes/TestingRoutes/Test.route.js";
+import PasswordResets from "./routes/PasswordResets/PasswordResets.route.js";
 
 const fastify = Fastify({
   trustProxy: true,
@@ -59,6 +60,11 @@ const fastify = Fastify({
  * x72 = Image does not exists
  * x73 = End date must be set in the future. Please choose a valid end date.
  * x74 = Draw date must be between the start date and end date.
+ * x75 = Email does not exists.
+ * x761 = Invalid token.
+ * x762 = Reset token has already been used.
+ * x763 = expired token.
+ * x764 = Empty password.
  * X999 = login wrong credentials
  * x91c = not image
  * x909 = Email already exists error
@@ -218,6 +224,10 @@ const start = async () => {
     fastify.register(TestingRoutes, {
       prefix: process.env.ROUTES_PREFIX + "testingroutes",
     });
+    fastify.register(PasswordResets, {
+      prefix: process.env.ROUTES_PREFIX + "password-reset",
+    });
+
     /**
      *error handler
      */

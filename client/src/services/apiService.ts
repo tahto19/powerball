@@ -357,6 +357,20 @@ export const apiService = {
       data: bodyEncrypt(JSON.stringify(data), token),
     });
   },
+
+  //forgot password
+  forgotPassword: async (data: {email: string}) => {
+    console.log(data);
+    const response = await apiClient.post("/api/password-reset/reset", data);
+    return response;
+  },
+  
+  //forgot password
+  resetPassword: async (data) => {
+    console.log(data);
+    const response = await apiClient.post("/api/password-reset/confirm", data);
+    return response;
+  },
 };
 
 export default apiService;
