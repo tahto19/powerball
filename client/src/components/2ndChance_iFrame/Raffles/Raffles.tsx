@@ -25,7 +25,6 @@ import { getRaffleEntry } from "@/redux/reducers/raffleEntry/asyncCalls";
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import IconButton from '@mui/material/IconButton';
 
-
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const endpoint = base_url + "api/file/serve/image/"
 
@@ -58,7 +57,24 @@ const Raffles = () => {
     const d = bodyDecrypt(res.data, token);
     if (d && d.success === "success") {
       console.log(">>>>>>>>", d.data);
-      setRaffleList(d.data.list);
+      const now = moment();
+
+      const data = d.data.list.sort((a, b) => {
+
+        const dateA = moment(a.raffleSchedule[0].schedule_date);
+        const dateB = moment(b.raffleSchedule[0].schedule_date);
+
+        const isAfterA = dateA.isAfter(now);
+        const isAfterB = dateB.isAfter(now);
+
+        if (isAfterA === isAfterB) {
+          return dateA.diff(dateB); // sort ascending
+        }
+
+        return isAfterA ? -1 : 1; // future dates first
+      });
+      console.log(data)
+      setRaffleList(data);
     }
     setIsFetching(false);
 

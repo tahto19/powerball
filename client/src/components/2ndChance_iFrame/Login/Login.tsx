@@ -247,7 +247,10 @@ const Login = () => {
                                   <div className="elementor-field-group elementor-column elementor-col-100">
                                     <a
                                       className="elementor-lost-password"
-                                      href="https://18.138.76.86/?login&amp;action=lostpassword&amp;redirect_to=%2F%3Fpage_id%3D514"
+                                      href="#"
+                                      onClick={() => {
+                                        window.parent.location.href = "https://18.138.76.86/member-area/forgot-password/";
+                                      }}
                                     >
                                       Lost your password?{" "}
                                     </a>
