@@ -81,7 +81,7 @@ const ResetPassword = () => {
             display: "flex",
             justifyContent: "center"
         }}>
-            {show ? (<Card sx={{ maxWidth: 500, marginTop: 1 }} elevation={0} >
+            {show ? (<Card sx={{ maxWidth: 700, marginTop: 1 }} elevation={0} >
                 <CardContent sx={{ height: "calc(100% - 40px)", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: 'center' }}>
                     <CheckCircleIcon sx={{ fontSize: "5rem", color: "#61CE70" }} />
                     <Typography sx={{ fontSize: "2rem", color: "#61CE70" }}>Password Changed!!</Typography>
@@ -90,7 +90,7 @@ const ResetPassword = () => {
                     }} variant="contained" sx={{ marginTop: "30px" }}>Back to Login</Button>
                 </CardContent>
             </Card>) : (
-                <Card sx={{ maxWidth: 500, marginTop: 1 }}>
+                <Card sx={{ maxWidth: 700, marginTop: 1 }}>
                     <form
                         className="elementor-login elementor-form"
                         onSubmit={handleSubmit}

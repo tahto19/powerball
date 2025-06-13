@@ -67,7 +67,7 @@ const ForgotPassword = () => {
             display: "flex",
             justifyContent: "center"
         }}>
-            <Card sx={{ maxWidth: 500, marginTop: 1 }}>
+            <Card sx={{ maxWidth: 700, marginTop: 1 }}>
                 <form
                     className="elementor-login elementor-form"
                     onSubmit={handleSubmit}
