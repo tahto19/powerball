@@ -7,26 +7,24 @@ class PasswordResets extends Model {
     const url = "http://localhost:5173/iframe/2nd-chance/widget-image?token=";
     try {
       console.log("here");
-      console.log(this.User.emailAddress);
-      console.log(this.id);
-      // await emailSender({
-      //   from: null,
-      //   to: this.User.emailAddress,
-      //   subject: "Password Reset Request",
-      //   html: `
-      //         Hello ${this.User.firstname},
+      await emailSender({
+        from: null,
+        to: this.User.emailAddress,
+        subject: "Password Reset Request",
+        html: `
+              Hello ${this.User.firstname},
 
-      // We received a request to reset your password. Click the link below to choose a new password:
+      We received a request to reset your password. Click the link below to choose a new password:
 
-      // 🔗 <a href="${url + this.token}">Click Here</a>
+      🔗 <a href="${url + this.token}">Click Here</a>
 
-      // This link will expire in 15 minutes. If you didn't request a password reset, you can safely ignore this email.
+      This link will expire in 15 minutes. If you didn't request a password reset, you can safely ignore this email.
 
-      // Thank you,
-      // Powerball Team
+      Thank you,
+      Powerball Team
 
-      //         `,
-      // });
+              `,
+      });
       return true;
     } catch (err) {
       console.log(err, "here");
