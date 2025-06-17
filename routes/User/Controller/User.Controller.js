@@ -98,14 +98,16 @@ export const createUser = async (req, res) => {
     } = req.body;
 
     let fields = [];
+    if (file) {
+      if (!file.mimetype.startsWith("image/"))
+        throw new Error("ErrorCODE x91c");
+      var newFileName = `${moment().format(
+        "MM-DD-YYYY"
+      )}-${generateRandomNumber()}-${generateRandomChar(5)}-${file.filename}`;
+      var _path = getPath("/uploads/ids/" + newFileName);
+      var iUp = await uploadImage(file);
+    }
 
-    if (!file.mimetype.startsWith("image/")) throw new Error("ErrorCODE x91c");
-
-    let newFileName = `${moment().format(
-      "MM-DD-YYYY"
-    )}-${generateRandomNumber()}-${generateRandomChar(5)}-${file.filename}`;
-    let _path = getPath("/uploads/ids/" + newFileName);
-    if (file) var iUp = await uploadImage(file);
     if (!password || !emailAddress)
       throw new Error("password or email is not set");
     let r = await uc.Insert({

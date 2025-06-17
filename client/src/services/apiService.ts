@@ -226,25 +226,36 @@ export const apiService = {
 
   // for creating user in the outside
   createUser: async (d: userState) => {
-    const fd = new FormData();
-    for (const _d in d) {
-      const value = d[_d as keyof typeof d];
-      console.log(_d, d[_d as keyof typeof d]);
-      if (value !== null) {
-        if (typeof value === "string") {
-          fd.append(_d, value); // Append string directly
-        } else if (Array.isArray(value) && value.length > 0) {
-          fd.append(_d, value[0]); // Append first file if array is not empty
+    try {
+      const fd = new FormData();
+      for (const _d in d) {
+        const value = d[_d as keyof typeof d];
+        console.log(_d, d[_d as keyof typeof d]);
+        if (value !== null) {
+          if (typeof value === "string") {
+            fd.append(_d, value); // Append string directly
+          } else if (Array.isArray(value) && value.length > 0) {
+            fd.append(_d, value[0]); // Append first file if array is not empty
+          } else if (_d !== "file") {
+            throw new Error(`${_d} has null`);
+          }
         } else if (_d !== "file") {
           throw new Error(`${_d} has null`);
         }
-      } else if (_d !== "file") throw new Error(`${_d} has null`);
-    }
+      }
 
-    const _r = await apiClient.post("/api/users/createUser", fd, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-    return _r;
+      const _r = await apiClient.post("/api/users/createUser", fd, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      return _r;
+    } catch (err) {
+      return {
+        data: {
+          result: "error",
+          message: err.message,
+        },
+      };
+    }
   },
   createOTP: async (d: userState) => {
     return apiClient.post("/api/otp", {
