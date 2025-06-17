@@ -105,8 +105,7 @@ export const createUser = async (req, res) => {
       "MM-DD-YYYY"
     )}-${generateRandomNumber()}-${generateRandomChar(5)}-${file.filename}`;
     let _path = getPath("/uploads/ids/" + newFileName);
-
-    let iUp = await uploadImage(file);
+    if (file) var iUp = await uploadImage(file);
     if (!password || !emailAddress)
       throw new Error("password or email is not set");
     let r = await uc.Insert({
@@ -116,7 +115,7 @@ export const createUser = async (req, res) => {
       emailAddress: emailAddress.value,
       mobileNumber: mobileNumber.value,
       birthdate: birthdate.value,
-      idPath: iUp.filename,
+      idPath: file ? iUp.filename : null,
     });
     res.send(cSend(_path));
   } catch (err) {
