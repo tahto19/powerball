@@ -192,23 +192,23 @@ export const apiService = {
 
     fd.append("data", bodyEncrypt(d, token));
     fd.append("file", d.file[0]);
-    console.log(d.file[0])
+    console.log(d.file[0]);
     const res = apiClient.put("/api/file/image", fd, {});
-// const file = d.file[0];
-// const base64File = await fileToBase64(file);
+    // const file = d.file[0];
+    // const base64File = await fileToBase64(file);
 
-// const jsonPayload = {
-//   data: bodyEncrypt(d, token),
-//   file: {
-//     filename: file.name,
-//     mimetype: file.type,
-//     base64: base64File,
-//   },
-// };
+    // const jsonPayload = {
+    //   data: bodyEncrypt(d, token),
+    //   file: {
+    //     filename: file.name,
+    //     mimetype: file.type,
+    //     base64: base64File,
+    //   },
+    // };
 
-// const res = await apiClient.put("/api/file/image", jsonPayload, {
-//   headers: { "Content-Type": "application/json" },
-// });
+    // const res = await apiClient.put("/api/file/image", jsonPayload, {
+    //   headers: { "Content-Type": "application/json" },
+    // });
 
     return res;
   },
@@ -235,10 +235,10 @@ export const apiService = {
           fd.append(_d, value); // Append string directly
         } else if (Array.isArray(value) && value.length > 0) {
           fd.append(_d, value[0]); // Append first file if array is not empty
-        } else {
+        } else if (_d !== "file") {
           throw new Error(`${_d} has null`);
         }
-      } else throw new Error(`${_d} has null`);
+      } else if (_d !== "file") throw new Error(`${_d} has null`);
     }
 
     const _r = await apiClient.post("/api/users/createUser", fd, {
@@ -258,15 +258,23 @@ export const apiService = {
     return apiClient.post("/api/users", data);
   },
   updateAdmin: async (d: adminType, token: string | null) => {
-    const data = ['firstname', 'lastname', 'emailAddress', 'birthdate', 'file', 'mobileNumber', 'password',]
-     const fd = new FormData();
-     console.log(d)
-   
+    const data = [
+      "firstname",
+      "lastname",
+      "emailAddress",
+      "birthdate",
+      "file",
+      "mobileNumber",
+      "password",
+    ];
+    const fd = new FormData();
+    console.log(d);
+
     fd.append("data", bodyEncrypt(d, token));
-    if(d.file){
+    if (d.file) {
       fd.append("file", d.file[0]);
     }
-    
+
     return apiClient.put("api/users", fd);
   },
   getAdmin: async (data: getDataV2, token: string) => {
@@ -295,8 +303,8 @@ export const apiService = {
     console.log(alpha_code);
 
     if (data && data === "myEntries")
-      return apiClient.get("api/ticket/myEntries",{params});
-    else return apiClient.get("api/ticket/entries",{params});
+      return apiClient.get("api/ticket/myEntries", { params });
+    else return apiClient.get("api/ticket/entries", { params });
   },
   getRaffleEntryList: async (data: getDataV2, token: string, url: string) => {
     return apiClient.post(
@@ -359,12 +367,12 @@ export const apiService = {
   },
 
   //forgot password
-  forgotPassword: async (data: {email: string}) => {
+  forgotPassword: async (data: { email: string }) => {
     console.log(data);
     const response = await apiClient.post("/api/password-reset/reset", data);
     return response;
   },
-  
+
   //forgot password
   resetPassword: async (data) => {
     console.log(data);
