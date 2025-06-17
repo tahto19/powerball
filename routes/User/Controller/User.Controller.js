@@ -119,6 +119,7 @@ export const createUser = async (req, res) => {
     });
     res.send(cSend(_path));
   } catch (err) {
+    console.log(err);
     throw err;
   }
 };
