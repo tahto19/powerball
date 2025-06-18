@@ -7,7 +7,7 @@ import moment from "moment";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { Chip, TextField, Box, Switch, MenuItem, Dialog, DialogActions, DialogContent, DialogTitle, Button, FormLabel, FormControlLabel, Grid2 } from '@mui/material';
+import { Checkbox, Autocomplete, Select, ListItemText, Chip, TextField, Box, Switch, MenuItem, Dialog, DialogActions, DialogContent, DialogTitle, Button, FormLabel, FormControlLabel, Grid2 } from '@mui/material';
 import MuiFormControl from '@mui/material/FormControl';
 import { styled } from '@mui/material/styles';
 
@@ -56,6 +56,27 @@ const columnHeader = [
 const FormControl = styled(MuiFormControl)(() => ({
     width: "100%"
 }));
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 20,
+        },
+    },
+};
+
+const alphaCodes = [
+    'R7',
+    'GB',
+    'G50',
+    '111',
+    '222',
+    '333',
+    '444444',
+];
 
 const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDialogProps) => {
     const dispatch = useAppDispatch();
@@ -146,6 +167,8 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
             }));
         } else {
             // Regular input change
+
+            console.log(event.target)
             const { name, value } = event.target;
             setData((prevData) => ({
                 ...prevData,
@@ -159,6 +182,7 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
     };
 
     useEffect(() => {
+        console.log(data)
         setData(data)
         setDialogType(dialogType)
         setPrizeList(prizeList)
@@ -260,8 +284,8 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                         placeholder=""
                                         autoComplete="details"
                                         autoFocus
-                                        required
                                         fullWidth
+                                        disabled
                                         value={formData.details}
                                         onChange={(event) => handleInputChange(event)}
                                         variant="outlined"
@@ -303,8 +327,35 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                             <Grid2 size={{ xs: 6, sm: 6, md: 6, lg: 6 }}>
                                 <FormControl>
                                     <FormLabel htmlFor="alpha_code">Alpha Code</FormLabel>
-                                    <TextField
+                                    {/* <Autocomplete
+                                        multiple
+                                        limitTags={2}
                                         id="alpha_code"
+                                        options={alphaCodes}
+                                        defaultValue={formData.alpha_code}
+                                        freeSolo
+                                        renderValue={(value: readonly string[], getItemProps) =>
+                                            value.map((option: string, index: number) => {
+                                                const { key, ...itemProps } = getItemProps({ index });
+                                                return (
+                                                    <Chip variant="outlined" label={option} key={key} {...itemProps} />
+                                                );
+                                            })
+                                        }
+                                        renderInput={(params) => (
+                                            <TextField
+                                                {...params}
+                                                placeholder="i.e GB, G20, RH"
+                                            />
+                                        )}
+                                    /> */}
+                                    <Select
+                                        sx={{
+                                            backgroundColor: "white !important",
+                                            '& .MuiSelect-select': { display: "block !important" }
+                                        }}
+                                        id="alpha_code"
+                                        multiple
                                         type="text"
                                         name="alpha_code"
                                         placeholder="i.e GB, G20, RH"
@@ -319,7 +370,18 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                                 readOnly: dialog_type === 'View',
                                             },
                                         }}
-                                    />
+                                        renderValue={(selected) => {
+                                            return selected.join(', ')
+                                        }}
+                                        MenuProps={MenuProps}
+                                    >
+                                        {alphaCodes.map((name) => (
+                                            <MenuItem key={name} value={name}>
+                                                <Checkbox checked={formData.alpha_code.includes(name)} />
+                                                <ListItemText primary={name} />
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
                                 </FormControl>
                             </Grid2>
 
@@ -484,7 +546,7 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                         }
                     </DialogActions>
                 </form>
-            </Dialog>
+            </Dialog >
             <ImageDrawer open={imageDrawer} onChoose={handleImageRow} onClose={handleImageDrawerClose} />
 
         </>

@@ -29,17 +29,23 @@ RaffleDetails.init(
       },
     },
     alpha_code: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT("long"),
       allowNull: false,
+      // defaultValue: null,
       validate: {
         notNull: {
           msg: "Please enter Alpha Code",
         },
       },
       get() {
-        if (this.getDataValue("alpha_code").trim() !== "") {
-          return this.getDataValue("alpha_code").toUpperCase();
+        const code = this.getDataValue("alpha_code");
+        if (!code || code.trim() === "") {
+          return [];
         }
+        return JSON.parse(code);
+      },
+      set(val) {
+        this.setDataValue("alpha_code", JSON.stringify(val));
       },
     },
     more_details: {
@@ -94,6 +100,26 @@ RaffleDetails.init(
       { name: "raffle_details_idx", fields: ["id"] },
       { unique: true, name: "unique_details_idx", fields: ["details"] },
     ],
+    beforeCreate(raffle, options) {
+      const timestamp = new Date()
+        .toISOString()
+        .replace(/[-T:.Z]/g, "")
+        .slice(0, 14);
+      const id = `RID-${timestamp}`;
+      raffle.details = id;
+    },
   }
 );
+RaffleDetails.after;
+RaffleDetails.afterCreate(async (raffle, options) => {
+  const timestamp = new Date()
+    .toISOString()
+    .replace(/[-T:.Z]/g, "")
+    .slice(0, 14); // UTC+8, plus 8 hours in local time
+
+  const tid = Math.floor(raffle.id);
+  const finalId = `RID-${timestamp}-${tid.toString().padStart(6, "0")}`;
+  await raffle.update({ details: finalId });
+});
+
 export default RaffleDetails;

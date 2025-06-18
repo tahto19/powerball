@@ -25,10 +25,11 @@ export const insertController = async (req, res) => {
     /** Check Draw Date validation */
     const draw_date = moment(formData.draw_date);
     const starting_date = moment(formData.starting_date);
-    if (
-      draw_date.isSameOrBefore(starting_date) ||
-      draw_date.isSameOrAfter(end_date)
-    )
+    // if (
+    //   draw_date.isSameOrBefore(starting_date) ||
+    //   draw_date.isSameOrAfter(end_date)
+    // )
+    if (draw_date.isSameOrBefore(starting_date))
       throw new Error("ErrorCODE x74");
     /** END Check */
 
@@ -70,12 +71,12 @@ export const updateController = async (req, res) => {
 
   /** Check Draw Date validation */
   const draw_date = moment(formData.draw_date);
-  const starting_date = moment(formData.starting_date);
-  if (
-    draw_date.isSameOrBefore(starting_date) ||
-    draw_date.isSameOrAfter(end_date)
-  )
-    throw new Error("ErrorCODE x74");
+  // const starting_date = moment(formData.starting_date);
+  // if (
+  //   draw_date.isSameOrBefore(starting_date) ||
+  //   draw_date.isSameOrAfter(end_date)
+  // )
+  if (draw_date.isSameOrBefore(end_date)) throw new Error("ErrorCODE x74");
 
   let a = await rc.Edit(formData, newPrizeList);
   res.send(cSend(a));

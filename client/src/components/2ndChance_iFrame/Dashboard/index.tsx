@@ -19,6 +19,7 @@ import TicketScannedList from "@/components/ticketScanner/TicketScannedList";
 import WinnerDetails from "@/components/2ndChance_iFrame/winner/WinnerDetails";
 import { useAppSelector } from "@/redux/hook";
 
+import { useMediaQuery, useTheme } from "@mui/material";
 
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const endpoint = base_url + "api/file/serve/image/"
@@ -56,32 +57,41 @@ const Dashboard = () => {
     const handleNavigation = () => {
         navigate("/scanner");
     };
+    const theme = useTheme();
+    console.log(useMediaQuery(theme.breakpoints.down("sm")))
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
     return (
         <>
             <Box
                 sx={{
                     position: 'relative',
-                    height: '181px',
-                    alignSelf: 'stretch',
-                    background: `url(${endpoint + 5}) transparent 50% / contain no-repeat`,
+                    // height: isSmallScreen ? '300px' : '181px',
+                    // alignSelf: 'stretch',
+                    // background: `url(${endpoint + 5}) transparent 50% / contain no-repeat`,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '30px'
                 }}
             >
-                {/* <CardMedia
+                <CardMedia
                     component="img"
-                    sx={{ width: 300 }}
-                    image={endpoint + 11}
+                    sx={{ width: 'fit-content', height: '181px' }}
+                    image={endpoint + 5}
                     alt="Logo"
                 >
 
-                </CardMedia> */}
+                </CardMedia>
 
                 <Box sx={{
-                    position: 'absolute',
-                    bottom: '0',
-                    left: '0',
+                    // position: 'absolute',
+                    // bottom: '0',
+                    // left: '0',
                     display: 'flex',
                     flexWrap: 'wrap',
-                    gap: '20px'
+                    gap: '20px',
+                    justifyContent: 'start',
+                    width: "100%"
                 }}>
                     <Box
                         onClick={handleNavigation}
