@@ -6,4 +6,9 @@ export const columnHeader: GridColDef[] = [
   { field: 'value', headerName: 'Amount', flex: 1, },
 ]
 
+export const columnHeader2: GridColDef[] = [
+  { field: "ticket_history_generate", headerName: "Ticket Code", flex: 1 },
+  { field: "createdAt", headerName: "Participated At", flex: 1 },
+];
+
 export const paginationModel = { page: 0, pageSize: 10}
