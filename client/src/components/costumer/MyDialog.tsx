@@ -241,7 +241,6 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
               <FormControl>
                 <FormLabel htmlFor="password">Password</FormLabel>
                 <TextField
-                  disabled
                   name="password"
                   placeholder="••••••"
                   type={showPassword ? "text" : "password"}

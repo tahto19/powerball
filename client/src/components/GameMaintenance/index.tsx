@@ -11,11 +11,13 @@ import apiService from "@/services/apiService";
 
 import MyDialog from "./Dialog.tsx";
 import CustomizedDataGrid from "../CustomizedDataGrid.tsx";
+import moment from "moment";
+import { showToaster } from "@/redux/reducers/global/globalSlice"
 
-const renderStatus = (status: 'Active' | 'Inactive') => {
+const renderStatus = (status: 'Ended' | 'Active') => {
     const colors: { [index: string]: 'success' | 'error' } = {
         Active: 'success',
-        Inactive: 'error',
+        Ended: 'error',
     };
 
     return <Chip label={status} color={colors[status]} size="small" />;
@@ -40,10 +42,17 @@ const headers = [
             return renderType(value as any)
         },
     },
+    // {
+    //     field: 'active', headerName: 'Active', flex: 1, minWidth: 200,
+    //     renderCell: (params: any) => {
+    //         const value = params.value ? 'Active' : 'Inactive'
+    //         return renderStatus(value as any)
+    //     },
+    // }
     {
-        field: 'active', headerName: 'Active', flex: 1, minWidth: 200,
+        field: 'end_date', headerName: 'Status', flex: 1, minWidth: 200,
         renderCell: (params: any) => {
-            const value = params.value ? 'Active' : 'Inactive'
+            const value = moment().isAfter(params.value) ? 'Ended' : 'Active'
             return renderStatus(value as any)
         },
     }
@@ -111,6 +120,7 @@ const GameMaintenace = () => {
 
         const d = bodyDecrypt(res.data, token)
         if (d && d.success === 'success') {
+            console.log(">>>>", d.data.list)
             setRaffleList(d.data.list)
             setListCount(d.data.total)
         }
@@ -127,6 +137,15 @@ const GameMaintenace = () => {
     }
 
     const handleEditAction = (row: RaffleState) => {
+        if (row && moment().isAfter(row.end_date)) {
+            dispatch(showToaster({
+                message: "Raffle already ended.",
+                show: true,
+                variant: "error",
+                icon: null,
+            }))
+            return;
+        }
         setDialogType("Edit");
         setDataRow({ ...row })
         setOpen(true)

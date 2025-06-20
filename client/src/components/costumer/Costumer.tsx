@@ -76,7 +76,7 @@ const Costumer = () => {
       filter: newFilterModel,
     };
 
-    // const res = await apiService.getPrizeList(query);
+    const res = await apiService.getPrizeList(query);
   };
   const handleEditAction = (row: DataProps) => {
     setDialogType("Edit");

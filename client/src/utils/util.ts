@@ -39,7 +39,7 @@ const getErrorsStatus = (code: string) => {
     case "x73":
       return "End date must be set in the future. Please choose a valid end date.";
     case "x74":
-      return "Draw date must be between the start date and end date.";
+      return "Draw date must be after the end date.";
     case "x75":
       return "Email does not exists";
     case "x761":

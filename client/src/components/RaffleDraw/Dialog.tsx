@@ -16,6 +16,8 @@ import {
   IconButton,
   Typography,
   Slide,
+  Tabs,
+  Tab,
 } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
 import CustomizedDataGrid from "../CustomizedDataGrid.tsx";
@@ -25,6 +27,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
 import moment from "moment";
 import PrizeListDialog from "./PrizeTypeDialog.tsx";
+import Participants from "./ParticipantsTable.tsx";
+
 import {
   initialRaffleData,
   PrizeInfoState,
@@ -48,6 +52,12 @@ import { getData } from "@/redux/reducers/RaffleDraw/asyncCalls.ts";
 import { getDataV2 } from "@/types/allTypes.js";
 import { RootState } from "@/redux/store.ts";
 
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const endpoint = base_url + "api/file/serve/image/";
 
@@ -65,6 +75,28 @@ const Transition = forwardRef(function Transition(
     />
   );
 });
+
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
+function CustomTabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
+  );
+}
 
 const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
   const dispatch = useAppDispatch();
@@ -85,6 +117,10 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
     (state: RootState) => state.raffleDraw.getData
   );
 
+  const [tabValue, setTab] = useState(0)
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setTab(newValue);
+  }
   useEffect(() => { }, [getDataLoading]);
   const handlePrizeTypeChange = (value: string) => {
     const prize_data = data.raffleSchedule[0].prizeInfo.find(
@@ -419,6 +455,29 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
               pagination={paginationModel}
               checkboxSelection={false}
             />
+            {/* <Box>
+              <Tabs centered value={tabValue} onChange={handleTabChange} aria-label="tab">
+                <Tab label="Winners" {...a11yProps(0)} />
+                <Tab label="Participants" {...a11yProps(1)} />
+              </Tabs>
+            </Box> */}
+            {/* <CustomTabPanel value={tabValue} index={0}>
+              <CustomizedDataGrid
+                sx={{
+                  width: "50%",
+                  margin: "0 auto",
+                }}
+                loading={!getDataLoading}
+                isAction={false}
+                data={list}
+                headers={columnHeader}
+                pagination={paginationModel}
+                checkboxSelection={false}
+              />
+            </CustomTabPanel> */}
+            {/* <CustomTabPanel value={tabValue} index={1}>
+              <Participants raffle_schedule_id={data.raffleSchedule[0].id} />
+            </CustomTabPanel> */}
           </Box>
         </Box>
         <PrizeListDialog

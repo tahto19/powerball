@@ -7,7 +7,7 @@ import moment from "moment";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { Chip, TextField, Box, Switch, MenuItem, Dialog, DialogActions, DialogContent, DialogTitle, Button, FormLabel, FormControlLabel, Grid2 } from '@mui/material';
+import { Checkbox, Autocomplete, Select, ListItemText, Chip, TextField, Box, Switch, MenuItem, Dialog, DialogActions, DialogContent, DialogTitle, Button, FormLabel, FormControlLabel, Grid2 } from '@mui/material';
 import MuiFormControl from '@mui/material/FormControl';
 import { styled } from '@mui/material/styles';
 
@@ -57,9 +57,31 @@ const FormControl = styled(MuiFormControl)(() => ({
     width: "100%"
 }));
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 20,
+        },
+    },
+};
+
+const alphaCodes = [
+    'GB',
+    'RH',
+    'G20',
+    'G50',
+    'G00',
+    'IK',
+    'RR',
+    'MT'
+];
+
 const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDialogProps) => {
     const dispatch = useAppDispatch();
-
+    console.log(data)
     // const [isOpen, setOpen] = useState(open);
     const [dialog_type, setDialogType] = useState("")
     const [formData, setData] = useState<RaffleState>(data);
@@ -146,7 +168,12 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
             }));
         } else {
             // Regular input change
+
+            console.log(event.target)
             const { name, value } = event.target;
+            console.log(name)
+            console.log(value)
+
             setData((prevData) => ({
                 ...prevData,
                 [name]: name === "active" ? !prevData.active : value,
@@ -159,6 +186,7 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
     };
 
     useEffect(() => {
+        console.log(data)
         setData(data)
         setDialogType(dialogType)
         setPrizeList(prizeList)
@@ -228,6 +256,29 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                             spacing={2}
                             columns={12}
                         >
+                            <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                                <FormControl>
+                                    <FormLabel htmlFor="details">Raffle ID</FormLabel>
+                                    <TextField
+                                        id="details"
+                                        type="text"
+                                        name="details"
+                                        placeholder=""
+                                        autoComplete="details"
+                                        autoFocus
+                                        fullWidth
+                                        disabled
+                                        value={formData.details}
+                                        onChange={(event) => handleInputChange(event)}
+                                        variant="outlined"
+                                        slotProps={{
+                                            input: {
+                                                readOnly: dialog_type === 'View',
+                                            },
+                                        }}
+                                    />
+                                </FormControl>
+                            </Grid2>
                             <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
                                 <FormControl>
                                     <FormLabel htmlFor="name">Raffle Name</FormLabel>
@@ -240,29 +291,6 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                         required
                                         fullWidth
                                         value={formData.name}
-                                        onChange={(event) => handleInputChange(event)}
-                                        variant="outlined"
-                                        slotProps={{
-                                            input: {
-                                                readOnly: dialog_type === 'View',
-                                            },
-                                        }}
-                                    />
-                                </FormControl>
-                            </Grid2>
-                            <Grid2 size={{ xs: 6, sm: 6, md: 6, lg: 6 }}>
-                                <FormControl>
-                                    <FormLabel htmlFor="details">Raffle ID</FormLabel>
-                                    <TextField
-                                        id="details"
-                                        type="text"
-                                        name="details"
-                                        placeholder=""
-                                        autoComplete="details"
-                                        autoFocus
-                                        required
-                                        fullWidth
-                                        value={formData.details}
                                         onChange={(event) => handleInputChange(event)}
                                         variant="outlined"
                                         slotProps={{
@@ -298,28 +326,6 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                         <MenuItem value={'1'}>Daily</MenuItem>
                                         <MenuItem value={'2'}>Weekly</MenuItem>
                                     </TextField>
-                                </FormControl>
-                            </Grid2>
-                            <Grid2 size={{ xs: 6, sm: 6, md: 6, lg: 6 }}>
-                                <FormControl>
-                                    <FormLabel htmlFor="alpha_code">Alpha Code</FormLabel>
-                                    <TextField
-                                        id="alpha_code"
-                                        type="text"
-                                        name="alpha_code"
-                                        placeholder="i.e GB, G20, RH"
-                                        autoFocus
-                                        required
-                                        fullWidth
-                                        value={formData.alpha_code}
-                                        onChange={(event) => handleInputChange(event)}
-                                        variant="outlined"
-                                        slotProps={{
-                                            input: {
-                                                readOnly: dialog_type === 'View',
-                                            },
-                                        }}
-                                    />
                                 </FormControl>
                             </Grid2>
 
@@ -376,7 +382,87 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                 </FormControl>
                             </Grid2>
 
+                            <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                                <FormControl>
+                                    <FormLabel htmlFor="alpha_code">Alpha Code</FormLabel>
+                                    <Autocomplete
+                                        multiple
+                                        id="alpha_code"
+                                        options={alphaCodes}
+                                        defaultValue={formData.alpha_code}
+                                        freeSolo
+                                        renderValue={(value: readonly string[], getItemProps) =>
+                                            value.map((option: string, index: number) => {
+                                                const { key, ...itemProps } = getItemProps({ index });
+                                                return (
+                                                    <Chip variant="outlined" label={option} key={key} {...itemProps} />
+                                                );
+                                            })
+                                        }
+                                        renderOption={(props, option, { selected }) => (
+                                            <li {...props}>
+                                                <Checkbox
+                                                    style={{ marginRight: 8 }}
+                                                    checked={selected}
+                                                />
+                                                <ListItemText primary={option} />
+                                            </li>
+                                        )}
+                                        onChange={(event, newValue) => {
+                                            setData((prevData) => ({
+                                                ...prevData,
+                                                alpha_code: newValue,
+                                            }));
+                                        }}
+                                        renderInput={(params) => (
+                                            <TextField
+                                                {...params}
+                                                name="alpha_code"
 
+                                            // placeholder="i.e GB, G20, RH"
+                                            />
+                                        )}
+                                        sx={{
+                                            '& .MuiInputBase-root': {
+                                                height: 'auto'
+                                            }
+                                        }}
+                                    />
+                                    {/* <Select
+                                        sx={{
+                                            backgroundColor: "white !important",
+                                            '& .MuiSelect-select': { display: "block !important" }
+                                        }}
+                                        id="alpha_code"
+                                        multiple
+                                        type="text"
+                                        name="alpha_code"
+                                        placeholder="i.e GB, G20, RH"
+                                        autoFocus
+                                        required
+                                        fullWidth
+                                        value={formData.alpha_code}
+                                        onChange={(event) => handleInputChange(event)}
+                                        variant="outlined"
+                                        slotProps={{
+                                            input: {
+                                                readOnly: dialog_type === 'View',
+                                            },
+                                        }}
+                                        renderValue={(selected) => {
+                                            return selected.join(', ')
+                                        }}
+                                        MenuProps={MenuProps}
+                                    >
+                                        {alphaCodes.map((name) => (
+                                            <MenuItem key={name} value={name}>
+                                                <Checkbox checked={formData.alpha_code.includes(name)} />
+                                                <ListItemText primary={name} />
+                                            </MenuItem>
+                                        ))}
+                                    </Select> */}
+                                </FormControl>
+                            </Grid2>
                             <Box sx={{
                                 display: "flex",
                                 justifyContent: "end",
@@ -484,7 +570,7 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                         }
                     </DialogActions>
                 </form>
-            </Dialog>
+            </Dialog >
             <ImageDrawer open={imageDrawer} onChoose={handleImageRow} onClose={handleImageDrawerClose} />
 
         </>
