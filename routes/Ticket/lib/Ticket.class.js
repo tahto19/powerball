@@ -8,7 +8,7 @@ class TicketDetails_class {
     const sort_ = sort.length === 0 ? [["id", "DESC"]] : sort;
     let query = {
       limit: parseInt(limit),
-      offset: parseInt(offset),
+      offset: parseInt(offset) * parseInt(limit),
       order: sort_,
     };
 

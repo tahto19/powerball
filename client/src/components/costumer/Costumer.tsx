@@ -75,8 +75,7 @@ const Costumer = () => {
       sort: sort,
       filter: newFilterModel,
     };
-
-    const res = await apiService.getPrizeList(query);
+    dispatch(getCostumer(query));
   };
   const handleEditAction = (row: DataProps) => {
     setDialogType("Edit");
@@ -160,8 +159,8 @@ const Costumer = () => {
           onTableChange={handleTableChange}
           pageLength={count}
           isAction={false}
-        // onEditAction={handleEditAction}
-        // onViewAction={handleViewAction}
+          // onEditAction={handleEditAction}
+          // onViewAction={handleViewAction}
         />
       </Grid2>
       <MyDialog

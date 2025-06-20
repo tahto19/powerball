@@ -5,7 +5,7 @@ class AuditTrail_class {
   async Fetch(offset = 0, limit = 10, sort = [["id", "ASC"]], filter = []) {
     let query = {
       limit: parseInt(limit),
-      offset: parseInt(offset),
+      offset: parseInt(offset) * parseInt(limit),
       order: sort,
     };
 

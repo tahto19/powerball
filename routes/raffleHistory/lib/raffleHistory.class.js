@@ -12,7 +12,7 @@ class TicketHistory_class {
   async Fetch(offset = 0, limit = 10, sort = [["id", "ASC"]], filter = []) {
     let query = {
       limit: parseInt(limit),
-      offset: parseInt(offset),
+      offset: parseInt(offset) * parseInt(limit),
       order: sort,
     };
 
@@ -90,7 +90,7 @@ class TicketHistory_class {
   ) {
     let query = {
       limit: parseInt(limit),
-      offset: parseInt(offset),
+      offset: parseInt(offset) * parseInt(limit),
       order: sort.length === 0 ? [["id", "DESC"]] : sort,
     };
 

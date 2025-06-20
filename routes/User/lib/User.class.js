@@ -7,7 +7,7 @@ class User_class {
   async Fetch(offset = 0, limit = 10, sort = [["id", "ASC"]], filter = []) {
     let query = {
       limit: parseInt(limit),
-      offset: parseInt(offset),
+      offset: parseInt(offset) * parseInt(limit),
       sort: sort,
     };
     if (filter.length !== 0) query["where"] = WhereFilters(filter);
@@ -23,7 +23,7 @@ class User_class {
   ) {
     let query = {
       limit: parseInt(limit),
-      offset: parseInt(offset),
+      offset: parseInt(offset) * parseInt(limit),
       sort: sort,
     };
     if (filter && filter.length !== 0) query["where"] = WhereFilters(filter);

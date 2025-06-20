@@ -51,11 +51,9 @@ export const getOnlyTotalPerRaffleScheduleSchema = {
     body: {
       type: "object",
       properties: {
-        offset: { type: "number" },
-        limit: { type: "number" },
-        sort: { type: "array" },
-        filter: { type: "array" },
+        id: { type: "number" },
       },
+      required: ["id"],
     },
   },
 };

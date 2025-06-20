@@ -32,8 +32,7 @@ export const getWinnersTablePerScheduleController = async (req, res) => {
 };
 export const getOnlyTotalPerRaffleScheduleController = async (req, res) => {
   try {
-    const { id, limit, offset, filter, sort } = req.body;
-
+    const { id } = req.body;
     const _r = await wc.getWinnersPerSchedule(id);
     const toReturn = [];
     _r.list.forEach((v) => {
