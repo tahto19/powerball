@@ -102,10 +102,12 @@ const Login = () => {
     }
   }, [token]);
 
-
   return (
     <>
-      <div id="iframe-login" className="wp-singular page-template-default page page-id-514 wp-embed-responsive wp-theme-hello-elementor theme-default elementor-default elementor-kit-6 elementor-page elementor-page-514 elementor-page-231 e--ua-blink e--ua-chrome e--ua-webkit">
+      <div
+        id="iframe-login"
+        className="wp-singular page-template-default page page-id-514 wp-embed-responsive wp-theme-hello-elementor theme-default elementor-default elementor-kit-6 elementor-page elementor-page-514 elementor-page-231 e--ua-blink e--ua-chrome e--ua-webkit"
+      >
         <div
           data-elementor-type="single-page"
           data-elementor-id="231"
@@ -228,7 +230,7 @@ const Login = () => {
                                         name="rememberme"
                                         value="forever"
                                       />
-                                      Remember Me{" "}
+                                      Remember Me
                                     </label>
                                   </div>
 
@@ -249,7 +251,8 @@ const Login = () => {
                                       className="elementor-lost-password"
                                       href="#"
                                       onClick={() => {
-                                        window.parent.location.href = "https://18.138.76.86/member-area/forgot-password/";
+                                        window.parent.location.href =
+                                          "https://18.138.76.86/member-area/forgot-password/";
                                       }}
                                     >
                                       Lost your password?{" "}

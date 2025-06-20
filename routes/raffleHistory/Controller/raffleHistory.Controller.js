@@ -16,12 +16,13 @@ export const insertRaffleHistoryController = async (req, res) => {
     let r = await td.getTotalEntries([
       { field: "user_id", type: "number", filter: req.user_id },
       { field: "active", type: "boolean", filter: true },
-      { field: "alpha_code", type: "string_eq", filter: getAlphaCode },
+      { field: "alpha_code", type: "array", filter: getAlphaCode },
     ]);
 
     if (!!!r || r.length === 0) throw new Error("ERRORCODE x268");
     if (r[0].error) throw new Error("ERRORCODE x268");
     let totalEntries = r[0].toJSON();
+
     let totalEntriesRemaining =
       totalEntries.totalEntries - totalEntries.totalUsedEntries;
     if (totalEntriesRemaining < entries) throw new Error("ERRORCode x369");
@@ -29,7 +30,7 @@ export const insertRaffleHistoryController = async (req, res) => {
     const getUserTicketDetails = await td.FetchAll(null, [
       { field: "user_id", type: "number", filter: req.user_id },
       { field: "active", type: "boolean", filter: true },
-      { field: "alpha_code", type: "string_eq", filter: getAlphaCode },
+      { field: "alpha_code", type: "array", filter: getAlphaCode },
     ]);
 
     for (let val of getUserTicketDetails.list) {
@@ -57,6 +58,7 @@ export const insertRaffleHistoryController = async (req, res) => {
       //   update the ticket details
       await td.Edit(v);
     }
+
     res.send(getUserTicketDetails);
   } catch (err) {
     throw err;
@@ -86,6 +88,26 @@ export const getRaffleEntriesController = async (req, res) => {
     res.send(_r);
   } catch (err) {
     console.log(err);
+    throw err;
+  }
+};
+export const getRaffleEntriesInScheduleController = async (req, res) => {
+  try {
+    const { id, limit, sort, filter, offset } = req.body;
+    let filters = filter;
+    // if (id) {
+    //   filters.push({ field: "$raffleDetails.id$", filter: id, type: "number" });
+    // }
+    const _r = await th.FetchWithInclude(offset, limit, sort, filters);
+    let reEditList = _r.list.map((v) => {
+      return {
+        ticket_history_generate: v.ticket_history_generate,
+        createdAt: v.createdAt,
+        ticketCode: v.ticket_detail.ticket_code,
+      };
+    });
+    res.send({ count: _r.count, list: reEditList });
+  } catch (err) {
     throw err;
   }
 };

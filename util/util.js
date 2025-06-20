@@ -60,7 +60,7 @@ export const WhereFilters = (filters = []) => {
         case "multiple-boolean":
         case "multiple-array":
         case "multiple-date":
-          let multiplewherefilters = this.WhereFilters(
+          let multiplewherefilters = WhereFilters(
             f.field.map((i) => {
               return {
                 field: i,
@@ -91,6 +91,10 @@ export const WhereFilters = (filters = []) => {
         case "array":
           wherefilters[f.field] = {
             [Op.in]: f.filter,
+          };
+        case "array-or":
+          wherefilters[f.field] = {
+            [Op.or]: f.filter,
           };
         case "number":
           wherefilters[f.field] = f.filter;

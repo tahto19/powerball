@@ -16,6 +16,7 @@ export const auth = async (req, res) => {
       if (regex && x.method.toLowerCase() === req.method.toLowerCase())
         return x;
     });
+
     if (findNoP === undefined) {
       // check adminPaths
       let AdminP = getPath("/authentication/adminPath.json");

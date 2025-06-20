@@ -93,7 +93,7 @@ class TicketHistory_class {
       offset: parseInt(offset),
       order: sort.length === 0 ? [["id", "DESC"]] : sort,
     };
-    console.log(sort);
+
     if (filter.length !== 0) query["where"] = WhereFilters(filter);
     query["include"] = [
       {

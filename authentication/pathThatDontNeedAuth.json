@@ -9,5 +9,6 @@
   { "path": "/ticket", "method": "testing" },
   { "path": "/cron", "method": "GET" },
   { "path": "/testingroutes(?:/.*)?$", "method": "POST" },
-  { "path": "/password-reset", "method": "POST" }
+  { "path": "/password-reset", "method": "POST" },
+  { "path": "/api/raffleHistory/getRaffleEntries", "method": "POST" }
 ]
