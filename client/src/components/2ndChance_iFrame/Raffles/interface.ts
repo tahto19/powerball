@@ -18,8 +18,14 @@ export interface enterEntries {
   raffle_id: number | null;
 }
 export interface RaffleScheduleState {
+  id: number | null;
   schedule_type: boolean;
   starting_date: string;
+}
+
+export interface WinnerState {
+  totalWinners: number | null;
+  prize: string,
 }
 
 export const initialRaffleData: RaffleState = {
@@ -27,3 +33,8 @@ export const initialRaffleData: RaffleState = {
   name: "",
   raffleSchedule: [],
 };
+
+export const initialWinnerData: WinnerState[]= [{
+  totalWinners: null,
+  prize: "",
+}];

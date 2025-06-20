@@ -377,6 +377,11 @@ export const apiService = {
     });
   },
 
+  getWinnerByRaffle: async (data, token: string | null) => {
+    return apiClient.post("api/winner/getWinnersMerge", {
+      data: bodyEncrypt(JSON.stringify(data), token),
+    });
+  },
   //forgot password
   forgotPassword: async (data: { email: string }) => {
     console.log(data);

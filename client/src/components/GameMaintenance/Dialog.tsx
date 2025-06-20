@@ -7,7 +7,7 @@ import moment from "moment";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { Checkbox, Autocomplete, Select, ListItemText, Chip, TextField, Box, Switch, MenuItem, Dialog, DialogActions, DialogContent, DialogTitle, Button, FormLabel, FormControlLabel, Grid2 } from '@mui/material';
+import { Tabs, Tab, Checkbox, Autocomplete, Select, ListItemText, Chip, TextField, Box, Switch, MenuItem, Dialog, DialogActions, DialogContent, DialogTitle, Button, FormLabel, FormControlLabel, Grid2 } from '@mui/material';
 import MuiFormControl from '@mui/material/FormControl';
 import { styled } from '@mui/material/styles';
 
@@ -26,6 +26,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import ImageIcon from '@mui/icons-material/Image';
 import ImageDrawer from "@/components/ImageDrawer.tsx";
+import Participants from "./ParticipantsTable.tsx";
 
 
 
@@ -79,6 +80,34 @@ const alphaCodes = [
     'MT'
 ];
 
+interface TabPanelProps {
+    children?: React.ReactNode;
+    index: number;
+    value: number;
+}
+
+function a11yProps(index: number) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
+function CustomTabPanel(props: TabPanelProps) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+        </div>
+    );
+}
+
 const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDialogProps) => {
     const dispatch = useAppDispatch();
     console.log(data)
@@ -96,6 +125,11 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
             list.some(z => Number(z) === Number(x.id))
         );
         setSelectedPrize(selected_prize)
+    }
+
+    const [tabValue, setTab] = useState(0)
+    const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+        setTab(newValue);
     }
 
     const handleSubmit = async (e: React.FocusEvent<HTMLFormElement>) => {
@@ -463,32 +497,69 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                     </Select> */}
                                 </FormControl>
                             </Grid2>
-                            <Box sx={{
-                                display: "flex",
-                                justifyContent: "end",
-                                width: "100%",
-                                marginTop: "10px",
-                            }}>
-                                <Button
-                                    variant="contained"
-                                    onClick={handleOpenPrizeListDialog}
-                                >
-                                    {dialog_type} Prizes
-                                </Button>
-                            </Box>
+                            {
+                                dialog_type === 'View' ? (
+                                    <>
+                                        <Box sx={{
+
+                                            width: "100%",
+                                            marginTop: "10px",
+                                        }}>
+                                            <Tabs centered value={tabValue} onChange={handleTabChange} aria-label="tab">
+                                                <Tab label="Prizes" {...a11yProps(0)} />
+                                                <Tab label="Participants" {...a11yProps(1)} />
+                                            </Tabs>
+                                        </Box>
+                                        <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }} sx={{ marginTop: "10px" }}>
+
+                                            <CustomTabPanel value={tabValue} index={0}>
+                                                <CustomizedDataGridBasic
+                                                    sx={{
+                                                        width: "100%",
+                                                    }}
+                                                    data={selectedPrize}
+                                                    headers={columnHeader}
+                                                    pagination={paginationModel}
+                                                    checkboxSelection={false}
+                                                />
+                                            </CustomTabPanel>
+                                            <CustomTabPanel value={tabValue} index={1}>
+                                                <Participants raffle_schedule_id={data.raffleSchedule[0].id} />
+                                            </CustomTabPanel>
+                                        </Grid2>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Box sx={{
+                                            display: "flex",
+                                            justifyContent: "end",
+                                            width: "100%",
+                                            marginTop: "10px",
+                                        }}>
+                                            <Button
+                                                variant="contained"
+                                                onClick={handleOpenPrizeListDialog}
+                                            >
+                                                {dialog_type} Prizes
+                                            </Button>
+                                        </Box>
 
 
-                            <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }} sx={{ marginTop: "10px" }}>
-                                <CustomizedDataGridBasic
-                                    sx={{
-                                        width: "100%",
-                                    }}
-                                    data={selectedPrize}
-                                    headers={columnHeader}
-                                    pagination={paginationModel}
-                                    checkboxSelection={false}
-                                />
-                            </Grid2>
+                                        <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }} sx={{ marginTop: "10px" }}>
+                                            <CustomizedDataGridBasic
+                                                sx={{
+                                                    width: "100%",
+                                                }}
+                                                data={selectedPrize}
+                                                headers={columnHeader}
+                                                pagination={paginationModel}
+                                                checkboxSelection={false}
+                                            />
+                                        </Grid2>
+                                    </>
+                                )
+                            }
+
 
                             {/* <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
                                 <FormControl>

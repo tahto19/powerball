@@ -7,8 +7,7 @@ const Participants = (raffle_schedule_id: { raffle_schedule_id: number }) => {
         <>
             <CustomizedDataGrid
                 sx={{
-                    width: "50%",
-                    margin: "0 auto",
+                    width: "100%",
                 }}
                 loading={false}
                 isAction={false}

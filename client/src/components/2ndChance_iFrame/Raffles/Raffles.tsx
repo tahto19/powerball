@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import moment from "moment";
 import MyDialog from "./Dialog";
+import WinnersDialog from "./WinnersDialog";
 
 import {
   initialRaffleData,
@@ -24,6 +25,7 @@ import {
 import { getRaffleEntry } from "@/redux/reducers/raffleEntry/asyncCalls";
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import IconButton from '@mui/material/IconButton';
+import endedImage from '@/assets/image/ended.png'
 
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const endpoint = base_url + "api/file/serve/image/"
@@ -103,6 +105,18 @@ const Raffles = () => {
     setOpen(true);
   };
 
+  const [viewWinners, setViewWinners] = useState(false);
+
+  const handleViewWinners = (data: RaffleState) => {
+    // if (data.end_date && moment(data.end_date).isSameOrBefore(moment())) {
+    setViewWinners(true)
+    setData(data);
+    // }
+  }
+  const handleOnClose2 = (value: boolean) => {
+    setViewWinners(value)
+  };
+
   const [open, setOpen] = useState(false);
   const handleOnClose = (value: boolean) => {
     setOpen(value);
@@ -163,7 +177,9 @@ const Raffles = () => {
             list &&
             list.map((x, i) => (
               <Card key={i}
+
                 sx={{
+                  position: 'relative',
                   width: '258px',
                   height: '288px',
                   padding: '12px',
@@ -171,6 +187,8 @@ const Raffles = () => {
                   background: '#FFF',
                   boxShadow: '0px 14px 42px 0px rgba(8, 15, 52, 0.06)',
                 }}
+
+                onClick={() => handleViewWinners(x)}
               >
                 <Box sx={{ display: "flex", flexDirection: "column" }}>
                   {x.fileInfo ? (
@@ -230,11 +248,25 @@ const Raffles = () => {
                     onClick={() => handleParticipate(x)}
                     variant="contained"
                     sx={{ width: "100%" }}
-                    disabled={moment(x.raffleSchedule[0].schedule_date).isSameOrBefore(moment())}
+                    disabled={moment(x.end_date).isSameOrBefore(moment())}
                   >
-                    {moment(x.raffleSchedule[0].schedule_date).isSameOrBefore(moment()) ? "Ended" : "Participate"}
+                    {moment(x.end_date).isSameOrBefore(moment()) ? "Ended" : "Participate"}
                   </Button>
                 </CardActions>
+                {moment(x.end_date).isSameOrBefore(moment()) ? (
+                  <CardMedia
+                    component="img"
+                    image={endedImage}
+                    alt="Ended"
+                    sx={{
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      transform: "translate(-50%, -50%)"
+                    }}
+                  />
+                ) : null}
+
               </Card>
             ))
           ) : (
@@ -253,6 +285,11 @@ const Raffles = () => {
         data={data}
         onClose={handleOnClose}
       />
+
+      {viewWinners ? (
+        <WinnersDialog open={viewWinners} data={data} onClose={handleOnClose2} />
+      ) : null}
+
     </>
   );
 };

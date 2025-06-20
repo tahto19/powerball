@@ -93,6 +93,10 @@ class Raffle_class {
                 },
               ],
             },
+            {
+              model: TicketHistory,
+              required: false, // This ensures the RaffleSchedule is included even if there's no matching TicketHistory
+            },
           ],
         },
         {
@@ -133,6 +137,10 @@ class Raffle_class {
                   required: false, // This ensures the RaffleSchedule is included even if there's no matching RafflePrize
                 },
               ],
+            },
+            {
+              model: TicketHistory,
+              required: false, // This ensures the RaffleSchedule is included even if there's no matching TicketHistory
             },
           ],
         },
