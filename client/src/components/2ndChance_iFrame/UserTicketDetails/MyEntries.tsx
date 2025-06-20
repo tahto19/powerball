@@ -73,7 +73,7 @@ export function MyEntries() {
         })
       );
     }
-  }, [location, pagination, token]);
+  }, [location, token]);
   useEffect(() => {
     setPagination(() => {
       return { page: offset, pageSize: limit };
@@ -82,45 +82,91 @@ export function MyEntries() {
   useEffect(() => {
     console.log(count, list);
   }, [_loading]);
+  const handleTableChange = async ({
+    page,
+    pageSize,
+    sortModel,
+    filterModel,
+  }: any) => {
+    console.log("running");
+    setPagination({ page, pageSize });
+
+    const sort = [["id", "DESC"]];
+    if (sortModel.length > 0) {
+      sort.push([sortModel[0].field, sortModel[0].sort.toUpperCase()]);
+    }
+
+    let newFilterModel = [];
+
+    if (filterModel.items.length > 0) {
+      newFilterModel = JSON.parse(JSON.stringify(filterModel)).items.map(
+        (x: any) => {
+          x.filter = x.value;
+          x.type = "string";
+
+          delete x.value;
+          delete x.fromInput;
+          delete x.id;
+          delete x.operator;
+          return x;
+        }
+      );
+    }
+
+    const query: getDataV2 = {
+      offset: page,
+      limit: pageSize,
+      sort: sort,
+      filter: newFilterModel,
+    };
+    dispatch(
+      getRaffleEntryList({
+        ...query,
+        ...{ location: "myEntries" },
+      })
+    );
+  };
   return (
     <>
-      <Box sx={{
-        background: "#fff",
-        borderRadius: '20px',
-        boxShadow: '0px 14px 42px 0px rgba(8, 15, 52, 0.06)',
-        padding: '30px',
-      }}>
+      <Box
+        sx={{
+          background: "#fff",
+          borderRadius: "20px",
+          boxShadow: "0px 14px 42px 0px rgba(8, 15, 52, 0.06)",
+          padding: "30px",
+        }}
+      >
         <Box
           sx={{
-            display: 'flex',
-            gap: '10px',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            mb: '20px'
-          }}>
-          <Typography sx={{
-            fontSize: '24px',
-            fontWeight: '600'
-          }} >
+            display: "flex",
+            gap: "10px",
+            alignItems: "center",
+            justifyContent: "space-between",
+            mb: "20px",
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: "24px",
+              fontWeight: "600",
+            }}
+          >
             My Entries
           </Typography>
-
         </Box>
-        <CustomizedDataGridBasic
+        <CustomizedDataGrid
           sx={{
             width: "100%",
           }}
           headers={headers}
           data={list}
           pagination={pagination}
-        // onTableChange={handleTableChange}
-        // pageLength={count}
-        // onEditAction={handleEditAction}
-        // onViewAction={handleViewAction}
+          onTableChange={handleTableChange}
+          pageLength={count}
+          // onEditAction={handleEditAction}
+          // onViewAction={handleViewAction}
         />
-
       </Box>
-
     </>
   );
 }
