@@ -105,6 +105,46 @@ class WiningDrawDetails_class {
     const { count, rows } = await WiningDrawDetails.findAndCountAll(query);
     return { count, list: rows.map((v) => v.toJSON()) };
   }
-}
+  async getWinnersPerSchedule(
+    id,
+    sort = [],
+    limit = 50,
+    offset = 0,
+    filters = []
+  ) {
+    var query = {
+      limit: parseInt(limit),
+      offset: parseInt(offset),
+      order: sort,
 
+      include: [
+        {
+          model: RafflePrize,
+          include: [
+            {
+              model: RaffleSchedule,
+              include: [{ model: RaffleDetails, as: "raffleDetails" }],
+            },
+            { model: PrizeList },
+          ],
+        },
+        { model: TicketHistory },
+      ],
+    };
+
+    if (id)
+      filters.push({
+        filter: id,
+        type: "number",
+        field: "$Raffle_Prize.raffle_schedule_id$",
+      });
+
+    query["where"] = WhereFilters(filters);
+
+    const _r = await WiningDrawDetails.findAndCountAll(query);
+    const { count, rows } = _r;
+
+    return { list: rows.map((v) => v.toJSON()), count };
+  }
+}
 export default new WiningDrawDetails_class();

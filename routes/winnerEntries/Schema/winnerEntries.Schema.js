@@ -1,6 +1,8 @@
 import {
   getDataController,
+  getOnlyTotalPerRaffleScheduleController,
   getWinnersTableController,
+  getWinnersTablePerScheduleController,
 } from "../controller/winnerEntries.controller.js";
 
 export const getDataSchema = {
@@ -17,6 +19,34 @@ export const getDataSchema = {
 };
 export const getWinnerTableSchema = {
   handler: getWinnersTableController,
+  schema: {
+    body: {
+      type: "object",
+      properties: {
+        offset: { type: "number" },
+        limit: { type: "number" },
+        sort: { type: "array" },
+        filter: { type: "array" },
+      },
+    },
+  },
+};
+export const getWinnersTablePerScheduleSchema = {
+  handler: getWinnersTablePerScheduleController,
+  schema: {
+    body: {
+      type: "object",
+      properties: {
+        offset: { type: "number" },
+        limit: { type: "number" },
+        sort: { type: "array" },
+        filter: { type: "array" },
+      },
+    },
+  },
+};
+export const getOnlyTotalPerRaffleScheduleSchema = {
+  handler: getOnlyTotalPerRaffleScheduleController,
   schema: {
     body: {
       type: "object",

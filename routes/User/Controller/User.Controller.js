@@ -21,6 +21,7 @@ export const getController = async (req, res) => {
     : [...filter, { field: "isAdmin", filter: false, type: "boolean" }];
 
   let r = await uc.FetchAndCount(offset, limit, sort, changeFilter);
+  console.log(r);
   res.send(cSend(r));
 };
 
