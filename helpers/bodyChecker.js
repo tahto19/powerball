@@ -64,7 +64,6 @@ const bodyChecker = async (req, res, payload) => {
       }
     }
   } catch (err) {
-    console.log(err);
     throw err;
   }
 };

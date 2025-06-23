@@ -159,7 +159,10 @@ export const cSend = (data) => {
   return { success: "success", success: "success", data };
 };
 export const encryptData = (data, token) => {
-  var encrypted = CryptoJS.AES.encrypt(data, token).toString();
+  console.log("ererererere");
+  var encrypted;
+
+  encrypted = CryptoJS.AES.encrypt(data, token).toString();
 
   return encrypted;
 };

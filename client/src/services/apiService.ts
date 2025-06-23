@@ -1,3 +1,4 @@
+import { bodyDecrypt } from "@/utils/util";
 //@ts-nocheck
 import { getTicket } from "./../redux/reducers/ticket/asyncCalls";
 import _ from "lodash";
@@ -22,6 +23,7 @@ import {
   getDataV2,
   ticketState,
   TicketDraw,
+  exportDataState,
 } from "@/types/allTypes";
 import { enterEntries } from "@/components/2ndChance_iFrame/Raffles/interface";
 
@@ -394,6 +396,13 @@ export const apiService = {
     console.log(data);
     const response = await apiClient.post("/api/password-reset/confirm", data);
     return response;
+  },
+  exportData: async (data: exportDataState, token: string) => {
+    const response = await apiClient.post("api/export", {
+      data: bodyEncrypt(JSON.stringify(data), token),
+    });
+
+    return bodyDecrypt(response.data, token);
   },
 };
 

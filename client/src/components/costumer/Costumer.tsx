@@ -12,6 +12,8 @@ import { useState } from "react";
 import { GridColDef } from "@mui/x-data-grid";
 import MyDialog from "./MyDialog";
 import { DataProps, getDataV2 } from "@/types/allTypes";
+import axios from "axios";
+import { downloadData } from "@/redux/reducers/download/asyncCalls";
 const Costumer = () => {
   const dispatch = useAppDispatch();
   const { loading, list, offset, limit, sort, count } = useAppSelector(
@@ -87,6 +89,14 @@ const Costumer = () => {
     setData(row);
     setOpen(true);
   };
+  const handleDownload = async () => {
+    try {
+      dispatch(downloadData({ type: 6 }));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const headers: GridColDef[] = [
     {
       field: "fullname",
@@ -148,6 +158,12 @@ const Costumer = () => {
           Add Admin
         </Button>
       </Grid2> */}
+      <Grid2
+        sx={{ display: "flex", justifyContent: "end" }}
+        size={{ xs: 6, sm: 6, lg: 6 }}
+      >
+        <Button onClick={() => handleDownload()}>Export</Button>
+      </Grid2>
       <Grid2 size={12}>
         <CustomizedDataGrid
           sx={{

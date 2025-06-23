@@ -15,6 +15,7 @@ const bodyEncrypt = async (req, res, pay) => {
   });
   if (res.statusCode >= 400) {
     // done(null, pay);
+
     await updateErrorAuditTrail(req, pay);
     return pay;
   } else if (findNoP) {

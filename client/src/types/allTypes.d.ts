@@ -127,3 +127,8 @@ export interface winnerInitialState {
   winnerList: winnerListInterface;
   total: totalWinnerInterface;
 }
+export interface exportDataState {
+  type: number;
+  date_range: Array<any> | undefined | null;
+  loading: Boolean;
+}

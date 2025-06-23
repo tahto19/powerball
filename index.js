@@ -27,6 +27,7 @@ import auditTrailAdder from "./helpers/auditTrailAdder.js";
 import LogoutRoute from "./routes/Logout/Logout.route.js";
 import TestingRoutes from "./routes/TestingRoutes/Test.route.js";
 import PasswordResets from "./routes/PasswordResets/PasswordResets.route.js";
+import { exportRoute } from "./routes/exports/Export.js";
 
 const fastify = Fastify({
   trustProxy: true,
@@ -227,7 +228,9 @@ const start = async () => {
     fastify.register(PasswordResets, {
       prefix: process.env.ROUTES_PREFIX + "password-reset",
     });
-
+    fastify.register(exportRoute, {
+      prefix: process.env.ROUTES_PREFIX + "export",
+    });
     /**
      *error handler
      */

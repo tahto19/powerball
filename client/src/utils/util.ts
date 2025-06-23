@@ -11,7 +11,10 @@ import {
 
 const getErrorsStatus = (code: string) => {
   if (!code) return false;
-  const c_ = code.toLowerCase().replace(/errorcode|error/g, "").trim();
+  const c_ = code
+    .toLowerCase()
+    .replace(/errorcode|error/g, "")
+    .trim();
   switch (c_) {
     case "x1":
       return "Filter is not set";
@@ -144,7 +147,7 @@ export const bodyDecrypt = (
 
 export const bodyEncrypt = (
   d: string | null | undefined,
-  token: string
+  token: string | null
 ): any | null => {
   const data =
     typeof d === "string"
@@ -190,4 +193,24 @@ export const formatToPesos = (number: number) => {
     style: "currency",
     currency: "PHP",
   }).format(number);
+};
+export const base64ToFile = (
+  base64,
+  filename,
+  mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+) => {
+  // Remove "data:*/*;base64," prefix if present
+  const base64Data = base64.replace(/^data:.+;base64,/, "");
+
+  // Convert base64 to binary
+  const byteCharacters = atob(base64Data);
+  const byteNumbers = Array.from(byteCharacters, (char) => char.charCodeAt(0));
+  const byteArray = new Uint8Array(byteNumbers);
+
+  // Create blob and download
+  const blob = new Blob([byteArray], { type: mimeType });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  link.click();
 };
