@@ -1,5 +1,5 @@
-import { bodyDecrypt } from "@/utils/util";
 //@ts-nocheck
+import { bodyDecrypt } from "@/utils/util";
 import { getTicket } from "./../redux/reducers/ticket/asyncCalls";
 import _ from "lodash";
 import { bodyEncrypt } from "@/utils/util";

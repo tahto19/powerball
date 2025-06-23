@@ -28,3 +28,5 @@ const exportData = createSlice({
     });
   },
 });
+export const { doneLoading, download } = exportData.actions;
+export default exportData.reducer;
