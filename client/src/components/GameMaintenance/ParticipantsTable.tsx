@@ -14,7 +14,7 @@ import { showToaster } from "@/redux/reducers/global/globalSlice"
 
 const initialPaginationData = { page: 0, pageSize: 10 }
 
-const Participants = (raffle_schedule_id: { raffle_schedule_id: number }) => {
+const Participants = ({ raffle_schedule_id }: { raffle_schedule_id: number }) => {
     const { token } = useAppSelector((state) => state.token);
     const [list, setList] = useState<[]>([]);
     const [listCount, setListCount] = useState<number>(0);
@@ -42,8 +42,9 @@ const Participants = (raffle_schedule_id: { raffle_schedule_id: number }) => {
                 return x;
             })
         }
+        console.log(raffle_schedule_id)
         const query: RafflePaginationState = {
-            offset: page, limit: pageSize, sort: sort, filter: newFilterModel
+            id: raffle_schedule_id, offset: page, limit: pageSize, sort: sort, filter: newFilterModel
         }
 
         const res = await apiService.getParticipantByRaffle(query, token);
@@ -52,6 +53,8 @@ const Participants = (raffle_schedule_id: { raffle_schedule_id: number }) => {
         if (d.list && d.list.length > 0) {
             d.list = d.list.map((x, i) => { x.id = i + 1; return x })
             setList(d.list)
+            console.log(d.list)
+
             setListCount(d.count)
         }
     };
