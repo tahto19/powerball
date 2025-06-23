@@ -11,5 +11,5 @@
   { "path": "/testingroutes(?:/.*)?$", "method": "POST" },
   { "path": "/password-reset", "method": "POST" },
   { "path": "/api/raffleHistory/getRaffleEntries", "method": "NOTHINg" },
-  { "path": "/api/export/", "method": "asdfa" }
+  { "path": "/api/export/", "method": "POST" }
 ]

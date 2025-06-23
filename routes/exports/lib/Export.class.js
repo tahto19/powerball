@@ -4,10 +4,13 @@ import ExcelJS from "exceljs";
 import PrizeList from "../../../models/PrizeList.model.js";
 import TicketDetails from "../../../models/TicketDetails.model.js";
 import TicketHistory from "../../../models/TicketHistory.model.js";
+import { WhereFilters } from "../../../util/util.js";
+import RaffleSchedule from "../../../models/RaffleSchedule.model.js";
+import WiningDrawDetails from "../../../models/WiningDrawDetails.model.js";
+import RaffleDetails from "../../../models/RaffleDetails.model.js";
 class Export_data_class {
   constructor() {}
-  async getData(type, date_range) {
-    console.log(type);
+  async getData(type, date_range, filter) {
     switch (type) {
       case 1:
         return await this.User_data(date_range);
@@ -21,6 +24,8 @@ class Export_data_class {
         return await this.TicketDetails_data(date_range);
       case 6:
         return await this.TicketHistory_data(date_range);
+      case 7:
+        return await this.getRaffleEntries_data(date_range, filter);
     }
   }
 
@@ -83,6 +88,36 @@ class Export_data_class {
     });
     let r = _r.map((v) => v.toJSON());
     return await this.toExcel(r, "Prize List");
+  }
+  async getRaffleEntries_data(dr, f) {
+    let filters = WhereFilters(f);
+
+    if (dr && dr[0])
+      filters["$ticket_histories.createdAt$"] = {
+        [Op.between]: [dr[0], dr[1]],
+      };
+    let _r = await RaffleSchedule.findAll({
+      where: filters,
+      include: [
+        {
+          model: TicketHistory,
+          include: { model: WiningDrawDetails, required: false },
+        },
+      ],
+    });
+    let r = _r.map((v) => v.toJSON());
+    let b = [];
+    r.forEach((v) => {
+      v.ticket_histories.forEach((vv) =>
+        b.push({
+          ticket_history_generate: vv.ticket_history_generate,
+          wining: !!vv.wining_draw_detail,
+          createdAt: vv.createdAt,
+        })
+      );
+    });
+    // return b;
+    return this.toExcel(b, "Ticket History in raffle");
   }
   async toExcel(data, type) {
     var columns;

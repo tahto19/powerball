@@ -7,7 +7,7 @@ export const exportDataSchema = {
       type: "object",
       properties: {
         type: { type: ["number", "string"] },
-        date_range: { type: "string", format: "date" },
+        date_range: { type: "array" },
       },
       required: ["type"],
     },

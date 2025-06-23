@@ -95,9 +95,10 @@ export const getRaffleEntriesInScheduleController = async (req, res) => {
   try {
     const { id, limit, sort, filter, offset } = req.body;
     let filters = filter;
-    // if (id) {
-    //   filters.push({ field: "$raffleDetails.id$", filter: id, type: "number" });
-    // }
+    if (id) {
+      filters.push({ field: "$raffleDetails.id$", filter: id, type: "number" });
+    }
+    console.log(req.body);
     const _r = await th.FetchWithInclude(offset, limit, sort, filters);
     let reEditList = _r.list.map((v) => {
       return {
