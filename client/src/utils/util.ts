@@ -214,3 +214,11 @@ export const base64ToFile = (
   link.download = filename;
   link.click();
 };
+export const localEncrypt = (d) => {
+  const e = btoa(d);
+  return e;
+};
+export const localDecrypt = (d) => {
+  const e = atob(d);
+  return e;
+};

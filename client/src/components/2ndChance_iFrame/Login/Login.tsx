@@ -13,6 +13,7 @@ import apiService from "@/services/apiService";
 
 import { showToaster } from "@/redux/reducers/global/globalSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { localDecrypt, localEncrypt } from "@/utils/util";
 
 const Login = () => {
   const dispatch = useAppDispatch();
@@ -41,9 +42,20 @@ const Login = () => {
       if (res.data.result == "success") {
         // Redirect to dashboard after login
         // navigate("https://18.138.76.86/?page_id=279");
+        if (rememberMe) {
+          localStorage.setItem(
+            "JqNw1q3HCK-90t4y", // email
+            localEncrypt(email)
+          );
+          localStorage.setItem(
+            "OM8Ovhw79G-90t4y", // password
+            localEncrypt(password)
+          );
+        }
         window.parent.location.href =
           "https://18.138.76.86/powerball-scratchit-second-chance/";
       }
+
       dispatch(
         showToaster({
           message: "Login success!",
@@ -91,7 +103,31 @@ const Login = () => {
     setPasswordErrorMessage("");
     return isValid;
   };
-
+  // remember me
+  const [rememberMe, setRememberMe] = React.useState(false);
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  React.useEffect(() => {
+    const saved = localStorage.getItem("jxRsOvNeq5-Remember_me") === "true";
+    if (saved) {
+      localStorage.getItem("jxRsOvNeq5-Remember_me") === "true";
+    }
+    if (saved) {
+      let email = localDecrypt(localStorage.getItem("JqNw1q3HCK-90t4y"));
+      let password = localDecrypt(localStorage.getItem("OM8Ovhw79G-90t4y"));
+      setEmail(email);
+      setPassword(password);
+    }
+    setRememberMe(saved);
+  }, []);
+  const handleRememberMe = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRememberMe(e.target?.checked);
+    if (e.target?.checked) {
+      localStorage.setItem("jxRsOvNeq5-Remember_me", "true");
+    } else {
+      localStorage.removeItem("jxRsOvNeq5-Remember_me");
+    }
+  };
   const handleSignUp = () => {
     window.parent.location.href = "https://18.138.76.86/create-an-account/";
   };
@@ -181,13 +217,16 @@ const Login = () => {
                                       Username or Email Address
                                     </label>
                                     <TextField
+                                      value={email}
+                                      onChange={(e) => {
+                                        setEmail(e.target.value);
+                                      }}
                                       error={emailError}
                                       helperText={emailErrorMessage}
                                       id="email"
                                       type="email"
                                       name="email"
                                       placeholder="your@email.com"
-                                      autoComplete="email"
                                       autoFocus
                                       required
                                       fullWidth
@@ -204,13 +243,16 @@ const Login = () => {
                                       Password
                                     </label>
                                     <TextField
+                                      value={password}
+                                      onChange={(e) => {
+                                        setPassword(e.target.value);
+                                      }}
                                       error={passwordError}
                                       helperText={passwordErrorMessage}
                                       name="password"
                                       placeholder="••••••"
                                       type="password"
                                       id="password"
-                                      autoComplete="current-password"
                                       autoFocus
                                       required
                                       fullWidth
@@ -225,6 +267,13 @@ const Login = () => {
                                   <div className="elementor-field-type-checkbox elementor-field-group elementor-column elementor-col-100 elementor-remember-me">
                                     <label htmlFor="elementor-login-remember-me">
                                       <input
+                                        onChange={(
+                                          e: React.ChangeEvent<HTMLInputElement>
+                                        ) => {
+                                          const checked = e.target.checked;
+                                          handleRememberMe(e);
+                                        }}
+                                        checked={rememberMe}
                                         type="checkbox"
                                         id="elementor-login-remember-me"
                                         name="rememberme"
