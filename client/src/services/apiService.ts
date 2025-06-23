@@ -334,6 +334,14 @@ export const apiService = {
       data: bodyEncrypt(JSON.stringify(data), token),
     });
   },
+
+    getParticipantByRaffle: async (data: getDataV2, token: string | null) => {
+    console.log(data);
+    return apiClient.post("api/raffleHistory/getRaffleEntries", {
+      data: bodyEncrypt(JSON.stringify(data), token),
+    });
+  },
+
   // ticket here
   getTicketList: async (data: getDataV2, token: string | null) => {
     return apiClient.post("api/ticket/user", {

@@ -87,9 +87,9 @@ export const get2ndChanceControllerAll = async (req, res) => {
   let parsedSort = !sort ? [["id", "DESC"]] : JSON.parse(sort);
   let parsedFilter = !filter ? [] : JSON.parse(filter);
 
-  // parsedSort = [
-  //   [literal(`CASE WHEN starting_date > NOW() THEN 0 ELSE 1 END`), "ASC"],
-  // ];
+  parsedSort = [
+    [literal(`CASE WHEN end_date > NOW() THEN 0 ELSE 1 END`), "ASC"],
+  ];
 
   const new_offset = limit * offset; // Calculate offset
   console.log(">>>>>>>>>>>>-----", req.user_id);
