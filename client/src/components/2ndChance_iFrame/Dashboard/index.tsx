@@ -137,7 +137,7 @@ const Dashboard = () => {
                             background: '#F26A21',
                             color: '#fff',
                         }}>
-                        Available Raffle Ticket: {overallTotalEntries}
+                        Available Raffle Ticket: {totalEntries}
 
                     </Box>
                 </Box>
