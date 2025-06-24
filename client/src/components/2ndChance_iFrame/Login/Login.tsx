@@ -270,7 +270,7 @@ const Login = () => {
                                         onChange={(
                                           e: React.ChangeEvent<HTMLInputElement>
                                         ) => {
-                                          const checked = e.target.checked;
+                                          // const checked = e.target.checked;
                                           handleRememberMe(e);
                                         }}
                                         checked={rememberMe}
