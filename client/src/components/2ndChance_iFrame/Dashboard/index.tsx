@@ -20,6 +20,7 @@ import WinnerDetails from "@/components/2ndChance_iFrame/winner/WinnerDetails";
 import { useAppSelector } from "@/redux/hook";
 
 import { useMediaQuery, useTheme } from "@mui/material";
+import { useEffect } from "react";
 
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const endpoint = base_url + "api/file/serve/image/"
@@ -50,9 +51,10 @@ const tabs = [
 ]
 
 const Dashboard = () => {
-    const { overallTotalEntries, totalEntries } = useAppSelector(
+    const { overallTotalEntries, totalEntries, totalTicket, totalUsedEntries } = useAppSelector(
         (state) => state.raffleEntry
     );
+
     const navigate = useNavigate();
     const handleNavigation = () => {
         navigate("/scanner");
@@ -60,6 +62,14 @@ const Dashboard = () => {
     const theme = useTheme();
     console.log(useMediaQuery(theme.breakpoints.down("sm")))
     const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+    useEffect(() => {
+        console.log(overallTotalEntries)
+        console.log(totalEntries)
+        console.log(totalTicket)
+        console.log(totalUsedEntries)
+    }, [overallTotalEntries, totalEntries, totalTicket, totalUsedEntries])
+
     return (
         <>
             <Box
