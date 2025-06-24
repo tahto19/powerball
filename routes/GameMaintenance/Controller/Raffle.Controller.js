@@ -19,18 +19,18 @@ export const insertController = async (req, res) => {
     /** Check End Date validation */
     const now = moment();
     const end_date = moment(formData.end_date);
-    if (now.isSameOrAfter(end_date)) throw new Error("ErrorCODE x73");
+    const starting_date = moment(formData.starting_date);
+    if (starting_date.isSameOrAfter(end_date)) throw new Error("ErrorCODE x73");
     /** END Check */
 
     /** Check Draw Date validation */
     const draw_date = moment(formData.draw_date);
-    const starting_date = moment(formData.starting_date);
+    // const starting_date = moment(formData.starting_date);
     // if (
     //   draw_date.isSameOrBefore(starting_date) ||
     //   draw_date.isSameOrAfter(end_date)
     // )
-    if (draw_date.isSameOrBefore(starting_date))
-      throw new Error("ErrorCODE x74");
+    if (draw_date.isSameOrBefore(end_date)) throw new Error("ErrorCODE x74");
     /** END Check */
 
     const a = await rc.Insert(formData, newPrizeList);
@@ -66,7 +66,8 @@ export const updateController = async (req, res) => {
   /** Check End Date validation */
   const now = moment();
   const end_date = moment(formData.end_date);
-  if (now.isSameOrAfter(end_date)) throw new Error("ErrorCODE x73");
+  const starting_date = moment(formData.starting_date);
+  if (starting_date.isSameOrAfter(end_date)) throw new Error("ErrorCODE x73");
   /** END Check */
 
   /** Check Draw Date validation */

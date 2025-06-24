@@ -54,6 +54,9 @@ export const postRaffleEntry = createAsyncThunk(
           icon: "success",
         })
       );
+      setTimeout(() => {
+        window.parent.location.reload();
+      },1000)
       dispatch(getRaffleEntry());
     } catch (err) {
       dispatch(showToaster({ err, variant: "error", icon: "error" }));

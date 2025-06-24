@@ -40,7 +40,7 @@ const getErrorsStatus = (code: string) => {
     case "x72":
       return "Image does not exists";
     case "x73":
-      return "End date must be set in the future. Please choose a valid end date.";
+      return "End date must be set after the start date. Please choose a valid end date.";
     case "x74":
       return "Draw date must be after the end date.";
     case "x75":

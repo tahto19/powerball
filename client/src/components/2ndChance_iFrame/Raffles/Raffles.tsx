@@ -108,10 +108,10 @@ const Raffles = () => {
   const [viewWinners, setViewWinners] = useState(false);
 
   const handleViewWinners = (data: RaffleState) => {
-    // if (data.end_date && moment(data.end_date).isSameOrBefore(moment())) {
-    setViewWinners(true)
-    setData(data);
-    // }
+    if (data.end_date && moment(data.end_date).isSameOrBefore(moment())) {
+      setViewWinners(true)
+      setData(data);
+    }
   }
   const handleOnClose2 = (value: boolean) => {
     setViewWinners(value)
@@ -120,6 +120,7 @@ const Raffles = () => {
   const [open, setOpen] = useState(false);
   const handleOnClose = (value: boolean) => {
     setOpen(value);
+    getRafflesList();
   };
 
   const { btnLoading, loading, totalUsedEntries, totalTicket, totalEntries } =
