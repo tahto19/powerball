@@ -20,7 +20,7 @@ import WinnerDetails from "@/components/2ndChance_iFrame/winner/WinnerDetails";
 import { useAppSelector } from "@/redux/hook";
 
 import { useMediaQuery, useTheme } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const endpoint = base_url + "api/file/serve/image/"
@@ -51,9 +51,11 @@ const tabs = [
 ]
 
 const Dashboard = () => {
-    const { overallTotalEntries, totalEntries, totalTicket, totalUsedEntries } = useAppSelector(
-        (state) => state.raffleEntry
-    );
+    // const { overallTotalEntries, totalEntries, totalTicket, totalUsedEntries } = useAppSelector(
+    //     (state) => state.raffleEntry
+    // );
+
+    const userDetails = useAppSelector((state: RootState) => state.user);
 
     const navigate = useNavigate();
     const handleNavigation = () => {
@@ -63,12 +65,18 @@ const Dashboard = () => {
     console.log(useMediaQuery(theme.breakpoints.down("sm")))
     const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
+    const [availableTicket, setavailableTicket] = useState(0);
     useEffect(() => {
-        console.log(overallTotalEntries)
-        console.log(totalEntries)
-        console.log(totalTicket)
-        console.log(totalUsedEntries)
-    }, [overallTotalEntries, totalEntries, totalTicket, totalUsedEntries])
+        const totalEntries = Number(userDetails.ticket_details[0].totalEntries) || 0;
+        const totalUsedEntries = Number(userDetails.ticket_details[0].totalUsedEntries) || 0;
+        const total = totalEntries - totalUsedEntries;
+
+        if (total > 0) {
+            setavailableTicket(total);
+        } else {
+            setavailableTicket(0); // or handle negative case
+        }
+    }, [userDetails])
 
     return (
         <>
@@ -147,7 +155,7 @@ const Dashboard = () => {
                             background: '#F26A21',
                             color: '#fff',
                         }}>
-                        Available Raffle Ticket: {totalEntries}
+                        Available Raffle Ticket: {availableTicket}
 
                     </Box>
                 </Box>

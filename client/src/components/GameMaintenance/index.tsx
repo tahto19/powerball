@@ -13,6 +13,8 @@ import MyDialog from "./Dialog.tsx";
 import CustomizedDataGrid from "../CustomizedDataGrid.tsx";
 import moment from "moment";
 import { showToaster } from "@/redux/reducers/global/globalSlice"
+import { openDialog } from "@/redux/reducers/download/exportDataSlice";
+
 
 const renderStatus = (status: 'Ended' | 'Active') => {
     const colors: { [index: string]: 'success' | 'error' } = {
@@ -132,8 +134,9 @@ const GameMaintenace = () => {
     }
 
     const handleExport = () => {
-        dispatch()
+        // dispatch(openDialog())
     }
+
     const handleOpenDialog = () => {
         setDialogType("Add");
         setDataRow(initialRaffleData)
@@ -198,6 +201,16 @@ const GameMaintenace = () => {
                 <Grid2 size={{ xs: 6, sm: 6, lg: 6 }}>
                     <Button
                         sx={{
+                            float: "right",
+                            marginLeft: "10px"
+                        }}
+                        variant="outlined"
+                    // onClick={handleExport}
+                    >
+                        Export
+                    </Button>
+                    <Button
+                        sx={{
                             float: "right"
                         }}
                         variant="contained"
@@ -205,15 +218,6 @@ const GameMaintenace = () => {
                     >
                         Add Raffle Details
                     </Button>
-                    {/* <Button
-                        sx={{
-                            float: "right"
-                        }}
-                        variant="outlines"
-                        onClick={handleExport}
-                    >
-                        Export
-                    </Button> */}
                 </Grid2>
                 <Grid2 size={12}>
                     <CustomizedDataGrid

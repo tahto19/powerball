@@ -41,7 +41,12 @@ interface FileState {
       file: File[]
 }
 
+interface ticketState {
+  totalEntries: string | null;
+  totalUsedEntries: string | null;
+}
 interface userState {
+  ticket_details: ticketState[];
   fullname: string | null;
   firstname: string | null;
   lastname: string | null;
@@ -59,6 +64,10 @@ interface userState {
 }
 
 const initialState: userState = {
+  ticket_details:[{
+totalEntries: null,
+  totalUsedEntries: null,
+  }],
   fullname: null,
   firstname: null,
   lastname: null,

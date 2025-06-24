@@ -82,7 +82,6 @@ const routes = [
     path: "/scan",
     component: <TicketScanner />,
     title: "Ticket Scanner",
-    title: "Ticket Scanner",
   },
   {
     path: "/MyScan",

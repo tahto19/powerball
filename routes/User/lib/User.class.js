@@ -1,7 +1,8 @@
 import { WhereFilters } from "../../../util/util.js";
 import Users from "../../../models/Users.model.js";
 import Files from "../../../models/Files.model.js";
-
+import { col, fn } from "sequelize";
+import TicketDetails from "../../../models/TicketDetails.model.js";
 class User_class {
   constructor() {}
   async Fetch(offset = 0, limit = 10, sort = [["id", "ASC"]], filter = []) {
@@ -59,7 +60,21 @@ class User_class {
           as: "fileInfo",
           required: false,
         },
+        {
+          model: TicketDetails,
+          attributes: [
+            [fn("SUM", col("entries")), "totalEntries"],
+            [fn("SUM", col("entries_used")), "totalUsedEntries"],
+          ],
+          required: false,
+        },
       ],
+      // attributes: [
+      //   [fn("SUM", col("entries")), "totalEntries"],
+      //   [fn("SUM", col("TicketDetails.entries_used")), "totalUsedEntries"],
+      // ],
+      distinct: true, // ensure proper count when joins are present
+      group: ["Users.id"], // group by user to get correct counts
     };
     query["where"] = WhereFilters(filter);
     let list = await Users.findOne(query);

@@ -133,4 +133,5 @@ export interface exportDataState {
   loading: boolean | undefined;
   show: boolean | undefined;
   title: String | undefined | null;
+  filter: Array<any>;
 }

@@ -17,6 +17,7 @@ export const downloadData = createAsyncThunk(
         icon: "info",
       })
     );
+    console.log(">>>", data)
     const _r = await apiService.exportData(data, token ? token : "test");
     let file = _r.file;
     dispatch(

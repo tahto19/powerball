@@ -27,7 +27,7 @@ import IconButton from '@mui/material/IconButton';
 import ImageIcon from '@mui/icons-material/Image';
 import ImageDrawer from "@/components/ImageDrawer.tsx";
 import Participants from "./ParticipantsTable.tsx";
-
+import { openDialog } from "@/redux/reducers/download/exportDataSlice";
 
 
 const renderType = (status: 'minor' | 'major' | 'grand') => {
@@ -132,6 +132,9 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
         setTab(newValue);
     }
 
+    const handleExport = () => {
+        dispatch(openDialog({ type: 7, filter: [{ field: 'raffle_id', filter: data.raffleSchedule[0].id, type: 'number' }] }))
+    }
     const handleSubmit = async (e: React.FocusEvent<HTMLFormElement>) => {
         e.preventDefault();
         setSubmitting(true);
@@ -524,6 +527,24 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                                 />
                                             </CustomTabPanel>
                                             <CustomTabPanel value={tabValue} index={1}>
+                                                <Grid2
+                                                    container
+                                                    spacing={2}
+                                                    columns={12}
+                                                    sx={{ marginBottom: '10px' }}
+                                                >
+                                                    <Grid2 size={{ xs: 12, sm: 12, lg: 12 }}>
+                                                        <Button
+                                                            sx={{
+                                                                float: "right",
+                                                            }}
+                                                            variant="outlined"
+                                                            onClick={handleExport}
+                                                        >
+                                                            Export
+                                                        </Button>
+                                                    </Grid2>
+                                                </Grid2>
                                                 <Participants raffle_schedule_id={data.raffleSchedule[0].id} />
                                             </CustomTabPanel>
                                         </Grid2>

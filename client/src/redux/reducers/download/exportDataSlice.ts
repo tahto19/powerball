@@ -6,8 +6,9 @@ const initialState: exportDataState = {
   type: 1,
   date_range: undefined,
   loading: false,
-  show: true,
+  show: false,
   title: null,
+  filter: []
 };
 
 const exportDataSlice = createSlice({
@@ -24,7 +25,15 @@ const exportDataSlice = createSlice({
       state.show = false;
       state.date_range = undefined;
       state.type = null;
+      state.filter = [];
     },
+    openDialog: (state, action) => {
+      const {type, filter} = action.payload
+      state.show = true;
+      state.date_range = undefined;
+      state.type = type;
+      state.filter = filter ? filter : [];
+    }
   },
   extraReducers: (d) => {
     d.addCase(downloadData.pending, (state) => {
@@ -35,5 +44,5 @@ const exportDataSlice = createSlice({
     });
   },
 });
-export const { doneLoading, download, closeDialog } = exportDataSlice.actions;
+export const { doneLoading, download, closeDialog, openDialog } = exportDataSlice.actions;
 export default exportDataSlice.reducer;

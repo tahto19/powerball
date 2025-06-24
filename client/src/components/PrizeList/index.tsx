@@ -15,6 +15,8 @@ import { showToaster } from "@/redux/reducers/global/globalSlice";
 import { useAppDispatch } from "@/redux/hook";
 import { getData } from "@/types/allTypes"
 import { capitalizeFirstLetter } from "@/utils/util.ts"
+import { openDialog } from "@/redux/reducers/download/exportDataSlice";
+
 //Temporary data
 const sampleHeaders = [
     { field: 'name', headerName: 'Name', flex: 1, minWidth: 200 },
@@ -82,6 +84,11 @@ const PrizeList = () => {
     const handleOnClose = (value: boolean) => {
         setOpen(value)
     }
+
+    const handleExport = () => {
+        dispatch(openDialog(4))
+    }
+
     const handleOpenDialog = () => {
         setDialogType("Add");
         setDataRow(initialData)
@@ -119,6 +126,16 @@ const PrizeList = () => {
                     </Typography>
                 </Grid>
                 <Grid size={{ xs: 6, sm: 6, lg: 6 }}>
+                    <Button
+                        sx={{
+                            float: "right",
+                            marginLeft: "10px"
+                        }}
+                        variant="outlined"
+                        onClick={handleExport}
+                    >
+                        Export
+                    </Button>
                     <Button
                         sx={{
                             float: "right"

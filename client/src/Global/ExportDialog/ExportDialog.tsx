@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { closeDialog } from "@/redux/reducers/download/exportDataSlice";
 import { RootState } from "@/redux/store";
 import {
@@ -19,7 +20,7 @@ import { DateRangePicker } from "react-date-range";
 import { useState } from "react";
 import { downloadData } from "@/redux/reducers/download/asyncCalls";
 export function ExportDialog() {
-  const { show, loading, type, title } = useSelector(
+  const { filter, show, loading, type, title } = useSelector(
     (state: RootState) => state.exportData
   );
   const [dateRanges, setDateRanges] = useState({
@@ -28,7 +29,6 @@ export function ExportDialog() {
     key: "selection",
   });
   const dispatch = useDispatch();
-
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
@@ -68,13 +68,12 @@ export function ExportDialog() {
               onClick={(e: any) => {
                 handleClick(e);
               }}
-              value={`${
-                dateRanges.endDate
-                  ? `${moment(dateRanges.startDate).format(
-                      "MMMM DD, YYYY"
-                    )} - ${moment(dateRanges.endDate).format("MMMM DD, YYYY")}`
-                  : ""
-              } `}
+              value={`${dateRanges.endDate
+                ? `${moment(dateRanges.startDate).format(
+                  "MMMM DD, YYYY"
+                )} - ${moment(dateRanges.endDate).format("MMMM DD, YYYY")}`
+                : ""
+                } `}
               id={id}
               label="Date"
               fullWidth
