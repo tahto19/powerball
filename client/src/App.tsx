@@ -49,6 +49,7 @@ import MyEntriesMain from "./components/2ndChance_iFrame/UserTicketDetails/MyEnt
 import { MyEntries } from "./components/2ndChance_iFrame/UserTicketDetails/MyEntries";
 import WinnerDetails from "./components/2ndChance_iFrame/winner/WinnerDetails";
 import TicketScannedList from "./components/ticketScanner/TicketScannedList";
+import { ExportDialog } from "./Global/ExportDialog/ExportDialog";
 
 const routes = [
   { path: "/dashboard", component: <Dashboard />, title: "Dashboard" },
@@ -278,6 +279,7 @@ function App() {
         <AppRoutes />
       </Router>
       {!skipTokenPaths.includes(currentPath) && <Toaster_></Toaster_>}
+      {!skipTokenPaths.includes(currentPath) && <ExportDialog></ExportDialog>}
     </>
   );
 }

@@ -6,9 +6,11 @@ const initialState: exportDataState = {
   type: 1,
   date_range: undefined,
   loading: false,
+  show: true,
+  title: null,
 };
 
-const exportData = createSlice({
+const exportDataSlice = createSlice({
   name: "exportData",
   initialState,
   reducers: {
@@ -17,6 +19,11 @@ const exportData = createSlice({
     },
     doneLoading: (state) => {
       state.loading = false;
+    },
+    closeDialog: (state) => {
+      state.show = false;
+      state.date_range = undefined;
+      state.type = null;
     },
   },
   extraReducers: (d) => {
@@ -28,5 +35,5 @@ const exportData = createSlice({
     });
   },
 });
-export const { doneLoading, download } = exportData.actions;
-export default exportData.reducer;
+export const { doneLoading, download, closeDialog } = exportDataSlice.actions;
+export default exportDataSlice.reducer;

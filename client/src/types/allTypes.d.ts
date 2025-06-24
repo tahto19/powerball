@@ -128,7 +128,9 @@ export interface winnerInitialState {
   total: totalWinnerInterface;
 }
 export interface exportDataState {
-  type: number;
+  type: number | null;
   date_range: Array<any> | undefined | null;
-  loading: Boolean;
+  loading: boolean | undefined;
+  show: boolean | undefined;
+  title: String | undefined | null;
 }

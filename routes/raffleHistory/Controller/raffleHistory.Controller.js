@@ -96,7 +96,11 @@ export const getRaffleEntriesInScheduleController = async (req, res) => {
     const { id, limit, sort, filter, offset } = req.body;
     let filters = filter;
     if (id) {
-      filters.push({ field: "$raffleDetails.id$", filter: id, type: "number" });
+      filters.push({
+        field: "$Raffle_Schedule.id$",
+        filter: id,
+        type: "number",
+      });
     }
     console.log(req.body);
     const _r = await th.FetchWithInclude(offset, limit, sort, filters);
@@ -107,6 +111,7 @@ export const getRaffleEntriesInScheduleController = async (req, res) => {
         ticketCode: v.ticket_detail.ticket_code,
       };
     });
+
     res.send({ count: _r.count, list: reEditList });
   } catch (err) {
     throw err;

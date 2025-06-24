@@ -26,6 +26,8 @@ class Export_data_class {
         return await this.TicketHistory_data(date_range);
       case 7:
         return await this.getRaffleEntries_data(date_range, filter);
+      case 8:
+        return await this.myRaffle_data(date_range, filter);
     }
   }
 
@@ -77,7 +79,7 @@ class Export_data_class {
       where: where,
     });
     let r = _r.map((v) => v.toJSON());
-    return await this.toExcel(r, "Prize List");
+    return await this.toExcel(r, "Scanned Tickets");
   }
   async TicketHistory_data(date_range) {
     let where = date_range
@@ -116,8 +118,35 @@ class Export_data_class {
         })
       );
     });
-    // return b;
-    return this.toExcel(b, "Ticket History in raffle");
+    return _r;
+    // return this.toExcel(b, "Ticket History in raffle");
+  }
+  async myRaffle_data(dr, f) {
+    let filters = WhereFilters(f);
+
+    if (dr && dr[0])
+      filters["$ticket_histories.createdAt$"] = {
+        [Op.between]: [dr[0], dr[1]],
+      };
+    let b = await Users.findAll({
+      include: [{ model: TicketDetails, include: [{ model: TicketHistory }] }],
+    });
+    const toReturn = [];
+    b.forEach((val1) => {
+      const v1 = val1.toJSON();
+
+      const temp = {};
+      v1.ticket_details.forEach((v2) => {
+        temp["ticket_code"] = v2.ticket_code;
+        temp["Scanned Date"] = v2.createdAt;
+        v2.ticket_histories.forEach((v3) => {
+          temp["ticket_history_generate"] = v3.ticket_history_generate;
+          temp["Particapate Date"] = v3.createdAt;
+          toReturn.push(temp);
+        });
+      });
+    });
+    return this.toExcel(toReturn, "Entries");
   }
   async toExcel(data, type) {
     var columns;

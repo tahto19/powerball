@@ -168,7 +168,7 @@ const TicketScanner = () => {
         </Typography>
       </Grid2>
       <Grid2 size={{ xs: 6, sm: 6, lg: 6 }}>
-        <Button
+        {/* <Button
           sx={{
             float: "right",
           }}
@@ -179,6 +179,18 @@ const TicketScanner = () => {
           }}
         >
           Scan
+        </Button> */}
+        <Button
+          sx={{
+            float: "right",
+          }}
+          variant="contained"
+          onClick={() => {
+            setOpen(true);
+            setDialogType("Add");
+          }}
+        >
+          Export
         </Button>
       </Grid2>
       <Grid2 size={12}>
