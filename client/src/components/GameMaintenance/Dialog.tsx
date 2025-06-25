@@ -133,7 +133,7 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
     }
 
     const handleExport = () => {
-        dispatch(openDialog({ type: 7, filter: [{ field: 'raffle_id', filter: data.raffleSchedule[0].id, type: 'number' }] }))
+        dispatch(openDialog({ type: 7, filter: [{ field: 'id', filter: data.raffleSchedule[0].id, type: 'number' }] }))
     }
     const handleSubmit = async (e: React.FocusEvent<HTMLFormElement>) => {
         e.preventDefault();

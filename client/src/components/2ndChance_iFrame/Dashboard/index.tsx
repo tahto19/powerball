@@ -67,9 +67,12 @@ const Dashboard = () => {
 
     const [availableTicket, setavailableTicket] = useState(0);
     useEffect(() => {
-        const totalEntries = Number(userDetails.ticket_details[0].totalEntries) || 0;
-        const totalUsedEntries = Number(userDetails.ticket_details[0].totalUsedEntries) || 0;
-        const total = totalEntries - totalUsedEntries;
+        let total = 0;
+        if (Array.isArray(userDetails.ticket_details) || userDetails.ticket_details.length > 0) {
+            const totalEntries = Number(userDetails.ticket_details[0].totalEntries) || 0;
+            const totalUsedEntries = Number(userDetails.ticket_details[0].totalUsedEntries) || 0;
+            total = totalEntries - totalUsedEntries;
+        }
 
         if (total > 0) {
             setavailableTicket(total);
