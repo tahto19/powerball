@@ -5,6 +5,7 @@ import { base64ToFile, delay } from "@/utils/util";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { showToaster } from "../global/globalSlice";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 export const downloadData = createAsyncThunk(
   "exportData/downloadData",
@@ -33,7 +34,16 @@ export const downloadData = createAsyncThunk(
         autoClose: 2000,
       });
     } catch (err: unknown) {
-      if (err instanceof Error) {
+      if (axios.isAxiosError(err)) {
+        const responseData = err.response?.data?.message;
+        console.log(responseData);
+        toast.update(toastId, {
+          render: "Error Download!: " + responseData,
+          type: "error",
+          isLoading: false,
+          autoClose: 2000,
+        });
+      } else if (err instanceof Error) {
         toast.update(toastId, {
           render: "Error Download Complete!: " + err.message,
           type: "error",

@@ -167,7 +167,7 @@ class Export_data_class {
     data.forEach((v) => {
       let temp = v;
       let changeValue = Object.keys(v).forEach((vv) => {
-        let val = v[vv].toString();
+        let val = v[vv] ? v[vv].toString() : "No Details";
 
         if (val.toUpperCase() === "TRUE") temp[vv] = "YES";
         else if (val.toUpperCase() === "FALSE") temp[vv] = "NO";
