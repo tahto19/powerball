@@ -36,6 +36,7 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
       );
     }
   }, [loading, token, location]);
+  console.log(list);
   return (
     <>
       <Box

@@ -18,9 +18,13 @@ export const getWinnerListAsync = createAsyncThunk(
 
       const _r = await apiService.getWinnerList(getFilter, token, url);
       const _rData = bodyDecrypt(_r.data, token);
-
+      console.log(_rData);
       _rData["list"] = _rData.list.map((v) => {
         return {
+          Name:
+            v.ticket_detail.User.fullname.substring(0, 1) +
+            " __ " +
+            v.ticket_detail.User.fullname.substring(3, 4),
           id: v.id,
           "$ticket_history.ticket_history_generate$":
             v.ticket_history.ticket_history_generate,

@@ -311,7 +311,6 @@ export const apiService = {
     else return apiClient.get("api/ticket/entries", { params });
   },
   getRaffleEntryList: async (data: getDataV2, token: string, url: string) => {
-    console.log(token);
     return apiClient.post(
       `api/raffleHistory/${url === "myEntries" ? "myEntries" : "allEntries"}`,
       {
