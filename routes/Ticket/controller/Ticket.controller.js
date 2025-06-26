@@ -66,6 +66,13 @@ export const fetchTicketController = async (req, res) => {
 };
 export const postTicketController = async (req, res) => {
   try {
+    let getTicket_ = await tc.FetchAll(
+      [["id", "ASC"]],
+      [{ field: "VIN", filter: req.body.ticket_id, type: "string_eq" }]
+    );
+    if (getTicket.list.length > 0) {
+      throw new Error("This ticket has already been entered into the raffle");
+    }
     let _r = await axios.post(
       process.env.TICKET_VALIDATION_API,
       {},
@@ -77,8 +84,7 @@ export const postTicketController = async (req, res) => {
         },
       }
     );
-    console.log(">>>>>>>", _r.data);
-    console.log("qrcode is: ", req.body.ticket_id);
+
     // _r.data.r.trim() === "This is a non-winning ticket." ||
     if (_r.data.r.trim() === "Error checking ticket.") {
       throw new Error(_r.data.r);
@@ -99,14 +105,18 @@ export const postTicketController = async (req, res) => {
       // check if the ticket is exists
       let getTicket = await tc.FetchAll(
         [["id", "ASC"]],
-        [{ field: "ticket_code", filter: _r.data.t, type: "string_eq" }]
+        [
+          { field: "ticket_code", filter: _r.data.t, type: "string_eq" },
+          { field: "VIN", filter: req.body.ticket_id, type: "string_eq" },
+        ]
       );
 
       if (getTicket.list.length > 0) {
         throw new Error("This ticket has already been entered into the raffle");
       } else {
         let r = await tc.Insert({
-          ticket_info: { ticket_id: req.body.ticket_id, ..._r.data },
+          ticket_info: _r.data,
+          VIN: req.body.ticket_id,
           entries: !_r.data.a ? 2 : _r.data.a,
           user_id: req.user_id,
           alpha_code: _r.data.t.split("-")[0],

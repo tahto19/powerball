@@ -1,4 +1,8 @@
-import { cSend, generateRandomNumber } from "../../../util/util.js";
+import {
+  cSend,
+  encrpytPassword,
+  generateRandomNumber,
+} from "../../../util/util.js";
 import UserClass from "../../User/lib/User.class.js";
 import OTPClass from "../Class/OTP.class.js";
 
@@ -20,9 +24,13 @@ export const createOTPController = async (req, res) => {
     ]);
     if (!outside) {
       let findUser = await UserClass.FetchOne([
-        { filter: emailAddress, field: "emailAddress", type: "string" },
+        {
+          filter: encrpytPassword(emailAddress),
+          field: "emailAddress",
+          type: "string",
+        },
       ]);
-      console.log(findUser)
+
       if (findUser !== null) throw new Error("ErrorCODE x909");
     }
     if (r) {

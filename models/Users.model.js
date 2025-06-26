@@ -1,7 +1,7 @@
 import "dotenv/config";
 import conn from "../dbConnections/conn.js";
 import { Model, DataTypes } from "sequelize";
-
+import validator from "validator";
 import { decryptPassword, encrpytPassword } from "../util/util.js";
 class Users extends Model {
   async validPassword(password) {
@@ -20,7 +20,9 @@ Users.init(
       allowNull: true,
       type: DataTypes.VIRTUAL,
       get() {
-        return `${this.firstname} ${this.lastname}`;
+        return this.firstname && this.firstname
+          ? `${this.firstname} ${this.lastname}`
+          : null;
       },
     },
     firstname: {
@@ -31,6 +33,14 @@ Users.init(
           msg: "Please enter your firstname",
         },
       },
+      get() {
+        let val = this.getDataValue("firstname");
+
+        return val ? decryptPassword(val) : this.getDataValue("firstname");
+      },
+      set(val) {
+        this.setDataValue("firstname", encrpytPassword(val));
+      },
     },
     lastname: {
       allowNull: false,
@@ -39,6 +49,14 @@ Users.init(
         notNull: {
           msg: "Please enter your lastname",
         },
+      },
+      get() {
+        let val = this.getDataValue("lastname");
+
+        return val ? decryptPassword(val) : this.getDataValue("lastname");
+      },
+      set(val) {
+        this.setDataValue("lastname", encrpytPassword(val));
       },
     },
     password: {
@@ -57,8 +75,18 @@ Users.init(
     emailAddress: {
       allowNull: false,
       type: DataTypes.STRING,
-      unique: { msg: "Email address already in use!" },
-      validate: { isEmail: { args: true, msg: "Email is not valid" } },
+
+      get() {
+        let val = this.getDataValue("emailAddress");
+
+        return val ? decryptPassword(val) : this.getDataValue("emailAddress");
+      },
+      async set(val) {
+        if (!val || !validator.isEmail(val)) {
+          throw new Error("Invalid email format");
+        }
+        this.setDataValue("emailAddress", encrpytPassword(val));
+      },
     },
     isAdmin: { allowNull: false, type: DataTypes.BOOLEAN, defaultValue: false },
     mobileNumber: { allowNull: true, type: DataTypes.STRING },
@@ -74,8 +102,6 @@ Users.init(
       beforeSave: async (user) => {
         const prevPassword = user.previous().password;
         const currentPassword = user.password;
-        console.log(prevPassword);
-        console.log(currentPassword);
 
         // If password is empty or unchanged, skip processing
         if (
@@ -87,30 +113,13 @@ Users.init(
           return;
         }
 
-        const decrypted = await decryptPassword(prevPassword);
-        console.log(decrypted);
+        const decrypted = decryptPassword(prevPassword);
 
         if (decrypted !== currentPassword) {
-          user.password = await encrpytPassword(currentPassword);
+          user.password = encrpytPassword(currentPassword);
         } else {
           user.password = prevPassword;
         }
-        // console.log(user.previous().password);
-        // let decrypted = await decryptPassword(user.previous().password);
-        // console.log(user.changed("password") && decrypted !== user.password);
-        // if (user.changed("password") && decrypted !== user.password) {
-        //   user.password =
-        //     user.password && user.password !== ""
-        //       ? await encrpytPassword(user.password)
-        //       : "";
-        // } else if (!decrypted)
-        //   user.password =
-        //     user.password && user.password !== ""
-        //       ? await encrpytPassword(user.password)
-        //       : "";
-        // else {
-        //   user.password = user.previous().password;
-        // }
       },
     },
   }

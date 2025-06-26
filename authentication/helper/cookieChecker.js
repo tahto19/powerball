@@ -1,7 +1,7 @@
 import moment from "moment";
 
 import UserClass from "../../routes/User/lib/User.class.js";
-import { decryptPassword } from "../../util/util.js";
+import { decryptPassword, encrpytPassword } from "../../util/util.js";
 import fastifyJwt from "@fastify/jwt";
 export const cookieChecker = async (req) => {
   try {
@@ -21,7 +21,7 @@ export const cookieChecker = async (req) => {
     let userDetails = await UserClass.FetchOne([
       { filter: getCookeDetails.id, type: "number", field: "id" },
       {
-        filter: getCookeDetails.emailAddress,
+        filter: encrpytPassword(getCookeDetails.emailAddress),
         type: "string",
         field: "emailAddress",
       },

@@ -6,6 +6,8 @@ import TicketHistory from "../../../models/TicketHistory.model.js";
 import RaffleSchedule from "../../../models/RaffleSchedule.model.js";
 import RaffleDetails from "../../../models/RaffleDetails.model.js";
 import PrizeList from "../../../models/PrizeList.model.js";
+import TicketDetails from "../../../models/TicketDetails.model.js";
+import Users from "../../../models/Users.model.js";
 
 class WiningDrawDetails_class {
   constructor() {}
@@ -92,6 +94,7 @@ class WiningDrawDetails_class {
           ],
         },
         { model: TicketHistory },
+        { model: TicketDetails, include: [{ model: Users }] },
       ],
     };
     var getFilters = filter;

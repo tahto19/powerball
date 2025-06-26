@@ -13,7 +13,7 @@ export const getWinnersTableController = async (req, res) => {
   try {
     const { limit, sort, where, filter, url, offset } = req.body;
     const _r = await wc.FetchWithInclude(req.body);
-
+    console.log(_r);
     res.send(_r);
   } catch (err) {
     console.log(err);

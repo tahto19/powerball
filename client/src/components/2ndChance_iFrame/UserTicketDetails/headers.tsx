@@ -6,6 +6,13 @@ import { Avatar, Button, Chip } from "@mui/material";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 const headers: GridColDef[] = [
   {
+    field: "$ticket_detail.ticket_code$",
+    headerName: "Raffle Ticket",
+    flex: 1,
+    minWidth: 200,
+    editable: true,
+  },
+  {
     field: "ticket_history_generate",
     headerName: "Ticket Number",
     flex: 1,

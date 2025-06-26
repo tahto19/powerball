@@ -35,6 +35,10 @@ TicketDetails.init(
       allowNull: false,
       type: DataTypes.TEXT("medium"),
     },
+    VIN: {
+      allowNull: false,
+      type: DataTypes.TEXT("medium"),
+    },
     alpha_code: {
       allowNull: false,
       type: DataTypes.TEXT("medium"),

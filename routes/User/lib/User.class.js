@@ -77,8 +77,9 @@ class User_class {
       group: ["Users.id"], // group by user to get correct counts
     };
     query["where"] = WhereFilters(filter);
-    let list = await Users.findOne(query);
-    return list;
+    let list = await Users.findAll(query);
+
+    return list.length > 0 ? list[0] : null;
   }
 }
 

@@ -6,32 +6,38 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { showToaster } from "../global/globalSlice";
 import apiService from "@/services/apiService";
 import { RootState } from "@/redux/store";
-import { OverallTotalEntries, addEntryList, entriesChange } from "./raffleEntrySlice";
+import {
+  OverallTotalEntries,
+  addEntryList,
+  entriesChange,
+} from "./raffleEntrySlice";
 import { enterEntries } from "@/components/2ndChance_iFrame/Raffles/interface";
 
 interface GetRaffleParams {
-  type: string | undefined; 
-  alpha_code: string | undefined
+  type: string | undefined;
+  alpha_code: string | undefined;
 }
 
 export const getRaffleEntry = createAsyncThunk(
   "raffleEntry/getRaffle",
-  async (data:GetRaffleParams, { dispatch, getState }) => {
+  async (data: GetRaffleParams, { dispatch, getState }) => {
     try {
-      console.log("------------", data.alpha_code)
+      console.log("------------", data.alpha_code);
       const state = getState() as RootState;
       const token = state.token.token;
-      let _r = await apiService.getRaffleEntry({data: data.type, alpha_code: data.alpha_code});
+      let _r = await apiService.getRaffleEntry({
+        data: data.type,
+        alpha_code: data.alpha_code,
+      });
 
       let bd = bodyDecrypt(_r.data, token);
 
       if (bd.result === "error") throw new Error(bd.message);
-      console.log("ppppppppppp",bd)
 
-      if(!data.alpha_code){
-      dispatch(OverallTotalEntries(bd.data[0]));
+      if (!data.alpha_code) {
+        dispatch(OverallTotalEntries(bd.data[0]));
       } else {
-      dispatch(entriesChange(bd.data[0]));
+        dispatch(entriesChange(bd.data[0]));
       }
     } catch (err) {
       // dispatch(showToaster({ err, variant: "error", icon: "error" }));
@@ -56,7 +62,7 @@ export const postRaffleEntry = createAsyncThunk(
       );
       setTimeout(() => {
         window.parent.location.reload();
-      },1000)
+      }, 1000);
       dispatch(getRaffleEntry());
     } catch (err) {
       dispatch(showToaster({ err, variant: "error", icon: "error" }));
@@ -75,11 +81,11 @@ export const getRaffleEntryList = createAsyncThunk(
       const getFilter = data ? data : state.ticket.getData;
       let _r = await apiService.getRaffleEntryList(getFilter, token, url);
       let r_data = bodyDecrypt(_r.data, token);
-      console.log(r_data);
+      console.log(r_data, "HER");
       r_data.list = r_data.list.map((v) => {
         return {
           id: v.id,
-          createdAt: v.createdAt,
+          "$ticket_detail.ticket_code$": v.ticket_detail.ticket_code,
           ticket_history_generate: v.ticket_history_generate,
           "$Raffle_Schedule.status_text$":
             v.wining_draw_detail !== null

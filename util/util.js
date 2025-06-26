@@ -31,13 +31,13 @@ export const logger = pino({
 const algorithm = "aes-256-cbc";
 const key = process.env.DB_KEY; //  this must not change it will change the value of the db
 const iv = process.env.DB_IV; // this must not change it will change the value of the db
-export const encrpytPassword = async (_d) => {
+export const encrpytPassword = (_d) => {
   const cipher = createCipheriv(algorithm, key, iv);
   let encrypted = cipher.update(_d, "utf8", "hex");
   encrypted += cipher.final("hex");
   return encrypted;
 };
-export const decryptPassword = async (_d) => {
+export const decryptPassword = (_d) => {
   try {
     const decipher = createDecipheriv(algorithm, key, iv);
     let decrypted = decipher.update(_d, "hex", "utf8");
@@ -159,10 +159,7 @@ export const cSend = (data) => {
   return { success: "success", success: "success", data };
 };
 export const encryptData = (data, token) => {
-  console.log("ererererere");
-  var encrypted;
-
-  encrypted = CryptoJS.AES.encrypt(data, token).toString();
+  let encrypted = CryptoJS.AES.encrypt(data, token).toString();
 
   return encrypted;
 };

@@ -24,6 +24,7 @@ const bodyEncrypt = async (req, res, pay) => {
     return pay;
   } else {
     if (cookies.cookie_pb_1271) {
+      console.log(pay);
       let a = encryptData(pay, cookies.cookie_pb_1271);
       if (req.audit_trail) {
         updateAuditTrail(req, pay);

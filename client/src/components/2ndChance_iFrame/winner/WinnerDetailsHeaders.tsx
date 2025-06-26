@@ -6,6 +6,12 @@ import moment from "moment";
 import { Button, Chip } from "@mui/material";
 const WinnerDetailsHeaders: GridColDef[] = [
   {
+    field: "Name",
+    headerName: "Name",
+    flex: 1,
+    minWidth: 200,
+  },
+  {
     field: "$ticket_history.ticket_history_generate$",
     headerName: "Winning Ticket",
     flex: 1,
