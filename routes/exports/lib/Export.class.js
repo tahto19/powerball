@@ -8,6 +8,7 @@ import { WhereFilters } from "../../../util/util.js";
 import RaffleSchedule from "../../../models/RaffleSchedule.model.js";
 import WiningDrawDetails from "../../../models/WiningDrawDetails.model.js";
 import RaffleDetails from "../../../models/RaffleDetails.model.js";
+import moment from "moment";
 class Export_data_class {
   constructor() {}
   async getData(type, date_range, filter) {
@@ -153,19 +154,46 @@ class Export_data_class {
     var columns;
     if (data[0])
       columns = Object.keys(data[0]).map((v) => {
-        return { header: v.toUpperCase(), key: v, width: 10 };
+        return {
+          header: this.changeDetails(v.toUpperCase()),
+          key: v,
+          width: 10,
+        };
       });
     else throw new Error("no data found");
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet(type);
     worksheet.columns = columns;
     data.forEach((v) => {
-      worksheet.addRow(v);
+      let temp = v;
+      let changeValue = Object.keys(v).forEach((vv) => {
+        let val = v[vv].toString();
+
+        if (val.toUpperCase() === "TRUE") temp[vv] = "YES";
+        else if (val.toUpperCase() === "FALSE") temp[vv] = "NO";
+        else {
+          if (moment(val).isValid())
+            temp[vv] = moment(val).format("MMMM-DD-YYYY,hh:mm a");
+          else temp[vv] = val;
+        }
+      });
+      console.log(temp);
+      worksheet.addRow(temp);
     });
     const buffer = await workbook.xlsx.writeBuffer();
     return Buffer.from(buffer).toString("base64");
     // worksheet.columns = data;
     // console.log(data);
+  }
+  changeDetails(d) {
+    switch (d) {
+      case "TICKET_HISTORY_GENERATE":
+        return "TICKET NUMBER";
+      case "CreatedAt":
+        return "Created Date";
+      default:
+        return d;
+    }
   }
 }
 export default new Export_data_class();
