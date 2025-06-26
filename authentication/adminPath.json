@@ -6,5 +6,6 @@
   { "path": "/user/", "method": "POST" },
   { "path": "/user/", "method": "GET" },
   { "path": "/user/", "method": "GET" },
-  { "path": "/user/", "method": "POST" }
+  { "path": "/user/", "method": "POST" },
+  { "path": "/export/", "method": "POST" }
 ]
