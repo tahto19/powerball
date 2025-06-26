@@ -21,8 +21,12 @@ import { useState } from "react";
 import { downloadData } from "@/redux/reducers/download/asyncCalls";
 export function ExportDialog() {
   const { filter, show, loading, type, title } = useSelector(
-    (state: RootState) => state.exportData
+    (state: RootState) => {
+      console.log(state.exportData);
+      return state.exportData;
+    }
   );
+  console.log(filter, show);
   const [dateRanges, setDateRanges] = useState({
     startDate: null,
     endDate: null,
@@ -68,12 +72,13 @@ export function ExportDialog() {
               onClick={(e: any) => {
                 handleClick(e);
               }}
-              value={`${dateRanges.endDate
-                ? `${moment(dateRanges.startDate).format(
-                  "MMMM DD, YYYY"
-                )} - ${moment(dateRanges.endDate).format("MMMM DD, YYYY")}`
-                : ""
-                } `}
+              value={`${
+                dateRanges.endDate
+                  ? `${moment(dateRanges.startDate).format(
+                      "MMMM DD, YYYY"
+                    )} - ${moment(dateRanges.endDate).format("MMMM DD, YYYY")}`
+                  : ""
+              } `}
               id={id}
               label="Date"
               fullWidth

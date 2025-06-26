@@ -14,6 +14,7 @@ import MyDialog from "./MyDialog";
 import { DataProps, getDataV2 } from "@/types/allTypes";
 import axios from "axios";
 import { downloadData } from "@/redux/reducers/download/asyncCalls";
+import { openDialog } from "@/redux/reducers/download/exportDataSlice";
 const Costumer = () => {
   const dispatch = useAppDispatch();
   const { loading, list, offset, limit, sort, count } = useAppSelector(
@@ -162,7 +163,13 @@ const Costumer = () => {
         sx={{ display: "flex", justifyContent: "end" }}
         size={{ xs: 6, sm: 6, lg: 6 }}
       >
-        <Button onClick={() => handleDownload()}>Export</Button>
+        <Button
+          onClick={() =>
+            dispatch(openDialog({ title: "Tickets List", type: 2 }))
+          }
+        >
+          Export
+        </Button>
       </Grid2>
       <Grid2 size={12}>
         <CustomizedDataGrid

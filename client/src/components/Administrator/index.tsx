@@ -12,6 +12,7 @@ import { useState } from "react";
 import { GridColDef } from "@mui/x-data-grid";
 import MyDialog from "./MyDialog";
 import { DataProps } from "@/types/allTypes";
+import { openDialog } from "@/redux/reducers/download/exportDataSlice";
 const Index = () => {
   const dispatch = useAppDispatch();
   const { loading, list, offset, limit, sort, count } = useAppSelector(
@@ -147,6 +148,18 @@ const Index = () => {
           }}
         >
           Add Admin
+        </Button>
+        <Button
+          sx={{
+            float: "right",
+            marginRight: "5px",
+          }}
+          variant="contained"
+          onClick={() =>
+            dispatch(openDialog({ title: "Tickets List", type: 3 }))
+          }
+        >
+          Export
         </Button>
       </Grid2>
       <Grid2 size={12}>

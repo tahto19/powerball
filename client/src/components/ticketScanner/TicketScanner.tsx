@@ -17,6 +17,7 @@ import {
 import moment from "moment";
 import { useLocation } from "react-router-dom";
 import RandomString from "@/animated/RandomLetters";
+import { openDialog } from "@/redux/reducers/download/exportDataSlice";
 const headers: GridColDef[] = [
   {
     field: "ticket_code",
@@ -186,11 +187,10 @@ const TicketScanner = () => {
           }}
           variant="contained"
           onClick={() => {
-            setOpen(true);
-            setDialogType("Add");
+            dispatch(openDialog({ title: "Tickets List", type: 5 }));
           }}
         >
-          Export
+          Exports
         </Button>
       </Grid2>
       <Grid2 size={12}>

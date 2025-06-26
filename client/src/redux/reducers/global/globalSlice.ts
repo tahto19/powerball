@@ -13,6 +13,7 @@ const initialState: global_ = {
     show: false,
     variant: null,
     icon: null,
+    id: null,
     count: 0,
   },
   btn: false,
@@ -28,12 +29,20 @@ const globalSlice = createSlice({
           ? getMessage(action.payload.err)
           : action.payload.message;
         // action.payload.message = message;
+        let id = action.payload.id;
+        const toChange = id
+          ? {
+              ...action.payload,
+              message,
+              count: state.toasterShow.count + 1,
+            }
+          : {
+              ...action.payload,
+              message,
+              id,
+              count: state.toasterShow.count + 1,
+            };
 
-        const toChange = {
-          ...action.payload,
-          message,
-          count: state.toasterShow.count + 1,
-        };
         state.toasterShow = toChange;
       } catch (err) {
         console.log(err);

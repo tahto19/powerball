@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { Flip, ToastContainer, toast } from "react-toastify";
 
 const Toaster_ = () => {
-  const { message, variant, count } = useSelector(
+  const { message, variant, count, id } = useSelector(
     (state: RootState) => state.global.toasterShow
   );
   useEffect(() => {

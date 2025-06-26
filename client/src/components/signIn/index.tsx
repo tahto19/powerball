@@ -64,7 +64,7 @@ const SignIn = () => {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
   const [loggingIn, setLoggingIn] = React.useState(false);
-  console.log(loggingIn);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
@@ -133,7 +133,6 @@ const SignIn = () => {
   const isLoginPage = loginPages.includes(location.pathname);
   React.useEffect(() => {
     if (!loading && token && userDetails.isAdmin && isLoginPage) {
-      console.log("-------------------", localStorage.getItem("pb_paths"));
       const redirectPath = localStorage.getItem("pb_paths") || "/dashboard";
       localStorage.removeItem("pb_paths"); // clean it up
       navigate(redirectPath);

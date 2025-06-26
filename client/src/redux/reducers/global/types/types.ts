@@ -6,4 +6,5 @@ export type ToasterI = {
   variant: TypeOptions | null;
   icon: string | null;
   count: number;
+  id: null | number;
 };
