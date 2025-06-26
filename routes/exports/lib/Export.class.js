@@ -98,6 +98,7 @@ class Export_data_class {
       filters["$ticket_histories.createdAt$"] = {
         [Op.between]: [dr[0], dr[1]],
       };
+    console.log(filters, "here");
     let _r = await RaffleSchedule.findAll({
       where: filters,
       include: [
@@ -118,8 +119,8 @@ class Export_data_class {
         })
       );
     });
-    return _r;
-    // return this.toExcel(b, "Ticket History in raffle");
+    // return _r;
+    return this.toExcel(b, "Ticket History in raffle");
   }
   async myRaffle_data(dr, f) {
     let filters = WhereFilters(f);

@@ -9,8 +9,8 @@ import { toast } from "react-toastify";
 export const downloadData = createAsyncThunk(
   "exportData/downloadData",
   async (data: exportDataState, { dispatch, getState }) => {
-    const toastId = toast.loading("Loading...");
-    await delay(5000);
+    const toastId = toast.loading("Wainting... Loading...");
+    await delay(1000);
     try {
       const state = getState() as RootState;
       const token = state.token.token;
@@ -18,14 +18,14 @@ export const downloadData = createAsyncThunk(
       console.log(">>>", data);
       const _r = await apiService.exportData(data, token ? token : "test");
       let file = _r.file;
-
+      console.log(_r);
       toast.update(toastId, {
-        render: "Downloading!",
-        type: "success",
-        isLoading: false,
+        render: "Downloading...",
+        type: "info",
+        isLoading: true,
         autoClose: 2000,
       });
-      await delay(5000);
+      await delay(1000);
       await base64ToFile(file, "test");
       toast.update(toastId, {
         render: "Download Complete!",
@@ -35,9 +35,10 @@ export const downloadData = createAsyncThunk(
       });
     } catch (err: unknown) {
       if (err instanceof Error) {
+        console.log(err);
         toast.update(toastId, {
           render: "Error Download Complete!: " + err.message,
-          type: "success",
+          type: "error",
           isLoading: false,
           autoClose: 2000,
         });
