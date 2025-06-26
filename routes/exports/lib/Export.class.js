@@ -189,7 +189,7 @@ class Export_data_class {
     switch (d) {
       case "TICKET_HISTORY_GENERATE":
         return "TICKET NUMBER";
-      case "CreatedAt":
+      case "CREATEDAT":
         return "Created Date";
       default:
         return d;
