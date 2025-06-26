@@ -4,6 +4,8 @@ import * as React from "react";
 import moment from "moment";
 import { Avatar, Button, Chip } from "@mui/material";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import { motion } from "framer-motion";
+const BouncingIcon = motion(EmojiEventsIcon);
 const headers: GridColDef[] = [
   {
     field: "$ticket_detail.ticket_code$",
@@ -74,11 +76,24 @@ const headers: GridColDef[] = [
         );
       else
         return (
-          <Chip
-            icon={<EmojiEventsIcon />}
-            label="Winner"
-            color="warning"
-          />
+          <motion.div whileHover={{ scale: 1.1 }}>
+            <Chip
+              icon={
+                <BouncingIcon
+                  animate={{
+                    y: [0, -5, 0], // bounce up and down
+                  }}
+                  transition={{
+                    duration: 0.6,
+                    repeat: Infinity,
+                    repeatType: "loop",
+                  }}
+                />
+              }
+              label="Winner"
+              color="warning"
+            />
+          </motion.div>
         );
     },
   },
