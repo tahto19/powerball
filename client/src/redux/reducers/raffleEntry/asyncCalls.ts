@@ -22,7 +22,6 @@ export const getRaffleEntry = createAsyncThunk(
   "raffleEntry/getRaffle",
   async (data: GetRaffleParams, { dispatch, getState }) => {
     try {
-      console.log("------------", data.alpha_code);
       const state = getState() as RootState;
       const token = state.token.token;
       let _r = await apiService.getRaffleEntry({
@@ -73,38 +72,38 @@ export const getRaffleEntryList = createAsyncThunk(
   "raffleEntry/getRaffleEntryList",
   async (data: getDataV2, { dispatch, getState }) => {
     try {
-      console.log(data);
       const state = getState() as RootState;
       const token = state.token.token;
+      if (token) {
+        const url = data.location;
+        const getFilter = data ? data : state.ticket.getData;
+        let _r = await apiService.getRaffleEntryList(getFilter, token, url);
+        let r_data = bodyDecrypt(_r.data, token);
 
-      const url = data.location;
-      const getFilter = data ? data : state.ticket.getData;
-      let _r = await apiService.getRaffleEntryList(getFilter, token, url);
-      let r_data = bodyDecrypt(_r.data, token);
-      console.log(r_data, "HER");
-      r_data.list = r_data.list.map((v) => {
-        return {
-          id: v.id,
-          "$ticket_detail.ticket_code$": v.ticket_detail.ticket_code,
-          ticket_history_generate: v.ticket_history_generate,
-          "$Raffle_Schedule.status_text$":
-            v.wining_draw_detail !== null
-              ? "Winner"
-              : v.Raffle_Schedule.status_text,
-          "$Raffle_Schedule.raffleDetails.name$":
-            v.Raffle_Schedule.raffleDetails.name,
-          "$Raffle_Schedule.schedule_date$": v.Raffle_Schedule.schedule_date,
-          date_time: v.Raffle_Schedule.schedule_date,
-        };
-      });
+        r_data.list = r_data.list.map((v) => {
+          return {
+            id: v.id,
+            "$ticket_detail.ticket_code$": v.ticket_detail.ticket_code,
+            ticket_history_generate: v.ticket_history_generate,
+            "$Raffle_Schedule.status_text$":
+              v.wining_draw_detail !== null
+                ? "Winner"
+                : v.Raffle_Schedule.status_text,
+            "$Raffle_Schedule.raffleDetails.name$":
+              v.Raffle_Schedule.raffleDetails.name,
+            "$Raffle_Schedule.schedule_date$": v.Raffle_Schedule.schedule_date,
+            date_time: v.Raffle_Schedule.schedule_date,
+          };
+        });
 
-      let toReturn = { ...r_data, ...getFilter, loading: false };
+        let toReturn = { ...r_data, ...getFilter, loading: false };
 
-      dispatch(addEntryList(toReturn));
-      return toReturn;
+        dispatch(addEntryList(toReturn));
+        return toReturn;
+      }
+
       // dispatch(addTicketList(toReturn));
     } catch (err) {
-      console.log(err);
       dispatch(showToaster({ err, variant: "error", icon: "error" }));
     }
   }

@@ -15,10 +15,9 @@ export const downloadData = createAsyncThunk(
       const state = getState() as RootState;
       const token = state.token.token;
 
-      console.log(">>>", data);
       const _r = await apiService.exportData(data, token ? token : "test");
       let file = _r.file;
-      console.log(_r);
+
       toast.update(toastId, {
         render: "Downloading...",
         type: "info",
@@ -35,7 +34,6 @@ export const downloadData = createAsyncThunk(
       });
     } catch (err: unknown) {
       if (err instanceof Error) {
-        console.log(err);
         toast.update(toastId, {
           render: "Error Download Complete!: " + err.message,
           type: "error",

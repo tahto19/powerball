@@ -18,7 +18,7 @@ export const getWinnerListAsync = createAsyncThunk(
 
       const _r = await apiService.getWinnerList(getFilter, token, url);
       const _rData = bodyDecrypt(_r.data, token);
-      console.log(_rData);
+
       _rData["list"] = _rData.list.map((v) => {
         return {
           id: v.id,
@@ -33,7 +33,6 @@ export const getWinnerListAsync = createAsyncThunk(
 
       dispatch(addWinnerList(toReturn));
     } catch (err) {
-      console.log(err);
       dispatch(showToaster({ err, variant: "error", icon: "error" }));
     }
   }

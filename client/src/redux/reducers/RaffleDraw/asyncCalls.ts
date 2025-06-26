@@ -16,7 +16,7 @@ export const getData = createAsyncThunk(
       const getFilter = data ? data : state.ticket.getData;
       const _r = await apiService.getWinner(getFilter, token);
       const _rD = bodyDecrypt(_r.data, token);
-      console.log(_rD);
+
       _rD.list = _rD.list.map((v: any) => {
         return {
           id: v.id,
@@ -26,7 +26,7 @@ export const getData = createAsyncThunk(
         };
       });
       const toReturn = { ...getFilter, ..._rD };
-      console.log(toReturn, getFilter);
+
       dispatch(addRaffleDrawList(toReturn));
     } catch (err) {
       dispatch(showToaster({ err, variant: "error", icon: "error" }));

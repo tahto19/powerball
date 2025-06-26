@@ -39,7 +39,7 @@ const raffleEntriesSlice = createSlice({
     addEntryList: (state, action) => {
       // Object.assign(state.raffleEntriesList, action.payload);
       state.raffleEntriesList = action.payload;
-      console.log(action.payload);
+
       // state.raffleEntriesList.list = action.payload.list;
       // state.raffleEntriesList.count = action.payload.count;
       // state.raffleEntriesList.row = action.payload.row;
@@ -65,10 +65,10 @@ const raffleEntriesSlice = createSlice({
     });
     b.addCase(getRaffleEntryList.fulfilled, (state) => {
       state.raffleEntriesList._loading = false;
-      console.log(state.raffleEntriesList._loading);
     });
   },
 });
 
 export default raffleEntriesSlice.reducer;
-export const { OverallTotalEntries, entriesChange, addEntryList } = raffleEntriesSlice.actions;
+export const { OverallTotalEntries, entriesChange, addEntryList } =
+  raffleEntriesSlice.actions;

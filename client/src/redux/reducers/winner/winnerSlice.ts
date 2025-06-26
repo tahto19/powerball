@@ -30,7 +30,6 @@ const winnerSlice = createSlice({
   initialState,
   reducers: {
     addWinnerList: (state, action) => {
-      console.log(action.payload);
       state.winnerList = action.payload;
     },
   },

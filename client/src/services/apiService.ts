@@ -133,8 +133,6 @@ export const apiService = {
     return res;
   },
   getPrizeListAll: async (d: fetchAll, token: string | null) => {
-    console.log(d);
-
     const res = apiClient.post("/api/prize-list/all", {
       data: bodyEncrypt(d, token),
     });
@@ -160,16 +158,12 @@ export const apiService = {
     return res;
   },
   getGMListAll: async (d: fetchAll, token: string | null) => {
-    console.log(d);
-
     const res = apiClient.post("/api/game-maintenance/all", {
       data: bodyEncrypt(d, token),
     });
     return res;
   },
   get2ndChanceGMListAll: async (d: fetchAll, token: string | null) => {
-    console.log(d);
-
     const res = apiClient.post("/api/game-maintenance/2nd-chance/list", {
       data: bodyEncrypt(d, token),
     });
@@ -281,7 +275,6 @@ export const apiService = {
       "password",
     ];
     const fd = new FormData();
-    console.log(d);
 
     fd.append("data", bodyEncrypt(d, token));
     if (d.file) {
@@ -312,14 +305,13 @@ export const apiService = {
     alpha_code: string | undefined;
   }) => {
     let params = alpha_code ? { alpha_code } : {};
-    console.log(data);
-    console.log(alpha_code);
 
     if (data && data === "myEntries")
       return apiClient.get("api/ticket/myEntries", { params });
     else return apiClient.get("api/ticket/entries", { params });
   },
   getRaffleEntryList: async (data: getDataV2, token: string, url: string) => {
+    console.log(token);
     return apiClient.post(
       `api/raffleHistory/${url === "myEntries" ? "myEntries" : "allEntries"}`,
       {
@@ -329,14 +321,12 @@ export const apiService = {
   },
   // post raffleentry
   postRaffleEntry: async (data: enterEntries, token: string | null) => {
-    console.log(data);
     return apiClient.post("api/raffleHistory/insert", {
       data: bodyEncrypt(JSON.stringify(data), token),
     });
   },
 
-    getParticipantByRaffle: async (data: getDataV2, token: string | null) => {
-    console.log(data);
+  getParticipantByRaffle: async (data: getDataV2, token: string | null) => {
     return apiClient.post("api/raffleHistory/getRaffleEntries", {
       data: bodyEncrypt(JSON.stringify(data), token),
     });
@@ -394,14 +384,12 @@ export const apiService = {
   },
   //forgot password
   forgotPassword: async (data: { email: string }) => {
-    console.log(data);
     const response = await apiClient.post("/api/password-reset/reset", data);
     return response;
   },
 
   //forgot password
   resetPassword: async (data) => {
-    console.log(data);
     const response = await apiClient.post("/api/password-reset/confirm", data);
     return response;
   },

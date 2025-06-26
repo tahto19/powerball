@@ -29,7 +29,7 @@ export const outsideAddUser = createAsyncThunk(
       // return data;
 
       const _r = await apiService.createOTP(data);
-      console.log(data);
+
       dispatch(addUser(data));
       dispatch(addOTP(_r.data.data));
       return true;
@@ -82,7 +82,7 @@ export const createAccount = createAsyncThunk(
         birthdate,
         password,
       } = state.user;
-      console.log(file, firstname, lastname, mobileNumber, birthdate);
+
       await apiService.createUser({
         file,
         firstname,
@@ -125,7 +125,7 @@ export const getAdmin = createAsyncThunk(
 
       let _r = await apiService.getAdmin(data_, token);
       let c = bodyDecrypt(_r.data, token);
-      console.log(c);
+
       if (c.data.result === "error") throw new Error(c.data.message);
 
       dispatch(addList({ list: c.data.list.rows, count: c.data.list.count }));
@@ -140,14 +140,14 @@ export const postAdmin = createAsyncThunk(
   async ({ data, dialogType }: postAdminType, { dispatch, getState }) => {
     try {
       const state = getState() as RootState;
-      const token = state.token.token; 
-      console.log(data, dialogType);
+      const token = state.token.token;
+
       if (dialogType.toLowerCase() === "add")
         await apiService.insertAdmin(data, token);
-        // await apiService.insertAdmin(bodyEncrypt(data, token));
+      // await apiService.insertAdmin(bodyEncrypt(data, token));
       else if (dialogType.toLowerCase() === "edit")
         await apiService.updateAdmin(data, token);
-        // await apiService.updateAdmin(bodyEncrypt(data, token));
+      // await apiService.updateAdmin(bodyEncrypt(data, token));
       setTimeout(() => {
         dispatch(getAdmin());
       }, [1000]);
@@ -180,7 +180,7 @@ export const getCostumer = createAsyncThunk(
       }
       const _r = await apiService.getCostumer(data_, token);
       let c = bodyDecrypt(_r.data, token);
-      console.log(c);
+
       dispatch(addListC_({ list: c.data.list.rows, count: c.data.list.count }));
     } catch (err) {
       dispatch(showToaster({ err, variant: "error", icon: "error" }));
@@ -194,10 +194,10 @@ export const getUser = createAsyncThunk(
     try {
       const state = getState() as RootState;
       const token = state.token.token;
-   
+
       const _r = await apiService.getUser();
       let c = bodyDecrypt(_r.data, token);
-      console.log("11111111111111 ",c);
+
       dispatch(addUserDetails(c.data));
     } catch (err) {
       dispatch(showToaster({ err, variant: "error", icon: "error" }));

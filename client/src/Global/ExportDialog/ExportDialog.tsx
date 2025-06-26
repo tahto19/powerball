@@ -22,11 +22,10 @@ import { downloadData } from "@/redux/reducers/download/asyncCalls";
 export function ExportDialog() {
   const { filter, show, loading, type, title } = useSelector(
     (state: RootState) => {
-      console.log(state.exportData);
       return state.exportData;
     }
   );
-  console.log(filter, show);
+
   const [dateRanges, setDateRanges] = useState({
     startDate: null,
     endDate: null,
@@ -44,7 +43,6 @@ export function ExportDialog() {
     setAnchorEl(event.currentTarget);
   };
   const handleSelect = (e: any) => {
-    console.log(e);
     setDateRanges(e.selection);
   };
   const handleDownload = () => {

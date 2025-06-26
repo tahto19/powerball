@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getUser, createAccount, outsideAddUser, postAdmin, verfiyAccountUser } from "./asnycCalls";
+import {
+  getUser,
+  createAccount,
+  outsideAddUser,
+  postAdmin,
+  verfiyAccountUser,
+} from "./asnycCalls";
 
 // interface userState {
 //   fullname: string | null;
@@ -33,12 +39,12 @@ import { getUser, createAccount, outsideAddUser, postAdmin, verfiyAccountUser } 
 
 interface FileState {
   id: number | null;
-      name: string;
-      description: string;
-      file_location: string;
-      status: boolean;
-      category: string;
-      file: File[]
+  name: string;
+  description: string;
+  file_location: string;
+  status: boolean;
+  category: string;
+  file: File[];
 }
 
 interface ticketState {
@@ -56,7 +62,7 @@ interface userState {
   outside: boolean | undefined;
   mobileNumber: string | null;
   file: File[] | null;
-  fileInfo: FileState,
+  fileInfo: FileState;
   verifiedAndCreatedAccount: boolean;
   otpID: number | null;
   password: string | null;
@@ -64,10 +70,12 @@ interface userState {
 }
 
 const initialState: userState = {
-  ticket_details:[{
-totalEntries: null,
-  totalUsedEntries: null,
-  }],
+  ticket_details: [
+    {
+      totalEntries: null,
+      totalUsedEntries: null,
+    },
+  ],
   fullname: null,
   firstname: null,
   lastname: null,
@@ -82,8 +90,8 @@ totalEntries: null,
     description: "",
     file_location: "",
     status: true,
-    category: 'user-image',
-    file: []
+    category: "user-image",
+    file: [],
   },
   mobileNumber: null,
   otpID: null,
@@ -100,7 +108,7 @@ const userSlice = createSlice({
       try {
         state.loading = true;
         Object.assign(state, action.payload);
-        console.log(action.payload);
+
         state.outside = true;
       } catch (err) {
         console.log(err);
@@ -113,25 +121,23 @@ const userSlice = createSlice({
       state.otpID = action.payload;
     },
     editDetails: (state, action) => {
-      console.log(action.payload);
       Object.assign(state, action.payload);
       state.outside = true;
     },
-    returnToVerification:(state)=>{
-      state.verifiedAndCreatedAccount = false
+    returnToVerification: (state) => {
+      state.verifiedAndCreatedAccount = false;
     },
     addUserDetails: (state, action) => {
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
       };
       // state.fullname = data.fullname
       // console.log(state.fullname)
       // state = {...state, ...action.payload}
       // console.log(state)
       // console.log(action.payload)
-
-    }
+    },
   },
   extraReducers: (b) => {
     b.addCase(outsideAddUser.fulfilled, (state) => {
@@ -150,21 +156,27 @@ const userSlice = createSlice({
       state.loading = false;
       state.verifiedAndCreatedAccount = true;
     });
-    b.addCase(postAdmin.pending, (state)=>{
-      state.loading = true
+    b.addCase(postAdmin.pending, (state) => {
+      state.loading = true;
     });
-    b.addCase(postAdmin.fulfilled, (state)=>{
-      state.loading = false
-    })
-    b.addCase(getUser.pending, (state)=>{
-      state.loading = true
+    b.addCase(postAdmin.fulfilled, (state) => {
+      state.loading = false;
     });
-    b.addCase(getUser.fulfilled, (state)=>{
-      state.loading = false
-    })
+    b.addCase(getUser.pending, (state) => {
+      state.loading = true;
+    });
+    b.addCase(getUser.fulfilled, (state) => {
+      state.loading = false;
+    });
   },
 });
 
-export const {addUserDetails, returnToVerification, addUser, returnToAddUser, addOTP, editDetails } =
-  userSlice.actions;
+export const {
+  addUserDetails,
+  returnToVerification,
+  addUser,
+  returnToAddUser,
+  addOTP,
+  editDetails,
+} = userSlice.actions;
 export default userSlice.reducer;

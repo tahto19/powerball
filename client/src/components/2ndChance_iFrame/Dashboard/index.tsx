@@ -62,7 +62,7 @@ const Dashboard = () => {
     navigate("/scanner");
   };
   const theme = useTheme();
-  console.log(useMediaQuery(theme.breakpoints.down("sm")));
+
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [availableTicket, setavailableTicket] = useState(0);

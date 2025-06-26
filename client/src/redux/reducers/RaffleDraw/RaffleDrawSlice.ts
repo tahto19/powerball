@@ -29,7 +29,6 @@ const RaffleDrawSlice = createSlice({
   reducers: {
     addRaffleDrawList: (state, action) => {
       state.getData = { ...state.getData, ...action.payload };
-      console.log(state.getData);
     },
   },
   extraReducers: (d) => {

@@ -24,7 +24,7 @@ export const addTicket = createAsyncThunk(
       const token = state.token.token;
       let r = await apiService.postTicketList(data, token);
       let r_data = bodyDecrypt(r.data, token);
-      console.log(r_data);
+
       dispatch(
         showToaster({
           message: r_data.message,
@@ -49,10 +49,9 @@ export const getTicket = createAsyncThunk(
       let r_data = bodyDecrypt(r.data, token);
 
       let toReturn = { ...r_data, ...data, loading: false };
-      console.log(toReturn);
+
       dispatch(addTicketList(toReturn));
     } catch (err) {
-      console.log(err);
       dispatch(showToaster({ err, variant: "error", icon: "error" }));
     }
   }

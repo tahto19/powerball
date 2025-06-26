@@ -79,16 +79,13 @@ export function MyEntries() {
       return { page: offset, pageSize: limit };
     });
   }, [limit, offset]);
-  useEffect(() => {
-    console.log(count, list);
-  }, [_loading]);
+  useEffect(() => {}, [_loading]);
   const handleTableChange = async ({
     page,
     pageSize,
     sortModel,
     filterModel,
   }: any) => {
-    console.log("running");
     setPagination({ page, pageSize });
 
     const sort = [["id", "DESC"]];
@@ -119,12 +116,12 @@ export function MyEntries() {
       sort: sort,
       filter: newFilterModel,
     };
-    dispatch(
-      getRaffleEntryList({
-        ...query,
-        ...{ location: "myEntries" },
-      })
-    );
+    // dispatch(
+    //   getRaffleEntryList({
+    //     ...query,
+    //     ...{ location: "myEntries" },
+    //   })
+    // );
   };
   return (
     <>
@@ -161,7 +158,9 @@ export function MyEntries() {
           headers={headers}
           data={list}
           pagination={pagination}
-          onTableChange={handleTableChange}
+          onTableChange={(e) => {
+            handleTableChange(e);
+          }}
           pageLength={count}
           // onEditAction={handleEditAction}
           // onViewAction={handleViewAction}
