@@ -29,6 +29,8 @@ class Export_data_class {
         return await this.getRaffleEntries_data(date_range, filter);
       case 8:
         return await this.myRaffle_data(date_range, filter);
+      case 9:
+        return await this.GameMaintenance_data(date_range, filter);
     }
   }
 
@@ -149,6 +151,16 @@ class Export_data_class {
       });
     });
     return this.toExcel(toReturn, "Entries");
+  }
+  async GameMaintenance_data(date_range) {
+    let where = date_range
+      ? { createdAt: { [Op.between]: [date_range[0], date_range[1]] } }
+      : {};
+    let _r = await RaffleDetails.findAll({
+      where: where,
+    });
+    let r = _r.map((v) => v.toJSON());
+    return await this.toExcel(r, "Game Maintenance List");
   }
   async toExcel(data, type) {
     var columns;

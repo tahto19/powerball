@@ -134,7 +134,8 @@ const GameMaintenace = () => {
     }
 
     const handleExport = () => {
-        // dispatch(openDialog())
+        dispatch(openDialog({ title: 'Game Maintenance Export', type: 9, filter: [] }))
+
     }
 
     const handleOpenDialog = () => {
@@ -205,7 +206,7 @@ const GameMaintenace = () => {
                             marginLeft: "10px"
                         }}
                         variant="outlined"
-                    // onClick={handleExport}
+                        onClick={handleExport}
                     >
                         Export
                     </Button>
