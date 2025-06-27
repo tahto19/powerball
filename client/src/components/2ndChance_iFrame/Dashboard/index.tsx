@@ -21,7 +21,7 @@ import { useAppSelector } from "@/redux/hook";
 
 import { useMediaQuery, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
-
+import logo from '@/assets/image/logo.png'
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const endpoint = base_url + "api/file/serve/image/";
 
@@ -104,7 +104,7 @@ const Dashboard = () => {
         <CardMedia
           component="img"
           sx={{ width: "fit-content", height: "181px" }}
-          image={endpoint + 5}
+          image={logo}
           alt="Logo"
         ></CardMedia>
 
