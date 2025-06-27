@@ -68,7 +68,7 @@ const SignIn = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
-
+      console.log(loggingIn);
       if (emailError || passwordError) {
         return;
       }
