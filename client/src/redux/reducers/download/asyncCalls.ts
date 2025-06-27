@@ -3,7 +3,6 @@ import apiService from "@/services/apiService";
 import { exportDataState } from "@/types/allTypes";
 import { base64ToFile, delay } from "@/utils/util";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { showToaster } from "../global/globalSlice";
 import { toast } from "react-toastify";
 import axios from "axios";
 
