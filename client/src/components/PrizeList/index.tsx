@@ -86,7 +86,7 @@ const PrizeList = () => {
     }
 
     const handleExport = () => {
-        dispatch(openDialog(4))
+        dispatch(openDialog({ title: 'Export Prize List', type: 4, filter: [] }))
     }
 
     const handleOpenDialog = () => {
