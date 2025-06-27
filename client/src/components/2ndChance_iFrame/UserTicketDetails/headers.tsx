@@ -81,10 +81,10 @@ const headers: GridColDef[] = [
               icon={
                 <BouncingIcon
                   animate={{
-                    y: [0, -5, 0], // bounce up and down
+                    y: [1, -5, 0], // bounce up and down
                   }}
                   transition={{
-                    duration: 0.6,
+                    duration: 0.9,
                     repeat: Infinity,
                     repeatType: "loop",
                   }}

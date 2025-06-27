@@ -10,7 +10,7 @@ import axios from "axios";
 export const downloadData = createAsyncThunk(
   "exportData/downloadData",
   async (data: exportDataState, { dispatch, getState }) => {
-    const toastId = toast.loading("Wainting... Loading...");
+    const toastId = toast.loading("Waiting For Response");
     await delay(1000);
     try {
       const state = getState() as RootState;
