@@ -70,7 +70,7 @@ export const postTicketController = async (req, res) => {
       [["id", "ASC"]],
       [{ field: "VIN", filter: req.body.ticket_id, type: "string_eq" }]
     );
-    if (getTicket.list.length > 0) {
+    if (getTicket_.list.length > 0) {
       throw new Error("This ticket has already been entered into the raffle");
     }
     let _r = await axios.post(
