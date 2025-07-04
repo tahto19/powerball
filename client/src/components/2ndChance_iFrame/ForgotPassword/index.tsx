@@ -5,13 +5,14 @@ import Typography from '@mui/material/Typography';
 import { showToaster } from "@/redux/reducers/global/globalSlice";
 import { useAppDispatch } from "@/redux/hook";
 import apiService from "@/services/apiService";
+const base_url = import.meta.env.VITE_API_BASE_URL;
 
 const ForgotPassword = () => {
     const dispatch = useAppDispatch();
     const [emailError, setEmailError] = React.useState(false);
     const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
     const handleClose = () => {
-        window.parent.location.href = "https://18.138.76.86/member-area/";
+        window.parent.location.href = base_url + "member-area/";
     };
     const [loading, setLoading] = React.useState(false)
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

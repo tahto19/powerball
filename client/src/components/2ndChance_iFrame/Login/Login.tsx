@@ -14,7 +14,7 @@ import apiService from "@/services/apiService";
 import { showToaster } from "@/redux/reducers/global/globalSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { localDecrypt, localEncrypt } from "@/utils/util";
-
+const base_url = import.meta.env.VITE_API_BASE_URL;
 const Login = () => {
   const dispatch = useAppDispatch();
   // const navigate = useNavigate();
@@ -53,7 +53,7 @@ const Login = () => {
           );
         }
         window.parent.location.href =
-          "https://18.138.76.86/powerball-scratchit-second-chance/";
+          base_url + "powerball-scratchit-second-chance/";
       }
 
       dispatch(
@@ -129,12 +129,12 @@ const Login = () => {
     }
   };
   const handleSignUp = () => {
-    window.parent.location.href = "https://18.138.76.86/create-an-account/";
+    window.parent.location.href = base_url + "create-an-account/";
   };
   React.useEffect(() => {
     if (token) {
       window.parent.location.href =
-        "https://18.138.76.86/powerball-scratchit-second-chance/";
+        base_url + "powerball-scratchit-second-chance/";
     }
   }, [token]);
 
@@ -301,7 +301,7 @@ const Login = () => {
                                       href="#"
                                       onClick={() => {
                                         window.parent.location.href =
-                                          "https://18.138.76.86/member-area/forgot-password/";
+                                          base_url + "member-area/forgot-password/";
                                       }}
                                     >
                                       Lost your password?{" "}

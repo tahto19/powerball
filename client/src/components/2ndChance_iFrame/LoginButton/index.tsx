@@ -7,6 +7,7 @@ import "@/assets/css/style.css";
 // import "@/assets/js/hello-frontend.min.js";
 import { useEffect } from "react";
 import { useAppSelector } from "@/redux/hook";
+const base_url = import.meta.env.VITE_API_BASE_URL;
 
 const loginButton = () => {
     const { token } = useAppSelector((state) => state.token);
@@ -65,7 +66,7 @@ const loginButton = () => {
             </div> */}
 
                 {!token ? (
-                    <a id="iframe-login-button" className="elementor-button elementor-button-link elementor-size-sm elementor-animation-grow" href="https://18.138.76.86/member-area/" target="_top" rel="noopener noreferrer">
+                    <a id="iframe-login-button" className="elementor-button elementor-button-link elementor-size-sm elementor-animation-grow" href={base_url + "member-area/"} target="_top" rel="noopener noreferrer">
                         <span className="elementor-button-content-wrapper">
                             <span className="elementor-button-icon">
                                 <svg aria-hidden="true" className="e-font-icon-svg e-fas-angle-double-right" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34zm192-34l-136-136c-9.4-9.4-24.6-9.4-33.9 0l-22.6 22.6c-9.4 9.4-9.4 24.6 0 33.9l96.4 96.4-96.4 96.4c-9.4 9.4-9.4 24.6 0 33.9l22.6 22.6c9.4 9.4 24.6 9.4 33.9 0l136-136c9.4-9.2 9.4-24.4 0-33.8z"></path></svg>			</span>
@@ -73,7 +74,7 @@ const loginButton = () => {
                         </span>
                     </a>
                 ) : (
-                    <a id="iframe-dashboard-button" href="https://18.138.76.86/cms/2nd-chance/" target="_blank" className="elementor-item">Dashboard</a>
+                    <a id="iframe-dashboard-button" href={base_url + 'cms/2nd-chance/'} target="_blank" className="elementor-item">Dashboard</a>
                 )}
             </div>
         </>
