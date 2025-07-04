@@ -118,11 +118,15 @@ const start = async () => {
           return cb(new Error("Invalid origin"));
         }
 
-        const allowedHostnames = ["localhost", "18.138.76.86"];
+        const allowedHostnames = [
+          "localhost",
+          "18.138.76.86",
+          "https://scratchit.com.ph",
+        ];
         if (allowedHostnames.includes(hostname)) {
           return cb(null, true);
         } else {
-          return cb(new Error("Not allowed by CORS"));
+          return cb(new Error("You are not allowed here"));
         }
       },
       methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
