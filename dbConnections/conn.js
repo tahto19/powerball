@@ -17,7 +17,7 @@ const auth = async () => {
   try {
     await sequelize.authenticate();
     logger.info("Connection has been established successfully.");
-    loggerogger.info(`
+    logger.info(`
       DB Name : ${process.env.DB_NAME} 
       DB USER: ${process.env.DB_USER}
       DB PASS: ${process.env.DB_PASS}
