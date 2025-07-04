@@ -11,6 +11,7 @@ import Stack from "@mui/material/Stack";
 import { showToaster } from "@/redux/reducers/global/globalSlice";
 import { useAppDispatch } from "@/redux/hook";
 import { openNav } from '@/redux/reducers/navBarSlice';
+const base_url = import.meta.env.VITE_API_BASE_URL;
 
 
 const mainListItems = [
@@ -85,7 +86,7 @@ export default function MenuContent() {
       try {
         const res = await apiService.logout();
         if (res.data.result == "success") {
-          window.parent.location.href = "https://18.138.76.86/member-area/"
+          window.parent.location.href = base_url + "member-area/"
         }
         dispatch(
           showToaster({

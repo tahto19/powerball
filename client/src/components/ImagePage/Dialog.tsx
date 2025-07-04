@@ -22,7 +22,7 @@ const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: DialogProps) =>
 
     const [formData, setData] = useState<ImageState2>(initialImageData2);
     const [dialog_type, setDialogType] = useState("")
-
+    const [loading, setLoading] = useState(false)
     const handleSubmit = async (event: React.FocusEvent<HTMLFormElement>) => {
         event.preventDefault();
 
@@ -57,7 +57,7 @@ const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: DialogProps) =>
         fd.append("file", formData.file[0])
         fd.append("description", formData.description)
         fd.append("name", formData.name)
-
+        setLoading(true)
         if (dialogType === 'Edit') {
             res = await apiService.updateImage(formData, token);
             message = "Record updated successfully."
@@ -68,6 +68,7 @@ const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: DialogProps) =>
         }
 
         const d = bodyDecrypt(res.data, token)
+        setLoading(false)
 
         if (d && d.success === 'success') {
             dispatch(showToaster({
@@ -257,7 +258,7 @@ const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: DialogProps) =>
                     <DialogActions sx={{
                         display: dialogType === 'View' ? 'none' : 'static'
                     }}>
-                        <Button type="submit" variant="contained" sx={{ width: '100%' }}>Submit</Button>
+                        <Button disabled={loading} type="submit" variant="contained" sx={{ width: '100%' }}>Submit</Button>
                     </DialogActions>
                 </form>
             </Dialog>
