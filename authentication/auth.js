@@ -12,7 +12,7 @@ export const auth = async (req, res) => {
     let PTDNA = JSON.parse(fs.readFileSync(p, "utf8"));
     let findNoP = PTDNA.find((x) => {
       let regex = new RegExp(x.path.toString(), "i").test(req.url.toString());
-
+      console.log(x);
       if (regex && x.method.toLowerCase() === req.method.toLowerCase())
         return x;
     });
