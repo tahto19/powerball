@@ -17,6 +17,14 @@ const auth = async () => {
   try {
     await sequelize.authenticate();
     logger.info("Connection has been established successfully.");
+    loggerogger.info(`
+      DB Name : ${process.env.DB_NAME} 
+      DB USER: ${process.env.DB_USER}
+      DB PASS: ${process.env.DB_PASS}
+      HOST: ${process.env.DB_SERVER}
+      port: ${process.env.DB_PORT}
+      dialect: ${process.env.dialect}
+      `);
     return true;
   } catch (err) {
     logger.error(err);
