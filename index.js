@@ -121,7 +121,7 @@ const start = async () => {
         const allowedHostnames = [
           "localhost",
           "18.138.76.86",
-          "https://scratchit.com.ph",
+          "scratchit.com.ph",
         ];
         if (allowedHostnames.includes(hostname)) {
           return cb(null, true);
