@@ -32,7 +32,7 @@ export const addTicket = createAsyncThunk(
           icon: "success",
         })
       );
-      dispatch(getTicket());
+      // dispatch(getTicket());
     } catch (err) {
       dispatch(showToaster({ err, variant: "error", icon: "error" }));
     }

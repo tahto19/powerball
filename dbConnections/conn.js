@@ -23,7 +23,7 @@ const auth = async () => {
       DB PASS: ${process.env.DB_PASS}
       HOST: ${process.env.DB_SERVER}
       port: ${process.env.DB_PORT}
-      dialect: ${process.env.dialect}
+      dialect: ${process.env.DB_DIALECT}
       `);
     return true;
   } catch (err) {
