@@ -30,18 +30,19 @@ export const insertRaffleHistoryController = async (req, res) => {
     let getAlphaCode = getRaffleInfo.raffleDetails.alpha_code;
 
     if (!entries || entries === "") throw new Error("ErrorCode X921");
-    // first check if the entries are not more than the total entries available
-
-    let r = await td.getTotalEntries([
-      { field: "user_id", type: "number", filter: 1 },
-      { field: "active", type: "boolean", filter: true },
-      { field: "alpha_code", type: "array", filter: getAlphaCode },
-    ]);
     console.log(
       { field: "user_id", type: "number", filter: 1 },
       { field: "active", type: "boolean", filter: true },
       { field: "alpha_code", type: "array", filter: getAlphaCode }
     );
+    // first check if the entries are not more than the total entries available
+    console.log(getRaffleInfo.raffleDetails);
+    let r = await td.getTotalEntries([
+      { field: "user_id", type: "number", filter: 1 },
+      { field: "active", type: "boolean", filter: true },
+      { field: "alpha_code", type: "array", filter: getAlphaCode },
+    ]);
+
     if (!!!r || r.length === 0) throw new Error("ERRORCODE x268");
     if (r[0].error) throw new Error("ERRORCODE x268");
     let totalEntries = r[0].toJSON();
