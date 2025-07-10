@@ -117,7 +117,7 @@ export const postTicketController = async (req, res) => {
       } else {
         let alpha_code = _r.data.t.split("-")[0];
         let getDetailsOfAlphaCode = await alphaCodeClass.FetchOne([
-          { field: "name", filter, alpha_code, type: "string" },
+          { field: "name", filter: alpha_code, type: "string" },
         ]);
         if (!getDetailsOfAlphaCode) throw new Error("ErrorCode x351");
         let r = await tc.Insert({
