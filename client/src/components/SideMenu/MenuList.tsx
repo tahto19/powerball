@@ -19,7 +19,6 @@ import {
   SettingsRounded,
   WbAuto,
 } from "@mui/icons-material";
-import Aplhacode from "../2ndChance_iFrame/alphacode/Aplhacode";
 
 const mainListItems = [
   { text: "Home", icon: <HomeRounded />, path: "/dashboard" },

@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { useAppDispatch } from "@/redux/hook";
 import {
   postAlphaCode,
   putAlphaCode,
@@ -16,7 +16,7 @@ import {
   Grid2,
   TextField,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 interface MyDialogProps {
@@ -37,11 +37,10 @@ export default function Dialog_({
   const dispatch = useAppDispatch();
 
   const {
-    getValues,
     register,
     handleSubmit,
     setValue,
-    setError,
+
     clearErrors,
     reset,
     formState: { errors },
@@ -51,12 +50,14 @@ export default function Dialog_({
   const handleClose = () => {
     onClose(false);
     reset();
+    clearErrors();
   };
   const onSubmit: SubmitHandler<alphaCodeProps> = (data: alphaCodeProps) => {
     if (dialogType === "Edit") {
       dispatch(putAlphaCode(data));
     } else {
       dispatch(postAlphaCode(data));
+
       reset();
     }
   };
