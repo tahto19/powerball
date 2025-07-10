@@ -149,15 +149,20 @@ export const ticketHistoryInEntriesController = async (req, res) => {
     let filter = [];
 
     if (alpha_code) {
+      console.log(JSON.parse(alpha_code));
       filter = [
-        { field: "alpha_code", filter: alpha_code, type: "multiple-string" },
+        {
+          field: "alpha_code",
+          filter: JSON.parse(alpha_code),
+          type: "multiple-string",
+        },
       ];
     }
 
     if (req.url.includes("myEntries")) {
       filter.push({ field: "user_id", filter: req.user_id, type: "number" });
     }
-
+    console.log(filter);
     let r = await tc.getTotalEntries(filter);
 
     res.send(cSend(r));
