@@ -16,8 +16,10 @@ import {
   ListAlt,
   DisplaySettings,
   Group,
-  SettingsRounded
-} from '@mui/icons-material';
+  SettingsRounded,
+  WbAuto,
+} from "@mui/icons-material";
+import Aplhacode from "../2ndChance_iFrame/alphacode/Aplhacode";
 
 const mainListItems = [
   { text: "Home", icon: <HomeRounded />, path: "/dashboard" },
@@ -32,6 +34,7 @@ const mainListItems = [
   { text: "Prize List", icon: <ListAlt />, path: "/prize-list" },
   { text: "Raffle Draw", icon: <Attractions />, path: "/raffle-draw" },
   { text: "Ticket Scanned", icon: <QrCodeScanner />, path: "/scan" },
+  { text: "Alpha Code", icon: <WbAuto />, path: "/alphaCode" },
   // { text: "My Ticket Scan", icon: <QrCodeScanner />, path: "/myScan" },
 ];
 
