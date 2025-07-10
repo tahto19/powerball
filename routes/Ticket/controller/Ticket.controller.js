@@ -149,7 +149,9 @@ export const ticketHistoryInEntriesController = async (req, res) => {
     let filter = [];
 
     if (alpha_code) {
-      filter = [{ field: "alpha_code", filter: alpha_code, type: "string_eq" }];
+      filter = [
+        { field: "alpha_code", filter: alpha_code, type: "multiple-string" },
+      ];
     }
 
     if (req.url.includes("myEntries")) {
