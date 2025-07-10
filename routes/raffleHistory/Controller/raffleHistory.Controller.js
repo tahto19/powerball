@@ -8,13 +8,20 @@ export const insertRaffleHistoryController = async (req, res) => {
     const getRaffleInfo = await RaffleClass.getRaffleSchedule([
       { field: "id", filter: raffle_id, type: "number" },
     ]);
+    // first check if the raffle is already drawn
+    let getWinners = getRaffleInfo.prizeInfo;
+    getWinners.forEach((v) => {
+      if (!v.wining_draw_detail) {
+        throw new Error("ErrorCode x663");
+      }
+    });
     let getAlphaCode = getRaffleInfo.raffleDetails.alpha_code;
 
     if (!entries || entries === "") throw new Error("ErrorCode X921");
     // first check if the entries are not more than the total entries available
 
     let r = await td.getTotalEntries([
-      { field: "user_id", type: "number", filter: req.user_id },
+      { field: "user_id", type: "number", filter: 1 },
       { field: "active", type: "boolean", filter: true },
       { field: "alpha_code", type: "array", filter: getAlphaCode },
     ]);
@@ -28,35 +35,38 @@ export const insertRaffleHistoryController = async (req, res) => {
     if (totalEntriesRemaining < entries) throw new Error("ERRORCode x369");
     var getEntries = entries;
     const getUserTicketDetails = await td.FetchAll(null, [
-      { field: "user_id", type: "number", filter: req.user_id },
+      { field: "user_id", type: "number", filter: 1 },
       { field: "active", type: "boolean", filter: true },
       { field: "alpha_code", type: "array", filter: getAlphaCode },
     ]);
 
     for (let val of getUserTicketDetails.list) {
       let v = val.toJSON();
-      let getEntriesAvailable = v.entries - v.entries_used;
-      let entries_using =
-        getEntriesAvailable - getEntries <= 0
-          ? getEntriesAvailable
-          : getEntriesAvailable - getEntries;
-      //   let remainingEntries = getEntriesAvailable - getEntries;
-      getEntries = getEntries - entries_using;
-      //   break if the entries is 0
-      if (getEntries < 0) {
-        break;
-      }
-      v.active = entries_using + v.entries_used < getEntriesAvailable;
-      v.entries_used = entries_using + v.entries_used;
+      let remainingEntriesInOneTicket = v.entries - v.entries_used;
+      let getRemainingEntriesIfEntryIsAdded =
+        remainingEntriesInOneTicket - getEntries <= 0
+          ? 0
+          : remainingEntriesInOneTicket - getEntries;
+      let toAddInTicketHistory =
+        remainingEntriesInOneTicket - getRemainingEntriesIfEntryIsAdded;
 
-      //   console.log(v);
-      // insert first to the ticket history
-      for (let i = 0; i < entries_using; i++) {
+      for (let i = 0; i < toAddInTicketHistory; i++) {
         // inserting data per entry
         await th.Insert({ raffle_id, ticket_id: v.id });
+        let b = i + 1;
       }
-      //   update the ticket details
-      await td.Edit(v);
+
+      getEntries = getEntries - toAddInTicketHistory;
+
+      await td.Edit({
+        id: v.id,
+        active: getRemainingEntriesIfEntryIsAdded > 0,
+        entries_used: toAddInTicketHistory,
+      });
+      if (getEntries <= 0) {
+        break;
+      }
+      // getEntries = getEntries
     }
 
     res.send(getUserTicketDetails);

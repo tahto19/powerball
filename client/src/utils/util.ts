@@ -85,6 +85,10 @@ const getErrorsStatus = (code: string) => {
       return "A problem has been detected on your computer. Please contact your administrator for assistance. 923";
     case "x77":
       return "Already Exists";
+    case "x369":
+      return "entries is more than the total remaining entries";
+    case "x663":
+      return "This event is already drawn";
     case "x351":
       return "A problem has been detected on your computer. Please contact your administrator for assistance. ";
     default:
