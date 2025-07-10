@@ -162,7 +162,7 @@ export const ticketHistoryInEntriesController = async (req, res) => {
     if (req.url.includes("myEntries")) {
       filter.push({ field: "user_id", filter: req.user_id, type: "number" });
     }
-
+    console.log(filter);
     let r = await tc.getTotalEntries(filter);
 
     res.send(cSend(r));
