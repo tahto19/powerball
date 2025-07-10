@@ -31,14 +31,14 @@ export const insertRaffleHistoryController = async (req, res) => {
 
     if (!entries || entries === "") throw new Error("ErrorCode X921");
     console.log(
-      { field: "user_id", type: "number", filter: 1 },
+      { field: "user_id", type: "number", filter: req.user_id },
       { field: "active", type: "boolean", filter: true },
       { field: "alpha_code", type: "array", filter: getAlphaCode }
     );
     // first check if the entries are not more than the total entries available
     console.log(getRaffleInfo.raffleDetails);
     let r = await td.getTotalEntries([
-      { field: "user_id", type: "number", filter: 1 },
+      { field: "user_id", type: "number", filter: req.user_id },
       { field: "active", type: "boolean", filter: true },
       { field: "alpha_code", type: "array", filter: getAlphaCode },
     ]);
@@ -52,7 +52,7 @@ export const insertRaffleHistoryController = async (req, res) => {
     if (totalEntriesRemaining < entries) throw new Error("ERRORCode x369");
     var getEntries = entries;
     const getUserTicketDetails = await td.FetchAll(null, [
-      { field: "user_id", type: "number", filter: 1 },
+      { field: "user_id", type: "number", filter: req.user_id },
       { field: "active", type: "boolean", filter: true },
       { field: "alpha_code", type: "array", filter: getAlphaCode },
     ]);
