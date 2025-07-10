@@ -1,4 +1,4 @@
-import AlphaCode from "../../../models/alphaCode.js";
+import AlphaCode from "../../../models/AlphaCode.js";
 import { WhereFilters } from "../../../util/util.js";
 
 class alphaCode_class {

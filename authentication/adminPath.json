@@ -7,5 +7,6 @@
   { "path": "/user/", "method": "GET" },
   { "path": "/user/", "method": "GET" },
   { "path": "/user/", "method": "POST" },
-  { "path": "/export/", "method": "POST" }
+  { "path": "/export/", "method": "POST" },
+  { "path": "/alphacode/", "method": "POST" }
 ]
