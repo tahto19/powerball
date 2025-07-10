@@ -1,7 +1,7 @@
 import { RootState } from "@/redux/store";
 import apiService from "@/services/apiService";
 import { alphaCodeProps, getDataV2 } from "@/types/allTypes";
-import { delay, getMessage } from "@/utils/util";
+import { getMessage } from "@/utils/util";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import { alphaCodeListAdd } from "./alphacodeSlice";
@@ -41,7 +41,7 @@ export const postAlphaCode = createAsyncThunk(
     try {
       const state = getState() as RootState;
       const token = state.token.token;
-      await delay(1000);
+
       console.log(data);
       let r = await apiService.postAlphaCode(data, token);
       if (r.data.result === "error") throw new Error(r.data.message);
@@ -81,7 +81,7 @@ export const putAlphaCode = createAsyncThunk(
     try {
       const state = getState() as RootState;
       const token = state.token.token;
-      await delay(1000);
+
       console.log(data);
       let r = await apiService.putAlphaCode(data, token);
       if (r.data.result === "error") throw new Error(r.data.message);

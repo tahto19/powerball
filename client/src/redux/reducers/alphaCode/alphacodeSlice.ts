@@ -1,7 +1,6 @@
 import { getDataV2 } from "@/types/allTypes";
 import { createSlice } from "@reduxjs/toolkit";
 import { getAlphaCodeList, postAlphaCode } from "./asyncCalls";
-import { delay } from "@/utils/util";
 
 interface initialState_ {
   getData: getDataV2;
