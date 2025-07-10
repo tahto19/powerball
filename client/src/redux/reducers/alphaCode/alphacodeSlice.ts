@@ -50,6 +50,9 @@ const alphaCodeSlice = createSlice({
     d.addCase(getAlphaCodeList.pending, (state) => {
       state.mainLoading = true;
     });
+    d.addCase(getAlphaCodeList.fulfilled, (state) => {
+      state.mainLoading = false;
+    });
     d.addCase(postAlphaCode.pending, (state) => {
       state.mainLoading = true;
     });
