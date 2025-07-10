@@ -65,19 +65,17 @@ export const insertRaffleHistoryController = async (req, res) => {
 
       for (let i = 0; i < toAddInTicketHistory; i++) {
         // inserting data per entry
-        await th.Insert({ raffle_id, ticket_id: v.id });
-        console.log("addng");
+        // await th.Insert({ raffle_id, ticket_id: v.id });
+
         let b = i + 1;
       }
 
       getEntries = getEntries - toAddInTicketHistory;
-      console.log("update");
-      console.log(toAddInTicketHistory);
 
       await td.Edit({
         id: v.id,
         active: getRemainingEntriesIfEntryIsAdded > 0,
-        entries_used: toAddInTicketHistory,
+        entries_used: parseInt(v.entries_used) + parseInt(toAddInTicketHistory),
       });
       if (getEntries <= 0) {
         break;
