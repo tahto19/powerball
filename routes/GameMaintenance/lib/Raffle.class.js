@@ -8,7 +8,6 @@ import TicketDetails from "../../../models/TicketDetails.model.js";
 
 import { WhereFilters } from "../../../util/util.js";
 import { fn, col } from "sequelize";
-import WiningDrawDetails from "../../../models/WiningDrawDetails.model.js";
 
 /**
  * Filter structure:
@@ -317,16 +316,7 @@ class Raffle_class {
   //   return id;
   // }
   async getRaffleSchedule(filter = []) {
-    let query = {
-      include: [
-        { model: RaffleDetails, as: "raffleDetails" },
-        {
-          model: RafflePrize,
-          as: "prizeInfo",
-          include: { model: WiningDrawDetails },
-        },
-      ],
-    };
+    let query = { include: [{ model: RaffleDetails, as: "raffleDetails" }] };
     if (filter.length !== 0) query["where"] = WhereFilters(filter);
     let r = await RaffleSchedule.findOne(query);
 

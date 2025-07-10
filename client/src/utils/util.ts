@@ -89,6 +89,8 @@ const getErrorsStatus = (code: string) => {
       return "entries is more than the total remaining entries";
     case "x663":
       return "This event is already drawn";
+    case "x999":
+      return "Error Encountered!";
     case "x351":
       return "A problem has been detected on your computer. Please contact your administrator for assistance. ";
     default:

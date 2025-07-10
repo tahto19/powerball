@@ -1,4 +1,5 @@
 import RaffleClass from "../../GameMaintenance/lib/Raffle.class.js";
+import winnerClass from "../../winnerEntries/lib/WinnerEntries.class.js";
 import td from "../../Ticket/lib/Ticket.class.js";
 import th from "../lib/raffleHistory.class.js";
 export const insertRaffleHistoryController = async (req, res) => {
@@ -8,13 +9,24 @@ export const insertRaffleHistoryController = async (req, res) => {
     const getRaffleInfo = await RaffleClass.getRaffleSchedule([
       { field: "id", filter: raffle_id, type: "number" },
     ]);
+
     // first check if the raffle is already drawn
-    let getWinners = getRaffleInfo.prizeInfo;
-    getWinners.forEach((v) => {
-      if (!v.wining_draw_detail) {
-        throw new Error("ErrorCode x663");
-      }
+    if (getRaffleInfo.length === 0) throw new Error("ErrorCode x999");
+    let getWinners = await winnerClass.FetchWithInclude({
+      limit: 5,
+      sort: [],
+      where: {},
+      filter: [
+        {
+          field: "$ticket_history.raffle_id$",
+          filter: raffle_id,
+          type: "string",
+        },
+      ],
+      offset: 0,
     });
+    if (getWinners.count > 0) throw new Error("ErrorCode x663");
+
     let getAlphaCode = getRaffleInfo.raffleDetails.alpha_code;
 
     if (!entries || entries === "") throw new Error("ErrorCode X921");
@@ -25,7 +37,11 @@ export const insertRaffleHistoryController = async (req, res) => {
       { field: "active", type: "boolean", filter: true },
       { field: "alpha_code", type: "array", filter: getAlphaCode },
     ]);
-
+    console.log(
+      { field: "user_id", type: "number", filter: 1 },
+      { field: "active", type: "boolean", filter: true },
+      { field: "alpha_code", type: "array", filter: getAlphaCode }
+    );
     if (!!!r || r.length === 0) throw new Error("ERRORCODE x268");
     if (r[0].error) throw new Error("ERRORCODE x268");
     let totalEntries = r[0].toJSON();
