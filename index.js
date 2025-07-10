@@ -212,7 +212,7 @@ const start = async () => {
       prefix: process.env.ROUTES_PREFIX + "game-maintenance",
     });
     fastify.register(Ticket, { prefix: process.env.ROUTES_PREFIX + "ticket" });
-    fastify.register(OTPRoute, { prefix: process.env.ROUTES_PREFIX + "otps" });
+    fastify.register(OTPRoute, { prefix: process.env.ROUTES_PREFIX + "otp" });
     fastify.register(raffleHistory, {
       prefix: process.env.ROUTES_PREFIX + "raffleHistory",
     });
