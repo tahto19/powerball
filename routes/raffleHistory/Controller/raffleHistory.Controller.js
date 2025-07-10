@@ -66,10 +66,13 @@ export const insertRaffleHistoryController = async (req, res) => {
       for (let i = 0; i < toAddInTicketHistory; i++) {
         // inserting data per entry
         await th.Insert({ raffle_id, ticket_id: v.id });
+        console.log("addng");
         let b = i + 1;
       }
 
       getEntries = getEntries - toAddInTicketHistory;
+      console.log("update");
+      console.log(toAddInTicketHistory);
 
       await td.Edit({
         id: v.id,
