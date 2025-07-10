@@ -149,8 +149,13 @@ export const ticketHistoryInEntriesController = async (req, res) => {
     let filter = [];
 
     if (alpha_code) {
+      console.log(JSON.parse(alpha_code));
       filter = [
-        { field: "alpha_code", filter: alpha_code, type: "multiple-string" },
+        {
+          field: "alpha_code",
+          filter: JSON.parse(alpha_code),
+          type: "multiple-string",
+        },
       ];
     }
 
