@@ -48,7 +48,7 @@ const alphaCodeSlice = createSlice({
   },
   extraReducers: (d) => {
     d.addCase(getAlphaCodeList.pending, (state) => {
-      console.log("here");
+      state.mainLoading = true;
     });
     d.addCase(postAlphaCode.pending, (state) => {
       state.mainLoading = true;
