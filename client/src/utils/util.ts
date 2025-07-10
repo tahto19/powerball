@@ -81,9 +81,12 @@ const getErrorsStatus = (code: string) => {
       return "This is Invalid URL";
     case "x921":
       return "No Entries Inserted";
-    case " x923":
+    case "x923":
       return "A problem has been detected on your computer. Please contact your administrator for assistance. 923";
-
+    case "x77":
+      return "Already Exists";
+    case "x351":
+      return "A problem has been detected on your computer. Please contact your administrator for assistance. ";
     default:
       return false;
   }

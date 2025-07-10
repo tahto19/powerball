@@ -50,6 +50,7 @@ import { MyEntries } from "./components/2ndChance_iFrame/UserTicketDetails/MyEnt
 import WinnerDetails from "./components/2ndChance_iFrame/winner/WinnerDetails";
 import TicketScannedList from "./components/ticketScanner/TicketScannedList";
 import { ExportDialog } from "./Global/ExportDialog/ExportDialog";
+import Aplhacode from "./components/2ndChance_iFrame/alphacode/Aplhacode";
 
 const routes = [
   { path: "/dashboard", component: <Dashboard />, title: "Dashboard" },
@@ -92,6 +93,11 @@ const routes = [
     path: "/customer",
     component: <Costumer />,
     title: "Customer",
+  },
+  {
+    path: "/alphacode",
+    component: <Aplhacode />,
+    title: "Alpha Code",
   },
 ];
 

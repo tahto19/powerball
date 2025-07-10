@@ -19,6 +19,7 @@ const Toaster_ = () => {
         autoClose={5000}
         closeOnClick={true}
         transition={Flip}
+        theme="colored"
       />
     </>
   );

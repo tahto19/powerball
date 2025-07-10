@@ -26,6 +26,7 @@ import {
   exportDataState,
 } from "@/types/allTypes";
 import { enterEntries } from "@/components/2ndChance_iFrame/Raffles/interface";
+import { data } from "react-router-dom";
 
 interface Credentials {
   email: string;
@@ -397,6 +398,31 @@ export const apiService = {
       data: bodyEncrypt(JSON.stringify(data), token),
     });
 
+    return bodyDecrypt(response.data, token);
+  },
+  // alpha code
+  getAlphaCode: async (data, token) => {
+    const response = await apiClient.post("api/alphacode/", {
+      data: bodyEncrypt(JSON.stringify(data), token),
+    });
+    return bodyDecrypt(response.data, token);
+  },
+  postAlphaCode: async (data, token) => {
+    const response = await apiClient.post("api/alphacode/insert", {
+      data: bodyEncrypt(JSON.stringify(data), token),
+    });
+    return bodyDecrypt(response.data, token);
+  },
+  putAlphaCode: async (data, token) => {
+    const response = await apiClient.put("api/alphacode/update", {
+      data: bodyEncrypt(JSON.stringify(data), token),
+    });
+    return bodyDecrypt(response.data, token);
+  },
+  getAllAlphaCode: async (data, token) => {
+    const response = await apiClient.get("api/alphacode/", {
+      data: bodyEncrypt(JSON.stringify(data), token),
+    });
     return bodyDecrypt(response.data, token);
   },
 };

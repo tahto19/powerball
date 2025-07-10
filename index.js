@@ -28,6 +28,7 @@ import LogoutRoute from "./routes/Logout/Logout.route.js";
 import TestingRoutes from "./routes/TestingRoutes/Test.route.js";
 import PasswordResets from "./routes/PasswordResets/PasswordResets.route.js";
 import { exportRoute } from "./routes/exports/Export.js";
+import alphaCode from "./routes/AlphaCode/routes.js";
 
 const fastify = Fastify({
   trustProxy: true,
@@ -58,6 +59,7 @@ const fastify = Fastify({
  * x557 = no email found
  * x58 = code is invalid
  * x71 = Raffle ID already exists
+ * x77 = already exists
  * x72 = Image does not exists
  * x73 = End date must be set in the future. Please choose a valid end date.
  * x74 = Draw date must be after end date.
@@ -235,6 +237,9 @@ const start = async () => {
     fastify.register(exportRoute, {
       prefix: process.env.ROUTES_PREFIX + "export",
     });
+    fastify.register(alphaCode, {
+      prefix: process.env.ROUTES_PREFIX + "alphacode",
+    });
     /**
      *error handler
      */
@@ -243,7 +248,7 @@ const start = async () => {
       if (err.code === undefined) {
         res.status(400).send({ result: "error", message: err.message });
       } else {
-        // logger.error(err);
+        logger.error(err);
         if (err.code === "FST_ERR_VALIDATION") {
           res
             .status(err.statusCode)

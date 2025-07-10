@@ -39,7 +39,11 @@ export type DataProps = {
   status: string;
   password: string | null;
 };
-
+export type alphaCodeProps = {
+  name: string | null;
+  entries: number | null;
+  id: number | null | undefined;
+};
 export const postAdminType = {
   data: adminType,
   dialogType: string | null | undefined,

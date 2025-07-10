@@ -11,6 +11,8 @@ import auditTrailSlice from "./reducers/auditTrail/auditTrailSlice";
 import winnerSlice from "./reducers/winner/winnerSlice";
 import RaffleDrawSlice from "./reducers/RaffleDraw/RaffleDrawSlice";
 import exportDataSlice from "./reducers/download/exportDataSlice";
+import alphaCodeSlice from "./reducers/alphaCode/alphacodeSlice";
+
 export const store = configureStore({
   reducer: {
     user: userReducer,
@@ -25,6 +27,7 @@ export const store = configureStore({
     winner: winnerSlice,
     raffleDraw: RaffleDrawSlice,
     exportData: exportDataSlice,
+    alphaCode: alphaCodeSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

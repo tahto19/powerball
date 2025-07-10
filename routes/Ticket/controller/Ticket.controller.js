@@ -5,6 +5,7 @@ import tc from "../lib/Ticket.class.js";
 import td from "../../raffleHistory/lib/raffleHistory.class.js";
 import wc from "../../winnerEntries/lib/WinnerEntries.class.js";
 import axios from "axios";
+import alphaCodeClass from "../../AlphaCode/lib/alphaCode.class.js";
 export const raffleDrawController = async (req, res) => {
   try {
     const { raffle_id, prize_id } = req.body;
@@ -114,12 +115,17 @@ export const postTicketController = async (req, res) => {
       if (getTicket.list.length > 0) {
         throw new Error("This ticket has already been entered into the raffle");
       } else {
+        let alpha_code = _r.data.t.split("-")[0];
+        let getDetailsOfAlphaCode = await alphaCodeClass.FetchOne([
+          { field: "name", filter, alpha_code, type: "string" },
+        ]);
+        if (!getDetailsOfAlphaCode) throw new Error("ErrorCode x351");
         let r = await tc.Insert({
           ticket_info: _r.data,
           VIN: req.body.ticket_id,
-          entries: !_r.data.a ? 2 : _r.data.a,
+          entries: getDetailsOfAlphaCode.entries,
           user_id: req.user_id,
-          alpha_code: _r.data.t.split("-")[0],
+          alpha_code: alpha_code,
           ticket_code: _r.data.t,
         });
         res.send({
