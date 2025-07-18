@@ -1,4 +1,5 @@
 import {
+  detailedTicketDetailsHistorySchema,
   fetchTicketSchema,
   postTicketSchema,
   raffleDrawSchema,
@@ -12,6 +13,8 @@ const Ticket = (app, opts, done) => {
   app.post("/", postTicketSchema);
   app.get("/entries", ticketHistoryInEntriesSchema);
   app.get("/myEntries", ticketHistoryInEntriesSchema);
+  app.post("/myTicketDetails", detailedTicketDetailsHistorySchema);
+  app.post("/allTicketDetails", detailedTicketDetailsHistorySchema);
   done();
 };
 export default Ticket;

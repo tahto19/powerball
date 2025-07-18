@@ -1,4 +1,5 @@
 import {
+  detailedTicketDetailsHistoryController,
   fetchTicketController,
   postTicketController,
   raffleDrawController,
@@ -47,4 +48,20 @@ export const postTicketSchema = {
 };
 export const ticketHistoryInEntriesSchema = {
   handler: ticketHistoryInEntriesController,
+};
+export const detailedTicketDetailsHistorySchema = {
+  handler: detailedTicketDetailsHistoryController,
+  schema: {
+    body: {
+      type: "object",
+      properties: {
+        sort: { type: "array" },
+        offset: { type: "number" },
+        filter: { type: "array" },
+        limit: { type: "number" },
+        id: { type: "number" },
+      },
+      required: ["sort", "offset"],
+    },
+  },
 };

@@ -322,5 +322,11 @@ class Raffle_class {
 
     return !r ? [] : r.toJSON();
   }
+  async fetchAllOnlyCostumeFilter(where = {}) {
+    let query = { where, attributes: ["name"] };
+
+    let list = await RaffleDetails.findAll(query);
+    return list;
+  }
 }
 export default new Raffle_class();

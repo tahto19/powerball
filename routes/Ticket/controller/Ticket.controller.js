@@ -6,6 +6,13 @@ import td from "../../raffleHistory/lib/raffleHistory.class.js";
 import wc from "../../winnerEntries/lib/WinnerEntries.class.js";
 import axios from "axios";
 import alphaCodeClass from "../../AlphaCode/lib/alphaCode.class.js";
+import TicketHistory from "../../../models/TicketHistory.model.js";
+import Users from "../../../models/Users.model.js";
+import WiningDrawDetails from "../../../models/WiningDrawDetails.model.js";
+import RaffleSchedule from "../../../models/RaffleSchedule.model.js";
+import RaffleDetails from "../../../models/RaffleDetails.model.js";
+import rc from "../../GameMaintenance/lib/Raffle.class.js";
+import { Op } from "sequelize";
 export const raffleDrawController = async (req, res) => {
   try {
     const { raffle_id, prize_id } = req.body;
@@ -168,5 +175,79 @@ export const ticketHistoryInEntriesController = async (req, res) => {
     res.send(cSend(r));
   } catch (err) {
     throw err;
+  }
+};
+export const detailedTicketDetailsHistoryController = async (req, res) => {
+  try {
+    const { id, limit, sort, offset, filter, location } = req.body;
+
+    var addFilter;
+    console.log(req.url);
+    if (id) {
+      addFilter = { field: "id", filter: id, type: "number" };
+      filter.push(addFilter);
+    }
+    if (req.url.includes("myTicketDetails")) {
+      filter.push({ field: "user_id", filter: 1, type: "number" });
+    }
+
+    const get = await tc.Fetch(offset, limit, sort, filter, [
+      {
+        model: TicketHistory,
+        attributes: ["ticket_history_generate", "createdAt"],
+        required: false,
+        include: [
+          { model: WiningDrawDetails },
+          {
+            model: RaffleSchedule,
+            attributes: ["status_text", "schedule_date", "status"],
+            include: {
+              model: RaffleDetails,
+              attributes: [
+                "name",
+                "active",
+                "draw_date",
+                "starting_date",
+                "end_date",
+              ],
+
+              as: "raffleDetails",
+            },
+          },
+        ],
+      },
+      { model: Users, required: false },
+    ]);
+    let toReturn = [];
+    for (let v of get.list) {
+      let temp = {
+        alphaCode: v.alpha_code,
+        availableEntries: v.entries - v.entries_used,
+        totalEntries: v.entries,
+        entries_used: v.entries_used,
+        ticket_history: v.ticket_histories.map((vv) => {
+          return {
+            ticket_code: vv.ticket_history_generate,
+            joined: vv.createdAt,
+            // raffleDrawed:vv.Raff
+            win: !!vv.wining_draw_detail,
+            schedule_date: vv.Raffle_Schedule.schedule_date,
+            draw_date: vv.Raffle_Schedule.raffleDetails.draw_date,
+            end_date: vv.Raffle_Schedule.raffleDetails.end_date,
+            raffleName: vv.Raffle_Schedule.raffleDetails.name,
+            active: vv.Raffle_Schedule.status_text,
+          };
+        }),
+        // ticket_history: v.ticket_histories,
+      };
+
+      let raffles = await rc.fetchAllOnlyCostumeFilter({
+        alpha_code: { [Op.like]: `%${v.alpha_code}%` },
+      });
+      toReturn.push({ ...temp, raffles });
+    }
+    res.send(toReturn);
+  } catch (err) {
+    console.log(err);
   }
 };

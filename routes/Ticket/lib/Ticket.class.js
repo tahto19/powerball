@@ -4,22 +4,30 @@ import { WhereFilters } from "../../../util/util.js";
 
 class TicketDetails_class {
   constructor() {}
-  async Fetch(offset = 0, limit = 10, sort = [["id", "DESC"]], filter = []) {
+  async Fetch(
+    offset = 0,
+    limit = 10,
+    sort = [["id", "DESC"]],
+    filter = [],
+    include = []
+  ) {
     const sort_ = sort.length === 0 ? [["id", "DESC"]] : sort;
     let query = {
       limit: parseInt(limit),
       offset: parseInt(offset) * parseInt(limit),
       order: sort_,
+      include,
     };
 
     if (filter.length !== 0) query["where"] = WhereFilters(filter);
 
     // ✅ Fetch both filtered list and total count
-    let r = await TicketDetails.findAndCountAll();
+    // let r = await TicketDetails.findAll(query);
     let { count, rows } = await TicketDetails.findAndCountAll(query);
 
     // let list = await TicketDetails.findAll(query);
-    return { list: rows, count };
+    return { list: rows.map((v) => v.toJSON()), count };
+    // return r;
   }
   async FetchAll(sort = [["id", "ASC"]], filter = []) {
     let query = {
