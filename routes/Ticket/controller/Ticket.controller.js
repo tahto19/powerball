@@ -188,7 +188,7 @@ export const detailedTicketDetailsHistoryController = async (req, res) => {
       filter.push(addFilter);
     }
     if (req.url.includes("myTicketDetails")) {
-      filter.push({ field: "user_id", filter: 1, type: "number" });
+      filter.push({ field: "user_id", filter: req.user_id, type: "number" });
     }
 
     const get = await tc.Fetch(offset, limit, sort, filter, [
