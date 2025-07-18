@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { raffle } from "@/types/allTypes";
+// import { raffle } from "@/types/allTypes";
 import { createSlice } from "@reduxjs/toolkit";
 import { getRaffleList } from "./asyncCalls";
 
@@ -27,3 +27,6 @@ const raffleSlice = createSlice({
     });
   },
 });
+
+export const { raffleListAdd } = raffleSlice.actions;
+export default raffleSlice.reducer;

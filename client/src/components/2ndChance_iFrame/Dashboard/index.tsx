@@ -18,7 +18,7 @@ import { MyEntries } from "../UserTicketDetails/MyEntries";
 import TicketScannedList from "@/components/ticketScanner/TicketScannedList";
 import WinnerDetails from "@/components/2ndChance_iFrame/winner/WinnerDetails";
 import { useAppSelector } from "@/redux/hook";
-
+import EntriesDialog from "./EntriesDialog";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import logo from '@/assets/image/logo.png'
@@ -56,13 +56,12 @@ const Dashboard = () => {
   // );
 
   const userDetails = useAppSelector((state: RootState) => state.user);
-
+  console.log(userDetails)
   const navigate = useNavigate();
   const handleNavigation = () => {
     navigate("/scanner");
   };
   const theme = useTheme();
-
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [availableTicket, setavailableTicket] = useState(0);
@@ -86,6 +85,14 @@ const Dashboard = () => {
       setavailableTicket(0); // or handle negative case
     }
   }, [userDetails]);
+
+  const [open, setOpen] = useState(false);
+  const handleClose = (val) => {
+    setOpen(val)
+  }
+  const handleOpen = (val) => {
+    setOpen(true)
+  }
 
   return (
     <>
@@ -166,7 +173,12 @@ const Dashboard = () => {
               borderRadius: "40px",
               background: "#F26A21",
               color: "#fff",
+              cursor: "pointer",
+              "&:hover": {
+                opacity: "0.9",
+              },
             }}
+            onClick={handleOpen}
           >
             Available Raffle Ticket: {availableTicket}
           </Box>
@@ -213,7 +225,7 @@ const Dashboard = () => {
           gap: "24px",
           // flex: '1 0 0',
           // alignSelf: 'stretch',
-          padding: "0 15px",
+          padding: isSmallScreen ? "0" : "0 15px",
           marginTop: "24px",
         }}
       >
@@ -221,6 +233,7 @@ const Dashboard = () => {
         <TicketScannedList url="myScan" />
         <WinnerDetails />
       </Box>
+      <EntriesDialog open={open} onClose={handleClose} />
     </>
   );
 };

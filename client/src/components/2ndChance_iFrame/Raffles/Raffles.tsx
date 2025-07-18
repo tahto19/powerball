@@ -26,7 +26,7 @@ import { getRaffleEntry } from "@/redux/reducers/raffleEntry/asyncCalls";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import IconButton from "@mui/material/IconButton";
 import endedImage from "@/assets/image/ended.png";
-
+import { raffleListAdd } from "@/redux/reducers/raffle/raffleSlice"
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const endpoint = base_url + "api/file/serve/image/";
 
@@ -78,6 +78,7 @@ const Raffles = () => {
       });
       console.log(data)
       setRaffleList(data);
+      dispatch(raffleListAdd(data))
     }
     setIsFetching(false);
   };
