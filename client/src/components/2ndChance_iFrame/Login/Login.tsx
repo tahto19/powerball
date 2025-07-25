@@ -53,7 +53,7 @@ const Login = () => {
           );
         }
         window.parent.location.href =
-          base_url + "powerball-scratchit-second-chance/";
+          base_url + "secondchance/";
       }
 
       dispatch(
@@ -134,7 +134,7 @@ const Login = () => {
   React.useEffect(() => {
     if (token) {
       window.parent.location.href =
-        base_url + "powerball-scratchit-second-chance/";
+        base_url + "secondchance/";
     }
   }, [token]);
 
