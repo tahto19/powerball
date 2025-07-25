@@ -126,7 +126,10 @@ export const postTicketController = async (req, res) => {
         let getDetailsOfAlphaCode = await alphaCodeClass.FetchOne([
           { field: "name", filter: alpha_code, type: "string" },
         ]);
-        if (!getDetailsOfAlphaCode) throw new Error("ErrorCode x351");
+        if (!getDetailsOfAlphaCode) {
+          console.log(alpha_code, "no aplha code found");
+          throw new Error("ErrorCode x351");
+        }
         let r = await tc.Insert({
           ticket_info: _r.data,
           VIN: req.body.ticket_id,
