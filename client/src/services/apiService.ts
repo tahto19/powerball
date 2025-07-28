@@ -431,6 +431,11 @@ export const apiService = {
     });
     return bodyDecrypt(response.data, token);
   },
+
+  postInquiry: async (data) => {
+    const response = await apiClient.post("api/inquiry", data);
+    return response.data;
+  },
 };
 
 export default apiService;
