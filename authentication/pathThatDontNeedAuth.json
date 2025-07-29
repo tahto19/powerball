@@ -12,5 +12,6 @@
   { "path": "/password-reset", "method": "POST" },
   { "path": "/api/raffleHistory/insert", "method": "POST" },
   { "path": "/api/export/", "method": "POST" },
-  { "path": "/api/inquiry", "method": "POST" }
+  { "path": "/api/inquiry", "method": "POST" },
+  { "path": "/api/inquiry/", "method": "POST" }
 ]
