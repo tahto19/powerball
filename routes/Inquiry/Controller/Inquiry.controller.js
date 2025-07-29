@@ -13,10 +13,10 @@ export const InquiryController = async (req, res) => {
               <br /><br />
               Here are the details:
               <br /><br />
-              <strong>Name:</strong> ${name}<br />
-              <strong>Email:</strong> ${email}<br />
-              <strong>Phone:</strong> ${mobileNumber}<br />
-              <strong>Message:</strong> ${message}<br /><br />
+              <strong>Name:</strong> ${name.value}<br />
+              <strong>Email:</strong> ${email.value}<br />
+              <strong>Phone:</strong> ${mobileNumber.value}<br />
+              <strong>Message:</strong> ${message.value}<br /><br />
               Please respond to the customer as soon as possible.
               <br /><br />
               Thank you
