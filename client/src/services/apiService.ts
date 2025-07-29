@@ -433,7 +433,7 @@ export const apiService = {
   },
 
   postInquiry: async (data) => {
-    const response = await apiClient.post("api/inquiry", data);
+    const response = await apiClient.post("api/inquiry/send", data);
     return response.data;
   },
 };

@@ -1,6 +1,5 @@
 import { emailSender } from "../../../util/util.js";
 import "dotenv/config";
-import { cSend, decryptPassword, encrpytPassword } from "../../../util/util.js";
 
 export const InquiryController = async (req, res) => {
   try {
@@ -26,15 +25,13 @@ export const InquiryController = async (req, res) => {
     console.log({
       result: "success",
       message:
+        "Thank you! Your enquiry has been sreceived. We'll get back to you shortly.",
+    });
+    res.send({
+      result: "success",
+      message:
         "Thank you! Your enquiry has been received. We'll get back to you shortly.",
     });
-    res.send(
-      cSend({
-        result: "success",
-        message:
-          "Thank you! Your enquiry has been received. We'll get back to you shortly.",
-      })
-    );
   } catch (err) {
     console.log(err, "here");
     res.send({
@@ -42,13 +39,5 @@ export const InquiryController = async (req, res) => {
       message:
         "Something went wrong while sending your message. Please try again in a few moments.",
     });
-  }
-
-  try {
-    console.log(req.body);
-
-    // res.send({ result: "success", token: encryptToken });
-  } catch (err) {
-    throw err;
   }
 };
