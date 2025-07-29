@@ -439,10 +439,8 @@ export const apiService = {
     fd.append("name", data.name);
     fd.append("mobileNumber", data.mobileNumber);
     fd.append("message", data.message);
-    
-    const response = await apiClient.post("api/inquiry", fd, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+
+    const response = await apiClient.post("api/inquiry", fd);
     return response.data;
   },
 };
