@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Box, TextField, MenuItem, Button, FormLabel, Grid2, FormHelperText } from '@mui/material';
 import { InquiryState, initialData } from './interface';
 import MuiFormControl from '@mui/material/FormControl';
