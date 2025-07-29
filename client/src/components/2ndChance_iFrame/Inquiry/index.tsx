@@ -9,11 +9,15 @@ import { useMediaQuery, useTheme } from "@mui/material";
 import { toast } from "react-toastify";
 import { getMessage } from "@/utils/util";
 import apiService from "@/services/apiService";
+import { useAppDispatch } from "@/redux/hook";
+import { showToaster } from "@/redux/reducers/global/globalSlice";
 
 const FormControl = styled(MuiFormControl)(({ theme }) => ({
     width: "100%"
 }));
 const Inquiry = () => {
+    const dispatch = useAppDispatch();
+
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -32,10 +36,7 @@ const Inquiry = () => {
     const handleSubmit = async (e: React.FocusEvent<HTMLFormElement>) => {
         e.preventDefault();
         setSubmitting(true);
-        let tId = toast("Sending", {
-            isLoading: true,
-            hideProgressBar: false,
-        });
+
         try {
             let res;
 
@@ -43,38 +44,35 @@ const Inquiry = () => {
 
             const d = res
 
+            setSubmitting(false);
             if (d && d.result === 'success') {
-                toast.update(tId, {
-                    type: "success",
-                    render: d.message,
-                    isLoading: false,
-                    hideProgressBar: true,
-                });
-                // dispatch(showToaster({
-                //     message: message,
-                //     show: true,
-                //     variant: "success",
-                //     icon: null,
-                // }))
+                dispatch(showToaster({
+                    message: d.message,
+                    show: true,
+                    variant: "success",
+                    icon: null,
+                }))
                 setData(initialData);
             } else {
-                setSubmitting(false);
-                toast.update(tId, {
-                    type: "error",
-                    render: d.message,
-                    isLoading: false,
-                    hideProgressBar: true,
-                });
+                dispatch(
+                    showToaster({
+                        message: d.message,
+                        show: true,
+                        variant: "error",
+                        icon: null,
+                    })
+                );
             }
         } catch (err) {
             setSubmitting(false);
-            let message = getMessage(err);
-            toast.update(tId, {
-                type: "error",
-                render: message,
-                isLoading: false,
-                hideProgressBar: true,
-            });
+            dispatch(
+                showToaster({
+                    err,
+                    show: true,
+                    variant: "error",
+                    icon: null,
+                })
+            );
             return false;
         }
     }
@@ -190,7 +188,7 @@ const Inquiry = () => {
                             </FormControl>
                         </Grid2>
                         <Grid2 size={{ xs: 12, sm: 12, lg: 12 }}>
-                            <Button size="large" sx={{ width: '100%', backgroundColor: '#37368e' }} variant="contained" type="submit" disabled={submitting}>Send</Button>
+                            <Button size="large" sx={{ width: '100%', backgroundColor: '#37368e' }} variant="contained" type="submit" disabled={submitting}>{submitting ? 'Sending' : 'Send'}</Button>
                         </Grid2>
                     </Grid2>
                 </form>
