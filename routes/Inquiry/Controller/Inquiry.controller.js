@@ -44,20 +44,3 @@ export const InquiryController = async (req, res) => {
     throw err;
   }
 };
-export const getMyDetailsController = async (req, res) => {
-  try {
-    let a = await cookieChecker(req);
-    delete a["password"];
-    res.send(cSend(a));
-  } catch (err) {
-    throw err;
-  }
-};
-export const checkSessionController = async (req, res) => {
-  try {
-    await cookieChecker(req);
-    res.send(req.cookies.cookie_pb_1271);
-  } catch (err) {
-    throw err;
-  }
-};
