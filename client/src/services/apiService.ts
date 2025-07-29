@@ -433,14 +433,7 @@ export const apiService = {
   },
 
   postInquiry: async (data) => {
-     let fd = new FormData();
-
-    fd.append("email", data.email);
-    fd.append("name", data.name);
-    fd.append("mobileNumber", data.mobileNumber);
-    fd.append("message", data.message);
-
-    const response = await apiClient.post("api/inquiry", fd);
+    const response = await apiClient.post("api/inquiry", data);
     return response.data;
   },
 };
