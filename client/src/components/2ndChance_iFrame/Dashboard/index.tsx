@@ -56,7 +56,6 @@ const Dashboard = () => {
   // );
 
   const userDetails = useAppSelector((state: RootState) => state.user);
-  console.log(userDetails)
   const navigate = useNavigate();
   const handleNavigation = () => {
     navigate("/scanner");

@@ -5,7 +5,7 @@ import { emailSender } from "../util/util.js";
 
 class PasswordResets extends Model {
   async emailPasswordResetLink() {
-    const url = "https://18.138.76.86/member-area/reset-password?token=";
+    const url = "https://scratchit.com.ph/member-area/reset-password?token=";
     try {
       console.log("here");
       await emailSender({

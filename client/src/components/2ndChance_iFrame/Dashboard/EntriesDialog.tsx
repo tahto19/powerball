@@ -82,7 +82,6 @@ const EntriesDialog = ({ open, onClose }: DialogProps) => {
         const res = await apiService.getTicketDetails(payload, token);
         let d = bodyDecrypt(res.data, token);
 
-        console.log(">>>>>>>>>", d)
         if (d) {
             let new_raffle: any = [];
 

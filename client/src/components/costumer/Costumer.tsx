@@ -34,7 +34,6 @@ const Costumer = () => {
     dispatch(getCostumer());
   }, []);
   useEffect(() => {
-    console.log(loading, list);
     setPagination((prev) => {
       return { page: offset, pageSize: limit };
     });
@@ -182,8 +181,8 @@ const Costumer = () => {
           onTableChange={handleTableChange}
           pageLength={count}
           isAction={false}
-          // onEditAction={handleEditAction}
-          // onViewAction={handleViewAction}
+        // onEditAction={handleEditAction}
+        // onViewAction={handleViewAction}
         />
       </Grid2>
       <MyDialog

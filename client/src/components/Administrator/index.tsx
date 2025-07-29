@@ -76,7 +76,6 @@ const Index = () => {
       sort: JSON.stringify(sort),
       filter: JSON.stringify(newFilterModel),
     };
-    console.log(query);
     // const res = await apiService.getPrizeList(query);
   };
   const handleEditAction = (row: DataProps) => {

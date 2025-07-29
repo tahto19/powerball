@@ -74,7 +74,6 @@ const PrizeList = () => {
         const res = await apiService.getPrizeList(query, token);
         const d = bodyDecrypt(res.data, token)
         if (d && d.success === 'success') {
-            console.log(d)
             setPrizeList(d.data.list)
             setListCount(d.data.total)
         }

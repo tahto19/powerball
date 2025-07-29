@@ -47,7 +47,6 @@ const renderImage = (id: number) => {
 const headers = [
     {
         field: 'id', headerName: ' ', maxWidth: 100, sortable: false, filterable: false, renderCell: (params: any) => {
-            console.log(params)
             return renderImage(params.id);
         },
     },
@@ -111,7 +110,6 @@ const ImagePage = () => {
         }
 
         const res = await apiService.getFile(query, token);
-        console.log(res)
         const d = bodyDecrypt(res.data, token)
         if (d && d.success === 'success') {
             setImageList(d.data.list)
@@ -121,7 +119,6 @@ const ImagePage = () => {
 
 
     const handleEditAction = (row: ImageState) => {
-        console.log("-------", row)
         setDialogType("Edit");
         setDataRow({ ...row })
         setOpen(true)

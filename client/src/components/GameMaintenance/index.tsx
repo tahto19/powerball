@@ -122,7 +122,6 @@ const GameMaintenace = () => {
 
         const d = bodyDecrypt(res.data, token)
         if (d && d.success === 'success') {
-            console.log(">>>>", d.data.list)
             setRaffleList(d.data.list)
             setListCount(d.data.total)
         }

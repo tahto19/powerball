@@ -42,10 +42,10 @@ const Inquiry = () => {
 
             const d = res
 
-            if (d && d.success === 'success') {
+            if (d && d.result === 'success') {
                 toast.update(tId, {
                     type: "success",
-                    render: "Inquiry send successfully",
+                    render: d.message,
                     isLoading: false,
                     hideProgressBar: true,
                 });
@@ -79,7 +79,7 @@ const Inquiry = () => {
     }
     return (
         <>
-            <Box sx={{ padding: '10px', fontFamily: 'inherit' }}>
+            <Box id="iframe-inquiry-form" sx={{ padding: '10px', fontFamily: 'inherit' }}>
                 <form onSubmit={handleSubmit}>
 
                     <Grid2

@@ -73,7 +73,6 @@ const ResetPassword = () => {
     React.useEffect(() => {
         const parentSearchParams = new URLSearchParams(window.parent.location.search);
         const tokenFromUrl = parentSearchParams.get("token");
-        console.log(token)
         setToken(tokenFromUrl);
     }, [searchParams])
     return (

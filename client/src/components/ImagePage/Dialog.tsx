@@ -88,8 +88,6 @@ const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: DialogProps) =>
                 icon: null,
             }))
         }
-
-        console.log(formData)
         // onClose(false);
     };
 

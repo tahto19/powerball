@@ -29,6 +29,7 @@ import TestingRoutes from "./routes/TestingRoutes/Test.route.js";
 import PasswordResets from "./routes/PasswordResets/PasswordResets.route.js";
 import { exportRoute } from "./routes/exports/Export.js";
 import alphaCode from "./routes/AlphaCode/routes.js";
+import Inquiry from "./routes/Inquiry/Inquiry.route.js";
 
 const fastify = Fastify({
   trustProxy: true,
@@ -240,6 +241,9 @@ const start = async () => {
     });
     fastify.register(alphaCode, {
       prefix: process.env.ROUTES_PREFIX + "alphacode",
+    });
+    fastify.register(Inquiry, {
+      prefix: process.env.ROUTES_PREFIX + "inquiry",
     });
     /**
      *error handler

@@ -29,6 +29,8 @@ import ImageDrawer from "@/components/ImageDrawer.tsx";
 import Participants from "./ParticipantsTable.tsx";
 import { openDialog } from "@/redux/reducers/download/exportDataSlice";
 
+import { getAlphaCodeList } from "@/redux/reducers/alphaCode/asyncCalls.ts";
+
 
 const renderType = (status: 'minor' | 'major' | 'grand') => {
     const colors: { [index: string]: '#4FC3F7' | '#FFA726' | '#AB47BC' } = {
@@ -69,16 +71,16 @@ const MenuProps = {
     },
 };
 
-const alphaCodes = [
-    'GB',
-    'RH',
-    'G20',
-    'G50',
-    'G00',
-    'IK',
-    'RR',
-    'MT'
-];
+// const alphaCodes = [
+//     'GB',
+//     'RH',
+//     'G20',
+//     'G50',
+//     'G00',
+//     'IK',
+//     'RR',
+//     'MT'
+// ];
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -110,7 +112,6 @@ function CustomTabPanel(props: TabPanelProps) {
 
 const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDialogProps) => {
     const dispatch = useAppDispatch();
-    console.log(data)
     // const [isOpen, setOpen] = useState(open);
     const [dialog_type, setDialogType] = useState("")
     const [formData, setData] = useState<RaffleState>(data);
@@ -118,6 +119,13 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
     const [prize_List, setPrizeList] = useState<PrizeListAll>(initialPrizeListData);
     const [selectedPrize, setSelectedPrize] = useState<PrizeState[]>([]);
     const [submitting, setSubmitting] = useState(false);
+
+    const [alphaCodes, setAlphaCodes] = useState([]);
+
+
+    const { getData, list, mainLoading, count } = useAppSelector(
+        (s) => s.alphaCode
+    );
 
     const handlePrizeSubmit = (list: number[]) => {
         const prizelist = JSON.parse(JSON.stringify(prize_List))
@@ -147,7 +155,6 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                 newPrizeList: selectedPrize.map(x => ({ id: Number(x.id), value: x.value }))
             }
 
-            console.log(payload)
             if (dialogType === 'Edit') {
                 res = await apiService.updateGM(payload, token);
                 message = "Record updated successfully."
@@ -205,11 +212,7 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
             }));
         } else {
             // Regular input change
-
-            console.log(event.target)
             const { name, value } = event.target;
-            console.log(name)
-            console.log(value)
 
             setData((prevData) => ({
                 ...prevData,
@@ -223,7 +226,6 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
     };
 
     useEffect(() => {
-        console.log(data)
         setData(data)
         setDialogType(dialogType)
         setPrizeList(prizeList)
@@ -266,6 +268,18 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
             }
         }))
     }
+
+    useEffect(() => {
+        if (token !== null) {
+            dispatch(getAlphaCodeList({ limit: 30, offset: 0, sort: [], filter: [] }));
+        }
+    }, [token]);
+    useEffect(() => {
+        if (list && list.length > 0) {
+            setAlphaCodes(list.map(x => x.name))
+        }
+    }, [list]);
+
     return (
         <>
             <Dialog
@@ -425,44 +439,63 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
                                     <Autocomplete
                                         multiple
                                         id="alpha_code"
-                                        options={alphaCodes}
+                                        options={['All', ...alphaCodes]} // Add 'All' option
                                         defaultValue={formData.alpha_code}
-                                        freeSolo
-                                        renderValue={(value: readonly string[], getItemProps) =>
-                                            value.map((option: string, index: number) => {
-                                                const { key, ...itemProps } = getItemProps({ index });
-                                                return (
-                                                    <Chip variant="outlined" label={option} key={key} {...itemProps} />
-                                                );
-                                            })
-                                        }
-                                        renderOption={(props, option, { selected }) => (
-                                            <li {...props}>
-                                                <Checkbox
-                                                    style={{ marginRight: 8 }}
-                                                    checked={selected}
-                                                />
-                                                <ListItemText primary={option} />
-                                            </li>
-                                        )}
-                                        onChange={(event, newValue) => {
-                                            setData((prevData) => ({
-                                                ...prevData,
-                                                alpha_code: newValue,
-                                            }));
+                                        // freeSolo
+                                        disableCloseOnSelect
+                                        getOptionLabel={(option) => option}
+                                        value={formData.alpha_code}
+                                        onChange={(event, newValue, reason) => {
+                                            const isAllSelected = newValue.includes('All');
+                                            const isCurrentlyAll = formData.alpha_code.length === alphaCodes.length;
+
+                                            if (isAllSelected) {
+                                                // Toggle behavior
+                                                setData((prevData) => ({
+                                                    ...prevData,
+                                                    alpha_code: isCurrentlyAll ? [] : alphaCodes,
+                                                }));
+                                            } else {
+                                                setData((prevData) => ({
+                                                    ...prevData,
+                                                    alpha_code: newValue.filter((val) => val !== 'All'),
+                                                }));
+                                            }
                                         }}
+                                        renderOption={(props, option, { selected }) => {
+                                            const isAllOption = option === 'All';
+                                            const isAllSelected = formData.alpha_code.length === alphaCodes.length;
+
+                                            return (
+                                                <li {...props}>
+                                                    <Checkbox
+                                                        style={{ marginRight: 8 }}
+                                                        checked={isAllOption ? isAllSelected : selected}
+                                                    />
+                                                    <ListItemText primary={option} />
+                                                </li>
+                                            );
+                                        }}
+                                        renderTags={(value: readonly string[], getTagProps) =>
+                                            value.map((option: string, index: number) => (
+                                                <Chip
+                                                    variant="outlined"
+                                                    label={option}
+                                                    {...getTagProps({ index })}
+                                                />
+                                            ))
+                                        }
                                         renderInput={(params) => (
                                             <TextField
                                                 {...params}
                                                 name="alpha_code"
-
-                                            // placeholder="i.e GB, G20, RH"
+                                            // placeholder="e.g. GB, G20, RH"
                                             />
                                         )}
                                         sx={{
                                             '& .MuiInputBase-root': {
-                                                height: 'auto'
-                                            }
+                                                height: 'auto',
+                                            },
                                         }}
                                     />
                                     {/* <Select

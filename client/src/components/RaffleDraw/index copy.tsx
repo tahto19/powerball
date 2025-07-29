@@ -42,7 +42,6 @@ const RaffleDraw = () => {
 
     const d = bodyDecrypt(res.data, token);
     if (d && d.success === "success") {
-      console.log(">>>>>>>>", d.data);
       setRaffleList(d.data.list);
     }
   };

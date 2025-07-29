@@ -42,7 +42,6 @@ const Participants = ({ raffle_schedule_id }: { raffle_schedule_id: number }) =>
                 return x;
             })
         }
-        console.log(raffle_schedule_id)
         const query: RafflePaginationState = {
             id: raffle_schedule_id, offset: page, limit: pageSize, sort: sort, filter: newFilterModel
         }
@@ -53,7 +52,6 @@ const Participants = ({ raffle_schedule_id }: { raffle_schedule_id: number }) =>
         if (d.list && d.list.length > 0) {
             d.list = d.list.map((x, i) => { x.id = i + 1; return x })
             setList(d.list)
-            console.log(d.list)
 
             setListCount(d.count)
         }
