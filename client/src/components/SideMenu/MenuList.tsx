@@ -18,6 +18,7 @@ import {
   Group,
   SettingsRounded,
   WbAuto,
+  EmojiEventsOutlined,
 } from "@mui/icons-material";
 
 const mainListItems = [
@@ -34,6 +35,7 @@ const mainListItems = [
   { text: "Raffle Draw", icon: <Attractions />, path: "/raffle-draw" },
   { text: "Ticket Scanned", icon: <QrCodeScanner />, path: "/scan" },
   { text: "Alpha Code", icon: <WbAuto />, path: "/alphaCode" },
+  { text: "Winners", icon: <EmojiEventsOutlined />, path: "/Winners" },
   // { text: "My Ticket Scan", icon: <QrCodeScanner />, path: "/myScan" },
 ];
 

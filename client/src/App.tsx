@@ -25,7 +25,6 @@ import RaffleDraw from "./components/RaffleDraw/index";
 import Login from "@/components/2ndChance_iFrame/Login/Login";
 import LoginButton from "@/components/2ndChance_iFrame/LoginButton";
 import WidgetImage from "@/components/2ndChance_iFrame/WidgetImage";
-import Inquiry from "@/components/2ndChance_iFrame/Inquiry";
 
 import Toaster_ from "./Global/toaster/Toaster_";
 import { getDeviceInfo } from "./utils/util";
@@ -55,6 +54,11 @@ import Aplhacode from "./components/2ndChance_iFrame/alphacode/Aplhacode";
 
 const routes = [
   { path: "/dashboard", component: <Dashboard />, title: "Dashboard" },
+  {
+    path: "/winners",
+    component: <WinnerDetails url="getDataAll" />,
+    title: "Winners",
+  },
   {
     path: "/administrator",
     component: <Administrator />,
@@ -260,10 +264,6 @@ function AppRoutes() {
       <Route
         path="/iframe/2nd-chance/login-button"
         element={<LoginButton />}
-      />
-      <Route
-        path="/iframe/2nd-chance/inquiry"
-        element={<Inquiry />}
       />
       <Route
         path="/iframe/2nd-chance/widget-image"
