@@ -76,14 +76,12 @@ const bodyChecker = async (req, res, payload) => {
         for await (const chunk of payload) {
           chunks.push(chunk);
         }
-        console.log(chunks);
 
         const rawBody = Buffer.concat(chunks).toString("utf8");
-        console.log(rawBody);
 
         parsed = rawBody === "" ? false : JSON.parse(rawBody);
       }
-      console.log(parsed);
+
       if (req.method === "POST" && !parsed && !formHeader)
         throw new Error("ErrorCODE X2");
       if (req.method === "PUT" && !parsed && !formHeader)
@@ -111,7 +109,7 @@ const bodyChecker = async (req, res, payload) => {
         const cookie = req.cookies.cookie_pb_1271;
 
         let a = decryptData(parsed.data, cookie);
-        console.log(a);
+
         if (!a) throw new Error("ErrorCODE X891");
         const byteLength = Buffer.byteLength(a, "utf8");
         req.headers["content-length"] = byteLength.toString();

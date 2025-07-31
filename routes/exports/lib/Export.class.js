@@ -1,14 +1,19 @@
-import { Op } from "sequelize";
+import { Op, Sequelize } from "sequelize";
 import Users from "../../../models/Users.model.js";
 import ExcelJS from "exceljs";
 import PrizeList from "../../../models/PrizeList.model.js";
 import TicketDetails from "../../../models/TicketDetails.model.js";
 import TicketHistory from "../../../models/TicketHistory.model.js";
-import { WhereFilters } from "../../../util/util.js";
+import {
+  decryptData,
+  decryptPassword,
+  WhereFilters,
+} from "../../../util/util.js";
 import RaffleSchedule from "../../../models/RaffleSchedule.model.js";
 import WiningDrawDetails from "../../../models/WiningDrawDetails.model.js";
 import RaffleDetails from "../../../models/RaffleDetails.model.js";
 import moment from "moment";
+import AlphaCode from "../../../models/AlphaCode.js";
 class Export_data_class {
   constructor() {}
   async getData(type, date_range, filter) {
@@ -31,6 +36,8 @@ class Export_data_class {
         return await this.myRaffle_data(date_range, filter);
       case 9:
         return await this.GameMaintenance_data(date_range, filter);
+      case 10:
+        return await this.alpha_code_data(date_range);
     }
   }
 
@@ -40,6 +47,15 @@ class Export_data_class {
       : {};
     let _r = await Users.findAll({
       where: where,
+      attributes: [
+        "fullname",
+        "firstname",
+        "lastname",
+        "emailAddress",
+        "mobileNumber",
+        "createdAt",
+        "birthdate",
+      ],
     });
     let r = _r.map((v) => v.toJSON());
     return await this.toExcel(r, "Users");
@@ -50,6 +66,15 @@ class Export_data_class {
       : { isAdmin: false };
     let _r = await Users.findAll({
       where: where,
+      attributes: [
+        "fullname",
+        "firstname",
+        "lastname",
+        "emailAddress",
+        "mobileNumber",
+        "createdAt",
+        "birthdate",
+      ],
     });
     let r = _r.map((v) => v.toJSON());
     return await this.toExcel(r, "Costumer");
@@ -80,8 +105,45 @@ class Export_data_class {
       : {};
     let _r = await TicketDetails.findAll({
       where: where,
+      include: [
+        { model: Users, attributes: [] },
+        { model: TicketHistory, attributes: [] },
+      ],
+      attributes: [
+        "entries",
+        "entries_used",
+        "ticket_code",
+        "VIN",
+        "alpha_code",
+        "active",
+        "createdAt",
+        [
+          Sequelize.fn(
+            "GROUP_CONCAT",
+            Sequelize.col("ticket_histories.ticket_history_generate")
+          ),
+          "ticket_histories_combined",
+        ],
+        [Sequelize.col("User.firstname"), "firstName"],
+        [Sequelize.col("User.lastname"), "lastName"],
+      ],
+      group: ["id"],
     });
-    let r = _r.map((v) => v.toJSON());
+    let r = _r.map((v) => {
+      let val = v.toJSON();
+      console.log(val);
+      console.log(decryptPassword(val.firstName), "here");
+
+      val["fullname"] =
+        decryptPassword(val.firstName) + " " + decryptPassword(val.lastName);
+      val["VIRN"] = val.VIN;
+
+      delete val["VIN"];
+      delete val["firstName"];
+      delete val["lastName"];
+
+      return val;
+    });
     return await this.toExcel(r, "Scanned Tickets");
   }
   async TicketHistory_data(date_range) {
@@ -101,7 +163,7 @@ class Export_data_class {
       filters["$ticket_histories.createdAt$"] = {
         [Op.between]: [dr[0], dr[1]],
       };
-    console.log(filters, "here");
+
     let _r = await RaffleSchedule.findAll({
       where: filters,
       include: [
@@ -158,8 +220,26 @@ class Export_data_class {
       : {};
     let _r = await RaffleDetails.findAll({
       where: where,
+      attributes: [
+        "starting_date",
+        "end_date",
+        "schedule_type",
+        "createdAt",
+        "updatedAt",
+        "deletedAt",
+      ],
     });
     let r = _r.map((v) => v.toJSON());
+    return await this.toExcel(r, "Game Maintenance List");
+  }
+  async alpha_code_data(date_range) {
+    let where = date_range
+      ? { createdAt: { [Op.between]: [date_range[0], date_range[1]] } }
+      : {};
+    let r_ = await AlphaCode.findAll({
+      attributes: ["name", "entries", "createdAt", "active"],
+    });
+    let r = r_.map((v) => v.toJSON());
     return await this.toExcel(r, "Game Maintenance List");
   }
   async toExcel(data, type) {
@@ -179,17 +259,27 @@ class Export_data_class {
     data.forEach((v) => {
       let temp = v;
       let changeValue = Object.keys(v).forEach((vv) => {
-        let val = v[vv] ? v[vv].toString() : "No Details";
+        let val =
+          v[vv] || v[vv] === 0 || v[vv] === false
+            ? v[vv].toString()
+            : "No Details";
 
         if (val.toUpperCase() === "TRUE") temp[vv] = "YES";
         else if (val.toUpperCase() === "FALSE") temp[vv] = "NO";
         else {
-          if (moment(val).isValid())
+          console.log(val);
+          if (
+            moment(
+              v[vv],
+              "ddd MMM DD YYYY HH:mm:ss [GMT]Z (zz)",
+              true
+            ).isValid()
+          )
             temp[vv] = moment(val).format("MMMM-DD-YYYY,hh:mm a");
           else temp[vv] = val;
         }
       });
-      console.log(temp);
+
       worksheet.addRow(temp);
     });
     const buffer = await workbook.xlsx.writeBuffer();

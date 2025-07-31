@@ -16,7 +16,7 @@ class alphaCode_class {
     };
 
     if (filter && filter.length !== 0) query["where"] = WhereFilters(filter);
-    console.log(query, "here");
+
     let list = await AlphaCode.findAndCountAll(query);
 
     return { list };
@@ -40,7 +40,7 @@ class alphaCode_class {
     return a;
   }
   async FetchAll() {
-    let a = await AlphaCode.find({});
+    let a = await AlphaCode.find({ where: { active: true } });
     return a;
   }
 }

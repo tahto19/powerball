@@ -42,6 +42,8 @@ export type DataProps = {
 export type alphaCodeProps = {
   name: string | null;
   entries: number | null;
+  type?: string | undefined;
+  active?: Boolean | null;
   id: number | null | undefined;
 };
 export const postAdminType = {
@@ -138,4 +140,10 @@ export interface exportDataState {
   show: boolean | undefined;
   title: String | undefined | null;
   filter: undefined | Array<any>;
+}
+export interface imageUpload {
+  description: string | null;
+  file: File[];
+  name: null | string;
+  id?: number;
 }

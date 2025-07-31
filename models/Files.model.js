@@ -49,6 +49,15 @@ Files.init(
       allowNull: false,
       defaultValue: 1, // 1 for active
     },
+    winnerId: {
+      type: DataTypes.INTEGER,
+      required: false,
+      default: null,
+      references: {
+        model: process.env.DB_PREFIX + "wining_draw_details",
+        key: "id",
+      },
+    },
   },
   {
     timestamps: true,

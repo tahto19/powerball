@@ -164,7 +164,6 @@ export const encryptData = (data, token) => {
   return encrypted;
 };
 export const decryptData = (data, token) => {
-  console.log(data);
   var decrypt = CryptoJS.AES.decrypt(data, token).toString(CryptoJS.enc.Utf8);
 
   return decrypt;

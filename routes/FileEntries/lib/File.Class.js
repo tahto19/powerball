@@ -17,11 +17,18 @@ class File_class {
     };
 
     if (filter.length !== 0) query["where"] = WhereFilters(filter);
-
+    console.log(query);
     // ✅ Fetch both filtered list and total count
     let { count, rows } = await Files.findAndCountAll(query);
 
-    return { list: rows, total: count };
+    return {
+      list: rows.map((v) => {
+        let val = v.toJSON();
+        console.log(val);
+        return val;
+      }),
+      total: count,
+    };
   }
 
   async FetchOne(filter) {

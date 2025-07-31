@@ -6,7 +6,10 @@ import tableHeaders from "./json/tableHeaders.tsx";
 import CustomizedDataGrid from "@/components/CustomizedDataGrid.tsx";
 import { useAppDispatch, useAppSelector } from "@/redux/hook.ts";
 import { getDataV2, paginationType } from "@/types/allTypes.js";
-import { getAlphaCodeList } from "@/redux/reducers/alphaCode/asyncCalls.ts";
+import {
+  getAlphaCodeList,
+  putAlphaCode,
+} from "@/redux/reducers/alphaCode/asyncCalls.ts";
 import Dialog_ from "./Dialog/Dialog_.tsx";
 
 function Aplhacode() {
@@ -83,11 +86,16 @@ function Aplhacode() {
   };
 
   const handleEditAction = (e) => {
-    console.log(e);
     setToEdit({ id: e.id, name: e.name, entries: e.entries });
     setOpen(true);
     setDialogType("Edit");
   };
+  const handleActive = (e) => {
+    let toSend = { ...e, ...{ active: !e.active, type: "active" } };
+    console.log(toSend);
+    dispatch(putAlphaCode(toSend));
+  };
+  const handleTableHeaders = tableHeaders(handleActive);
   return (
     <Grid2
       container
@@ -125,7 +133,7 @@ function Aplhacode() {
           }}
           variant="contained"
           onClick={() =>
-            dispatch(openDialog({ title: "Tickets List", type: 3 }))
+            dispatch(openDialog({ title: "Tickets List", type: 10 }))
           }
         >
           Export
@@ -136,7 +144,7 @@ function Aplhacode() {
           sx={{
             width: "100%",
           }}
-          headers={tableHeaders}
+          headers={handleTableHeaders}
           data={list}
           pagination={pagination}
           onTableChange={handleTableChange}

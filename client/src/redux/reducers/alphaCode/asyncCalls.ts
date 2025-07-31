@@ -1,7 +1,7 @@
 import { RootState } from "@/redux/store";
 import apiService from "@/services/apiService";
 import { alphaCodeProps, getDataV2 } from "@/types/allTypes";
-import { getMessage } from "@/utils/util";
+import { delay, getMessage } from "@/utils/util";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import { alphaCodeListAdd } from "./alphacodeSlice";
@@ -74,20 +74,27 @@ export const postAlphaCode = createAsyncThunk(
 export const putAlphaCode = createAsyncThunk(
   "aplhaCode/putAlphaCode",
   async (data: alphaCodeProps, { dispatch, getState }) => {
-    let tId = toast("Editing Alpha Code", {
+    let message = !data.type
+      ? "Editing"
+      : data.type === "active"
+      ? !data.active
+        ? "Deactivating"
+        : "Activating"
+      : "Editing";
+    let tId = toast(message + " Alpha Code", {
       isLoading: true,
       hideProgressBar: false,
     });
+    await delay(1000);
     try {
       const state = getState() as RootState;
       const token = state.token.token;
 
-      console.log(data);
       let r = await apiService.putAlphaCode(data, token);
       if (r.data.result === "error") throw new Error(r.data.message);
       toast.update(tId, {
         type: "success",
-        render: "successfully Edited",
+        render: message + " successfully",
         isLoading: false,
         hideProgressBar: true,
       });

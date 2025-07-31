@@ -69,7 +69,14 @@ export default function Associations() {
     targetKey: "id",
     constraints: false,
   });
-
+  Files.belongsTo(WiningDrawDetails, {
+    foreignKey: "winnerId",
+    sourceKey: "id",
+  });
+  WiningDrawDetails.hasOne(Files, {
+    foreignKey: "winnerId",
+    sourceKey: "id",
+  });
   RaffleDetails.belongsTo(Files, {
     foreignKey: "file_id",
     sourceKey: "id",

@@ -6,6 +6,7 @@ import { RootState } from "@/redux/store";
 import { getDataV2 } from "@/types/allTypes";
 import { addWinnerList } from "./winnerSlice";
 import { bodyDecrypt } from "@/utils/util";
+import _ from "lodash";
 
 export const getWinnerListAsync = createAsyncThunk(
   "winner/getWinnerList",
@@ -17,21 +18,38 @@ export const getWinnerListAsync = createAsyncThunk(
       const getFilter = data ? data : state.winner.winnerList;
 
       const _r = await apiService.getWinnerList(getFilter, token, url);
-      const _rData = bodyDecrypt(_r.data, token);
-      console.log(_rData);
+      const _rData = _.cloneDeep(bodyDecrypt(_r.data, token));
+      console.log(url);
       _rData["list"] = _rData.list.map((v) => {
-        return {
-          Name:
-            v.ticket_detail.User.fullname.substring(0, 1) +
-            " __ " +
-            v.ticket_detail.User.fullname.substring(3, 4),
-          id: v.id,
-          "$ticket_history.ticket_history_generate$":
-            v.ticket_history.ticket_history_generate,
-          "$Raffle_Prize.Raffle_Schedule.raffleDetails.name$":
-            v.Raffle_Prize.Raffle_Schedule.raffleDetails.name,
-          Status: "unclaimed",
-        };
+        if (url === "getDataAll")
+          return {
+            id: v.id,
+            "$ticket_detail.User.fullname$": v.ticket_detail.User.fullname,
+            "$ticket_detail.User.mobileNumber$":
+              v.ticket_detail.User.mobileNumber,
+            "$ticket_detail.User.emailAddress$":
+              v.ticket_detail.User.emailAddress,
+            "$ticket_history.ticket_history_generate$":
+              v.ticket_history.ticket_history_generate,
+            "$ticket_detail.ticket_code$": v.ticket_detail.ticket_code,
+            "$ticket_detail.VIN$": v.ticket_detail.VIN,
+            "$Raffle_Prize.amount$": v.Raffle_Prize.amount,
+            createdAt: v.createdAt,
+          };
+        else
+          return {
+            Name:
+              v.ticket_detail.User.fullname.substring(0, 1) +
+              " __ " +
+              v.ticket_detail.User.fullname.substring(3, 4),
+            id: v.id,
+            "$ticket_history.ticket_history_generate$":
+              v.ticket_history.ticket_history_generate,
+            "$Raffle_Prize.Raffle_Schedule.raffleDetails.name$":
+              v.Raffle_Prize.Raffle_Schedule.raffleDetails.name,
+            Status: "unclaimed",
+          };
+        // return v;
       });
       const toReturn = { ..._rData, ...getFilter, loading: false };
 

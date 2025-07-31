@@ -5,7 +5,7 @@ import uc from "../../User/lib/User.class.js";
 
 export const insertImageController = async (req, res) => {
   try {
-    const { description, file, name, category } = req.body;
+    const { description, file, name, category, winnerId } = req.body;
     if (!file.mimetype.startsWith("image/")) throw new Error("ErrorCODE x91c");
 
     let iUp = await uploadImage2(file);
@@ -14,6 +14,7 @@ export const insertImageController = async (req, res) => {
     if (!name || name.trim() === "") throw new Error("Image Name is not set");
 
     let query = {
+      winnerId,
       description: description,
       name: name,
       file_location: iUp.filename,
@@ -61,14 +62,16 @@ export const updateImageController = async (req, res) => {
     let r = await fc.UpdateImage(query);
     res.send(cSend(r));
   } catch (error) {
+    console.log(error);
     throw error;
   }
 };
 
 export const getController = async (req, res) => {
-  const { limit, offset, sort, filter } = req.body;
+  const { limit = 10, offset = 0, sort = [], filter } = req.body;
 
   const new_offset = limit * offset; // Calculate offset
+  console.log(req.body);
   const newSort = sort.length > 0 ? sort : [["id", "ASC"]];
   let a = await fc.Fetch(new_offset, limit, newSort, filter);
 

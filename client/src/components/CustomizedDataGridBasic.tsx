@@ -52,7 +52,7 @@ export default function CustomizedDataGridBasic<T>({
     /* pre-selected row IDs here */
   ]);
   const handleRowSelection = (array: []) => {
-    onRowSelection(array);
+    if (onRowSelection) onRowSelection(array);
     setSelectionModel(array);
   };
   useEffect(() => {
@@ -88,8 +88,8 @@ export default function CustomizedDataGridBasic<T>({
       loadin={loading}
       slotProps={{
         loadingOverlay: {
-          variant: 'skeleton',
-          noRowsVariant: 'skeleton',
+          variant: "skeleton",
+          noRowsVariant: "skeleton",
         },
         filterPanel: {
           filterFormProps: {

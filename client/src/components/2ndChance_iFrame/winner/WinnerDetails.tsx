@@ -3,15 +3,21 @@
 import CustomizedDataGridBasic from "@/components/CustomizedDataGridBasic";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { getWinnerListAsync } from "@/redux/reducers/winner/asyncSlice";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
 import WinnerDetailsHeaders from "./WinnerDetailsHeaders";
+import adminWinnerDetailsHeaders from "./adminWinnerDetailsHeaders";
+import ImageUploaderDialog from "@/Global/ImageUploader/ImageUploaderDialog";
+import { toast } from "react-toastify";
+import { bodyDecrypt, delay } from "@/utils/util";
+import apiService from "@/services/apiService";
 const WinnerDetails = ({ url }: { url: string | undefined }) => {
   const { loading, token } = useAppSelector((state) => state.token);
   const { _loading, filter, offset, limit, sort, list, count } = useAppSelector(
     (state) => state.winner.winnerList
   );
+
   const dispatch = useAppDispatch();
   // const
   const location = useLocation();
@@ -36,7 +42,88 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
       );
     }
   }, [loading, token, location]);
-  console.log(list);
+  const [headers, setHeaders] = useState([]);
+  const [rowClicked, setRowClicked] = useState();
+  const [imageLoading, setImageLoading] = useState(false);
+  const [imageUploaded, setImageUploaded] = useState([]);
+  const handleRowClick = async (e) => {
+    try {
+      setImageLoading(true);
+
+      const getFile = await apiService.getFile(
+        {
+          filter: [{ field: "winnerId", filter: e.id, type: "number" }],
+          sort: [],
+          limit: 1,
+          offset: 0,
+        },
+        token
+      );
+
+      const d = bodyDecrypt(getFile.data, token);
+      const data = d.data.list;
+
+      setImageUploaded(data);
+      console.log("Decrypted image data:", imageUploaded); // ✅ correct log
+
+      setImageLoading(false);
+    } catch (err) {
+      console.log(err);
+      const responseData = err.response?.data?.message || err.message;
+      toast.error("Error: " + responseData);
+      setImageLoading(false);
+    }
+
+    setRowClicked(e);
+    setOpen(true);
+  };
+  useEffect(() => {
+    if (url === "getDataAll") {
+      let h = adminWinnerDetailsHeaders(handleRowClick);
+      setHeaders(h);
+    } else setHeaders(WinnerDetailsHeaders);
+  }, [url]);
+
+  const [open, setOpen] = useState(false);
+
+  const onClose = () => {
+    setOpen(false);
+    setRowClicked([]);
+  };
+
+  const handleSubmitForm = async (d) => {
+    const tid = toast.loading("Uploading file");
+    try {
+      setImageLoading(true);
+      console.log(imageUploaded);
+      // await delay(2000);
+      d["winnerId"] = rowClicked.id;
+      var res;
+      if (imageUploaded.length === 0) {
+        res = await apiService.createImage(d, token);
+      } else {
+        res = await apiService.updateImage(d, token);
+      }
+
+      toast.update(tid, {
+        render: "uploaded successfully",
+        type: "success",
+        isLoading: false,
+        autoClose: 2000,
+      });
+      setImageLoading(false);
+    } catch (err) {
+      const responseData = err.response?.data?.message || err.message;
+      toast.update(tid, {
+        render: "Error Uploading!: " + responseData,
+        type: "error",
+        isLoading: false,
+        autoClose: 2000,
+      });
+      setImageLoading(false);
+      console.log(err);
+    }
+  };
   return (
     <>
       <Box
@@ -67,7 +154,14 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
         </Box>
         <CustomizedDataGridBasic
           data={list}
-          headers={WinnerDetailsHeaders}
+          headers={headers}
+        />
+        <ImageUploaderDialog
+          open={open}
+          onClose={onClose}
+          handleSubmitForm={handleSubmitForm}
+          loading={imageLoading}
+          imageUploaded={imageUploaded}
         />
       </Box>
     </>

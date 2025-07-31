@@ -12,8 +12,15 @@ export const getDataController = async (req, res) => {
 export const getWinnersTableController = async (req, res) => {
   try {
     const { limit, sort, where, filter, url, offset } = req.body;
+    if (req.url.includes("myWinners")) {
+      filter.push({
+        field: "$ticket_detail.user_id$",
+        filter: req.user_id,
+        type: "number",
+      });
+    }
     const _r = await wc.FetchWithInclude(req.body);
-    console.log(_r);
+    console.log(_r.list);
     res.send(_r);
   } catch (err) {
     console.log(err);

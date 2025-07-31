@@ -9,6 +9,11 @@ AlphaCode.init(
       allowNull: false,
       type: DataTypes.CHAR(20),
     },
+    active: {
+      allowNull: false,
+      default: true,
+      type: DataTypes.BOOLEAN,
+    },
     entries: {
       allowNull: false,
       type: DataTypes.INTEGER(14),
