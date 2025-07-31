@@ -48,7 +48,7 @@ export const updateImageController = async (req, res) => {
 
     console.log(file);
 
-    if (file.mimetype && file.mimetype.startsWith("image/")) {
+    if (file && file.mimetype && file.mimetype.startsWith("image/")) {
       let iUp = await uploadImage2(file);
       query = {
         ...query,

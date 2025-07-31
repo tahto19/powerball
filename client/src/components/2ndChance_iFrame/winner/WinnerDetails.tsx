@@ -95,7 +95,7 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
     const tid = toast.loading("Uploading file");
     try {
       setImageLoading(true);
-      console.log(imageUploaded);
+      console.log(d);
       // await delay(2000);
       d["winnerId"] = rowClicked.id;
       var res;

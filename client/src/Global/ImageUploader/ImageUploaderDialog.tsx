@@ -72,16 +72,30 @@ export default function ImageUploaderDialog({
     onDrop,
     multiple: false,
   });
-  useEffect(() => {
-    if (open) {
-      register("file", { required: true });
-    }
-  }, [open]);
+  // useEffect(() => {
+  //   if (open) {
+  //     register("file", { required: true });
+  //   }
+  // }, [open]);
   useEffect(() => {
     console.log(imageUploaded);
+
+    if (imageUploaded.length > 0) {
+      setValue('name', imageUploaded[0].name)
+      setValue('description', imageUploaded[0].description)
+      setValue('id', imageUploaded[0].id)
+      setValue('file', [])
+      register("file", { required: false });
+    } else {
+      register("file", { required: true });
+    }
   }, [imageUploaded]);
   const onSubmit = (e: imageUpload) => {
     if (handleSubmitForm) handleSubmitForm(e);
+    setValue('name', "")
+    setValue('description', "")
+    setValue('id', 0)
+    setValue('file', [])
   };
   return (
     <Dialog
@@ -119,11 +133,11 @@ export default function ImageUploaderDialog({
                     },
                   }}
                   {...register("description", { required: true })}
-                  //   slotProps={{
-                  //     input: {
-                  //       readOnly: dialog_type === "View",
-                  //     },
-                  //   }}
+                //   slotProps={{
+                //     input: {
+                //       readOnly: dialog_type === "View",
+                //     },
+                //   }}
                 />
               </FormControl>
               {errors &&
@@ -168,22 +182,21 @@ export default function ImageUploaderDialog({
                   //   display: dialogType === "View" ? "none" : "static",
                 }}
               >
-                {imageUploaded.length}
-                {getValues && getValues("file")}
+                {/* {imageUploaded.length}
+                {getValues && getValues("file")} */}
                 <div
                   {...getRootProps()}
                   style={
                     imageUploaded.length > 0 && !getValues("file")
                       ? {
-                          backgroundImage: `url("${
-                            import.meta.env.VITE_API_BASE_URL
+                        backgroundImage: `url("${import.meta.env.VITE_API_BASE_URL
                           }/api/file/server/image/${imageUploaded[0].id}")`,
-                        }
+                      }
                       : {
-                          //   backgroundImage: `url("${
-                          //     import.meta.env.VITE_API_BASE_URL
-                          //   }/api/file/server/image/${imageUploaded[0].id}")`,
-                        }
+                        //   backgroundImage: `url("${
+                        //     import.meta.env.VITE_API_BASE_URL
+                        //   }/api/file/server/image/${imageUploaded[0].id}")`,
+                      }
                   }
                 >
                   {isDragActive ? (
@@ -227,7 +240,8 @@ export default function ImageUploaderDialog({
                   )}
                 </div>
                 <input {...getInputProps()} />
-                {errors.file &&
+                {
+                  errors.file &&
                   errors.file.type &&
                   errors.file.type === "required" && (
                     <FormHelperText style={{ color: "red" }}>
