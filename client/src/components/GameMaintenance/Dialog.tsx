@@ -29,7 +29,7 @@ import ImageDrawer from "@/components/ImageDrawer.tsx";
 import Participants from "./ParticipantsTable.tsx";
 import { openDialog } from "@/redux/reducers/download/exportDataSlice";
 
-import { getAlphaCodeList } from "@/redux/reducers/alphaCode/asyncCalls.ts";
+import { getAlphaCodeList, getAllAlphaCode } from "@/redux/reducers/alphaCode/asyncCalls.ts";
 
 
 const renderType = (status: 'minor' | 'major' | 'grand') => {
@@ -271,10 +271,11 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
 
     useEffect(() => {
         if (token !== null) {
-            dispatch(getAlphaCodeList({ limit: 30, offset: 0, sort: [], filter: [] }));
+            dispatch(getAllAlphaCode());
         }
     }, [token]);
     useEffect(() => {
+        console.log(list)
         if (list && list.length > 0) {
             setAlphaCodes(list.map(x => x.name))
         }
