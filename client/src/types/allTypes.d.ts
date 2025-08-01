@@ -142,6 +142,7 @@ export interface exportDataState {
   filter: undefined | Array<any>;
 }
 export interface imageUpload {
+  action_type: string;
   description: string | null;
   file: File[];
   name: null | string;

@@ -46,7 +46,7 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
   const [rowClicked, setRowClicked] = useState();
   const [imageLoading, setImageLoading] = useState(false);
   const [imageUploaded, setImageUploaded] = useState([]);
-  const handleRowClick = async (e) => {
+  const handleRowClick = async (e, type) => {
     try {
       setImageLoading(true);
 
@@ -62,7 +62,9 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
 
       const d = bodyDecrypt(getFile.data, token);
       const data = d.data.list;
-
+      if (data.length > 0) {
+        data[0].action_type = type
+      }
       setImageUploaded(data);
       console.log("Decrypted image data:", imageUploaded); // ✅ correct log
 

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { imageUpload } from "@/types/allTypes";
 import {
   Box,
@@ -19,7 +20,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { useDropzone } from "react-dropzone";
 import { useForm } from "react-hook-form";
-
+const base_url = import.meta.env.VITE_API_BASE_URL;
+const apiEndpoint = base_url + "api/file/serve/image/"
 export default function ImageUploaderDialog({
   handleSubmitForm,
   open,
@@ -171,84 +173,96 @@ export default function ImageUploaderDialog({
                 )}
             </FormControl>
             <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
-              <Paper
-                elevation={0}
-                sx={{
-                  borderStyle: "dashed",
-                  borderWidth: "4px",
-                  borderColor: "#cacfdb",
-                  padding: "2%",
-                  borderRadius: "25px",
-                  //   display: dialogType === "View" ? "none" : "static",
-                }}
-              >
-                {/* {imageUploaded.length}
+              {imageUploaded[0] && imageUploaded[0].action_type === 'view' ?
+                (
+                  <img
+                    src={apiEndpoint + imageUploaded[0].id}
+                    alt={imageUploaded[0].name || ""}
+                    loading="lazy"
+                    width={'100%'}
+                  />
+                )
+                : (
+
+                  <Paper
+                    elevation={0}
+                    sx={{
+                      borderStyle: "dashed",
+                      borderWidth: "4px",
+                      borderColor: "#cacfdb",
+                      padding: "2%",
+                      borderRadius: "25px",
+                    }}
+                  >
+                    {/* {imageUploaded.length}
                 {getValues && getValues("file")} */}
-                <div
-                  {...getRootProps()}
-                  style={
-                    imageUploaded.length > 0 && !getValues("file")
-                      ? {
-                        backgroundImage: `url("${import.meta.env.VITE_API_BASE_URL
-                          }/api/file/server/image/${imageUploaded[0].id}")`,
+                    <div
+                      {...getRootProps()}
+                      style={
+                        imageUploaded.length > 0 && !getValues("file")
+                          ? {
+                            backgroundImage: `url("${import.meta.env.VITE_API_BASE_URL
+                              }/api/file/server/image/${imageUploaded[0].id}")`,
+                          }
+                          : {
+                            //   backgroundImage: `url("${
+                            //     import.meta.env.VITE_API_BASE_URL
+                            //   }/api/file/server/image/${imageUploaded[0].id}")`,
+                          }
                       }
-                      : {
-                        //   backgroundImage: `url("${
-                        //     import.meta.env.VITE_API_BASE_URL
-                        //   }/api/file/server/image/${imageUploaded[0].id}")`,
-                      }
-                  }
-                >
-                  {isDragActive ? (
-                    <p>Drop the files here ...</p>
-                  ) : (
-                    <Stack
-                      spacing={0}
-                      sx={{ justifyContent: "center", textAlign: "center" }}
                     >
-                      <Box>
-                        <CloudUploadIcon sx={{ fontSize: 45 }} />
-                      </Box>
-                      <Box>
-                        <Button
-                          variant="outlined"
-                          sx={{
-                            borderRadius: "30px",
-                            color: "black",
-                            fontWeight: "bold",
-                            borderColor: "#cacfdb",
-                            borderWidth: "medium",
-                          }}
+                      {isDragActive ? (
+                        <p>Drop the files here ...</p>
+                      ) : (
+                        <Stack
+                          spacing={0}
+                          sx={{ justifyContent: "center", textAlign: "center" }}
                         >
-                          {getValues("file") && getValues("file").length > 0
-                            ? getValues("file")[0].name
-                            : "Browse File"}
-                        </Button>
-                      </Box>
-                      <Box>
-                        <Typography>
-                          {getValues("file") && getValues("file").length > 0
-                            ? "Change "
-                            : "Choose "}
-                          a file or drag & drop it here
-                        </Typography>
-                        <Typography sx={{ color: "#cacfdb" }}>
-                          JPEG,PNG formats, up to 50MB
-                        </Typography>
-                      </Box>
-                    </Stack>
-                  )}
-                </div>
-                <input {...getInputProps()} />
-                {
-                  errors.file &&
-                  errors.file.type &&
-                  errors.file.type === "required" && (
-                    <FormHelperText style={{ color: "red" }}>
-                      Required
-                    </FormHelperText>
-                  )}
-              </Paper>
+                          <Box>
+                            <CloudUploadIcon sx={{ fontSize: 45 }} />
+                          </Box>
+                          <Box>
+                            <Button
+                              variant="outlined"
+                              sx={{
+                                borderRadius: "30px",
+                                color: "black",
+                                fontWeight: "bold",
+                                borderColor: "#cacfdb",
+                                borderWidth: "medium",
+                              }}
+                            >
+                              {getValues("file") && getValues("file").length > 0
+                                ? getValues("file")[0].name
+                                : "Browse File"}
+                            </Button>
+                          </Box>
+                          <Box>
+                            <Typography>
+                              {getValues("file") && getValues("file").length > 0
+                                ? "Change "
+                                : "Choose "}
+                              a file or drag & drop it here
+                            </Typography>
+                            <Typography sx={{ color: "#cacfdb" }}>
+                              JPEG,PNG formats, up to 50MB
+                            </Typography>
+                          </Box>
+                        </Stack>
+                      )}
+                    </div>
+                    <input {...getInputProps()} />
+                    {
+                      errors.file &&
+                      errors.file.type &&
+                      errors.file.type === "required" && (
+                        <FormHelperText style={{ color: "red" }}>
+                          Required
+                        </FormHelperText>
+                      )}
+                  </Paper>
+                )}
+
             </Grid2>
           </Grid2>
         </DialogContent>
