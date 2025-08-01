@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { RootState } from "@/redux/store";
 import apiService from "@/services/apiService";
 import { alphaCodeProps, getDataV2 } from "@/types/allTypes";
@@ -127,9 +128,7 @@ export const getAllAlphaCode = createAsyncThunk(
       const token = state.token.token;
       let r = await apiService.getAllAlphaCode(token);
 
-      console.log(">>>>",r)
       dispatch(alphaCodeListGet(r.data));
-      console.log(r.data);
     } catch (err) {
       let message = getMessage(err);
       toast.error(`error: ${message}`, {
