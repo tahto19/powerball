@@ -1,3 +1,4 @@
+import { delay, getMessage } from "@/utils/util";
 //@ts-nocheck
 import { userState } from "@/components/addUser/TypesHere";
 import { createAsyncThunk } from "@reduxjs/toolkit";
@@ -22,6 +23,8 @@ import {
   addOffsetC_,
   addSortC_,
 } from "./costumerUsers";
+import { toast } from "react-toastify";
+import _ from "lodash";
 export const outsideAddUser = createAsyncThunk(
   "user/outsideAddUser",
   async (data: userState, { dispatch }) => {
@@ -201,6 +204,37 @@ export const getUser = createAsyncThunk(
       dispatch(addUserDetails(c.data));
     } catch (err) {
       dispatch(showToaster({ err, variant: "error", icon: "error" }));
+    }
+  }
+);
+export const setUserToAdmin = createAsyncThunk(
+  "user/updateToAdmin",
+  async (data: adminType, { dispatch, getState }) => {
+    const tid = toast.loading("Updating");
+    try {
+      await delay(1000);
+      const state = getState() as RootState;
+      const token = state.token.token;
+      let changeData = _.cloneDeep(data);
+      changeData["isAdmin"] = true;
+
+      await apiService.updateAdmin(changeData, token);
+      toast.update(tid, {
+        type: "success",
+        render: "successfully change to admin",
+        isLoading: false,
+        hideProgressBar: true,
+      });
+      dispatch(getCostumer({ limit: 5, offset: 0, sort: "", filter: "" }));
+    } catch (err) {
+      let message = getMessage(err);
+      toast.update(tid, {
+        type: "error",
+        render: message,
+        isLoading: false,
+        hideProgressBar: true,
+      });
+      return false;
     }
   }
 );

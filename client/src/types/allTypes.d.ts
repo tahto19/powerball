@@ -9,7 +9,8 @@ export type adminType = {
   emailAddress: string | null;
   mobileNumber: string | null;
   isAdmin: boolean | null;
-  id: number | null | undefined;
+  id?: number | null | undefined;
+  birthdate?: string | Date;
 };
 
 export type fetchAll = {

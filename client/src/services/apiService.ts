@@ -274,6 +274,7 @@ export const apiService = {
       "file",
       "mobileNumber",
       "password",
+      "isAdmin",
     ];
     const fd = new FormData();
 
@@ -348,12 +349,11 @@ export const apiService = {
       data: bodyEncrypt(JSON.stringify(data), token),
     });
   },
-   getTicketDetails: async (data, token: string | null) => {
+  getTicketDetails: async (data, token: string | null) => {
     return apiClient.post("api/ticket/myTicketDetails", {
       data: bodyEncrypt(JSON.stringify(data), token),
     });
   },
-  
 
   // audit trail here
   getAudit: async (data: getDataV2, token: string) => {

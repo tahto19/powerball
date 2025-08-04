@@ -1,6 +1,6 @@
 //@ts-nocheck
 
-import { Grid2, Typography, Button } from "@mui/material";
+import { Grid2, Typography, Button, IconButton } from "@mui/material";
 import React, { useEffect } from "react";
 import CustomizedDataGrid from "../CustomizedDataGrid";
 // import headers from "./headers.ts";
@@ -15,14 +15,19 @@ import { DataProps, getDataV2 } from "@/types/allTypes";
 import axios from "axios";
 import { downloadData } from "@/redux/reducers/download/asyncCalls";
 import { openDialog } from "@/redux/reducers/download/exportDataSlice";
+import { AdminPanelSettings } from "@mui/icons-material";
+import AdminDialogConfirmation from "./AdminDialogConfirmation";
+import { RootState } from "@/redux/store";
 const Costumer = () => {
   const dispatch = useAppDispatch();
   const { loading, list, offset, limit, sort, count } = useAppSelector(
     (state: RootState) => state.costumer
   );
-
+  const { token } = useAppDispatch((state: RootState) => state.token);
   const [pagination, setPagination] = useState({ page: 0, pageSize: 10 });
   const [open, setOpen] = useState(false);
+  const [openConfimation, setConfirmation] = useState(true);
+  const [userToAdmin, setUserToAdmin] = useState({});
   const [data, setData] = useState([]);
   const [dialogType, setDialogType] = useState(null);
   const onClose = () => {
@@ -96,7 +101,14 @@ const Costumer = () => {
       console.log(err);
     }
   };
-
+  const handleAdminUser = async (e) => {
+    setConfirmation(true);
+    setUserToAdmin(e);
+  };
+  const handleCloseDialog = () => {
+    setConfirmation(false);
+    setUserToAdmin();
+  };
   const headers: GridColDef[] = [
     {
       field: "fullname",
@@ -122,6 +134,22 @@ const Costumer = () => {
           <CheckIcon sx={{ color: "green" }} />
         ) : (
           <CloseIcon sx={{ color: "red" }} />
+        );
+      },
+    },
+    {
+      field: "action",
+      headerName: "actions",
+      flex: 1,
+      minWidth: 200,
+      renderCell: (params: { value: any }) => {
+        return (
+          <IconButton
+            onClick={() => handleAdminUser(params.row)}
+            color="primary"
+          >
+            <AdminPanelSettings />
+          </IconButton>
         );
       },
     },
@@ -181,8 +209,8 @@ const Costumer = () => {
           onTableChange={handleTableChange}
           pageLength={count}
           isAction={false}
-        // onEditAction={handleEditAction}
-        // onViewAction={handleViewAction}
+          // onEditAction={handleEditAction}
+          // onViewAction={handleViewAction}
         />
       </Grid2>
       <MyDialog
@@ -190,6 +218,12 @@ const Costumer = () => {
         onClose={onClose}
         data={data}
         dialogType={dialogType}
+      />
+      <AdminDialogConfirmation
+        open={openConfimation}
+        details={userToAdmin}
+        token={token}
+        closeDialog={handleCloseDialog}
       />
     </Grid2>
   );

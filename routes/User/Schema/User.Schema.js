@@ -33,6 +33,7 @@ export const updateSchema = {
     emailAddres: { type: "string" },
     mobileNumber: { type: "string" },
     id: { type: "string" },
+    isAdmin: { type: "string" },
   },
 };
 export const createUserSchema = {

@@ -47,6 +47,7 @@ export const updateController = async (req, res) => {
     birthdate,
     emailAddress,
     password,
+    isAdmin,
   } = req.body;
 
   let data = {
@@ -57,6 +58,7 @@ export const updateController = async (req, res) => {
     emailAddress,
     mobileNumber,
     birthdate,
+    isAdmin,
   };
 
   if (file) {
