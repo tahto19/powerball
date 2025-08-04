@@ -23,7 +23,7 @@ const Costumer = () => {
   const { loading, list, offset, limit, sort, count } = useAppSelector(
     (state: RootState) => state.costumer
   );
-  const { token } = useAppDispatch((state: RootState) => state.token);
+
   const [pagination, setPagination] = useState({ page: 0, pageSize: 10 });
   const [open, setOpen] = useState(false);
   const [openConfimation, setConfirmation] = useState(true);
@@ -222,7 +222,6 @@ const Costumer = () => {
       <AdminDialogConfirmation
         open={openConfimation}
         details={userToAdmin}
-        token={token}
         closeDialog={handleCloseDialog}
       />
     </Grid2>

@@ -290,7 +290,7 @@ export const apiService = {
       data: bodyEncrypt(JSON.stringify(data), token),
     });
   },
-  getCostumer: async (data: getData, token: string) => {
+  getCostumer: async (data: getData, token?: string | null) => {
     return apiClient.post("/api/users/users", {
       data: bodyEncrypt(JSON.stringify(data), token),
     });

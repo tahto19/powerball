@@ -7,22 +7,21 @@ import {
   Typography,
 } from "@mui/material";
 import { adminType } from "@/types/allTypes";
-import { toast } from "react-toastify";
+
 import { useState } from "react";
-import { delay, getMessage } from "@/utils/util";
-import apiService from "@/services/apiService";
+
 import { useAppDispatch } from "@/redux/hook";
 import { setUserToAdmin } from "@/redux/reducers/user/asnycCalls";
 interface AdminDialogInterface {
   open: boolean;
   details: adminType;
-  token: string;
+
   closeDialog: () => void;
 }
 export default function AdminDialogConfirmation({
   open,
   details,
-  token,
+
   closeDialog,
 }: AdminDialogInterface) {
   const [loading, setLoading] = useState(false);

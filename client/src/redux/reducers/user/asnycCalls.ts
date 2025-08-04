@@ -1,11 +1,10 @@
-import { delay, getMessage } from "@/utils/util";
 //@ts-nocheck
 import { userState } from "@/components/addUser/TypesHere";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { addOTP, addUser, addUserDetails } from "./userSlice";
 import apiService from "@/services/apiService";
 import { showToaster } from "../global/globalSlice";
-import { bodyDecrypt, bodyEncrypt, delay } from "@/utils/util";
+import { bodyDecrypt, bodyEncrypt, delay, getMessage } from "@/utils/util";
 import { veriyCode } from "@/services/types/user";
 import { RootState } from "@/redux/store";
 import { adminType, getData, postAdminType } from "@/types/allTypes";
@@ -170,7 +169,7 @@ export const getCostumer = createAsyncThunk(
   "user/getCostumer",
   async (data: getData, { dispatch, getState }) => {
     try {
-      var data_ = data;
+      var data_: any = data;
       const state = getState() as RootState;
       const token = state.token.token;
       if (data === undefined) {
@@ -197,7 +196,7 @@ export const getUser = createAsyncThunk(
     try {
       const state = getState() as RootState;
       const token = state.token.token;
-
+      console.log(data);
       const _r = await apiService.getUser();
       let c = bodyDecrypt(_r.data, token);
 

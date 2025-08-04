@@ -19,10 +19,11 @@ export type fetchAll = {
 };
 
 export type getData = {
-  limit: number | null;
-  offset: number | null;
-  filter: string | null;
-  sort: string | null;
+  limit?: number | null;
+  offset?: number | null;
+  filter?: string | null;
+  sort?: string | null;
+  addLimit?: any;
 };
 export type getDataV2 = {
   limit: number | null;
