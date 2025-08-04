@@ -26,7 +26,7 @@ const Costumer = () => {
 
   const [pagination, setPagination] = useState({ page: 0, pageSize: 10 });
   const [open, setOpen] = useState(false);
-  const [openConfimation, setConfirmation] = useState(true);
+  const [openConfimation, setConfirmation] = useState(false);
   const [userToAdmin, setUserToAdmin] = useState({});
   const [data, setData] = useState([]);
   const [dialogType, setDialogType] = useState(null);
