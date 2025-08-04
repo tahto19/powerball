@@ -40,7 +40,7 @@ class alphaCode_class {
     return a;
   }
   async FetchAll() {
-    let a = await AlphaCode.find({ where: { active: true } });
+    let a = await AlphaCode.findAll({ where: { active: true } });
     return a;
   }
 }

@@ -425,10 +425,8 @@ export const apiService = {
     });
     return bodyDecrypt(response.data, token);
   },
-  getAllAlphaCode: async (data, token) => {
-    const response = await apiClient.get("api/alphacode/", {
-      data: bodyEncrypt(JSON.stringify(data), token),
-    });
+  getAllAlphaCode: async (token) => {
+    const response = await apiClient.get("api/alphacode/");
     return bodyDecrypt(response.data, token);
   },
 

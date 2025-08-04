@@ -42,6 +42,9 @@ const alphaCodeSlice = createSlice({
 
       state.getData = action.payload;
     },
+    alphaCodeListGet: (state, action) => {
+      state.list = action.payload;
+    },
     setLoadingAlphaCode: (state, action) => {
       state.mainLoading = action.payload;
     },
@@ -62,6 +65,6 @@ const alphaCodeSlice = createSlice({
   },
 });
 
-export const { alphaCodeListAdd } = alphaCodeSlice.actions;
+export const { alphaCodeListAdd,alphaCodeListGet } = alphaCodeSlice.actions;
 
 export default alphaCodeSlice.reducer;

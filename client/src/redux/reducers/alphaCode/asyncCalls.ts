@@ -1,10 +1,11 @@
+//@ts-nocheck
 import { RootState } from "@/redux/store";
 import apiService from "@/services/apiService";
 import { alphaCodeProps, getDataV2 } from "@/types/allTypes";
 import { delay, getMessage } from "@/utils/util";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { alphaCodeListAdd } from "./alphacodeSlice";
+import { alphaCodeListAdd, alphaCodeListGet } from "./alphacodeSlice";
 
 export const getAlphaCodeList = createAsyncThunk(
   "aplhaCode/getAlphaCode",
@@ -114,6 +115,26 @@ export const putAlphaCode = createAsyncThunk(
         render: message,
         isLoading: false,
         hideProgressBar: true,
+      });
+    }
+  }
+);
+
+export const getAllAlphaCode = createAsyncThunk(
+  "aplhaCode/getAlphaCode",
+  async (data: getDataV2, { dispatch, getState }) => {
+    try {
+      const state = getState() as RootState;
+      const token = state.token.token;
+      let r = await apiService.getAllAlphaCode(token);
+
+      dispatch(alphaCodeListGet(r.data));
+    } catch (err) {
+      let message = getMessage(err);
+      toast.error(`error: ${message}`, {
+        type: "error",
+
+        autoClose: 6000,
       });
     }
   }

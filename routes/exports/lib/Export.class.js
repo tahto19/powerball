@@ -71,6 +71,7 @@ class Export_data_class {
         "firstname",
         "lastname",
         "emailAddress",
+        "active",
         "mobileNumber",
         "createdAt",
         "birthdate",
@@ -85,6 +86,14 @@ class Export_data_class {
       : { isAdmin: true };
     let _r = await Users.findAll({
       where: where,
+      attributes: [
+        "lastname",
+        "emailAddress",
+        "birthdate",
+        "active",
+        "mobileNumber",
+        "createdAt",
+      ],
     });
     let r = _r.map((v) => v.toJSON());
     return await this.toExcel(r, "Admin");
