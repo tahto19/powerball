@@ -91,7 +91,7 @@ const WinnersDialog = ({ data, open, onClose }: DialogProps) => {
                                         <Typography>{x.totalWinners}</Typography>
                                     </Grid2>
                                     <Grid2 size={{ xs: 6, sm: 6, md: 6, lg: 6 }}>
-                                        <Typography sx={{ float: "right" }}>{formatToPesos(x.prize)}</Typography>
+                                        <Typography sx={{ float: "right" }}>{x.prize}</Typography>
                                     </Grid2>
                                 </>
                             ))

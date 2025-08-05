@@ -22,7 +22,7 @@ export const getData = createAsyncThunk(
           id: v.id,
           winningTicket: v.ticket_history.ticket_history_generate,
           type: v.Raffle_Prize.Prize_List.type,
-          value: formatToPesos(v.Raffle_Prize.amount),
+          value: v.Raffle_Prize.amount,
         };
       });
       const toReturn = { ...getFilter, ..._rD };
