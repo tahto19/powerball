@@ -3,7 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { showToaster } from "../global/globalSlice";
 import apiService from "@/services/apiService";
 import { RootState } from "@/redux/store";
-import { bodyDecrypt, formatToPesos } from "@/utils/util";
+import { bodyDecrypt } from "@/utils/util";
 import { addRaffleDrawList } from "./RaffleDrawSlice";
 
 export const getData = createAsyncThunk(

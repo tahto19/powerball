@@ -14,7 +14,7 @@ import {
 } from "@/components/2ndChance_iFrame/Raffles/interface.ts";
 import apiService from "@/services/apiService";
 import { useAppSelector } from "@/redux/hook";
-import { bodyDecrypt, formatToPesos } from "@/utils/util";
+import { bodyDecrypt } from "@/utils/util";
 
 const WinnersDialog = ({ data, open, onClose }: DialogProps) => {
     const [formData] = useState<RaffleState>(data);
