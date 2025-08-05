@@ -31,7 +31,7 @@ class Raffle_class {
     //======== Create Raffle schedule data ===============//
     const scheduleData = {
       raffle_id: createRaffleDetails.id,
-      schedule_date: _data.starting_date,
+      schedule_date: _data.draw_date,
       status: _data.active ? 2 : 3,
     };
 
