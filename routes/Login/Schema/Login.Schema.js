@@ -2,6 +2,8 @@ import {
   checkSessionController,
   getMyDetailsController,
   LoginController,
+  loginUsingMobileNumberController,
+  mobileNumberController,
 } from "../Controller/Login.controller.js";
 
 export const LoginSchema = {
@@ -16,4 +18,10 @@ export const getMyDetailsSchema = {
 };
 export const checkSessionSchema = {
   handler: checkSessionController,
+};
+export const mobileNumberSchmea = {
+  handler: mobileNumberController,
+};
+export const loginUsingMobileNumberSchema = {
+  handler: loginUsingMobileNumberController,
 };

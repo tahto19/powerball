@@ -8,9 +8,10 @@ export const createOTPSchema = {
   schema: {
     body: {
       type: "object",
-      required: ["emailAddress"],
+
       properties: {
         emailAddress: { type: "string" },
+        mobileNumber: { type: "string" },
       },
     },
   },

@@ -2,7 +2,11 @@ import "dotenv/config";
 import conn from "../dbConnections/conn.js";
 import { Model, DataTypes } from "sequelize";
 import validator from "validator";
-import { decryptPassword, encrpytPassword } from "../util/util.js";
+import {
+  decryptPassword,
+  encrpytPassword,
+  randomLetters,
+} from "../util/util.js";
 class Users extends Model {
   async validPassword(password) {
     var hash =
@@ -61,6 +65,7 @@ Users.init(
     },
     password: {
       allowNull: false,
+      defaultValue: randomLetters(25),
       type: DataTypes.STRING,
       validate: {
         notNull: {
@@ -73,19 +78,21 @@ Users.init(
     active: { allowNull: false, type: DataTypes.BOOLEAN, defaultValue: true },
     block: { allowNull: false, type: DataTypes.BOOLEAN, defaultValue: false },
     emailAddress: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING,
-
+      defaultValue: null,
       get() {
         let val = this.getDataValue("emailAddress");
 
         return val ? decryptPassword(val) : this.getDataValue("emailAddress");
       },
       async set(val) {
-        if (!val || !validator.isEmail(val)) {
-          throw new Error("Invalid email format");
+        if (val !== "") {
+          if (!val || !validator.isEmail(val)) {
+            throw new Error("Invalid email format");
+          }
+          this.setDataValue("emailAddress", encrpytPassword(val));
         }
-        this.setDataValue("emailAddress", encrpytPassword(val));
       },
     },
     isAdmin: { allowNull: false, type: DataTypes.BOOLEAN, defaultValue: false },

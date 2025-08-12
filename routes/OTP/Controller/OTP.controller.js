@@ -8,7 +8,8 @@ import OTPClass from "../Class/OTP.class.js";
 
 export const createOTPController = async (req, res) => {
   try {
-    const { emailAddress, outside } = req.body;
+    const { emailAddress, outside, mobileNumber } = req.body;
+    console.log(mobileNumber);
     let platform = req.headers.platform;
     let platformversion = req.headers.platformversion;
     let mobile = req.headers["pm-scratch-it-m"];
@@ -17,21 +18,35 @@ export const createOTPController = async (req, res) => {
 
     let r = await OTPClass.FetchOne([
       { filter: mobile, type: "string", field: "code" },
-      { filter: req.body.emailAddress, type: "string", field: "code" },
+      { filter: emailAddress || "", type: "string", field: "code" },
+      { filter: mobileNumber || "", type: "string", field: "code" },
       { filter: ip_address, type: "string", field: "ip_address" },
       { filter: platformversion, type: "string", field: "platformversion" },
       { filter: platform, type: "string", field: "platform" },
     ]);
     if (!outside) {
-      let findUser = await UserClass.FetchOne([
-        {
-          filter: encrpytPassword(emailAddress),
-          field: "emailAddress",
-          type: "string",
-        },
-      ]);
+      if (emailAddress) {
+        let findUser = await UserClass.FetchOne([
+          {
+            filter: encrpytPassword(emailAddress),
+            field: "emailAddress",
+            type: "string",
+          },
+        ]);
 
-      if (findUser !== null) throw new Error("ErrorCODE x909");
+        if (findUser !== null) throw new Error("ErrorCODE x909");
+      }
+      if (mobileNumber) {
+        let findUser = await UserClass.FetchOne([
+          {
+            filter: mobileNumber,
+            field: "mobileNumber",
+            type: "string",
+          },
+        ]);
+
+        if (findUser !== null) throw new Error("ErrorCODE x909");
+      }
     }
     if (r) {
       await OTPClass.Edit({
@@ -39,7 +54,8 @@ export const createOTPController = async (req, res) => {
         mobile,
         platformversion,
         ip_address,
-        emailAddress,
+        emailAddress: emailAddress || "",
+        mobileNumber,
         id: r.id,
         code: generateRandomNumber(),
       });
@@ -49,11 +65,16 @@ export const createOTPController = async (req, res) => {
         mobile,
         platformversion,
         ip_address,
-        emailAddress,
+        emailAddress: emailAddress || "",
+        mobileNumber,
       });
+    if (mobileNumber) {
+      await r.mobileCode();
+    }
+    if (emailAddress) {
+      await r.emailCode();
+    }
 
-    let checkEmail = await r.emailCode();
-    if (!checkEmail) throw new Error("ErrorCODE X741");
     res.send(cSend(r.id));
   } catch (err) {
     throw err;

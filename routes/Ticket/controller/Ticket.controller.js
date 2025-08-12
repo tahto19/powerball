@@ -95,7 +95,9 @@ export const postTicketController = async (req, res) => {
 
     // _r.data.r.trim() === "This is a non-winning ticket." ||
     if (_r.data.r.trim() === "Error checking ticket.") {
-      throw new Error(_r.data.r);
+      throw new Error(
+        "Scan Error. Please call (0917) 188 5885 or (0919) 099 1999 for assistance"
+      );
     } else if (_r.data.r.trim().toLowerCase() === "this is a winning ticket") {
       throw new Error(
         "This is a winning ticket and is not eligible for raffle draw"
@@ -106,7 +108,7 @@ export const postTicketController = async (req, res) => {
       );
     } else if (_r.data.r.trim().toLowerCase() === "error checking ticket") {
       throw new Error(
-        "This is a winning ticket and is not eligible for the raffle draw."
+        "Scan Error. Please call (0917) 188 5885 or (0919) 099 1999 for assistance"
       );
     }
     if (_r.data.t) {

@@ -1,7 +1,11 @@
 import "dotenv/config";
 import conn from "../dbConnections/conn.js";
 import { Model, DataTypes } from "sequelize";
-import { emailSender, generateRandomNumber } from "../util/util.js";
+import {
+  emailSender,
+  generateRandomNumber,
+  mobileSender,
+} from "../util/util.js";
 class OTP extends Model {
   getNewCode() {
     return this.code;
@@ -12,7 +16,7 @@ class OTP extends Model {
   }
   async emailCode() {
     try {
-      console.log('here')
+      console.log("here");
       await emailSender({
         from: null,
         to: this.emailAddress,
@@ -22,7 +26,18 @@ class OTP extends Model {
       });
       return true;
     } catch (err) {
-      console.log(err,'here');
+      console.log(err, "here");
+      return false;
+    }
+  }
+  async mobileCode() {
+    try {
+      await mobileSender({
+        otp: this.code,
+        number: this.mobileNumber,
+      });
+      return true;
+    } catch (err) {
       return false;
     }
   }
@@ -47,9 +62,11 @@ OTP.init(
       defaultValue: generateRandomNumber,
     },
     emailAddress: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING,
     },
+    mobileNumber: { allowNull: true, type: DataTypes.STRING },
+    isLogin: { type: DataTypes.BOOLEAN, allowNull: true, default: false },
     auth: {
       allowNull: false,
       type: DataTypes.BOOLEAN,

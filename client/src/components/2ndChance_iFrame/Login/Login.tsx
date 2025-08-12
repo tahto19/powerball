@@ -130,12 +130,11 @@ const Login = () => {
   const handleSignUp = () => {
     window.parent.location.href = base_url + "create-an-account/";
   };
-  // React.useEffect(() => {
-  //   if (token) {
-  //     window.parent.location.href =
-  //       base_url + "secondchance/";
-  //   }
-  // }, [token]);
+  React.useEffect(() => {
+    if (token) {
+      window.parent.location.href = base_url + "secondchance/";
+    }
+  }, [token]);
 
   return (
     <>

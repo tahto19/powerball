@@ -14,9 +14,9 @@ import apiService from "@/services/apiService";
 import { showToaster } from "@/redux/reducers/global/globalSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { delay, getMessage, localDecrypt, localEncrypt } from "@/utils/util";
-import { Button, styled } from "@mui/material";
+import { Button } from "@mui/material";
 import { toast } from "react-toastify";
-import { VpnKey } from "@mui/icons-material";
+
 import { MuiOtpInput } from "mui-one-time-password-input";
 
 const base_url = import.meta.env.VITE_API_BASE_URL;
@@ -29,7 +29,6 @@ const PhoneNumberLogin = () => {
   const [mobileNumberErrorMessage, setMobileNumberErrorMessage] =
     React.useState("");
   const [passwordError, setPasswordError] = React.useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
   const [otp, setOTP] = React.useState("");
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
@@ -107,14 +106,13 @@ const PhoneNumberLogin = () => {
     //     setPasswordErrorMessage("");
     // }
     setPasswordError(false);
-    setPasswordErrorMessage("");
     return isValid;
   };
   // remember me
   const [rememberMe, setRememberMe] = React.useState(false);
 
   const [mobileNumber, setMobileNumber] = React.useState("");
-  const [password, setPassword] = React.useState("");
+
   React.useEffect(() => {
     const saved = localStorage.getItem("jxRsOvNeq5-Remember_me") === "true";
     if (saved) {
@@ -122,9 +120,8 @@ const PhoneNumberLogin = () => {
     }
     if (saved) {
       let email = localDecrypt(localStorage.getItem("JqNw1q3HCK-90t4y"));
-      let password = localDecrypt(localStorage.getItem("OM8Ovhw79G-90t4y"));
+      //   let password = localDecrypt(localStorage.getItem("OM8Ovhw79G-90t4y"));
       setMobileNumber(email);
-      setPassword(password);
     }
     setRememberMe(saved);
   }, []);
@@ -209,12 +206,12 @@ const PhoneNumberLogin = () => {
       setLoadingBtn(false);
     }
   };
-  // React.useEffect(() => {
-  //   if (token) {
-  //     window.parent.location.href =
-  //       base_url + "secondchance/";
-  //   }
-  // }, [token]);
+  React.useEffect(() => {
+    if (token) {
+      console.log(token);
+      window.parent.location.href = base_url + "secondchance/";
+    }
+  }, [token]);
 
   return (
     <>

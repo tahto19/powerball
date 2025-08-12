@@ -85,6 +85,7 @@ const fastify = Fastify({
  * X921 no entries insert
  * x923 schema body is missing
  * x663 already have a winner cant join this event
+ * x910 no user found
  */
 
 /**

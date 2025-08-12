@@ -109,13 +109,11 @@ export const createUser = async (req, res) => {
       var iUp = await uploadImage(file);
     }
 
-    if (!password || !emailAddress)
-      throw new Error("password or email is not set");
     let r = await uc.Insert({
       firstname: firstname.value,
       lastname: lastname.value,
-      password: password.value,
-      emailAddress: emailAddress.value,
+      password: password?.value || "",
+      emailAddress: emailAddress?.value || "",
       mobileNumber: mobileNumber.value,
       birthdate: birthdate.value,
       idPath: file ? iUp.filename : null,

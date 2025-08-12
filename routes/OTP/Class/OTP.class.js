@@ -46,7 +46,7 @@ class OTP_class {
     if (filter.length === 0) throw new Error("ErrorCode X1");
     let query = {};
     query["where"] = WhereFilters(filter);
-    console.log(filter);
+    console.log(filter, "here");
     let list = await OTP.findOne(query);
     return list;
   }
@@ -56,7 +56,7 @@ class OTP_class {
       { filter: data.id, field: "id", type: "number" },
       { filter: data.code, field: "code", type: "number" },
     ]);
-    if(getOTP === null) throw new Error('ERRORCODE x58')
+    if (getOTP === null) throw new Error("ERRORCODE x58");
     let _data = getOTP.toJSON();
     _data.auth = true;
     // if (!getOTP) throw new Error("ErrorCode x58");

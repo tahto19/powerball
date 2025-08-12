@@ -8,6 +8,7 @@ import CryptoJS from "crypto-js";
 import nodemailer from "nodemailer";
 import moment from "moment";
 import fs from "fs";
+import telerivet from "telerivet";
 const transport = nodemailer.createTransport({
   host: process.env.EMAILHOST,
   port: process.env.EMAILPORT,
@@ -201,6 +202,28 @@ export const emailSender = async (data) => {
   } catch (err) {
     logger.error(err);
     throw err;
+  }
+};
+export const mobileSender = async (data) => {
+  try {
+    console.log(data);
+    var tr = new telerivet.API("k9h0E_hv7GZInBxYDhitdo8nATIriTz9zI0j");
+    var project = tr.initProjectById("PJ059c9a5f6896e2d6");
+    project.sendMessage(
+      {
+        to_number: data.number,
+        content: `Your One-Time Password (OTP) for this login: ${data.otp}
+
+This code can only be used once and will change every time you log in.
+If you did not request to log in to the Scratch It website, please ignore this message and do not share this code with anyone.`,
+      },
+      function (err, message) {
+        if (err) throw err;
+        console.log("successfully send otp in a mobile number");
+      }
+    );
+  } catch (err) {
+    console.log(err);
   }
 };
 export const uploadImage = async (file, filename) => {

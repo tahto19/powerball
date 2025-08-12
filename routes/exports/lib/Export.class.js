@@ -38,6 +38,8 @@ class Export_data_class {
         return await this.GameMaintenance_data(date_range, filter);
       case 10:
         return await this.alpha_code_data(date_range);
+      case 11:
+        return await this.get_ticket_scanned(date_range);
     }
   }
 
@@ -251,6 +253,70 @@ class Export_data_class {
     let r = r_.map((v) => v.toJSON());
     return await this.toExcel(r, "Game Maintenance List");
   }
+  async get_ticket_scanned(date_range) {
+    console.log(date_range);
+    let r_ = await TicketDetails.findAll({
+      where: {
+        [Op.and]: [
+          { createdAt: { [Op.gte]: date_range[0] } },
+          { createdAt: { [Op.lte]: date_range[1] } },
+        ],
+      },
+      include: [
+        {
+          model: TicketHistory,
+        },
+        {
+          model: Users,
+        },
+      ],
+      raw: true,
+    });
+    let toSend = [];
+    for (const v of r_) {
+      // let val = v.toJSON();
+      // console.log(val);
+
+      if (v.entries_used === 0) {
+        // find if exists
+        let f = toSend.find(
+          (x) => x["ticket code"] === v.ticket_code && v.VIN === x["VN"]
+        );
+
+        if (f !== undefined) continue;
+      } else {
+        let f = toSend.filter(
+          (x) => x["ticket code"] === v.ticket_code && v.VIN === x["VN"]
+        );
+        console.log(f);
+        if (f.length > v.entries_used) continue;
+      }
+      let middleName = v["User.middlename"] || "";
+      let temp = {
+        "raffle code": v["ticket_histories.ticket_history_generate"] || "",
+        "raffle joined": v["ticket_histories.createdAt"]
+          ? moment(v["ticket_histories.createdAt"]).format(
+              "MMMM DD yyyy hh:ss a"
+            )
+          : "",
+        "ticket scanned": moment(v.createdAt).format("MMMM DD yyyy hh:ss a"),
+        "ticket code": v.ticket_code,
+        "Alpha Code": v.alpha_code,
+        "Full Name":
+          decryptPassword(v["User.firstname"]) +
+          " " +
+          middleName +
+          " " +
+          decryptPassword(v["User.lastname"]),
+        VN: v.VIN,
+        entries: v.entries,
+        "entries used": v.entries_used,
+      };
+      toSend.push(temp);
+    }
+
+    return await this.toExcel(toSend, "Winners");
+  }
   async toExcel(data, type) {
     var columns;
     if (data[0])
@@ -276,7 +342,6 @@ class Export_data_class {
         if (val.toUpperCase() === "TRUE") temp[vv] = "YES";
         else if (val.toUpperCase() === "FALSE") temp[vv] = "NO";
         else {
-          console.log(val);
           if (
             moment(
               v[vv],
