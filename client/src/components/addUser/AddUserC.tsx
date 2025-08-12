@@ -178,7 +178,7 @@ const AddUserC = () => {
               container
               spacing={1}
             >
-              <Grid size={{ xs: 12, md: 6 }}>
+              {/* <Grid size={{ xs: 12, md: 6 }}>
                 <TextField
                   fullWidth
                   id="outlined-basic"
@@ -186,7 +186,7 @@ const AddUserC = () => {
                   variant="outlined"
                   size="medium"
                   {...register("emailAddress", {
-                    required: true,
+                    required: false,
                     pattern: {
                       value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                       message: "invalid email address",
@@ -206,8 +206,9 @@ const AddUserC = () => {
                     {errors.emailAddress.message}
                   </FormHelperText>
                 )}
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
+              </Grid> */}
+              {/* remove password */}
+              {/* <Grid size={{ xs: 12, md: 6 }}>
                 <TextField
                   type={showPassword ? "text" : "password"}
                   label="Password"
@@ -234,7 +235,7 @@ const AddUserC = () => {
                     },
                   }}
                   {...register("password", {
-                    required: true,
+                    required: false,
                     minLength: {
                       value: 6,
                       message: "At least 6 characters required",
@@ -261,7 +262,7 @@ const AddUserC = () => {
                       {errors.password.message}
                     </FormHelperText>
                   )}
-              </Grid>
+              </Grid> */}
               <Grid size={{ xs: 12, md: 6 }}>
                 <PhoneInput
                   value={getValues("mobileNumber")}
@@ -281,10 +282,10 @@ const AddUserC = () => {
                     minHeight: "40px",
                     height:
                       errors &&
-                        errors.mobileNumber &&
-                        errors.mobileNumber &&
-                        errors.mobileNumber.type &&
-                        errors.mobileNumber.type === "required"
+                      errors.mobileNumber &&
+                      errors.mobileNumber &&
+                      errors.mobileNumber.type &&
+                      errors.mobileNumber.type === "required"
                         ? "70%"
                         : "100%",
                   }}

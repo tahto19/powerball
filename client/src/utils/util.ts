@@ -93,6 +93,8 @@ const getErrorsStatus = (code: string) => {
       return "Error Encountered!";
     case "x351":
       return "A problem has been detected on your computer. Please contact your administrator for assistance. ";
+    case "x910":
+      return "Your mobile number is not registered";
     default:
       return false;
   }
@@ -230,4 +232,14 @@ export const localEncrypt = (d) => {
 export const localDecrypt = (d) => {
   const e = atob(d);
   return e;
+};
+export const randomLetters = (length) => {
+  let mixed =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890~!@$%^&()_";
+  let a = "";
+  for (let i = 0; i < length; i++) {
+    let indexOfMixed = Math.floor(Math.random() * mixed.length);
+    a += mixed[indexOfMixed];
+  }
+  return a;
 };

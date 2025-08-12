@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { bodyDecrypt } from "@/utils/util";
+import { bodyDecrypt, randomLetters } from "@/utils/util";
 import { getTicket } from "./../redux/reducers/ticket/asyncCalls";
 import _ from "lodash";
 import { bodyEncrypt } from "@/utils/util";
@@ -27,6 +27,7 @@ import {
 } from "@/types/allTypes";
 import { enterEntries } from "@/components/2ndChance_iFrame/Raffles/interface";
 import { data } from "react-router-dom";
+import moment from "moment";
 
 interface Credentials {
   email: string;
@@ -236,7 +237,11 @@ export const apiService = {
           } else if (_d !== "file") {
             throw new Error(`${_d} has null`);
           }
-        } else if (_d !== "file") {
+        } else if (
+          _d !== "file" &&
+          _d !== "emailAddress" &&
+          _d !== "password"
+        ) {
           throw new Error(`${_d} has null`);
         }
       }
@@ -244,19 +249,20 @@ export const apiService = {
       const _r = await apiClient.post("/api/users/createUser", fd, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+      console.log(_r);
       return _r;
     } catch (err) {
-      return {
-        data: {
-          result: "error",
-          message: err.message,
-        },
-      };
+      throw err;
     }
   },
   createOTP: async (d: userState) => {
     return apiClient.post("/api/otp", {
       emailAddress: d.emailAddress,
+    });
+  },
+  createOTPForMobileNumber: async (d: userState) => {
+    return apiClient.post("/api/otp", {
+      mobileNumber: d.mobileNumber,
     });
   },
   verifyOTP: async (data: veriyCode) => {
@@ -432,6 +438,38 @@ export const apiService = {
 
   postInquiry: async (data) => {
     const response = await apiClient.post("api/inquiry/send", data);
+    return response.data;
+  },
+  postSentOtpForLogin: async (mobileNumber: String) => {
+    let time = moment().format("MM dd yyyy") + "-" + randomLetters(25);
+    const headers = {
+      time,
+    };
+    // this api is setting the otp
+    const response = await apiClient.post(
+      "/api/login/mobileLogin",
+      {
+        data: bodyEncrypt(mobileNumber, time),
+      },
+      { headers }
+    );
+    return response.data;
+  },
+  postForMobileLogin: async (mobileNumber: String, otp: String) => {
+    let time = moment().format("MM dd yyyy") + "-" + randomLetters(30);
+    const headers = {
+      time,
+    };
+    const response = await apiClient.post(
+      "/api/login/loginUsingMobileNumber",
+      {
+        data: {
+          ta_: bodyEncrypt(mobileNumber, time),
+          tb_: bodyEncrypt(otp, time),
+        },
+      },
+      { headers }
+    );
     return response.data;
   },
 };

@@ -52,6 +52,7 @@ import WinnerDetails from "./components/2ndChance_iFrame/winner/WinnerDetails";
 import TicketScannedList from "./components/ticketScanner/TicketScannedList";
 import { ExportDialog } from "./Global/ExportDialog/ExportDialog";
 import Aplhacode from "./components/2ndChance_iFrame/alphacode/Aplhacode";
+import PhoneNumberLogin from "./components/2ndChance_iFrame/Login/PhoneNumberLogin";
 
 const routes = [
   { path: "/dashboard", component: <Dashboard />, title: "Dashboard" },
@@ -252,7 +253,7 @@ function AppRoutes() {
       />
       <Route
         path="/iframe/2nd-chance/login"
-        element={<Login />}
+        element={<PhoneNumberLogin />}
       />
       <Route
         path="/iframe/2nd-chance/forgot-password"

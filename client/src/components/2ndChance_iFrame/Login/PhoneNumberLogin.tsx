@@ -13,23 +13,29 @@ import apiService from "@/services/apiService";
 
 import { showToaster } from "@/redux/reducers/global/globalSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { localDecrypt, localEncrypt } from "@/utils/util";
+import { delay, getMessage, localDecrypt, localEncrypt } from "@/utils/util";
+import { Button, styled } from "@mui/material";
+import { toast } from "react-toastify";
+import { VpnKey } from "@mui/icons-material";
+import { MuiOtpInput } from "mui-one-time-password-input";
+
 const base_url = import.meta.env.VITE_API_BASE_URL;
-const Login = () => {
+const PhoneNumberLogin = () => {
   const dispatch = useAppDispatch();
   // const navigate = useNavigate();
   const { token } = useAppSelector((state) => state.token);
 
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
+  const [mobileNumberError, setMobileNumberError] = React.useState(false);
+  const [mobileNumberErrorMessage, setMobileNumberErrorMessage] =
+    React.useState("");
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
-
+  const [otp, setOTP] = React.useState("");
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
       if (!validateInputs()) return;
-      if (emailError || passwordError) {
+      if (mobileNumberError || passwordError) {
         return;
       }
       const formData = new FormData(event.currentTarget);
@@ -76,18 +82,20 @@ const Login = () => {
   };
 
   const validateInputs = () => {
-    const email = document.getElementById("email") as HTMLInputElement;
+    const mobileNumber = document.getElementById(
+      "mobileNumber"
+    ) as HTMLInputElement;
     // const password = document.getElementById("password") as HTMLInputElement;
 
     let isValid = true;
 
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-      setEmailError(true);
-      setEmailErrorMessage("Please enter a valid email address.");
+    if (!mobileNumber.value || !/\S+@\S+\.\S+/.test(mobileNumber.value)) {
+      setMobileNumberError(true);
+      setMobileNumberErrorMessage("Please enter a mobile number.");
       isValid = false;
     } else {
-      setEmailError(false);
-      setEmailErrorMessage("");
+      setMobileNumberError(false);
+      setMobileNumberErrorMessage("");
     }
 
     // if (!password.value || password.value.length < 6) {
@@ -104,7 +112,8 @@ const Login = () => {
   };
   // remember me
   const [rememberMe, setRememberMe] = React.useState(false);
-  const [email, setEmail] = React.useState("");
+
+  const [mobileNumber, setMobileNumber] = React.useState("");
   const [password, setPassword] = React.useState("");
   React.useEffect(() => {
     const saved = localStorage.getItem("jxRsOvNeq5-Remember_me") === "true";
@@ -114,7 +123,7 @@ const Login = () => {
     if (saved) {
       let email = localDecrypt(localStorage.getItem("JqNw1q3HCK-90t4y"));
       let password = localDecrypt(localStorage.getItem("OM8Ovhw79G-90t4y"));
-      setEmail(email);
+      setMobileNumber(email);
       setPassword(password);
     }
     setRememberMe(saved);
@@ -129,6 +138,76 @@ const Login = () => {
   };
   const handleSignUp = () => {
     window.parent.location.href = base_url + "create-an-account/";
+  };
+  const [loadingBtn, setLoadingBtn] = React.useState(false);
+  const [sentOtp, setSentOtp] = React.useState(false);
+  const sendOTP = async () => {
+    let tId = toast.loading("loading");
+    setLoadingBtn(true);
+    try {
+      await delay(2000);
+      toast.update(tId, {
+        render:
+          "We are sending a one-time password (OTP) to your mobile number and verifying your account. Please wait...",
+        type: "info",
+        autoClose: 3000,
+      });
+      let r_ = await apiService.postSentOtpForLogin(mobileNumber);
+      await delay(1000);
+      toast.update(tId, {
+        render:
+          "We’ve sent a one-time password (OTP) for this login to your mobile number.",
+        type: "success",
+        isLoading: false,
+        closeButton: true,
+      });
+
+      if (r_.result === "success") {
+        setSentOtp(true);
+      }
+      console.log(r_);
+      setLoadingBtn(false);
+    } catch (err) {
+      let message = getMessage(err);
+      toast.update(tId, {
+        render: message,
+        type: "error",
+        isLoading: false,
+        closeButton: true,
+      });
+      setLoadingBtn(false);
+    }
+  };
+  const handleLogin = async (number?: string) => {
+    console.log(number);
+    let tId = toast.loading("loading");
+    setLoadingBtn(true);
+    await delay(1000);
+    try {
+      console.log("here");
+      let r_ = await apiService.postForMobileLogin(mobileNumber, number || otp);
+      toast.update(tId, {
+        render: "Successfully login please wait...",
+        type: "success",
+        isLoading: false,
+        closeButton: true,
+      });
+      await delay(1000);
+      if (r_.data.result == "success") {
+        // Redirect to dashboard after login
+        // navigate("https://18.138.76.86/?page_id=279");
+        window.parent.location.href = base_url + "secondchance/";
+      }
+    } catch (err) {
+      let message = getMessage(err);
+      toast.update(tId, {
+        render: message,
+        type: "error",
+        isLoading: false,
+        closeButton: true,
+      });
+      setLoadingBtn(false);
+    }
   };
   // React.useEffect(() => {
   //   if (token) {
@@ -213,55 +292,69 @@ const Login = () => {
                                       htmlFor="user-938a465"
                                       className="elementor-field-label"
                                     >
-                                      Username or Email Address
+                                      Mobile Number
                                     </label>
                                     <TextField
-                                      value={email}
+                                      value={mobileNumber}
                                       onChange={(e) => {
-                                        setEmail(e.target.value);
+                                        setMobileNumber(e.target.value);
                                       }}
-                                      error={emailError}
-                                      helperText={emailErrorMessage}
-                                      id="email"
-                                      type="email"
-                                      name="email"
-                                      placeholder="your@email.com"
-                                      autoFocus
-                                      required
-                                      fullWidth
-                                      size="small"
-                                      variant="outlined"
-                                      color={emailError ? "error" : "primary"}
-                                    />
-                                  </div>
-                                  <div className="elementor-field-type-text elementor-field-group elementor-column elementor-col-100 elementor-field-required">
-                                    <label
-                                      htmlFor="password-938a465"
-                                      className="elementor-field-label"
-                                    >
-                                      Password
-                                    </label>
-                                    <TextField
-                                      value={password}
-                                      onChange={(e) => {
-                                        setPassword(e.target.value);
-                                      }}
-                                      error={passwordError}
-                                      helperText={passwordErrorMessage}
-                                      name="password"
-                                      placeholder="••••••"
-                                      type="password"
-                                      id="password"
+                                      error={mobileNumberError}
+                                      helperText={mobileNumberErrorMessage}
+                                      id="mobileNumber"
+                                      type="mobileNumber"
+                                      name="mobileNumber"
+                                      placeholder="+6391 *** *** *"
                                       autoFocus
                                       required
                                       fullWidth
                                       size="small"
                                       variant="outlined"
                                       color={
-                                        passwordError ? "error" : "primary"
+                                        mobileNumberError ? "error" : "primary"
                                       }
                                     />
                                   </div>
+                                  {sentOtp && (
+                                    <div className="elementor-field-type-text elementor-field-group elementor-column elementor-col-100 elementor-field-required">
+                                      <label
+                                        htmlFor="password-938a465"
+                                        className="elementor-field-label"
+                                      >
+                                        Password
+                                      </label>
+                                      <MuiOtpInput
+                                        value={otp}
+                                        onChange={(e) => {
+                                          setOTP(e);
+                                          if (e.length === 6) {
+                                            handleLogin(e);
+                                          }
+                                        }}
+                                        length={6}
+                                      />
+                                      {/* <TextField
+                                        value={password}
+                                        onChange={(e) => {
+                                          setPassword(e.target.value);
+                                        }}
+                                        error={passwordError}
+                                        helperText={passwordErrorMessage}
+                                        name="password"
+                                        placeholder="••••••"
+                                        type="password"
+                                        id="password"
+                                        autoFocus
+                                        required
+                                        fullWidth
+                                        size="small"
+                                        variant="outlined"
+                                        color={
+                                          passwordError ? "error" : "primary"
+                                        }
+                                      /> */}
+                                    </div>
+                                  )}
 
                                   <div className="elementor-field-type-checkbox elementor-field-group elementor-column elementor-col-100 elementor-remember-me">
                                     <label htmlFor="elementor-login-remember-me">
@@ -282,17 +375,39 @@ const Login = () => {
                                     </label>
                                   </div>
 
-                                  <div className="elementor-field-group elementor-column elementor-field-type-submit elementor-col-100">
-                                    <button
-                                      type="submit"
-                                      className="elementor-size-sm elementor-button"
-                                      name="wp-submit"
-                                    >
-                                      <span className="elementor-button-text">
-                                        Log In
-                                      </span>
-                                    </button>
-                                  </div>
+                                  {!sentOtp ? (
+                                    <div className="elementor-field-group elementor-column elementor-field-type-submit elementor-col-100">
+                                      <Button
+                                        className="text-color-white elementor-size-sm elementor-button"
+                                        name="wp-submit"
+                                        loading={loadingBtn}
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          sendOTP();
+                                        }}
+                                      >
+                                        <span className="elementor-button-text">
+                                          Send OTP
+                                        </span>
+                                      </Button>
+                                    </div>
+                                  ) : (
+                                    <div className="elementor-field-group elementor-column elementor-field-type-submit elementor-col-100">
+                                      <Button
+                                        className="text-color-white elementor-size-sm elementor-button"
+                                        name="wp-submit"
+                                        loading={loadingBtn}
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          handleLogin();
+                                        }}
+                                      >
+                                        <span className="elementor-button-text">
+                                          Login
+                                        </span>
+                                      </Button>
+                                    </div>
+                                  )}
 
                                   <div className="elementor-field-group elementor-column elementor-col-100">
                                     <a
@@ -368,4 +483,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default PhoneNumberLogin;

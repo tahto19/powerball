@@ -9,7 +9,6 @@ import { RootState } from "@/redux/store";
 
 const MuiOtpInputStyled = styled(MuiOtpInput)`
   display: flex;
-  gap: 50px;
 
   margin-inline: auto;
 `;
@@ -48,7 +47,9 @@ const VerificationCode = () => {
           </Typography>
         </Grid2>
         <Grid2 size={{ md: 12, sm: 12 }}>
-          <Typography>We've sent a verification code to your email. Please enter it below.</Typography>
+          <Typography>
+            We've sent a verification code to your email. Please enter it below.
+          </Typography>
         </Grid2>
         <Grid2 size={{ md: 5, sm: 8 }}>
           <MuiOtpInputStyled

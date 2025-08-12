@@ -30,7 +30,7 @@ export const outsideAddUser = createAsyncThunk(
     try {
       // return data;
 
-      const _r = await apiService.createOTP(data);
+      const _r = await apiService.createOTPForMobileNumber(data);
 
       dispatch(addUser(data));
       dispatch(addOTP(_r.data.data));
