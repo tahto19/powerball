@@ -271,7 +271,7 @@ class Export_data_class {
       let getAuditTrail = await AuditTrail.findOne({
         attributes: [],
         where: {
-          path: "/api/alphacode/insert",
+          path: "/alphacode/insert",
           targetId: v.id,
           typeOfRequest: 1,
         },
