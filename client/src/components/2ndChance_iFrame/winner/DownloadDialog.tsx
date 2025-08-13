@@ -95,6 +95,9 @@ export default function DownloadDialog({ open }: { open: boolean }) {
           </Grid2>
           <Grid2 size={{ xs: 4, sm: 4, lg: 4 }}>
             <Button
+              onClick={() => {
+                handleDownload(12);
+              }}
               variant={!dateRanges.endDate ? "outlined" : "contained"}
               disabled={!dateRanges.endDate}
             >
@@ -103,6 +106,9 @@ export default function DownloadDialog({ open }: { open: boolean }) {
           </Grid2>
           <Grid2 size={{ xs: 4, sm: 4, lg: 4 }}>
             <Button
+              onClick={() => {
+                handleDownload(13);
+              }}
               variant={!dateRanges.endDate ? "outlined" : "contained"}
               disabled={!dateRanges.endDate}
             >

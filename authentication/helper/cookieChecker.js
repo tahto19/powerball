@@ -11,7 +11,6 @@ export const cookieChecker = async (req) => {
       err.status = 401;
       throw err;
     }
-    console.log(cookie);
     let decryptCookie = await decryptPassword(cookie);
     if (!decryptCookie) throw new Error("ErrorCODE x44");
 

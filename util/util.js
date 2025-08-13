@@ -218,6 +218,7 @@ export const mobileSender = async (data) => {
 
 This code can only be used once and will change every time you log in.
 If you did not request to log in to the Scratch It website, please ignore this message and do not share this code with anyone.`,
+        route_id: process.env.OTP_ROUTE_ID,
       },
       function (err, message) {
         if (err) throw err;

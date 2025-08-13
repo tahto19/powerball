@@ -39,7 +39,13 @@ class Export_data_class {
       case 10:
         return await this.alpha_code_data(date_range);
       case 11:
+        return await this.get_ticket_scanned_without_raffle_code(date_range);
+      case 12:
         return await this.get_ticket_scanned(date_range);
+      case 13:
+        return await this.get_ticket_scanned_dont_include_no_details(
+          date_range
+        );
     }
   }
 
@@ -316,6 +322,64 @@ class Export_data_class {
     }
 
     return await this.toExcel(toSend, "Winners");
+  }
+  async get_ticket_scanned_without_raffle_code(date_range) {
+    console.log(date_range);
+    let r_ = await TicketDetails.findAll({
+      where: {
+        [Op.and]: [
+          { createdAt: { [Op.gte]: date_range[0] } },
+          { createdAt: { [Op.lte]: date_range[1] } },
+        ],
+      },
+      include: [
+        {
+          model: Users,
+        },
+      ],
+      raw: true,
+    });
+    let toSend = [];
+    for (const v of r_) {
+      // find if exists
+
+      let middleName = v["User.middlename"] || "";
+      let temp = {
+        "ticket scanned": moment(v.createdAt).format("MMMM DD yyyy hh:ss a"),
+        "ticket code": v.ticket_code,
+        "Alpha Code": v.alpha_code,
+        "Full Name":
+          decryptPassword(v["User.firstname"]) +
+          " " +
+          middleName +
+          " " +
+          decryptPassword(v["User.lastname"]),
+        VN: v.VIN,
+        entries: v.entries,
+        "entries used": v.entries_used,
+      };
+      toSend.push(temp);
+    }
+
+    return await this.toExcel(toSend, "Winners");
+  }
+  async get_ticket_scanned_dont_include_no_details(date_range) {
+    let r_ = await TicketHistory.findAll({
+      where: {
+        [Op.and]: [
+          { createdAt: { [Op.gte]: date_range[0] } },
+          { createdAt: { [Op.lte]: date_range[1] } },
+        ],
+      },
+      include: [
+        {
+          model: TicketDetails,
+        },
+        {
+          model: Users,
+        },
+      ],
+    });
   }
   async toExcel(data, type) {
     var columns;
