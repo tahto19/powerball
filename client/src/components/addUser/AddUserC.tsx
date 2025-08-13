@@ -267,6 +267,8 @@ const AddUserC = () => {
                 <PhoneInput
                   value={getValues("mobileNumber")}
                   country={"ph"}
+                  onlyCountries={["ph"]}
+                  disableDropdown={true}
                   inputStyle={{
                     border: "1px solid #c4c4c4",
                     height: "100%",
