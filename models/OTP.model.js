@@ -83,10 +83,10 @@ OTP.init(
       afterUpdate: async (otp, options) => {
         let val = otp.toJSON();
         if (val.mobileNumber) {
-          await r.mobileCode();
+          await otp.mobileCode();
         }
         if (val.emailAddress) {
-          await r.emailCode();
+          await otp.emailCode();
         }
         // For example: send notification after update is committed
         // await otp.emailCode();
@@ -95,10 +95,10 @@ OTP.init(
       afterSave: async (otp, options) => {
         let val = otp.toJSON();
         if (val.mobileNumber) {
-          await r.mobileCode();
+          await otp.mobileCode();
         }
         if (val.emailAddress) {
-          await r.emailCode();
+          await otp.emailCode();
         }
         // For example: send notification after update is committed
         // await otp.emailCode();
