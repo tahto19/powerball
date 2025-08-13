@@ -48,12 +48,11 @@ class OTP_class {
     if (filter.length === 0) throw new Error("ErrorCode X1");
     let query = {};
     query["where"] = WhereFilters(filter);
-    console.log(filter, "here");
+
     let list = await OTP.findOne(query);
     return list;
   }
   async findAndUpdateAuth(data) {
-    console.log(data);
     let getOTP = await this.FetchOne([
       { filter: data.id, field: "id", type: "number" },
       { filter: data.code, field: "code", type: "number" },

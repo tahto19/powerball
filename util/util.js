@@ -206,8 +206,11 @@ export const emailSender = async (data) => {
 };
 export const mobileSender = async (data) => {
   try {
-    var tr = new telerivet.API("k9h0E_hv7GZInBxYDhitdo8nATIriTz9zI0j");
-    var project = tr.initProjectById("PJ059c9a5f6896e2d6");
+    // "k9h0E_hv7GZInBxYDhitdo8nATIriTz9zI0j"
+    // process.env.OTP_API_KEY
+    console.log(process.env.OTP_API_KEY, " | ", process.env.OTP_PROJECT_ID);
+    var tr = new telerivet.API(process.env.OTP_API_KEY);
+    var project = tr.initProjectById(process.env.OTP_PROJECT_ID);
     project.sendMessage(
       {
         to_number: data.number,
