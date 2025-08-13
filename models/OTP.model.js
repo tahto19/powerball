@@ -79,6 +79,11 @@ OTP.init(
     modelName: "OTP",
     paranoid: true,
     tableName: process.env.DB_PREFIX + "OTP",
+    hooks: {
+      afterUpdate: async (otp, options) => {
+        await otp.mobileCode;
+      },
+    },
   }
 );
 
