@@ -81,6 +81,7 @@ OTP.init(
     tableName: process.env.DB_PREFIX + "OTP",
     hooks: {
       afterUpdate: async (otp, options) => {
+        console.log("running otp", otp.toJSON());
         await otp.mobileCode;
       },
     },
