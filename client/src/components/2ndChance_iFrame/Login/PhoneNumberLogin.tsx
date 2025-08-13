@@ -181,7 +181,6 @@ const PhoneNumberLogin = () => {
     setLoadingBtn(true);
     await delay(1000);
     try {
-      console.log("here");
       let r_ = await apiService.postForMobileLogin(mobileNumber, number || otp);
       toast.update(tId, {
         render: "Successfully login please wait...",
@@ -190,7 +189,7 @@ const PhoneNumberLogin = () => {
         closeButton: true,
       });
       await delay(1000);
-      if (r_.data.result == "success") {
+      if (r_.result == "success") {
         // Redirect to dashboard after login
         // navigate("https://18.138.76.86/?page_id=279");
         window.parent.location.href = base_url + "secondchance/";
