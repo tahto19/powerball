@@ -6,8 +6,12 @@ import fastifyJwt from "@fastify/jwt";
 export const cookieChecker = async (req) => {
   try {
     const cookie = req?.cookies?.cookie_pb_1271;
-    if (!cookie) throw new Error("Need login!");
-
+    if (!cookie) {
+      const err = new Error("Need login!");
+      err.status = 401;
+      throw err;
+    }
+    console.log(cookie);
     let decryptCookie = await decryptPassword(cookie);
     if (!decryptCookie) throw new Error("ErrorCODE x44");
 
