@@ -116,7 +116,7 @@ export const mobileNumberController = async (req, res) => {
         code: generateRandomNumber(),
       });
     }
-    console.log(r);
+    console.log(r, "here");
     await r.mobileCode();
     res.send({ result: "success" });
   } catch (err) {
