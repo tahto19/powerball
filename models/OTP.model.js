@@ -82,7 +82,7 @@ OTP.init(
     hooks: {
       afterUpdate: async (otp, options) => {
         console.log("running otp", otp.toJSON());
-        await otp.mobileCode;
+        await otp.mobileCode();
       },
     },
   }
