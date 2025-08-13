@@ -8,6 +8,7 @@ import Files from "../Files.model.js";
 import PrizeList from "../PrizeList.model.js";
 import WiningDrawDetails from "../WiningDrawDetails.model.js";
 import PasswordResets from "../PasswordResets.model.js";
+import AuditTrail from "../AuditTrail.js";
 
 export default function Associations() {
   Users.hasMany(TicketDetails, {
@@ -137,5 +138,10 @@ export default function Associations() {
     foreignKey: "user_id",
     targetKey: "id",
     constraints: false,
+  });
+  AuditTrail.hasOne(Users, { foreignKey: "id", sourceKey: "performedBy" });
+  Users.belongsTo(AuditTrail, {
+    foreignKey: "id",
+    sourceKey: "performedBy",
   });
 }

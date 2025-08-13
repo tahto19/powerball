@@ -16,6 +16,7 @@ import moment from "moment";
 import AlphaCode from "../../../models/AlphaCode.js";
 import RafflePrize from "../../../models/RafflePrize.model.js";
 import Files from "../../../models/Files.model.js";
+import AuditTrail from "../../../models/AuditTrail.js";
 class Export_data_class {
   constructor() {}
   async getData(type, date_range, filter) {
@@ -261,9 +262,29 @@ class Export_data_class {
       ? { createdAt: { [Op.between]: [date_range[0], date_range[1]] } }
       : {};
     let r_ = await AlphaCode.findAll({
-      attributes: ["name", "entries", "createdAt", "active"],
+      attributes: ["name", "entries", "createdAt", "active", "id"],
     });
-    let r = r_.map((v) => v.toJSON());
+    let r = [];
+    for (let val of r_) {
+      let v = val.toJSON();
+
+      let getAuditTrail = await AuditTrail.findOne({
+        attributes: [],
+        where: {
+          path: "/api/alphacode/insert",
+          targetId: v.id,
+          typeOfRequest: 1,
+        },
+        include: { model: Users },
+      });
+      let g = getAuditTrail?.toJSON();
+
+      console.log();
+      let getAuditJSON = g?.User?.fullname || null;
+      v["add by"] = getAuditJSON;
+      r.push(v);
+    }
+    // r_.map((v) => v.toJSON());
     return await this.toExcel(r, "Game Maintenance List");
   }
   async get_ticket_scanned(date_range) {
@@ -293,27 +314,27 @@ class Export_data_class {
       if (v.entries_used === 0) {
         // find if exists
         let f = toSend.find(
-          (x) => x["ticket code"] === v.ticket_code && v.VIN === x["VN"]
+          (x) => x["ticket number"] === v.ticket_code && v.VIN === x["VN"]
         );
 
         if (f !== undefined) continue;
       } else {
         let f = toSend.filter(
-          (x) => x["ticket code"] === v.ticket_code && v.VIN === x["VN"]
+          (x) => x["ticket number"] === v.ticket_code && v.VIN === x["VN"]
         );
         console.log(f);
         if (f.length > v.entries_used) continue;
       }
       let middleName = v["User.middlename"] || "";
       let temp = {
-        "raffle code": v["ticket_histories.ticket_history_generate"] || "",
+        "raffle Ticket": v["ticket_histories.ticket_history_generate"] || "",
         "raffle joined": v["ticket_histories.createdAt"]
           ? moment(v["ticket_histories.createdAt"]).format(
               "MMMM DD yyyy hh:ss a"
             )
           : "",
         "ticket scanned": moment(v.createdAt).format("MMMM DD yyyy hh:ss a"),
-        "ticket code": v.ticket_code,
+        "ticket number": v.ticket_code,
         "Alpha Code": v.alpha_code,
         "Full Name":
           decryptPassword(v["User.firstname"]) +
@@ -353,7 +374,7 @@ class Export_data_class {
       let middleName = v["User.middlename"] || "";
       let temp = {
         "ticket scanned": moment(v.createdAt).format("MMMM DD yyyy hh:ss a"),
-        "ticket code": v.ticket_code,
+        "ticket number": v.ticket_code,
         "Alpha Code": v.alpha_code,
         "Full Name":
           decryptPassword(v["User.firstname"]) +
@@ -395,9 +416,9 @@ class Export_data_class {
       console.log(val);
       let middleName = v["User.middlename"] || "";
       let temp = {
-        "raffle code": v.ticket_history_generate,
+        "raffle Ticket": v.ticket_history_generate,
         "raffle joined": moment(v.createdAt).format("MMMM DD yyyy hh:ss a"),
-        "Ticket Code": v.ticket_detail.ticket_code,
+        "Ticket number": v.ticket_detail.ticket_code,
         "Ticket Scanned": v.ticket_detail.createdAt,
         "Alpha Code": v.ticket_detail.alpha_code,
         "Full Name": v.ticket_detail.User.fullname,
@@ -432,7 +453,7 @@ class Export_data_class {
       let temp = {
         entries: v.entries,
         "entries used": v.entries_used,
-        "Ticket Code": v.ticket_code,
+        "Ticket number": v.ticket_code,
         "Ticket Scanned": v.createdAt,
         "Alpha Code": v.alpha_code,
         fullname: v.User.fullname,
@@ -474,8 +495,8 @@ class Export_data_class {
         user: v.ticket_detail.User.fullname,
         "Mobile Number": v.ticket_detail.User.mobileNumber,
         email: v.ticket_detail.User.emailAddress,
-        "Raffle Code": v.ticket_history.ticket_history_generate,
-        "ticket code": v.ticket_detail.ticket_code,
+        "Raffle Ticket": v.ticket_history.ticket_history_generate,
+        "ticket number": v.ticket_detail.ticket_code,
         VN: v.ticket_detail.VIN,
         amount: v.Raffle_Prize.amount,
         "Date won": v.Raffle_Prize.createdAt,
