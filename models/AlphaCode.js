@@ -10,7 +10,7 @@ AlphaCode.init(
       type: DataTypes.CHAR(20),
     },
     active: {
-      allowNull: false,
+      allowNull: true,
       default: true,
       type: DataTypes.BOOLEAN,
     },
