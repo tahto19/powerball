@@ -206,7 +206,6 @@ export const emailSender = async (data) => {
 };
 export const mobileSender = async (data) => {
   try {
-    console.log(data);
     var tr = new telerivet.API("k9h0E_hv7GZInBxYDhitdo8nATIriTz9zI0j");
     var project = tr.initProjectById("PJ059c9a5f6896e2d6");
     project.sendMessage(

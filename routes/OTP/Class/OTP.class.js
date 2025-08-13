@@ -34,12 +34,14 @@ class OTP_class {
     return create;
   }
   async Edit(_data) {
-    let count = await OTP.count({ where: { id: _data.id } });
-    if (count < 0) throw new Error("User Not found");
-    const id = _data.id;
-    delete _data.id;
-    let a = await OTP.update(_data, { where: { id }, individualHooks: true });
+    let count = await OTP.findByPk(_data.id);
+    if (!count) throw new Error("User Not found");
+    Object.keys(_data).forEach((v) => {
+      if (v !== "id") count[v] = _data[v];
+    });
 
+    // let a = await OTP.update(_data, { where: { id }, individualHooks: true });
+    let a = await count.save();
     return a;
   }
   async FetchOne(filter) {

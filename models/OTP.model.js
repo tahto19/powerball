@@ -88,18 +88,18 @@ OTP.init(
         if (val.emailAddress) {
           await otp.emailCode();
         }
-        // For example: send notification after update is committed
-        // await otp.emailCode();
-        await otp.mobileCode();
       },
       afterSave: async (otp, options) => {
-        let val = otp.toJSON();
-        if (val.mobileNumber) {
-          await otp.mobileCode();
+        if (otp._options.isNewRecord) {
+          let val = otp.toJSON();
+          if (val.mobileNumber) {
+            await otp.mobileCode();
+          }
+          if (val.emailAddress) {
+            await otp.emailCode();
+          }
         }
-        if (val.emailAddress) {
-          await otp.emailCode();
-        }
+
         // For example: send notification after update is committed
         // await otp.emailCode();
       },
