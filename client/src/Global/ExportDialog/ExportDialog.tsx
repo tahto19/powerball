@@ -56,7 +56,7 @@ export function ExportDialog() {
     <Dialog
       open={show}
       fullWidth
-      maxWidth="md"
+      maxWidth="sm"
     >
       <DialogTitle>{title ? title : "Export Data"}</DialogTitle>
       <DialogContent>

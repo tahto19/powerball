@@ -13,7 +13,6 @@ import { toast } from "react-toastify";
 import { bodyDecrypt, delay } from "@/utils/util";
 import apiService from "@/services/apiService";
 import { openDialog } from "@/redux/reducers/download/exportDataSlice";
-import DownloadDialog from "./DownloadDialog";
 const WinnerDetails = ({ url }: { url: string | undefined }) => {
   const { loading, token } = useAppSelector((state) => state.token);
   const { _loading, filter, offset, limit, sort, list, count } = useAppSelector(
@@ -81,7 +80,7 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
     setRowClicked(e);
     setOpen(true);
   };
-  const [openDownload, setOpenDialog] = useState(true);
+
   useEffect(() => {
     if (url === "getDataAll") {
       let h = adminWinnerDetailsHeaders(handleRowClick);
@@ -156,6 +155,18 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
           >
             List of Winners
           </Typography>
+          <Button
+            sx={{
+              float: "right",
+              marginRight: "5px",
+            }}
+            variant="contained"
+            onClick={() =>
+              dispatch(openDialog({ title: "Winners List", type: 15 }))
+            }
+          >
+            Export
+          </Button>
         </Box>
         <Box
           sx={{
@@ -165,20 +176,7 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
             justifyContent: "space-between",
             mb: "20px",
           }}
-        >
-          <Button
-            sx={{
-              float: "right",
-              marginRight: "5px",
-            }}
-            variant="contained"
-            onClick={() =>
-              dispatch(openDialog({ title: "Tickets List", type: 10 }))
-            }
-          >
-            Export
-          </Button>
-        </Box>
+        ></Box>
         <CustomizedDataGridBasic
           data={list}
           headers={headers}
@@ -190,7 +188,6 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
           loading={imageLoading}
           imageUploaded={imageUploaded}
         />
-        <DownloadDialog open={openDownload} />
       </Box>
     </>
   );

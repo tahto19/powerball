@@ -12,9 +12,15 @@ import {
   TextField,
 } from "@mui/material";
 import moment from "moment";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { DateRangePicker } from "react-date-range";
-export default function DownloadDialog({ open }: { open: boolean }) {
+export default function DownloadDialog({
+  open,
+  setOpenDialog,
+}: {
+  open: boolean;
+  setOpenDialog: Dispatch<SetStateAction<boolean>>;
+}) {
   const dispatch = useAppDispatch();
   const [dateRanges, setDateRanges] = useState({
     startDate: null,
@@ -34,6 +40,15 @@ export default function DownloadDialog({ open }: { open: boolean }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    setAnchorEl(null);
+    setDateRanges({
+      startDate: null,
+      endDate: null,
+      key: "selection",
+    });
+  };
   const handleDownload = (type, filter) => {
     let dr = dateRanges.endDate
       ? [dateRanges.startDate, dateRanges.endDate]
@@ -42,7 +57,11 @@ export default function DownloadDialog({ open }: { open: boolean }) {
   };
   const id = open1 ? "simple-popover" : undefined;
   return (
-    <Dialog open={open}>
+    <Dialog
+      open={open}
+      fullWidth
+      maxWidth="md"
+    >
       <DialogTitle>Download Type</DialogTitle>
       <DialogContent>
         <Grid2
@@ -82,7 +101,7 @@ export default function DownloadDialog({ open }: { open: boolean }) {
               />
             </Popover>
           </Grid2>
-          <Grid2 size={{ xs: 4, sm: 4, lg: 4 }}>
+          <Grid2 size={{ xs: 3, sm: 3, lg: 3 }}>
             <Button
               variant={!dateRanges.endDate ? "outlined" : "contained"}
               disabled={!dateRanges.endDate}
@@ -90,10 +109,10 @@ export default function DownloadDialog({ open }: { open: boolean }) {
                 handleDownload(11);
               }}
             >
-              1
+              1st report
             </Button>
           </Grid2>
-          <Grid2 size={{ xs: 4, sm: 4, lg: 4 }}>
+          <Grid2 size={{ xs: 3, sm: 3, lg: 3 }}>
             <Button
               onClick={() => {
                 handleDownload(12);
@@ -101,10 +120,10 @@ export default function DownloadDialog({ open }: { open: boolean }) {
               variant={!dateRanges.endDate ? "outlined" : "contained"}
               disabled={!dateRanges.endDate}
             >
-              2
+              2nd report
             </Button>
           </Grid2>
-          <Grid2 size={{ xs: 4, sm: 4, lg: 4 }}>
+          <Grid2 size={{ xs: 3, sm: 3, lg: 3 }}>
             <Button
               onClick={() => {
                 handleDownload(13);
@@ -112,7 +131,18 @@ export default function DownloadDialog({ open }: { open: boolean }) {
               variant={!dateRanges.endDate ? "outlined" : "contained"}
               disabled={!dateRanges.endDate}
             >
-              3
+              Combination report
+            </Button>
+          </Grid2>
+          <Grid2 size={{ xs: 3, sm: 3, lg: 3 }}>
+            <Button
+              onClick={() => {
+                handleDownload(14);
+              }}
+              variant={!dateRanges.endDate ? "outlined" : "contained"}
+              disabled={!dateRanges.endDate}
+            >
+              ticket scanned not used
             </Button>
           </Grid2>
         </Grid2>
@@ -121,6 +151,7 @@ export default function DownloadDialog({ open }: { open: boolean }) {
         <Button
           sx={{ color: "red" }}
           variant="outlined"
+          onClick={() => handleCloseDialog()}
         >
           Close
         </Button>

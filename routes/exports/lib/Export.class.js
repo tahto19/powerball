@@ -14,6 +14,8 @@ import WiningDrawDetails from "../../../models/WiningDrawDetails.model.js";
 import RaffleDetails from "../../../models/RaffleDetails.model.js";
 import moment from "moment";
 import AlphaCode from "../../../models/AlphaCode.js";
+import RafflePrize from "../../../models/RafflePrize.model.js";
+import Files from "../../../models/Files.model.js";
 class Export_data_class {
   constructor() {}
   async getData(type, date_range, filter) {
@@ -46,6 +48,11 @@ class Export_data_class {
         return await this.get_ticket_scanned_dont_include_no_details(
           date_range
         );
+      case 14:
+        return await this.get_ticket_scanned_only(date_range);
+      case 15: {
+        return await this.get_winners(date_range);
+      }
     }
   }
 
@@ -361,7 +368,7 @@ class Export_data_class {
       toSend.push(temp);
     }
 
-    return await this.toExcel(toSend, "Winners");
+    return await this.toExcel(toSend, "Ticket Scanned");
   }
   async get_ticket_scanned_dont_include_no_details(date_range) {
     let r_ = await TicketHistory.findAll({
@@ -374,12 +381,109 @@ class Export_data_class {
       include: [
         {
           model: TicketDetails,
+          include: [
+            {
+              model: Users,
+            },
+          ],
         },
+      ],
+    });
+    let toSend = [];
+    r_.forEach((val) => {
+      let v = val.toJSON();
+      console.log(val);
+      let middleName = v["User.middlename"] || "";
+      let temp = {
+        "raffle code": v.ticket_history_generate,
+        "raffle joined": moment(v.createdAt).format("MMMM DD yyyy hh:ss a"),
+        "Ticket Code": v.ticket_detail.ticket_code,
+        "Ticket Scanned": v.ticket_detail.createdAt,
+        "Alpha Code": v.ticket_detail.alpha_code,
+        "Full Name": v.ticket_detail.User.fullname,
+        VN: v.VIN,
+        entries: v.ticket_detail.entries,
+        "entries used": v.ticket_detail.entries_used,
+        VN: v.ticket_detail.VIN,
+      };
+      toSend.push(temp);
+    });
+    return await this.toExcel(toSend, "Ticket Scanned");
+  }
+  async get_ticket_scanned_only(date_range) {
+    let r_ = await TicketDetails.findAll({
+      where: {
+        [Op.and]: [
+          { createdAt: { [Op.gte]: date_range[0] } },
+          { createdAt: { [Op.lte]: date_range[1] } },
+          { entries_used: { [Op.lte]: 0 } },
+        ],
+      },
+      include: [
         {
           model: Users,
         },
       ],
     });
+    let toSend = [];
+    r_.forEach((val) => {
+      let v = val.toJSON();
+      console.log(v);
+      let temp = {
+        entries: v.entries,
+        "entries used": v.entries_used,
+        "Ticket Code": v.ticket_code,
+        "Ticket Scanned": v.createdAt,
+        "Alpha Code": v.alpha_code,
+        fullname: v.User.fullname,
+        VN: v.VIN,
+      };
+      toSend.push(temp);
+    });
+    return await this.toExcel(toSend, "Ticket Scanned");
+  }
+  async get_winners(date_range) {
+    let r_ = await WiningDrawDetails.findAll({
+      where: {
+        [Op.and]: [
+          { createdAt: { [Op.gte]: date_range[0] } },
+          { createdAt: { [Op.lte]: date_range[1] } },
+        ],
+      },
+      include: [
+        {
+          model: RafflePrize,
+          include: [
+            {
+              model: RaffleSchedule,
+              include: [{ model: RaffleDetails, as: "raffleDetails" }],
+            },
+            { model: PrizeList },
+          ],
+        },
+        { model: TicketHistory },
+        { model: TicketDetails, include: [{ model: Users }] },
+        { model: Files },
+      ],
+    });
+    let toSend = [];
+    r_.forEach((val) => {
+      let v = val.toJSON();
+      console.log(v);
+      let temp = {
+        user: v.ticket_detail.User.fullname,
+        "Mobile Number": v.ticket_detail.User.mobileNumber,
+        email: v.ticket_detail.User.emailAddress,
+        "Raffle Code": v.ticket_history.ticket_history_generate,
+        "ticket code": v.ticket_detail.ticket_code,
+        VN: v.ticket_detail.VIN,
+        amount: v.Raffle_Prize.amount,
+        "Date won": v.Raffle_Prize.createdAt,
+        claimed: v.file ? "YES" : "NO",
+      };
+      toSend.push(temp);
+    });
+    return await this.toExcel(toSend, "Winners");
   }
   async toExcel(data, type) {
     var columns;

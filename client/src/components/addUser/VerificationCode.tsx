@@ -43,12 +43,13 @@ const VerificationCode = () => {
       >
         <Grid2 size={{ md: 12, sm: 12 }}>
           <Typography sx={{ fontWeight: "bolder", fontSize: "2.2em" }}>
-            Please check your email
+            Please check your mobile for the verification code.
           </Typography>
         </Grid2>
         <Grid2 size={{ md: 12, sm: 12 }}>
           <Typography>
-            We've sent a verification code to your email. Please enter it below.
+            We’ve sent a one-time password (OTP) to your mobile number. Please
+            enter it below.
           </Typography>
         </Grid2>
         <Grid2 size={{ md: 5, sm: 8 }}>

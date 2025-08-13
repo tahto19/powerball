@@ -1,9 +1,10 @@
+import moment from "moment";
 import ec from "../lib/Export.class.js";
 export const exportDataController = async (req, res) => {
   try {
     const { type, dr, filter } = req.body;
-    console.log(req.body);
-    let _r = await ec.getData(type, dr, filter);
+    const dr_ = dr || [moment().startOf("year"), moment().endOf("year")];
+    let _r = await ec.getData(type, dr_, filter);
     res.send({ file: _r });
   } catch (err) {
     console.log(err);

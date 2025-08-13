@@ -18,6 +18,7 @@ import moment from "moment";
 import { useLocation } from "react-router-dom";
 import RandomString from "@/animated/RandomLetters";
 import { openDialog } from "@/redux/reducers/download/exportDataSlice";
+import DownloadDialog from "./DownloadDialog";
 const headers: GridColDef[] = [
   {
     field: "ticket_code",
@@ -146,6 +147,7 @@ const TicketScanner = () => {
     });
     setOpen(!open);
   };
+  const [openDownload, setOpenDialog] = useState(false);
   return (
     <Grid2
       container
@@ -157,6 +159,10 @@ const TicketScanner = () => {
         dialogType={dialogType}
         data={data}
       ></Dialog_>
+      <DownloadDialog
+        open={openDownload}
+        setOpenDialog={setOpenDialog}
+      />
       <Grid2
         sx={{ display: "flex", alignItems: "center" }}
         size={{ xs: 6, sm: 6, lg: 6 }}
@@ -187,7 +193,7 @@ const TicketScanner = () => {
           }}
           variant="contained"
           onClick={() => {
-            dispatch(openDialog({ title: "Tickets List", type: 5 }));
+            setOpenDialog(true);
           }}
         >
           Exports
