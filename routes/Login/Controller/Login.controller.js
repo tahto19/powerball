@@ -108,7 +108,7 @@ export const mobileNumberController = async (req, res) => {
       });
       await otp.mobileCode();
     } else {
-      let edited = await OTPClass.Edit({
+      await OTPClass.Edit({
         platform,
         mobile,
         platformversion,
@@ -116,7 +116,7 @@ export const mobileNumberController = async (req, res) => {
         id: r.id,
         code: generateRandomNumber(),
       });
-      await edited.mobileCode();
+      // await edited.mobileCode();
     }
 
     res.send({ result: "success" });
