@@ -38,7 +38,7 @@ class OTP_class {
     if (count < 0) throw new Error("User Not found");
     const id = _data.id;
     delete _data.id;
-    let a = await OTP.update(_data, { where: { id } });
+    let a = await OTP.update(_data, { where: { id }, individualHooks: true });
 
     return a;
   }

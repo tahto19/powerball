@@ -68,12 +68,12 @@ export const createOTPController = async (req, res) => {
         emailAddress: emailAddress || "",
         mobileNumber,
       });
-    if (mobileNumber) {
-      await r.mobileCode();
-    }
-    if (emailAddress) {
-      await r.emailCode();
-    }
+    // if (mobileNumber) {
+    //   await r.mobileCode();
+    // }
+    // if (emailAddress) {
+    //   await r.emailCode();
+    // }
 
     res.send(cSend(r.id));
   } catch (err) {

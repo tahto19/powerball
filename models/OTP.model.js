@@ -81,8 +81,27 @@ OTP.init(
     tableName: process.env.DB_PREFIX + "OTP",
     hooks: {
       afterUpdate: async (otp, options) => {
-        console.log("running otp", otp.toJSON());
+        let val = otp.toJSON();
+        if (val.mobileNumber) {
+          await r.mobileCode();
+        }
+        if (val.emailAddress) {
+          await r.emailCode();
+        }
+        // For example: send notification after update is committed
+        // await otp.emailCode();
         await otp.mobileCode();
+      },
+      afterSave: async (otp, options) => {
+        let val = otp.toJSON();
+        if (val.mobileNumber) {
+          await r.mobileCode();
+        }
+        if (val.emailAddress) {
+          await r.emailCode();
+        }
+        // For example: send notification after update is committed
+        // await otp.emailCode();
       },
     },
   }
