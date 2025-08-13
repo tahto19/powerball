@@ -25,9 +25,9 @@ export const cookieChecker = async (req) => {
     let userDetails = await UserClass.FetchOne([
       { filter: getCookeDetails.id, type: "number", field: "id" },
       {
-        filter: encrpytPassword(getCookeDetails.emailAddress),
+        filter: getCookeDetails.mobileNumber,
         type: "string",
-        field: "emailAddress",
+        field: "mobileNumber",
       },
     ]);
 
