@@ -98,7 +98,7 @@ export const mobileNumberController = async (req, res) => {
     // if null create new otp
     let otp;
     if (!r) {
-      otp = await OTPClass.Insert({
+      await OTPClass.Insert({
         platform,
         mobile,
         platformversion,
@@ -108,7 +108,7 @@ export const mobileNumberController = async (req, res) => {
       });
       // await otp.mobileCode();
     } else {
-      let a = await OTPClass.Edit({
+      await OTPClass.Edit({
         platform,
         mobile,
         platformversion,
@@ -174,12 +174,14 @@ export const loginUsingMobileNumberController = async (req, res) => {
 
     let encryptToken = await encrpytPassword(token);
 
-    res.setCookie("cookie_pb_1271", encryptToken, {
-      domain: "",
-      path: "/",
-      secure: true,
-      httpOnly: true,
-    });
+    res
+      .setCookie("cookie_pb_1271", encryptToken, {
+        domain: "",
+        path: "/",
+        secure: true,
+        httpOnly: true,
+      })
+      .send({ result: "success", token: encryptToken });
   } catch (err) {
     throw err;
   }
