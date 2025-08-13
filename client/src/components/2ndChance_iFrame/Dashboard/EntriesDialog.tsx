@@ -84,18 +84,28 @@ const EntriesDialog = ({ open, onClose }: DialogProps) => {
 
         if (d) {
             let new_raffle: any = [];
+            let new_ticket_list: any = [];
+            console.log(d)
 
             d.forEach((x: any) => {
+                const f = new_ticket_list.find((c: any) => c.alphaCode === x.alphaCode);
+
+                if (f) {
+                    f.availableEntries += x.availableEntries;
+                } else {
+                    new_ticket_list.push({ alphaCode: x.alphaCode, availableEntries: x.availableEntries });
+                }
+
                 x.raffles.forEach((z: any) => {
                     const find = new_raffle.find((c: any) => c.name === z.name);
                     if (find) {
-                        find.entries += 1;
+                        find.entries += x.availableEntries;
                     } else {
-                        new_raffle.push({ name: z.name, entries: 1 });
+                        new_raffle.push({ name: z.name, entries: x.availableEntries });
                     }
                 });
             });
-            setTicketList(d)
+            setTicketList(new_ticket_list)
             setRaffleList(new_raffle)
         }
 
@@ -209,7 +219,7 @@ const EntriesDialog = ({ open, onClose }: DialogProps) => {
                                     </Grid2>
                                     <Grid2 size={{ xs: 6, sm: 6, md: 6, lg: 6 }}>
                                         <Typography sx={{ fontSize: "12px", float: 'right', fontWeight: '600' }}>
-                                            # of Entries Allowed
+                                            # of Entries Available
                                         </Typography>
                                     </Grid2>
                                 </Grid2>
