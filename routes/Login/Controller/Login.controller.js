@@ -98,7 +98,7 @@ export const mobileNumberController = async (req, res) => {
     // if null create new otp
     let otp;
     if (!r) {
-      r = await OTPClass.Insert({
+      otp = await OTPClass.Insert({
         platform,
         mobile,
         platformversion,
@@ -106,8 +106,9 @@ export const mobileNumberController = async (req, res) => {
         mobileNumber: dd,
         isLogin: true,
       });
+      await otp.mobileCode();
     } else {
-      r = await OTPClass.Edit({
+      await OTPClass.Edit({
         platform,
         mobile,
         platformversion,
@@ -115,9 +116,9 @@ export const mobileNumberController = async (req, res) => {
         id: r.id,
         code: generateRandomNumber(),
       });
+      await r.mobileCode();
     }
-    console.log(r, "here");
-    await r.mobileCode();
+
     res.send({ result: "success" });
   } catch (err) {
     console.log(err);
