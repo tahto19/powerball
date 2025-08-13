@@ -98,7 +98,7 @@ export const mobileNumberController = async (req, res) => {
     // if null create new otp
     let otp;
     if (!r) {
-      otp = await OTPClass.Insert({
+      r = await OTPClass.Insert({
         platform,
         mobile,
         platformversion,
@@ -107,7 +107,7 @@ export const mobileNumberController = async (req, res) => {
         isLogin: true,
       });
     } else {
-      await OTPClass.Edit({
+      r = await OTPClass.Edit({
         platform,
         mobile,
         platformversion,
