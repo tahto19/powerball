@@ -279,7 +279,7 @@ class Export_data_class {
       });
       let g = getAuditTrail?.toJSON();
 
-      console.log(g);
+      console.log(g, v);
       let getAuditJSON = g?.User?.fullname || null;
       v["add by"] = getAuditJSON;
       r.push(v);
