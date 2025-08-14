@@ -11,6 +11,9 @@ export type adminType = {
   isAdmin: boolean | null;
   id?: number | null | undefined;
   birthdate?: string | Date;
+  barangay?: string;
+  province?: string;
+  hbnandstr?: string;
 };
 
 export type fetchAll = {

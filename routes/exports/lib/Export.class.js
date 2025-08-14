@@ -1,4 +1,4 @@
-import { Op, Sequelize } from "sequelize";
+import { fn, Op, Sequelize } from "sequelize";
 import Users from "../../../models/Users.model.js";
 import ExcelJS from "exceljs";
 import PrizeList from "../../../models/PrizeList.model.js";
@@ -54,6 +54,9 @@ class Export_data_class {
       case 15: {
         return await this.get_winners(date_range);
       }
+      case 16: {
+        return await this.get_raffleDraw(date_range);
+      }
     }
   }
 
@@ -91,6 +94,10 @@ class Export_data_class {
         "mobileNumber",
         "createdAt",
         "birthdate",
+        "hbnandstr",
+        "barangay",
+        "province",
+        "city",
       ],
     });
     let r = _r.map((v) => v.toJSON());
@@ -252,6 +259,7 @@ class Export_data_class {
         "createdAt",
         "updatedAt",
         "deletedAt",
+        ["details", "Raffle ID"],
       ],
     });
     let r = _r.map((v) => v.toJSON());
@@ -279,16 +287,14 @@ class Export_data_class {
       });
       let g = getAuditTrail?.toJSON();
 
-      console.log(g, v);
       let getAuditJSON = g?.User?.fullname || null;
-      v["add by"] = getAuditJSON;
+      v["created by"] = getAuditJSON;
       r.push(v);
     }
     // r_.map((v) => v.toJSON());
     return await this.toExcel(r, "Game Maintenance List");
   }
   async get_ticket_scanned(date_range) {
-    console.log(date_range);
     let r_ = await TicketDetails.findAll({
       where: {
         [Op.and]: [
@@ -314,13 +320,13 @@ class Export_data_class {
       if (v.entries_used === 0) {
         // find if exists
         let f = toSend.find(
-          (x) => x["ticket number"] === v.ticket_code && v.VIN === x["VN"]
+          (x) => x["ticket number"] === v.ticket_code && v.VIN === x["VIRN"]
         );
 
         if (f !== undefined) continue;
       } else {
         let f = toSend.filter(
-          (x) => x["ticket number"] === v.ticket_code && v.VIN === x["VN"]
+          (x) => x["ticket number"] === v.ticket_code && v.VIN === x["VIRN"]
         );
         console.log(f);
         if (f.length > v.entries_used) continue;
@@ -342,17 +348,16 @@ class Export_data_class {
           middleName +
           " " +
           decryptPassword(v["User.lastname"]),
-        VN: v.VIN,
+        VIRN: v.VIN,
         entries: v.entries,
         "entries used": v.entries_used,
       };
       toSend.push(temp);
     }
 
-    return await this.toExcel(toSend, "Winners");
+    return await this.toExcel(toSend, "TICKET SCANNED");
   }
   async get_ticket_scanned_without_raffle_code(date_range) {
-    console.log(date_range);
     let r_ = await TicketDetails.findAll({
       where: {
         [Op.and]: [
@@ -382,7 +387,7 @@ class Export_data_class {
           middleName +
           " " +
           decryptPassword(v["User.lastname"]),
-        VN: v.VIN,
+        VIRN: v.VIN,
         entries: v.entries,
         "entries used": v.entries_used,
       };
@@ -422,10 +427,10 @@ class Export_data_class {
         "Ticket Scanned": v.ticket_detail.createdAt,
         "Alpha Code": v.ticket_detail.alpha_code,
         "Full Name": v.ticket_detail.User.fullname,
-        VN: v.VIN,
+        VIRN: v.VIN,
         entries: v.ticket_detail.entries,
         "entries used": v.ticket_detail.entries_used,
-        VN: v.ticket_detail.VIN,
+        VIRN: v.ticket_detail.VIN,
       };
       toSend.push(temp);
     });
@@ -457,7 +462,7 @@ class Export_data_class {
         "Ticket Scanned": v.createdAt,
         "Alpha Code": v.alpha_code,
         fullname: v.User.fullname,
-        VN: v.VIN,
+        VIRN: v.VIN,
       };
       toSend.push(temp);
     });
@@ -497,7 +502,7 @@ class Export_data_class {
         email: v.ticket_detail.User.emailAddress,
         "Raffle Ticket": v.ticket_history.ticket_history_generate,
         "ticket number": v.ticket_detail.ticket_code,
-        VN: v.ticket_detail.VIN,
+        VIRN: v.ticket_detail.VIN,
         amount: v.Raffle_Prize.amount,
         "Date won": v.Raffle_Prize.createdAt,
         claimed: v.file ? "YES" : "NO",
@@ -505,6 +510,42 @@ class Export_data_class {
       toSend.push(temp);
     });
     return await this.toExcel(toSend, "Winners");
+  }
+  async get_raffleDraw(date_range) {
+    let r_ = await RaffleSchedule.findAll({
+      where: {
+        [Op.and]: [
+          { createdAt: { [Op.gte]: date_range[0] } },
+          { createdAt: { [Op.lte]: date_range[1] } },
+          { status: 3 },
+        ],
+      },
+      include: [
+        { model: RaffleDetails, as: "raffleDetails" },
+        {
+          model: RafflePrize,
+          as: "prizeInfo",
+          include: [{ model: PrizeList }],
+        },
+      ],
+    });
+
+    let toSend = [];
+    for (let val of r_) {
+      let v = val.toJSON();
+      let temp = {
+        "Raffle Id": v.raffleDetails.details,
+        "Draw raffle ticket": v.raffleDetails.draw_date,
+        "Date Created": v.raffleDetails.createdAt,
+      };
+
+      for (let pVal of v.prizeInfo) {
+        temp[`${pVal.Prize_List.name}`] = pVal.amount;
+      }
+
+      toSend.push(temp);
+    }
+    return await this.toExcel(toSend, "Raffle Draw");
   }
   async toExcel(data, type) {
     var columns;
@@ -537,9 +578,12 @@ class Export_data_class {
               "ddd MMM DD YYYY HH:mm:ss [GMT]Z (zz)",
               true
             ).isValid()
-          )
-            temp[vv] = moment(val).format("MMMM-DD-YYYY,hh:mm a");
-          else temp[vv] = val;
+          ) {
+            temp[vv] = moment(
+              val,
+              "ddd MMM DD YYYY HH:mm:ss [GMT]Z (zz)"
+            ).format("MMMM-DD-YYYY,hh:mm a");
+          } else temp[vv] = val;
         }
       });
 
@@ -552,10 +596,14 @@ class Export_data_class {
   }
   changeDetails(d) {
     switch (d) {
-      case "TICKET_HISTORY_GENERATE":
+      case "TICKET_CODE":
         return "TICKET NUMBER";
+      case "TICKET_HISTORY_GENERATE":
+        return "raffle ticket";
       case "CREATEDAT":
         return "Created Date";
+      case "HBNANDSTR":
+        return "House/Building Number and Street Name";
       default:
         return d;
     }

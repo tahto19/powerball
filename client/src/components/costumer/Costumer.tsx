@@ -191,9 +191,8 @@ const Costumer = () => {
         size={{ xs: 6, sm: 6, lg: 6 }}
       >
         <Button
-          onClick={() =>
-            dispatch(openDialog({ title: "Tickets List", type: 2 }))
-          }
+          onClick={() => dispatch(openDialog({ title: "Costumer", type: 2 }))}
+          variant="contained"
         >
           Export
         </Button>

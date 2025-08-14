@@ -26,14 +26,23 @@ export const insertSchema = {
 };
 export const updateSchema = {
   handler: updateController,
-  body: {
-    firstname: { type: "string" },
-    lastname: { type: "string" },
-    password: { type: "string" },
-    emailAddres: { type: "string" },
-    mobileNumber: { type: "string" },
-    id: { type: "string" },
-    isAdmin: { type: "string" },
+  schema: {
+    body: {
+      type: "object",
+      properties: {
+        firstname: { type: "string" },
+        lastname: { type: "string" },
+        password: { type: "string" },
+        emailAddres: { type: "string" },
+        mobileNumber: { type: "string" },
+        id: { type: "string" },
+        isAdmin: { type: "string" },
+        city: { type: "string" },
+        provinc: { type: "string" },
+        baranga: { type: "string" },
+        hbnandstr: { type: "string" },
+      },
+    },
   },
 };
 export const createUserSchema = {

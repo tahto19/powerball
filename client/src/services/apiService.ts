@@ -281,6 +281,10 @@ export const apiService = {
       "mobileNumber",
       "password",
       "isAdmin",
+      "city",
+      "barangay",
+      "province",
+      "hbnandstr",
     ];
     const fd = new FormData();
 

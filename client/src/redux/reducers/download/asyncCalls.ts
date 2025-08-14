@@ -5,6 +5,7 @@ import { base64ToFile, delay } from "@/utils/util";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import axios from "axios";
+import moment from "moment";
 
 export const downloadData = createAsyncThunk(
   "exportData/downloadData",
@@ -13,8 +14,9 @@ export const downloadData = createAsyncThunk(
     await delay(1000);
     try {
       const state = getState() as RootState;
-      const token = state.token.token;
 
+      const token = state.token.token;
+      const title = state.exportData.title;
       const _r = await apiService.exportData(data, token ? token : "test");
       let file = _r.file;
 
@@ -25,7 +27,11 @@ export const downloadData = createAsyncThunk(
         autoClose: 2000,
       });
       await delay(1000);
-      await base64ToFile(file, "test");
+      console.log(data);
+      await base64ToFile(
+        file,
+        `${title}-date:${moment().format("MMMM DD YYYY")}`
+      );
       toast.update(toastId, {
         render: "Download Complete!",
         type: "success",

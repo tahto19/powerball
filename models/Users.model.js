@@ -73,6 +73,54 @@ Users.init(
         },
       },
     },
+    hbnandstr: {
+      allowNull: true,
+      type: DataTypes.STRING,
+      get() {
+        let val = this.getDataValue("hbnandstr");
+
+        return val ? decryptPassword(val) : this.getDataValue("hbnandstr");
+      },
+      set(val) {
+        this.setDataValue("hbnandstr", encrpytPassword(val));
+      },
+    },
+    barangay: {
+      allowNull: true,
+      type: DataTypes.STRING,
+      get() {
+        let val = this.getDataValue("barangay");
+
+        return val ? decryptPassword(val) : this.getDataValue("barangay");
+      },
+      set(val) {
+        this.setDataValue("barangay", encrpytPassword(val));
+      },
+    },
+    province: {
+      allowNull: true,
+      type: DataTypes.STRING,
+      get() {
+        let val = this.getDataValue("province");
+
+        return val ? decryptPassword(val) : this.getDataValue("province");
+      },
+      set(val) {
+        this.setDataValue("province", encrpytPassword(val));
+      },
+    },
+    city: {
+      allowNull: true,
+      type: DataTypes.STRING,
+      get() {
+        let val = this.getDataValue("city");
+
+        return val ? decryptPassword(val) : this.getDataValue("city");
+      },
+      set(val) {
+        this.setDataValue("city", encrpytPassword(val));
+      },
+    },
     idPath: { allowNull: true, type: DataTypes.STRING, defaultValue: null },
     birthdate: { allowNull: true, type: DataTypes.DATE, defaultValue: null },
     active: { allowNull: false, type: DataTypes.BOOLEAN, defaultValue: true },
