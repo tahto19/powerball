@@ -103,13 +103,13 @@ export default function DownloadDialog({
           </Grid2>
           <Grid2 size={{ xs: 3, sm: 3, lg: 3 }}>
             <Button
-              variant={!dateRanges.endDate ? "outlined" : "contained"}
-              disabled={!dateRanges.endDate}
+              variant="contained"
+              // disabled={!dateRanges.endDate}
               onClick={() => {
                 handleDownload(11);
               }}
             >
-              1st report
+              Scanned Ticket Number
             </Button>
           </Grid2>
           <Grid2 size={{ xs: 3, sm: 3, lg: 3 }}>
@@ -117,10 +117,10 @@ export default function DownloadDialog({
               onClick={() => {
                 handleDownload(12);
               }}
-              variant={!dateRanges.endDate ? "outlined" : "contained"}
-              disabled={!dateRanges.endDate}
+              variant="contained"
+              // disabled={!dateRanges.endDate}
             >
-              2nd report
+              Raffle Ticket
             </Button>
           </Grid2>
           <Grid2 size={{ xs: 3, sm: 3, lg: 3 }}>
@@ -128,10 +128,10 @@ export default function DownloadDialog({
               onClick={() => {
                 handleDownload(13);
               }}
-              variant={!dateRanges.endDate ? "outlined" : "contained"}
-              disabled={!dateRanges.endDate}
+              variant="contained"
+              // disabled={!dateRanges.endDate}
             >
-              Combination report
+              Scanned and Raffle Ticket
             </Button>
           </Grid2>
           <Grid2 size={{ xs: 3, sm: 3, lg: 3 }}>
@@ -139,10 +139,10 @@ export default function DownloadDialog({
               onClick={() => {
                 handleDownload(14);
               }}
-              variant={!dateRanges.endDate ? "outlined" : "contained"}
-              disabled={!dateRanges.endDate}
+              variant="contained"
+              // disabled={!dateRanges.endDate}
             >
-              ticket scanned not used
+              additional report
             </Button>
           </Grid2>
         </Grid2>
