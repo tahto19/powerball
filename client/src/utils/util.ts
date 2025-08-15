@@ -131,12 +131,12 @@ export const bodyDecrypt = (
   if (!data || (typeof data === "string" && !data.trim())) {
     // Ensure data is not empty or just whitespace
     console.error("Decryption failed: Empty data.");
-    return null;
+    throw new Error("Decryption failed: Empty data.");
   }
   if (!token) {
     // Handle missing token
     console.error("Decryption failed: Missing token doesn't exists.");
-    return null;
+    throw new Error("Decryption failed: Empty data.");
   }
   try {
     const bytes = CryptoJS.AES.decrypt(data, token);
@@ -146,13 +146,13 @@ export const bodyDecrypt = (
     if (!cipherData) {
       // Handle incorrect decryption. (returns an empty string, it does not throw an exception)
       console.error("Decryption failed: Invalid or corrupt data.");
-      return null;
+      throw new Error("Decryption failed: Invalid or corrupt data..");
     }
 
     return JSON.parse(cipherData);
   } catch (error) {
     console.error("Decryption failed: ", error);
-    return null;
+    throw error;
   }
 };
 
@@ -188,7 +188,7 @@ export const bodyEncrypt = (
     return bytes;
   } catch (error) {
     console.error("Decryption failed: ", error);
-    return null;
+    throw error;
   }
 };
 

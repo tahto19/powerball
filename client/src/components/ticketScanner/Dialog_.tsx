@@ -24,7 +24,7 @@ const Dialog_ = ({ open, data, dialogType, onClose }) => {
   let [color, setColor] = useState("#ffffff");
   const scanned = (e: IDetectedBarcode[]) => {
     setScannedData(e[0]);
-    console.log(e[0]);
+
     // dispatch(addTicket(e[0]));
   };
   const mimicsend = () => {

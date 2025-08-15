@@ -208,7 +208,7 @@ export const mobileSender = async (data) => {
   try {
     // "k9h0E_hv7GZInBxYDhitdo8nATIriTz9zI0j"
     // process.env.OTP_API_KEY
-    console.log(process.env.OTP_API_KEY, " | ", process.env.OTP_PROJECT_ID);
+
     var tr = new telerivet.API(process.env.OTP_API_KEY);
     var project = tr.initProjectById(process.env.OTP_PROJECT_ID);
     project.sendMessage(
@@ -222,7 +222,9 @@ If you did not request to log in to the Scratch It website, please ignore this m
       },
       function (err, message) {
         if (err) throw err;
-        console.log("successfully send otp in a mobile number");
+        console.log(
+          "successfully send otp in a mobile number : " + data.number
+        );
       }
     );
   } catch (err) {

@@ -1,6 +1,6 @@
 [
   { "path": "/users", "method": "TESTING HRTR" },
-  { "path": "^/users/?$", "method": "POST" },
+  { "path": "^/users/?$", "method": "123PaOST123" },
   { "path": "/users/createUser", "method": "POST" },
   { "path": "/otp", "method": "POST" },
   { "path": "/login", "method": "POST" },

@@ -80,6 +80,7 @@ function MainLayout({ title, children }: { title: string; children: any }) {
     <>
       <Box sx={{ display: "flex" }}>
         <SideMenu />
+
         {/* Main content */}
         <Main
           open={open}

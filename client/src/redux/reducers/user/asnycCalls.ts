@@ -144,15 +144,17 @@ export const postAdmin = createAsyncThunk(
       const state = getState() as RootState;
       const token = state.token.token;
 
-      if (dialogType.toLowerCase() === "add")
-        await apiService.insertAdmin(data, token);
+      if (dialogType.toLowerCase() === "add") {
+        let p = await apiService.insertAdmin(data, token);
+        console.log(p);
+      }
       // await apiService.insertAdmin(bodyEncrypt(data, token));
       else if (dialogType.toLowerCase() === "edit")
         await apiService.updateAdmin(data, token);
       // await apiService.updateAdmin(bodyEncrypt(data, token));
-      setTimeout(() => {
-        dispatch(getAdmin());
-      }, [1000]);
+      await delay(1000);
+      dispatch(getAdmin());
+
       dispatch(
         showToaster({
           message: `successsfully ${dialogType.toLowerCase()}ed admin`,
@@ -161,6 +163,7 @@ export const postAdmin = createAsyncThunk(
         })
       );
     } catch (err) {
+      console.log(err);
       dispatch(showToaster({ err, variant: "error", icon: "error" }));
     }
   }

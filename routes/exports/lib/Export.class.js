@@ -41,16 +41,17 @@ class Export_data_class {
         return await this.GameMaintenance_data(date_range, filter);
       case 10:
         return await this.alpha_code_data(date_range);
+
       case 11:
-        return await this.get_ticket_scanned_without_raffle_code(date_range);
+        return await this.get_ticket_scanned_only(date_range);
       case 12:
-        return await this.get_ticket_scanned(date_range);
+        return await this.get_ticket_scanned_without_raffle_code(date_range);
       case 13:
         return await this.get_ticket_scanned_dont_include_no_details(
           date_range
         );
       case 14:
-        return await this.get_ticket_scanned_only(date_range);
+        return await this.get_ticket_scanned(date_range);
       case 15: {
         return await this.get_winners(date_range);
       }
@@ -163,8 +164,6 @@ class Export_data_class {
     });
     let r = _r.map((v) => {
       let val = v.toJSON();
-      console.log(val);
-      console.log(decryptPassword(val.firstName), "here");
 
       val["fullname"] =
         decryptPassword(val.firstName) + " " + decryptPassword(val.lastName);
@@ -305,6 +304,12 @@ class Export_data_class {
       include: [
         {
           model: TicketHistory,
+          include: [
+            {
+              model: RaffleSchedule,
+              include: [{ model: RaffleDetails, as: "raffleDetails" }],
+            },
+          ],
         },
         {
           model: Users,
@@ -314,8 +319,7 @@ class Export_data_class {
     });
     let toSend = [];
     for (const v of r_) {
-      // let val = v.toJSON();
-      // console.log(val);
+      // let v = val.toJSON();
 
       if (v.entries_used === 0) {
         // find if exists
@@ -328,11 +332,14 @@ class Export_data_class {
         let f = toSend.filter(
           (x) => x["ticket number"] === v.ticket_code && v.VIN === x["VIRN"]
         );
-        console.log(f);
+
         if (f.length > v.entries_used) continue;
       }
       let middleName = v["User.middlename"] || "";
+
       let temp = {
+        "Raffle ID":
+          v["ticket_histories.Raffle_Schedule.raffleDetails.details"] || "",
         "raffle Ticket": v["ticket_histories.ticket_history_generate"] || "",
         "raffle joined": v["ticket_histories.createdAt"]
           ? moment(v["ticket_histories.createdAt"]).format(
@@ -363,11 +370,21 @@ class Export_data_class {
         [Op.and]: [
           { createdAt: { [Op.gte]: date_range[0] } },
           { createdAt: { [Op.lte]: date_range[1] } },
+          { entries_used: { [Op.gte]: 1 } },
         ],
       },
       include: [
         {
           model: Users,
+        },
+        {
+          model: TicketHistory,
+          include: [
+            {
+              model: RaffleSchedule,
+              include: [{ model: RaffleDetails, as: "raffleDetails" }],
+            },
+          ],
         },
       ],
       raw: true,
@@ -379,8 +396,11 @@ class Export_data_class {
       let middleName = v["User.middlename"] || "";
       let temp = {
         "ticket scanned": moment(v.createdAt).format("MMMM DD yyyy hh:ss a"),
-        "ticket number": v.ticket_code,
-        "Alpha Code": v.alpha_code,
+        "Raffle Ticket": v.ticket_code,
+        " raffle ID":
+          v["ticket_histories.Raffle_Schedule.raffleDetails.details"],
+        // "Alpha Code": v.alpha_code,
+        Active: v.active ? "Yes" : "No",
         "Full Name":
           decryptPassword(v["User.firstname"]) +
           " " +
@@ -391,6 +411,7 @@ class Export_data_class {
         entries: v.entries,
         "entries used": v.entries_used,
       };
+
       toSend.push(temp);
     }
 
@@ -413,12 +434,17 @@ class Export_data_class {
             },
           ],
         },
+        {
+          model: RaffleSchedule,
+
+          include: [{ model: RaffleDetails, as: "raffleDetails" }],
+        },
       ],
     });
     let toSend = [];
     r_.forEach((val) => {
       let v = val.toJSON();
-      console.log(val);
+
       let middleName = v["User.middlename"] || "";
       let temp = {
         "raffle Ticket": v.ticket_history_generate,
@@ -427,9 +453,11 @@ class Export_data_class {
         "Ticket Scanned": v.ticket_detail.createdAt,
         "Alpha Code": v.ticket_detail.alpha_code,
         "Full Name": v.ticket_detail.User.fullname,
+        Active: v.ticket_detail.active ? "Yes" : "No",
         VIRN: v.VIN,
         entries: v.ticket_detail.entries,
         "entries used": v.ticket_detail.entries_used,
+        "Raffle ID": v.Raffle_Schedule.raffleDetails.details,
         VIRN: v.ticket_detail.VIN,
       };
       toSend.push(temp);
@@ -454,13 +482,14 @@ class Export_data_class {
     let toSend = [];
     r_.forEach((val) => {
       let v = val.toJSON();
-      console.log(v);
+
       let temp = {
         entries: v.entries,
         "entries used": v.entries_used,
         "Ticket number": v.ticket_code,
-        "Ticket Scanned": v.createdAt,
+        "Date Scanned": v.createdAt,
         "Alpha Code": v.alpha_code,
+        Active: v.active ? "Yes" : "No",
         fullname: v.User.fullname,
         VIRN: v.VIN,
       };
@@ -495,16 +524,17 @@ class Export_data_class {
     let toSend = [];
     r_.forEach((val) => {
       let v = val.toJSON();
-      console.log(v);
+
       let temp = {
-        user: v.ticket_detail.User.fullname,
-        "Mobile Number": v.ticket_detail.User.mobileNumber,
-        email: v.ticket_detail.User.emailAddress,
+        Name: v.ticket_detail.User.fullname,
+        "Contact Number": v.ticket_detail.User.mobileNumber,
+        "Email Address": v.ticket_detail.User.emailAddress,
         "Raffle Ticket": v.ticket_history.ticket_history_generate,
         "ticket number": v.ticket_detail.ticket_code,
         VIRN: v.ticket_detail.VIN,
         amount: v.Raffle_Prize.amount,
-        "Date won": v.Raffle_Prize.createdAt,
+        "Raffle id": v.Raffle_Prize.Raffle_Schedule.details,
+        Date: v.Raffle_Prize.createdAt,
         claimed: v.file ? "YES" : "NO",
       };
       toSend.push(temp);
@@ -592,7 +622,6 @@ class Export_data_class {
     const buffer = await workbook.xlsx.writeBuffer();
     return Buffer.from(buffer).toString("base64");
     // worksheet.columns = data;
-    // console.log(data);
   }
   changeDetails(d) {
     switch (d) {

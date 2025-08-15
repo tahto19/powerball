@@ -268,8 +268,16 @@ export const apiService = {
   verifyOTP: async (data: veriyCode) => {
     return apiClient.post("/api/otp/verify", data);
   },
-  insertAdmin: async (data: adminType) => {
-    return apiClient.post("/api/users", data);
+  insertAdmin: async (data: adminType, token: string) => {
+    try {
+      let r = await apiClient.post("/api/users", {
+        data: bodyEncrypt(JSON.stringify(data), token),
+      });
+
+      return bodyDecrypt(r.data, token);
+    } catch (err) {
+      throw err;
+    }
   },
   updateAdmin: async (d: adminType, token: string | null) => {
     const data = [

@@ -67,6 +67,7 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
       keepErrors: true,
       keepDirty: true,
     });
+    setData({});
   };
   const handleClose = () => {
     onClose(false);
@@ -84,6 +85,7 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
         setValue(v, val, { shouldValidate: true, required: true });
       });
     }
+    console.log(data);
   }, [data, dialogType]);
   const onSubmit: SubmitHandler<DataProps> = (data) => {
     let isSend = { ...data, isAdmin: true };
@@ -280,10 +282,7 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
                         "Must include uppercase, lowercase  number, and special character",
                     },
                   })}
-                  disabled={
-                    (!formData.id && dialog_type !== "Edit") ||
-                    dialog_type === "View"
-                  }
+                  disabled={dialog_type === "View"}
                 />
               </FormControl>{" "}
               {errors &&

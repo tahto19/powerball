@@ -67,6 +67,10 @@ interface userState {
   otpID: number | null;
   password: string | null;
   isAdmin: boolean;
+  city: string | null;
+  province: string | null;
+  barangay: string | null;
+  hbnandstr: string | null;
 }
 
 const initialState: userState = {
