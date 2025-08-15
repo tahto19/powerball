@@ -46,7 +46,7 @@ const WinnerDetailsHeaders: GridColDef[] = [
             textTransform: "capitalize",
           }}
           label={params.value}
-          color={params.value === "active" ? "success" : "error"}
+          color={params.value.toLowerCase() === "claimed" ? "success" : "error"}
         />
       );
     },

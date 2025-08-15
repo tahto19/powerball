@@ -155,18 +155,20 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
           >
             List of Winners
           </Typography>
-          <Button
-            sx={{
-              float: "right",
-              marginRight: "5px",
-            }}
-            variant="contained"
-            onClick={() =>
-              dispatch(openDialog({ title: "Winners List", type: 15 }))
-            }
-          >
-            Export
-          </Button>
+          {url && (
+            <Button
+              sx={{
+                float: "right",
+                marginRight: "5px",
+              }}
+              variant="contained"
+              onClick={() =>
+                dispatch(openDialog({ title: "Winners List", type: 15 }))
+              }
+            >
+              Export
+            </Button>
+          )}
         </Box>
         <Box
           sx={{

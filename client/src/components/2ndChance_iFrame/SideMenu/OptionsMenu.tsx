@@ -9,7 +9,6 @@ import { listClasses } from "@mui/material/List";
 import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
 import MenuButton from "@/components/MenuButton";
 import { useNavigate } from "react-router-dom";
-import { Popover, Typography } from "@mui/material";
 
 const MenuItem = styled(MuiMenuItem)({
   margin: "2px 0",

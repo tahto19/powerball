@@ -19,7 +19,7 @@ export const getWinnerListAsync = createAsyncThunk(
 
       const _r = await apiService.getWinnerList(getFilter, token, url);
       const _rData = _.cloneDeep(bodyDecrypt(_r.data, token));
-      console.log(url);
+
       _rData["list"] = _rData.list.map((v) => {
         if (url === "getDataAll")
           return {
@@ -47,7 +47,7 @@ export const getWinnerListAsync = createAsyncThunk(
               v.ticket_history.ticket_history_generate,
             "$Raffle_Prize.Raffle_Schedule.raffleDetails.name$":
               v.Raffle_Prize.Raffle_Schedule.raffleDetails.name,
-            Status: "unclaimed",
+            Status: v.file?.id ? "Claimed" : "Unclaimed",
           };
         // return v;
       });
