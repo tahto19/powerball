@@ -42,6 +42,7 @@ const MyDialog = ({ open, data, dialogType, onClose, onSubmit }: MyDialogProps) 
             const d = bodyDecrypt(res.data, token)
 
             if (d && d.success === 'success') {
+                setSubmitting(false);
                 dispatch(showToaster({
                     message: message,
                     show: true,

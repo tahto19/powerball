@@ -20,6 +20,7 @@ import { columnHeader, paginationModel } from "./DataGridDetails.ts";
 
 const PrizeListDialog = ({ open, prizeList, selectedPrize, onClose, onSubmit }: PrizeListDialogProps) => {
     const [selectedPrizes, setSelectedPrizes] = useState<number[]>([0]);
+    const dispatch = useAppDispatch();
 
     const handleClose = () => {
         if (selectedPrize && selectedPrize.length > 0) {
@@ -34,7 +35,16 @@ const PrizeListDialog = ({ open, prizeList, selectedPrize, onClose, onSubmit }: 
     };
 
     const handleRowSelection = (array: []) => {
-        setSelectedPrizes(array)
+        if (typeof array === 'string') {
+            dispatch(showToaster({
+                message: "Cannot add price with the same Type",
+                show: true,
+                variant: "error",
+                icon: null,
+            }))
+        } else {
+            setSelectedPrizes(array)
+        }
     }
 
     useEffect(() => {
@@ -69,13 +79,14 @@ const PrizeListDialog = ({ open, prizeList, selectedPrize, onClose, onSubmit }: 
                         pagination={paginationModel}
                         selectedModel={selectedPrizes}
                         checkboxSelection={true}
+                        restrictDuplicate={'type'}
                         onRowSelection={handleRowSelection}
                     />
                 </DialogContent>
 
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button type="submit" onClick={handleSubmit}>Submit</Button>
+                    <Button type="submit" onClick={handleSubmit}>Add Price</Button>
                 </DialogActions>
             </Dialog>
         </>
