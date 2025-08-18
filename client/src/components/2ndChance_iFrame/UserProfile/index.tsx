@@ -47,12 +47,14 @@ const main = () => {
   const [change, setChange] = useState(false);
   useEffect(() => {
     setFormData(userDetails);
+  }, [userDetails]);
+  useEffect(() => {
     if (JSON.stringify(userDetails) !== JSON.stringify(formData)) {
       setChange(true);
     } else {
       setChange(false);
     }
-  }, [userDetails]);
+  }, [formData]);
   const handleInputChange = (
     event:
       | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
