@@ -56,7 +56,8 @@ class Export_data_class {
         return await this.get_winners(date_range);
       }
       case 16: {
-        return await this.get_raffleDraw(date_range);
+        // return await this.get_raffleDraw(date_range);
+        return await this.get_raffleDraw_new(date_range);
       }
     }
   }
@@ -571,6 +572,69 @@ class Export_data_class {
 
       for (let pVal of v.prizeInfo) {
         temp[`${pVal.Prize_List.name}`] = pVal.amount;
+      }
+
+      toSend.push(temp);
+    }
+    return await this.toExcel(toSend, "Raffle Draw");
+  }
+  async get_raffleDraw_new(date_range) {
+    let r_ = await RaffleSchedule.findAll({
+      where: {
+        [Op.and]: [
+          { createdAt: { [Op.gte]: date_range[0] } },
+          { createdAt: { [Op.lte]: date_range[1] } },
+          { status: "2" },
+        ],
+      },
+      include: [
+        { model: RaffleDetails, as: "raffleDetails" },
+        {
+          model: RafflePrize,
+          as: "prizeInfo",
+          include: [
+            { model: PrizeList },
+            {
+              model: WiningDrawDetails,
+              include: [
+                {
+                  model: TicketHistory,
+                  include: [
+                    { model: TicketDetails, include: [{ model: Users }] },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    let toSend = [];
+    for (let val of r_) {
+      let v = val.toJSON();
+
+      let temp = {};
+
+      for (let pVal of v.prizeInfo) {
+        const winning_ticket =
+          pVal.wining_draw_detail?.ticket_history?.ticket_history_generate ||
+          "Ticket not found";
+        const winner =
+          pVal.wining_draw_detail?.ticket_history?.ticket_detail?.User
+            .fullname || "Winner not found";
+        temp["Raffle Id"] = v.raffleDetails.details;
+        temp["Draw raffle ticket"] = winning_ticket;
+
+        temp["Minor winner"] =
+          pVal.Prize_List.type === "minor" ? winner : "none";
+        temp["Major winner"] =
+          pVal.Prize_List.type === "major" ? winner : "none";
+        temp["Grand winner"] =
+          pVal.Prize_List.type === "grand" ? winner : "none";
+
+        temp["Date Created"] = v.raffleDetails.createdAt;
+        temp["Draw Date"] = v.raffleDetails.draw_date;
       }
 
       toSend.push(temp);

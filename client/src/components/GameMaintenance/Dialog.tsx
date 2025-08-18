@@ -213,6 +213,9 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
         } else {
             // Regular input change
             const { name, value } = event.target;
+            console.log(name)
+            console.log(value)
+            console.log(formData)
 
             setData((prevData) => ({
                 ...prevData,

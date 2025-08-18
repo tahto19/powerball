@@ -18,6 +18,7 @@ interface GridProps<T> {
   headers: GridColDef[];
   pagination: PaginationProps;
   checkboxSelection: boolean;
+  restrictDuplicate?: string;
   onRowSelection?: ([]) => void;
 }
 
@@ -32,6 +33,7 @@ export default function CustomizedDataGridBasic<T>({
   checkboxSelection = false,
   selectedModel,
   loading = false,
+  restrictDuplicate = "",
   onRowSelection,
 }: GridProps<T>) {
   // Get only "contains" operator for filtering
@@ -52,6 +54,15 @@ export default function CustomizedDataGridBasic<T>({
     /* pre-selected row IDs here */
   ]);
   const handleRowSelection = (array: []) => {
+    if (restrictDuplicate.trim() !== "") {
+      const column = restrictDuplicate;
+      const selectedRows = data.filter((row) => array.includes(row.id));
+      const types = selectedRows.map((row) => row[column]);
+
+      const hasDuplicateStatus = types.length !== new Set(types).size;
+      if (hasDuplicateStatus) return onRowSelection("duplicate"); // stop update
+    }
+
     if (onRowSelection) onRowSelection(array);
     setSelectionModel(array);
   };
@@ -116,8 +127,9 @@ export default function CustomizedDataGridBasic<T>({
           },
         },
       }}
-      onRowSelectionModelChange={(newSelection) =>
-        handleRowSelection(newSelection)
+      onRowSelectionModelChange={(newSelection, test) => {
+        return handleRowSelection(newSelection)
+      }
       }
     />
   );
