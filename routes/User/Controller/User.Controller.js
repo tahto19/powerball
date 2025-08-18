@@ -89,12 +89,18 @@ export const updateController = async (req, res) => {
     },
   ]);
 
-  if (checkEmailExists) throw new Error("errorcode x909");
+  if (checkEmailExists) {
+    let v = checkEmailExists.toJSON();
+    if (data.id !== v.id) throw new Error("errorcode x909");
+  }
 
-  // const checkMobile = await uc.FetchOne([
-  //   { filter: mobileNumber, type: "string_eq", field: "mobileNumber" },
-  // ]);
-  // if (checkMobile) throw new Error("x908");
+  const checkMobile = await uc.FetchOne([
+    { filter: mobileNumber, type: "string_eq", field: "mobileNumber" },
+  ]);
+  if (checkMobile) {
+    let v = checkMobile.toJSON();
+    if (data.id !== v.id) throw new Error("x908");
+  }
   if (file) {
     if (!file.mimetype.startsWith("image/")) throw new Error("ErrorCODE x91c");
 
