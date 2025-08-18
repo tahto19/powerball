@@ -44,9 +44,14 @@ const main = () => {
   const [formData, setFormData] = useState(userDetails);
   const [phoneError, setPhoneError] = useState("");
   const { token } = useAppSelector((state) => state.token);
-
+  const [change, setChange] = useState(false);
   useEffect(() => {
     setFormData(userDetails);
+    if (JSON.stringify(userDetails) !== JSON.stringify(formData)) {
+      setChange(true);
+    } else {
+      setChange(false);
+    }
   }, [userDetails]);
   const handleInputChange = (
     event:
@@ -71,10 +76,10 @@ const main = () => {
   };
 
   const handleSubmit = async (e: React.FocusEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (JSON.stringify(userDetails) === JSON.stringify(formData)) return;
     try {
+      if (JSON.stringify(userDetails) === JSON.stringify(formData)) {
+        throw new Error("Nothing change");
+      }
       console.log(formData);
       let res = await apiService.updateAdmin(formData, token);
 
@@ -250,7 +255,12 @@ const main = () => {
               </Typography>
             </Box>
           </Box>
-          <form onSubmit={handleSubmit}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
+          >
             <Grid2
               container
               spacing={3}
@@ -391,6 +401,11 @@ const main = () => {
                     fullWidth
                     variant="outlined"
                     value={formData.emailAddress}
+                    onChange={(e) => {
+                      setFormData((prev) => {
+                        return { ...prev, emailAddress: e.target.value };
+                      });
+                    }}
                   />
                 </FormControl>
               </Grid2>
@@ -528,7 +543,7 @@ const main = () => {
                   color="info"
                   sx={{ px: 4 }}
                 >
-                  Edit
+                  {change ? "Save Changes" : "Edit"}
                 </Button>
               </Grid2>
             </Grid2>

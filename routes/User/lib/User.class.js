@@ -43,6 +43,14 @@ class User_class {
     if (_data.password === "") {
       delete _data.password;
     }
+    if (_data.isAdmin) {
+      Object.keys(_data).forEach((v) => {
+        let val = _data[v];
+        if (val === "" || !val) {
+          delete _data[v];
+        }
+      });
+    }
     await Users.update(_data, {
       where: { id },
       individualHooks: true,

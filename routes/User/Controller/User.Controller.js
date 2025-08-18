@@ -81,7 +81,20 @@ export const updateController = async (req, res) => {
     barangay,
     hbnandstr,
   };
+  const checkEmailExists = await uc.FetchOne([
+    {
+      filter: encrpytPassword(emailAddress),
+      type: "string_eq",
+      field: "emailAddress",
+    },
+  ]);
 
+  if (checkEmailExists) throw new Error("errorcode x909");
+
+  // const checkMobile = await uc.FetchOne([
+  //   { filter: mobileNumber, type: "string_eq", field: "mobileNumber" },
+  // ]);
+  // if (checkMobile) throw new Error("x908");
   if (file) {
     if (!file.mimetype.startsWith("image/")) throw new Error("ErrorCODE x91c");
 
@@ -96,7 +109,7 @@ export const updateController = async (req, res) => {
       idPath: iUp.filename,
     };
   }
-
+  console.log(data);
   let a = await uc.Edit(data);
   res.send(cSend(a));
 };
