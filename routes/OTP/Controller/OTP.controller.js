@@ -45,7 +45,7 @@ export const createOTPController = async (req, res) => {
           },
         ]);
 
-        if (findUser !== null) throw new Error("ErrorCODE x909");
+        if (findUser !== null) throw new Error("ErrorCODE x908");
       }
     }
     if (r) {

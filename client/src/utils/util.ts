@@ -95,6 +95,8 @@ const getErrorsStatus = (code: string) => {
       return "A problem has been detected on your computer. Please contact your administrator for assistance. ";
     case "x910":
       return "Your mobile number is not registered";
+    case "x908":
+      return "Mobile Number Already Exists";
     default:
       return false;
   }
