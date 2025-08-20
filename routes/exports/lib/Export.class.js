@@ -107,7 +107,10 @@ class Export_data_class {
   }
   async Admin_data(date_range) {
     let where = date_range
-      ? { createdAt: { [Op.between]: [date_range[0], date_range[1]] } }
+      ? {
+          createdAt: { [Op.between]: [date_range[0], date_range[1]] },
+          isAdmin: true,
+        }
       : { isAdmin: true };
     let _r = await Users.findAll({
       where: where,
@@ -292,7 +295,7 @@ class Export_data_class {
       r.push(v);
     }
     // r_.map((v) => v.toJSON());
-    return await this.toExcel(r, "Game Maintenance List");
+    return await this.toExcel(r, "Alpha Code List");
   }
   async get_ticket_scanned(date_range) {
     let r_ = await TicketDetails.findAll({

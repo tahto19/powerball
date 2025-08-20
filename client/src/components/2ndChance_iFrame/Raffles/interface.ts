@@ -1,3 +1,4 @@
+import { ticketDetails_ } from "@/types/allTypes";
 
 export interface DialogProps {
   open: boolean;
@@ -16,6 +17,10 @@ export interface RaffleState {
 export interface enterEntries {
   entries: number | null;
   raffle_id: number | null;
+}
+export interface postEntries {
+  entriesDetails: enterEntries;
+  alphaCodeChosen: Array<ticketDetails_> | null;
 }
 export interface RaffleScheduleState {
   id: number | null;

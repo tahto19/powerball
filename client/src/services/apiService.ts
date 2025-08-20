@@ -25,7 +25,10 @@ import {
   TicketDraw,
   exportDataState,
 } from "@/types/allTypes";
-import { enterEntries } from "@/components/2ndChance_iFrame/Raffles/interface";
+import {
+  enterEntries,
+  postEntries,
+} from "@/components/2ndChance_iFrame/Raffles/interface";
 import { data } from "react-router-dom";
 import moment from "moment";
 
@@ -339,7 +342,7 @@ export const apiService = {
     );
   },
   // post raffleentry
-  postRaffleEntry: async (data: enterEntries, token: string | null) => {
+  postRaffleEntry: async (data: postEntries, token: string | null) => {
     return apiClient.post("api/raffleHistory/insert", {
       data: bodyEncrypt(JSON.stringify(data), token),
     });

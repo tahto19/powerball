@@ -36,7 +36,7 @@ export const getRaffleEntry = createAsyncThunk(
       if (!data.alpha_code) {
         dispatch(OverallTotalEntries(bd.data[0]));
       } else {
-        dispatch(entriesChange(bd.data[0]));
+        dispatch(entriesChange(bd.data));
       }
     } catch (err) {
       // dispatch(showToaster({ err, variant: "error", icon: "error" }));
@@ -46,8 +46,9 @@ export const getRaffleEntry = createAsyncThunk(
 
 export const postRaffleEntry = createAsyncThunk(
   "raffleEntry/postRaffle",
-  async (data: enterEntries, { dispatch, getState }) => {
+  async (data: postEntries, { dispatch, getState }) => {
     try {
+      console.log(data);
       let state = getState() as RootState;
       let token = state.token.token;
       let _r = await apiService.postRaffleEntry(data, token);

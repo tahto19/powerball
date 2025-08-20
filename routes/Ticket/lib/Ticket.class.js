@@ -69,10 +69,13 @@ class TicketDetails_class {
     if (filter.length !== 0) query["where"] = WhereFilters(filter);
 
     let r = await TicketDetails.findAll(query);
-
+    let query2nd = query;
+    query2nd["group"] = ["alpha_code"];
+    query2nd["attributes"] = [...query2nd["attributes"], "alpha_code"];
+    let getAllDetails = await TicketDetails.findAll(query2nd);
     return r.length === 0
       ? [{ totalEntries: 0, totalUsedEntries: 0, totalTicket: 0, error: true }]
-      : r;
+      : { ...r, details: getAllDetails };
   }
 }
 

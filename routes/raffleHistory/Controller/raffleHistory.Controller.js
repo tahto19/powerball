@@ -4,7 +4,10 @@ import td from "../../Ticket/lib/Ticket.class.js";
 import th from "../lib/raffleHistory.class.js";
 export const insertRaffleHistoryController = async (req, res) => {
   try {
-    const { raffle_id, entries } = req.body;
+    const { entriesDetails, alphaCodeChosen } = req.body;
+    const { raffle_id, entries } = entriesDetails;
+    let getAlphaCode_chosen = alphaCodeChosen.map((v) => v.alpha_code);
+
     if (entries === "") throw new Error("ERRORCode X921");
     const getRaffleInfo = await RaffleClass.getRaffleSchedule([
       { field: "id", filter: raffle_id, type: "number" },
@@ -31,12 +34,16 @@ export const insertRaffleHistoryController = async (req, res) => {
 
     if (!entries || entries === "") throw new Error("ErrorCode X921");
 
+    // double check if array chosen is include
+    let hasCommonElement = getAlphaCode.filter((vv) => {
+      return getAlphaCode_chosen.includes(vv);
+    });
     // first check if the entries are not more than the total entries available
 
     let r = await td.getTotalEntries([
       { field: "user_id", type: "number", filter: req.user_id },
       { field: "active", type: "boolean", filter: true },
-      { field: "alpha_code", type: "array", filter: getAlphaCode },
+      { field: "alpha_code", type: "array", filter: hasCommonElement },
     ]);
 
     if (!!!r || r.length === 0) throw new Error("ERRORCODE x268");
@@ -50,7 +57,7 @@ export const insertRaffleHistoryController = async (req, res) => {
     const getUserTicketDetails = await td.FetchAll(null, [
       { field: "user_id", type: "number", filter: req.user_id },
       { field: "active", type: "boolean", filter: true },
-      { field: "alpha_code", type: "array", filter: getAlphaCode },
+      { field: "alpha_code", type: "array", filter: hasCommonElement },
     ]);
 
     for (let val of getUserTicketDetails.list) {
@@ -126,7 +133,7 @@ export const getRaffleEntriesInScheduleController = async (req, res) => {
         type: "number",
       });
     }
-    console.log(req.body);
+
     const _r = await th.FetchWithInclude(offset, limit, sort, filters);
     let reEditList = _r.list.map((v) => {
       return {

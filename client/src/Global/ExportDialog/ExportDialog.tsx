@@ -51,7 +51,10 @@ export function ExportDialog() {
       : null;
     dispatch(downloadData({ type, dr, filter }));
   };
-
+  const handleOk = () => {
+    console.log("Selected Range:", range[0]);
+    // Do something with the date range
+  };
   return (
     <Dialog
       open={show}
@@ -86,7 +89,7 @@ export function ExportDialog() {
               id={id}
               open={open}
               anchorEl={anchorEl}
-              onClose={handleClose}
+              // onClose={handleClose}
               anchorOrigin={{
                 vertical: "bottom",
                 horizontal: "left",
@@ -95,7 +98,25 @@ export function ExportDialog() {
               <DateRangePicker
                 ranges={[dateRanges]}
                 onChange={handleSelect}
-              />
+                showSelectionPreview={true}
+                moveRangeOnFirstSelection={false}
+                months={2}
+                direction="horizontal"
+              ></DateRangePicker>
+              <div
+                style={{
+                  padding: "5px",
+                  textAlign: "right",
+                  marginTop: "10px",
+                }}
+              >
+                <Button
+                  variant="text"
+                  onClick={handleClose}
+                >
+                  OK
+                </Button>
+              </div>
             </Popover>
           </Grid2>
         </Grid2>

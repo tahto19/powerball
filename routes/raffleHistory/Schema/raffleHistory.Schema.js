@@ -14,7 +14,7 @@ export const insertRaffleHistorySchema = {
         raffle_id: { type: "number" },
         entries: { type: "number" },
       },
-      required: ["raffle_id", "entries"],
+      // required: ["raffle_id", "entries"],
     },
   },
 };

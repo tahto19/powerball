@@ -13,6 +13,7 @@ const initialState: raffleEntries = {
   totalUsedEntries: null,
   loading: true,
   btnLoading: false,
+  details: null,
   raffleEntriesList: {
     _loading: true,
     list: [],
@@ -32,9 +33,10 @@ const raffleEntriesSlice = createSlice({
       state.overallTotalEntries = parseInt(action.payload.totalEntries);
     },
     entriesChange: (state, action) => {
-      state.totalEntries = parseInt(action.payload.totalEntries);
-      state.totalTicket = parseInt(action.payload.totalTicket);
-      state.totalUsedEntries = parseInt(action.payload.totalUsedEntries);
+      state.details = action.payload.details;
+      state.totalEntries = parseInt(action.payload[0].totalEntries);
+      state.totalTicket = parseInt(action.payload[0].totalTicket);
+      state.totalUsedEntries = parseInt(action.payload[0].totalUsedEntries);
     },
     addEntryList: (state, action) => {
       // Object.assign(state.raffleEntriesList, action.payload);

@@ -100,6 +100,11 @@ export interface raffleEntriesList {
   sort: Array<any>;
   filter: Array<any>;
 }
+export interface ticketDetails_ {
+  totalEntries?: string | null;
+  totalUsedEntries?: string | null;
+  totalTicket?: string | null;
+}
 export interface raffleEntries {
   btnLoading: boolean;
   overallTotalEntries: number | null;
@@ -108,6 +113,7 @@ export interface raffleEntries {
   totalUsedEntries: number | null;
   loading: boolean;
   raffleEntriesList: raffleEntriesList;
+  details?: Array<ticketDetails_> | null;
 }
 export interface LocationState {
   from: {

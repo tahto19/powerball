@@ -11,7 +11,7 @@
   { "path": "/cron", "method": "GET" },
   { "path": "/testingroutes(?:/.*)?$", "method": "POST" },
   { "path": "/password-reset", "method": "POST" },
-  { "path": "/api/raffleHistory/insert", "method": "POST" },
+  { "path": "/api/raffleHistory/insert", "method": "!POST" },
   { "path": "/api/export/", "method": "POST" },
   { "path": "/inquiry", "method": "POST" },
   { "path": "/inquiry/", "method": "POST" }

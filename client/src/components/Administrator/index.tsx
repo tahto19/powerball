@@ -32,7 +32,6 @@ const Index = () => {
     dispatch(getAdmin());
   }, []);
   useEffect(() => {
-    console.log(loading, list);
     setPagination((prev) => {
       return { page: offset, pageSize: limit };
     });
@@ -155,7 +154,7 @@ const Index = () => {
           }}
           variant="contained"
           onClick={() =>
-            dispatch(openDialog({ title: "Tickets List", type: 3 }))
+            dispatch(openDialog({ title: "Administrator", type: 3 }))
           }
         >
           Export
