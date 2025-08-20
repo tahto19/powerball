@@ -187,7 +187,7 @@ export const detailedTicketDetailsHistoryController = async (req, res) => {
     const { id, limit, sort, offset, filter, location } = req.body;
 
     var addFilter;
-    console.log(req.url);
+
     if (id) {
       addFilter = { field: "id", filter: id, type: "number" };
       filter.push(addFilter);
@@ -248,9 +248,12 @@ export const detailedTicketDetailsHistoryController = async (req, res) => {
 
       let raffles = await rc.fetchAllOnlyCostumeFilter({
         alpha_code: { [Op.like]: `%${v.alpha_code}%` },
+        active: true,
       });
+
       toReturn.push({ ...temp, raffles });
     }
+    console.log(raffles);
     res.send(toReturn);
   } catch (err) {
     console.log(err);
