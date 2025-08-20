@@ -257,5 +257,6 @@ export const detailedTicketDetailsHistoryController = async (req, res) => {
     res.send(toReturn);
   } catch (err) {
     console.log(err);
+    throw err;
   }
 };
