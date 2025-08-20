@@ -133,7 +133,7 @@ function Aplhacode() {
           }}
           variant="contained"
           onClick={() =>
-            dispatch(openDialog({ title: "Tickets List", type: 10 }))
+            dispatch(openDialog({ title: "Alpha Code List", type: 10 }))
           }
         >
           Export
