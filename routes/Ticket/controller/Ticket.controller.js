@@ -248,7 +248,7 @@ export const detailedTicketDetailsHistoryController = async (req, res) => {
 
       let raffles = await rc.fetchAllOnlyCostumeFilter({
         alpha_code: { [Op.like]: `%${v.alpha_code}%` },
-        active: true,
+        end_date: { [Op.lte]: new Date() },
       });
 
       toReturn.push({ ...temp, raffles });
