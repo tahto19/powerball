@@ -57,6 +57,8 @@ const PhoneNumberLogin = () => {
             localEncrypt(password)
           );
         }
+        console.log('redirecting')
+
         window.parent.location.href = base_url + "cms/2nd-chance/";
       }
 
