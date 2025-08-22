@@ -57,7 +57,7 @@ const PhoneNumberLogin = () => {
             localEncrypt(password)
           );
         }
-        window.parent.location.href = base_url + "secondchance/";
+        window.parent.location.href = base_url + "cms/2nd-chance/";
       }
 
       dispatch(
@@ -192,7 +192,7 @@ const PhoneNumberLogin = () => {
       if (r_.result == "success") {
         // Redirect to dashboard after login
         // navigate("https://18.138.76.86/?page_id=279");
-        window.parent.location.href = base_url + "secondchance/";
+        window.parent.location.href = base_url + "cms/2nd-chance/";
       }
     } catch (err) {
       let message = getMessage(err);
@@ -208,7 +208,7 @@ const PhoneNumberLogin = () => {
   React.useEffect(() => {
     if (token) {
       console.log(token);
-      window.parent.location.href = base_url + "secondchance/";
+      window.parent.location.href = base_url + "cms/2nd-chance/";
     }
   }, [token]);
 
