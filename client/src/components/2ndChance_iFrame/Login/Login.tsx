@@ -132,7 +132,7 @@ const Login = () => {
   };
   React.useEffect(() => {
     if (token) {
-      window.parent.location.href = base_url + "secondchance/";
+      window.parent.location.href = base_url + "cms/2nd-chance/";
     }
   }, [token]);
 
