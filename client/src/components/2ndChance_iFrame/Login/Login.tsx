@@ -52,7 +52,7 @@ const Login = () => {
             localEncrypt(password)
           );
         }
-        window.parent.location.href = base_url + "secondchance/";
+        window.parent.location.href = base_url + "cms/2nd-chance/";
       }
 
       dispatch(
