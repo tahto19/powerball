@@ -56,7 +56,8 @@ export default function CustomizedDataGridBasic<T>({
   const handleRowSelection = (array: []) => {
     if (restrictDuplicate.trim() !== "") {
       const column = restrictDuplicate;
-      const selectedRows = data.filter((row) => array.includes(row.id));
+      const newArr = [...array]
+      const selectedRows = data.filter((row) => newArr.map(x => x.id).includes(row.id));
       const types = selectedRows.map((row) => row[column]);
 
       const hasDuplicateStatus = types.length !== new Set(types).size;
@@ -67,8 +68,15 @@ export default function CustomizedDataGridBasic<T>({
     setSelectionModel(array);
   };
   useEffect(() => {
+
     // Example: Auto-select rows with IDs 1 and 2 when the table loads
-    setSelectionModel(selectedModel);
+    if (selectedModel) {
+      console.log("----000---", selectedModel)
+
+      setSelectionModel(selectedModel.map(x => x.id || x));
+
+    }
+
   }, [selectedModel]);
   return (
     <DataGrid
@@ -127,8 +135,19 @@ export default function CustomizedDataGridBasic<T>({
           },
         },
       }}
-      onRowSelectionModelChange={(newSelection, test) => {
-        return handleRowSelection(newSelection)
+      onRowSelectionModelChange={(newSelection) => {
+        // return handleRowSelection(newSelection)
+        // Get selected row IDs
+        const selectedIds = newSelection;
+        console.log(newSelection)
+        // Find the full row details by filtering `data` based on selected IDs
+        const selectedRows = data.filter((row) =>
+          selectedIds.includes(row.id)
+        );
+
+        // Pass or use the selected rows as needed
+        return handleRowSelection(selectedRows);
+
       }
       }
     />

@@ -44,6 +44,7 @@ class Raffle_class {
         raffle_schedule_id: createRaffleSchedule.id,
         prize_id: x.id,
         amount: x.value,
+        number_of_winners: x.number_of_winners,
       };
 
       try {
@@ -183,7 +184,7 @@ class Raffle_class {
       { where: { raffle_id: id }, individualHooks: true }
     );
     const prizeInfo = _data.raffleSchedule[0].prizeInfo;
-
+    console.log("=====", newPrizeList);
     // Update prize info status to 2 if the old prize info is not present in the new prize info.
     for (const item of prizeInfo) {
       const filter = newPrizeList.filter((x) => x.id === item.prize_id);
@@ -214,6 +215,7 @@ class Raffle_class {
           raffle_schedule_id: _data.raffleSchedule[0].id,
           prize_id: item.id,
           amount: item.value,
+          number_of_winners: item.number_of_winners,
         };
 
         try {

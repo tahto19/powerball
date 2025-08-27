@@ -55,6 +55,41 @@ const columnHeader = [
         },
     },
     { field: 'value', headerName: 'Amount', flex: 1, },
+    {
+        field: 'number_of_winners',
+        headerName: '# of Winners',
+        flex: 1,
+        renderCell: (params: any) => {
+            const rowId = params.id; // Get the row ID or unique identifier
+            let value = params.value;
+
+            return (
+                <div style={{
+                    display: "flex",
+                    height: "100%",
+                    width: "100%",
+                    justifyContent: "center",
+                    alignItems: "center"
+                }}>
+                    <TextField
+                        id={rowId}
+                        type="text"
+                        placeholder=""
+                        autoFocus
+                        required
+                        fullWidth
+                        value={value}  // Optional: Bind to the current value of the cell
+                        variant="outlined"
+                        slotProps={{
+                            input: {
+                                readOnly: true,
+                            },
+                        }}
+                    />
+                </div>
+            );
+        },
+    },
 ]
 const FormControl = styled(MuiFormControl)(() => ({
     width: "100%"
@@ -128,11 +163,12 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
     );
 
     const handlePrizeSubmit = (list: number[]) => {
+        console.log(list)
         const prizelist = JSON.parse(JSON.stringify(prize_List))
         const selected_prize = prizelist.list.filter((x: any) =>
             list.some(z => Number(z) === Number(x.id))
         );
-        setSelectedPrize(selected_prize)
+        setSelectedPrize(list)
     }
 
     const [tabValue, setTab] = useState(0)
@@ -152,9 +188,8 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
 
             const payload: PayloadState = {
                 formData,
-                newPrizeList: selectedPrize.map(x => ({ id: Number(x.id), value: x.value }))
+                newPrizeList: selectedPrize.map(x => ({ id: Number(x.id), value: x.value, number_of_winners: x.number_of_winners }))
             }
-
             if (dialogType === 'Edit') {
                 res = await apiService.updateGM(payload, token);
                 message = "Record updated successfully."
@@ -213,9 +248,6 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
         } else {
             // Regular input change
             const { name, value } = event.target;
-            console.log(name)
-            console.log(value)
-            console.log(formData)
 
             setData((prevData) => ({
                 ...prevData,
@@ -233,7 +265,18 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
         setDialogType(dialogType)
         setPrizeList(prizeList)
 
-        const selected_prize = prizeList.list.filter(x =>
+        const selected_prize = prizeList.list.map((o) => {
+            const matchedPrizeInfo = data.raffleSchedule[0].prizeInfo.find(
+                (z) => Number(z.prize_id) === Number(o.id)
+            );
+            if (matchedPrizeInfo) {
+                return {
+                    ...o,
+                    number_of_winners: Number(matchedPrizeInfo.number_of_winners),
+                };
+            }
+            return o;
+        }).filter(x =>
             data.raffleSchedule[0].prizeInfo.some(z => Number(z.prize_id) === Number(x.id))
         );
 
@@ -278,7 +321,6 @@ const MyDialog = ({ open, prizeList, data, dialogType, onClose, onSubmit }: MyDi
         }
     }, [token]);
     useEffect(() => {
-        console.log(list)
         if (list && list.length > 0) {
             setAlphaCodes(list.map(x => x.name))
         }

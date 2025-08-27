@@ -126,6 +126,8 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
     const prize_data = data.raffleSchedule[0].prizeInfo.find(
       (x) => x.Prize_List.type === value
     );
+
+    console.log(prize_data)
     if (prize_data) {
       setPrizeData(prize_data);
     } else {

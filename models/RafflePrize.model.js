@@ -11,6 +11,11 @@ RafflePrize.init(
       type: DataTypes.STRING,
       defaultValue: null,
     },
+    number_of_winners: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
     raffle_schedule_id: {
       allowNull: true,
       type: DataTypes.INTEGER,
