@@ -65,7 +65,6 @@ const PrizeListDialog = ({
   };
 
   const handleRowSelection = (array: []) => {
-    console.log("//////////", array)
     if (typeof array === "string") {
       dispatch(
         showToaster({
@@ -83,7 +82,6 @@ const PrizeListDialog = ({
   useEffect(() => {
     if (selectedPrize && selectedPrize.length > 0) {
       const newselectedPrize = selectedPrize.map((x: any) => x.id);
-      console.log("....", newselectedPrize)
 
       setSelectedPrizes(newselectedPrize);
 
@@ -99,19 +97,14 @@ const PrizeListDialog = ({
         }
         return o;
       })
-      console.log(newList)
-      console.log(selectedPrize)
 
       setNewPrizeList({ ...prizeList, list: newList })
     }
   }, [selectedPrize]);
 
-  // useEffect(() => {
-  //   if (prizeList && prizeList.length > 0) {
-  //     const newselectedPrize = selectedPrize.map((x: any) => x.id);
-  //     setSelectedPrizes(newselectedPrize);
-  //   }
-  // }, [prizeList]);
+  useEffect(() => {
+    setNewPrizeList(prizeList)
+  }, [prizeList]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;

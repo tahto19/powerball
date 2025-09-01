@@ -71,8 +71,6 @@ export default function CustomizedDataGridBasic<T>({
 
     // Example: Auto-select rows with IDs 1 and 2 when the table loads
     if (selectedModel) {
-      console.log("----000---", selectedModel)
-
       setSelectionModel(selectedModel.map(x => x.id || x));
 
     }
@@ -139,7 +137,6 @@ export default function CustomizedDataGridBasic<T>({
         // return handleRowSelection(newSelection)
         // Get selected row IDs
         const selectedIds = newSelection;
-        console.log(newSelection)
         // Find the full row details by filtering `data` based on selected IDs
         const selectedRows = data.filter((row) =>
           selectedIds.includes(row.id)
