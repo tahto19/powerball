@@ -185,6 +185,8 @@ class Raffle_class {
     );
     const prizeInfo = _data.raffleSchedule[0].prizeInfo;
     console.log("=====", newPrizeList);
+    console.log("----", prizeInfo);
+
     // Update prize info status to 2 if the old prize info is not present in the new prize info.
     for (const item of prizeInfo) {
       const filter = newPrizeList.filter((x) => x.id === item.prize_id);
@@ -202,6 +204,26 @@ class Raffle_class {
           });
         } catch (error) {
           console.error("Error updating prize info:", error);
+          throw new Error("Failed to update prize info");
+        }
+      }
+    }
+
+    // Add new data in PrizeInfo Table
+    for (const item of newPrizeList) {
+      const filter = prizeInfo.filter((x) => x.prize_id === item.id);
+
+      if (filter.length > 0) {
+        const prizeData2 = {
+          number_of_winners: Number(item.number_of_winners),
+        };
+        try {
+          await RafflePrize.update(prizeData2, {
+            where: { id: filter[0].id },
+            individualHooks: true,
+          });
+        } catch (error) {
+          console.error("Error updating raffle prize:", error);
           throw new Error("Failed to update prize info");
         }
       }
