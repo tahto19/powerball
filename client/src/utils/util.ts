@@ -70,7 +70,7 @@ const getErrorsStatus = (code: string) => {
     case "x984":
       return "Invalid draw. Prize not found.";
     case "x911":
-      return "Already have a winner";
+      return "All winning spots are now occupied";
     case "x675":
       return "Theres no entry on this ticket";
     case "x268":

@@ -13,6 +13,7 @@ import RaffleSchedule from "../../../models/RaffleSchedule.model.js";
 import RaffleDetails from "../../../models/RaffleDetails.model.js";
 import rc from "../../GameMaintenance/lib/Raffle.class.js";
 import { Op } from "sequelize";
+import RafflePrize from "../../../models/RafflePrize.model.js";
 export const raffleDrawController = async (req, res) => {
   try {
     const { raffle_id, prize_id } = req.body;
@@ -20,11 +21,27 @@ export const raffleDrawController = async (req, res) => {
     if (!raffle_id || prize_id === -1 || !prize_id)
       throw new Error("Error X984");
     // check first if the raffle is already done
-    let checkRaffleWinner = await wc.FetchOne({
-      where: { raffle_prize_id: prize_id },
+    let getPrizeScheduleInfo = await RafflePrize.findOne({
+      where: { id: prize_id },
     });
 
-    if (checkRaffleWinner.count > 0) throw new Error("ErrorCODE X911");
+    if (!getPrizeScheduleInfo) throw new Error("ErrorCODE X912");
+    let getPrizeScheduleInfoToJson = getPrizeScheduleInfo.toJSON();
+
+    // let checkRaffleWinner = await wc.FetchAll({
+    //   where: { raffle_prize_id: prize_id },
+    // });
+    let checkRaffleWinner = await wc.FetchAll(null, [
+      {
+        field: "raffle_prize_id",
+        filter: prize_id,
+        type: "number",
+      },
+    ]);
+    let prizeScheduleWinners = getPrizeScheduleInfoToJson.number_of_winners;
+
+    if (checkRaffleWinner.total >= prizeScheduleWinners)
+      throw new Error("ErrorCODE X911");
 
     const getTicketsWithRaffleId = await td.fetchTicketsInRaffle(raffle_id);
 
