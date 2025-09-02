@@ -145,7 +145,6 @@ const PrizeListDialog = ({
               id={rowId}
               type="number"
               placeholder=""
-              required
               fullWidth
               value={value}  // Optional: Bind to the current value of the cell
               onChange={(event) => handleChange(event)} // Update state on change
