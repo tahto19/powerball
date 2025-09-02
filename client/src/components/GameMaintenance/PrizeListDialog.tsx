@@ -145,7 +145,6 @@ const PrizeListDialog = ({
               id={rowId}
               type="number"
               placeholder=""
-              autoFocus
               required
               fullWidth
               value={value}  // Optional: Bind to the current value of the cell
