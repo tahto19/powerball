@@ -52,7 +52,7 @@ export const getWinnerListAsync = createAsyncThunk(
         // return v;
       });
       const toReturn = { ..._rData, ...getFilter, loading: false };
-
+      console.log(toReturn);
       dispatch(addWinnerList(toReturn));
     } catch (err) {
       dispatch(showToaster({ err, variant: "error", icon: "error" }));

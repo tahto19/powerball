@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import { bodyDecrypt, delay } from "@/utils/util";
 import apiService from "@/services/apiService";
 import { openDialog } from "@/redux/reducers/download/exportDataSlice";
+import CustomizedDataGrid from "@/components/CustomizedDataGrid";
 const WinnerDetails = ({ url }: { url: string | undefined }) => {
   const { loading, token } = useAppSelector((state) => state.token);
   const { _loading, filter, offset, limit, sort, list, count } = useAppSelector(
@@ -42,6 +43,7 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
         })
       );
     }
+    console.log(count);
   }, [loading, token, location]);
   const [headers, setHeaders] = useState([]);
   const [rowClicked, setRowClicked] = useState();
@@ -67,7 +69,7 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
         data[0].action_type = type;
       }
       setImageUploaded(data);
-      console.log("Decrypted image data:", imageUploaded); // ✅ correct log
+      console.log("Decrypted image data:", imageUploaded);
 
       setImageLoading(false);
     } catch (err) {
@@ -81,20 +83,26 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
     setOpen(true);
   };
 
+  const [open, setOpen] = useState(false);
+  const [pagination, setPagination] = useState<paginationType>({
+    page: 0,
+    pageSize: 10,
+  });
+  const onClose = () => {
+    setOpen(false);
+    setRowClicked([]);
+  };
+  useEffect(() => {
+    setPagination(() => {
+      return { page: offset, pageSize: limit };
+    });
+  }, [limit, offset]);
   useEffect(() => {
     if (url === "getDataAll") {
       let h = adminWinnerDetailsHeaders(handleRowClick);
       setHeaders(h);
     } else setHeaders(WinnerDetailsHeaders);
   }, [url]);
-
-  const [open, setOpen] = useState(false);
-
-  const onClose = () => {
-    setOpen(false);
-    setRowClicked([]);
-  };
-
   const handleSubmitForm = async (d) => {
     const tid = toast.loading("Uploading file");
     try {
@@ -127,6 +135,55 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
       setImageLoading(false);
       console.log(err);
     }
+  };
+  const handleTableChange = async ({
+    page,
+    pageSize,
+    sortModel,
+    filterModel,
+  }: any) => {
+    setPagination({ page, pageSize });
+
+    const sort = [["id", "DESC"]];
+    if (sortModel.length > 0) {
+      sort.push([sortModel[0].field, sortModel[0].sort.toUpperCase()]);
+    }
+
+    let newFilterModel = [];
+
+    if (filterModel.items.length > 0) {
+      newFilterModel = JSON.parse(JSON.stringify(filterModel)).items.map(
+        (x: any) => {
+          x.filter = x.value;
+          x.type = "string";
+
+          delete x.value;
+          delete x.fromInput;
+          delete x.id;
+          delete x.operator;
+          return x;
+        }
+      );
+    }
+
+    const query: getDataV2 = {
+      offset: page,
+      limit: pageSize,
+      sort: sort,
+      filter: newFilterModel,
+    };
+    dispatch(
+      getWinnerListAsync({
+        ...query,
+        location: url ? url : "myWinners",
+      })
+    );
+    // dispatch(
+    //   getRaffleEntryList({
+    //     ...query,
+    //     ...{ location: "myEntries" },
+    //   })
+    // );
   };
   return (
     <>
@@ -179,9 +236,15 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
             mb: "20px",
           }}
         ></Box>
-        <CustomizedDataGridBasic
+        <CustomizedDataGrid
           data={list}
           headers={headers}
+          pagination={pagination}
+          onTableChange={(e) => {
+            handleTableChange(e);
+          }}
+          pageLength={count}
+          isAction={false}
         />
         <ImageUploaderDialog
           open={open}

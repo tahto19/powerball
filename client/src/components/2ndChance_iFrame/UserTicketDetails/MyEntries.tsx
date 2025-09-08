@@ -116,12 +116,12 @@ export function MyEntries() {
       sort: sort,
       filter: newFilterModel,
     };
-    // dispatch(
-    //   getRaffleEntryList({
-    //     ...query,
-    //     ...{ location: "myEntries" },
-    //   })
-    // );
+    dispatch(
+      getRaffleEntryList({
+        ...query,
+        ...{ location: "myEntries" },
+      })
+    );
   };
   return (
     <>
