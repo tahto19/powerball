@@ -111,7 +111,9 @@ class WiningDrawDetails_class {
     return {
       count,
       list: rows.map((v) => {
+        console.log("##############");
         console.log(v.toJSON());
+        console.log("##############");
         return v.toJSON();
       }),
     };
