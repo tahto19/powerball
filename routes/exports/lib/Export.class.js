@@ -537,7 +537,7 @@ class Export_data_class {
         "ticket number": v.ticket_detail.ticket_code,
         VIRN: v.ticket_detail.VIN,
         amount: v.Raffle_Prize.amount,
-        "Raffle id": v.Raffle_Prize.Raffle_Schedule.details,
+        "Raffle id": v.Raffle_Prize.Raffle_Schedule.raffleDetails.details,
         Date: v.Raffle_Prize.createdAt,
         claimed: v.file ? "YES" : "NO",
       };
@@ -617,24 +617,46 @@ class Export_data_class {
     for (let val of r_) {
       let v = val.toJSON();
 
-      let temp = {};
+      let temp = { "Raffle Id": "", "Draw raffle ticket": "" };
 
       for (let pVal of v.prizeInfo) {
         const winning_ticket =
           pVal.wining_draw_detail?.ticket_history?.ticket_history_generate ||
           "Ticket not found";
-        const winner =
-          pVal.wining_draw_detail?.ticket_history?.ticket_detail?.User
-            .fullname || "Winner not found";
+
+        const winner = pVal.wining_draw_details
+          ?.map((vv) => {
+            return vv.ticket_history.ticket_detail?.User?.fullname;
+          })
+          .join("\n");
+        const ticketsWinner = pVal.wining_draw_details
+          ?.map((vv) => {
+            return vv.ticket_history?.ticket_history_generate;
+          })
+          .join("\n");
+        console.log(ticketsWinner);
+        console.log(pVal.Prize_List.type === "grand" ? winner : "none", winner);
         temp["Raffle Id"] = v.raffleDetails.details;
-        temp["Draw raffle ticket"] = winning_ticket;
+        temp["Draw raffle ticket"] += ticketsWinner ? ticketsWinner : "";
 
         temp["Minor winner"] =
-          pVal.Prize_List.type === "minor" ? winner : "none";
+          pVal.Prize_List.type === "minor"
+            ? winner
+            : temp["Minor winner"]
+            ? temp["Minor winner"]
+            : null;
         temp["Major winner"] =
-          pVal.Prize_List.type === "major" ? winner : "none";
-        temp["Grand winner"] =
-          pVal.Prize_List.type === "grand" ? winner : "none";
+          pVal.Prize_List.type === "major"
+            ? winner
+            : temp["Major winner"]
+            ? temp["Major winner"]
+            : null;
+        temp["Grands winner"] =
+          pVal.Prize_List.type === "grand"
+            ? winner
+            : temp["Grands winner"]
+            ? temp["Grands winner"]
+            : null;
 
         temp["Date Created"] = v.raffleDetails.createdAt;
         temp["Draw Date"] = v.raffleDetails.draw_date;
@@ -642,6 +664,7 @@ class Export_data_class {
 
       toSend.push(temp);
     }
+
     return await this.toExcel(toSend, "Raffle Draw");
   }
   async toExcel(data, type) {
@@ -684,7 +707,14 @@ class Export_data_class {
         }
       });
 
-      worksheet.addRow(temp);
+      const row = worksheet.addRow(temp);
+      row.eachCell({ includeEmpty: true }, (cell, colNumber) => {
+        if (typeof cell.value === "string" && cell.value.includes("\n")) {
+          cell.alignment = { wrapText: true };
+        } else {
+          cell.alignment = { horizontal: "center", vertical: "middle" };
+        }
+      });
     });
     const buffer = await workbook.xlsx.writeBuffer();
     return Buffer.from(buffer).toString("base64");

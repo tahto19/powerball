@@ -125,7 +125,7 @@ export default function Associations() {
     foreignKey: "raffle_prize_id",
     sourceKey: "id",
   });
-  RafflePrize.hasOne(WiningDrawDetails, {
+  RafflePrize.hasMany(WiningDrawDetails, {
     foreignKey: "raffle_prize_id",
     sourceKey: "id",
   });
