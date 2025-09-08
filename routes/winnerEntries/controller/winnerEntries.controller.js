@@ -2,7 +2,7 @@ import wc from "../lib/WinnerEntries.class.js";
 export const getDataController = async (req, res) => {
   try {
     const _r = await wc.FetchWithInclude(req.body);
-
+    console.log(req.body);
     res.send(_r);
   } catch (err) {
     throw err;
