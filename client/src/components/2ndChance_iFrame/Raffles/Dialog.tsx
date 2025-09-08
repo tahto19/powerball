@@ -23,6 +23,7 @@ import {
   Grid2,
   Select,
   Autocomplete,
+  Stack,
 } from "@mui/material";
 import MuiFormControl from "@mui/material/FormControl";
 import { styled } from "@mui/material/styles";
@@ -53,6 +54,7 @@ DialogProps) => {
   });
   const handleClose = () => {
     onClose(false);
+    setAlphaCodeChosen([]);
   };
   const handleSubmit = () => {
     dispatch(postRaffleEntry({ entriesDetails, alphaCodeChosen }));
@@ -139,7 +141,11 @@ DialogProps) => {
                       })
                     }
                     onChange={(e, v) => {
-                      setAlphaCodeChosen(v);
+                      const changeData = v.map((vv) => ({
+                        ...vv,
+                        entriesInput: 0,
+                      }));
+                      setAlphaCodeChosen(changeData);
                       setTotalEntriesDetails((prev) => ({
                         ...prev,
                         entries: 0,
@@ -154,6 +160,7 @@ DialogProps) => {
                         );
                         setTotalEntriesAlphaCodeSelected(total);
                       }
+                      console.log(v);
                     }}
                   >
                     {/* {details?.map((v, i) => (
@@ -168,10 +175,71 @@ DialogProps) => {
                   </Autocomplete>
                 </FormControl>
               </Grid2>
+              {alphaCodeChosen &&
+                alphaCodeChosen.length > 0 &&
+                alphaCodeChosen.map((v, i) => {
+                  return (
+                    <Grid2
+                      size={{ xs: 12, sm: 12, md: 12, lg: 12 }}
+                      key={i}
+                    >
+                      <FormLabel htmlFor="details">
+                        {v.alpha_code} - {v.totalEntries - v.totalUsedEntries}
+                      </FormLabel>
 
+                      <TextField
+                        id="details"
+                        type="text"
+                        name="details"
+                        placeholder=""
+                        autoComplete="details"
+                        autoFocus
+                        required
+                        fullWidth
+                        variant="outlined"
+                        value={v.entriesInput}
+                        onChange={(e) => {
+                          let getTotal =
+                            e.target.value === ""
+                              ? ""
+                              : parseInt(e.target.value);
+                          if (getTotal > v.totalEntries - v.totalUsedEntries) {
+                            dispatch(
+                              showToaster({
+                                err: "More than the total of the selected",
+                                variant: "error",
+                                icon: "error",
+                              })
+                            );
+                          } else {
+                            //
+                            setAlphaCodeChosen((prev) => {
+                              let toChange = prev;
+                              toChange[i].entriesInput = getTotal;
+                              return toChange;
+                            });
+                            let getExactTotal = alphaCodeChosen.reduce(
+                              (c, v) => c + v.entriesInput,
+                              0
+                            );
+                            setTotalEntriesDetails((prev) => ({
+                              ...prev,
+                              entries: getExactTotal,
+                            }));
+                          }
+                        }}
+                        helperText={`Total Entries Remaining: ${
+                          totalEntries !== null && totalUsedEntries !== null
+                            ? totalEntries - totalUsedEntries
+                            : "loading" + totalUsedEntries + totalEntries
+                        }`}
+                      />
+                    </Grid2>
+                  );
+                })}
               <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
                 <FormControl>
-                  <FormLabel htmlFor="details">Entries</FormLabel>
+                  <FormLabel htmlFor="details">Total Entries</FormLabel>
                   <TextField
                     id="details"
                     type="text"
@@ -182,6 +250,8 @@ DialogProps) => {
                     required
                     fullWidth
                     variant="outlined"
+                    disabled
+                    sx={{ color: "black !important" }}
                     value={entriesDetails.entries}
                     onChange={(e) => {
                       let getTotal =

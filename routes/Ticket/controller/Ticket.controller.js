@@ -185,6 +185,11 @@ export const ticketHistoryInEntriesController = async (req, res) => {
           filter: JSON.parse(alpha_code),
           type: "array-or",
         },
+        {
+          field: "active",
+          filter: true,
+          type: "boolean",
+        },
       ];
     }
 

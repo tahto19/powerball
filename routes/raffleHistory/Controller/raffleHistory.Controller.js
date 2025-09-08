@@ -7,90 +7,96 @@ export const insertRaffleHistoryController = async (req, res) => {
     const { entriesDetails, alphaCodeChosen } = req.body;
     const { raffle_id, entries } = entriesDetails;
     let getAlphaCode_chosen = alphaCodeChosen.map((v) => v.alpha_code);
+    for (let aac of alphaCodeChosen) {
+      getAlphaCode_chosen = aac.alpha_code;
+      if (aac.entriesInput === "") throw new Error("ERRORCode X921");
+      const getRaffleInfo = await RaffleClass.getRaffleSchedule([
+        { field: "id", filter: raffle_id, type: "number" },
+      ]);
 
-    if (entries === "") throw new Error("ERRORCode X921");
-    const getRaffleInfo = await RaffleClass.getRaffleSchedule([
-      { field: "id", filter: raffle_id, type: "number" },
-    ]);
-
-    // first check if the raffle is already drawn
-    if (getRaffleInfo.length === 0) throw new Error("ErrorCode x999");
-    let getWinners = await winnerClass.FetchWithInclude({
-      limit: 5,
-      sort: [],
-      where: {},
-      filter: [
-        {
-          field: "$ticket_history.raffle_id$",
-          filter: raffle_id,
-          type: "string",
-        },
-      ],
-      offset: 0,
-    });
-    if (getWinners.count > 0) throw new Error("ErrorCode x663");
-
-    let getAlphaCode = getRaffleInfo.raffleDetails.alpha_code;
-
-    if (!entries || entries === "") throw new Error("ErrorCode X921");
-
-    // double check if array chosen is include
-    let hasCommonElement = getAlphaCode.filter((vv) => {
-      return getAlphaCode_chosen.includes(vv);
-    });
-    // first check if the entries are not more than the total entries available
-
-    let r = await td.getTotalEntries([
-      { field: "user_id", type: "number", filter: req.user_id },
-      { field: "active", type: "boolean", filter: true },
-      { field: "alpha_code", type: "array", filter: hasCommonElement },
-    ]);
-
-    if (!!!r || r.length === 0) throw new Error("ERRORCODE x268");
-    if (r[0].error) throw new Error("ERRORCODE x268");
-    let totalEntries = r[0].toJSON();
-
-    let totalEntriesRemaining =
-      totalEntries.totalEntries - totalEntries.totalUsedEntries;
-    if (totalEntriesRemaining < entries) throw new Error("ERRORCode x369");
-    var getEntries = entries;
-    const getUserTicketDetails = await td.FetchAll(null, [
-      { field: "user_id", type: "number", filter: req.user_id },
-      { field: "active", type: "boolean", filter: true },
-      { field: "alpha_code", type: "array", filter: hasCommonElement },
-    ]);
-
-    for (let val of getUserTicketDetails.list) {
-      let v = val.toJSON();
-      let remainingEntriesInOneTicket = v.entries - v.entries_used;
-      let getRemainingEntriesIfEntryIsAdded =
-        remainingEntriesInOneTicket - getEntries <= 0
-          ? 0
-          : remainingEntriesInOneTicket - getEntries;
-      let toAddInTicketHistory =
-        remainingEntriesInOneTicket - getRemainingEntriesIfEntryIsAdded;
-
-      for (let i = 0; i < toAddInTicketHistory; i++) {
-        // inserting data per entry
-        await th.Insert({ raffle_id, ticket_id: v.id });
-
-        let b = i + 1;
-      }
-
-      getEntries = getEntries - toAddInTicketHistory;
-
-      await td.Edit({
-        id: v.id,
-        active: getRemainingEntriesIfEntryIsAdded > 0,
-        entries_used: parseInt(v.entries_used) + parseInt(toAddInTicketHistory),
+      // first check if the raffle is already drawn
+      if (getRaffleInfo.length === 0) throw new Error("ErrorCode x999");
+      let getWinners = await winnerClass.FetchWithInclude({
+        limit: 5,
+        sort: [],
+        where: {},
+        filter: [
+          {
+            field: "$ticket_history.raffle_id$",
+            filter: raffle_id,
+            type: "string",
+          },
+        ],
+        offset: 0,
       });
-      if (getEntries <= 0) {
-        break;
+      // if (getWinners.count > 0) throw new Error("ErrorCode x663");
+
+      let getAlphaCode = getRaffleInfo.raffleDetails.alpha_code;
+
+      if (!aac.entriesInput || aac.entriesInput === "")
+        throw new Error("ErrorCode X921");
+
+      // double check if array chosen is include
+      let hasCommonElement = getAlphaCode.filter((vv) => {
+        return getAlphaCode_chosen.includes(vv);
+      });
+      consoe;
+      // first check if the entries are not more than the total entries available
+
+      let r = await td.getTotalEntries([
+        { field: "user_id", type: "number", filter: req.user_id },
+        { field: "active", type: "boolean", filter: true },
+        { field: "alpha_code", type: "array", filter: hasCommonElement },
+      ]);
+
+      if (!!!r || r.length === 0) throw new Error("ERRORCODE x268");
+      if (r[0].error) throw new Error("ERRORCODE x268");
+      let totalEntries = r[0].toJSON();
+
+      let totalEntriesRemaining =
+        totalEntries.totalEntries - totalEntries.totalUsedEntries;
+      if (totalEntriesRemaining < aac.entriesInput)
+        throw new Error("ERRORCode x369");
+      var getEntries = aac.entriesInput;
+      const getUserTicketDetails = await td.FetchAll(null, [
+        { field: "user_id", type: "number", filter: req.user_id },
+        { field: "active", type: "boolean", filter: true },
+        { field: "alpha_code", type: "array", filter: hasCommonElement },
+      ]);
+
+      for (let val of getUserTicketDetails.list) {
+        let v = val.toJSON();
+        let remainingEntriesInOneTicket = v.entries - v.entries_used;
+        let getRemainingEntriesIfEntryIsAdded =
+          remainingEntriesInOneTicket - getEntries <= 0
+            ? 0
+            : remainingEntriesInOneTicket - getEntries;
+        let toAddInTicketHistory =
+          remainingEntriesInOneTicket - getRemainingEntriesIfEntryIsAdded;
+
+        for (let i = 0; i < toAddInTicketHistory; i++) {
+          // inserting data per entry
+          await th.Insert({ raffle_id, ticket_id: v.id });
+
+          let b = i + 1;
+        }
+
+        getEntries = getEntries - toAddInTicketHistory;
+
+        await td.Edit({
+          id: v.id,
+          active: getRemainingEntriesIfEntryIsAdded > 0,
+          entries_used:
+            parseInt(v.entries_used) + parseInt(toAddInTicketHistory),
+        });
+        if (getEntries <= 0) {
+          break;
+        }
+        // getEntries = getEntries
       }
-      // getEntries = getEntries
     }
 
-    res.send(getUserTicketDetails);
+    res.send(req.body);
   } catch (err) {
     throw err;
   }

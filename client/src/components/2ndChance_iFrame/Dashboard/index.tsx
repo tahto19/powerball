@@ -21,7 +21,7 @@ import { useAppSelector } from "@/redux/hook";
 import EntriesDialog from "./EntriesDialog";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
-import logo from '@/assets/image/logo.png'
+import logo from "@/assets/image/logo.png";
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const endpoint = base_url + "api/file/serve/image/";
 
@@ -87,11 +87,11 @@ const Dashboard = () => {
 
   const [open, setOpen] = useState(false);
   const handleClose = (val) => {
-    setOpen(val)
-  }
+    setOpen(val);
+  };
   const handleOpen = (val) => {
-    setOpen(true)
-  }
+    setOpen(true);
+  };
 
   return (
     <>
@@ -232,7 +232,10 @@ const Dashboard = () => {
         <TicketScannedList url="myScan" />
         <WinnerDetails />
       </Box>
-      <EntriesDialog open={open} onClose={handleClose} />
+      <EntriesDialog
+        open={open}
+        onClose={handleClose}
+      />
     </>
   );
 };
