@@ -108,7 +108,13 @@ class WiningDrawDetails_class {
     query["where"] = WhereFilters(getFilters);
 
     const { count, rows } = await WiningDrawDetails.findAndCountAll(query);
-    return { count, list: rows.map((v) => v.toJSON()) };
+    return {
+      count,
+      list: rows.map((v) => {
+        console.log(v.toJSON());
+        return v.toJSON();
+      }),
+    };
   }
   async getWinnersPerSchedule(
     id,
