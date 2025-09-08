@@ -40,7 +40,7 @@ export const insertRaffleHistoryController = async (req, res) => {
       let hasCommonElement = getAlphaCode.filter((vv) => {
         return getAlphaCode_chosen.includes(vv);
       });
-      consoe;
+
       // first check if the entries are not more than the total entries available
 
       let r = await td.getTotalEntries([
