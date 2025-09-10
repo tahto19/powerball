@@ -84,8 +84,12 @@ class Export_data_class {
   }
   async Costumer_data(date_range) {
     let where = date_range
-      ? { createdAt: { [Op.between]: [date_range[0], date_range[1]] } }
+      ? {
+          createdAt: { [Op.between]: [date_range[0], date_range[1]] },
+          isAdmin: false,
+        }
       : { isAdmin: false };
+    console.log(where);
     let _r = await Users.findAll({
       where: where,
       attributes: [
