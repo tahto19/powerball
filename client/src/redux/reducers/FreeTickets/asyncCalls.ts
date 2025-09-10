@@ -13,7 +13,7 @@ export const getDataFreeTicket_ = createAsyncThunk(
       const token = state.token.token;
       const getFilter = data ? data : state.freeTickets.getData;
       const _r = await apiService.getFreeTickets(getFilter, token);
-
+      console.log(_r);
       const toReturn = { getData: getFilter, ..._r };
 
       dispatch(addGetDataFreeT(toReturn));
