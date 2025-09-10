@@ -53,7 +53,7 @@ import TicketScannedList from "./components/ticketScanner/TicketScannedList";
 import { ExportDialog } from "./Global/ExportDialog/ExportDialog";
 import Aplhacode from "./components/2ndChance_iFrame/alphacode/Aplhacode";
 import PhoneNumberLogin from "./components/2ndChance_iFrame/Login/PhoneNumberLogin";
-import FreeEntriesSetup from "./components/2ndChance_iFrame/FreeEntriesSetup/freeEntriesSetup";
+import FreeEntriesSetup from "./components/2ndChance_iFrame/FreeEntriesSetup/FreeEntriesSetup";
 
 const routes = [
   { path: "/dashboard", component: <Dashboard />, title: "Dashboard" },
