@@ -2,9 +2,8 @@ import CustomizedDataGrid from "@/components/CustomizedDataGrid";
 import { Box, Button, Typography } from "@mui/material";
 import { headers } from "./headers";
 import { useEffect, useState } from "react";
-import { paginationType } from "@/types/allTypes";
+import { getDataV2, paginationType } from "@/types/allTypes";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { addGetDataFreeT } from "@/redux/reducers/FreeTickets/freeTicketsSlice";
 import {
   getDataFreeTicket_,
   postDataFreeTicket_,
@@ -15,7 +14,7 @@ export default function FreeEntriesSetup() {
   const { list, count, getData, loading } = useAppSelector(
     (state) => state.freeTickets
   );
-  //   const { offset, limit, sort, filter } = getData;
+  const { offset, limit } = getData;
   const [pagination, setPagination] = useState<paginationType>({
     page: 0,
     pageSize: 10,
@@ -29,11 +28,51 @@ export default function FreeEntriesSetup() {
     type: "hey",
   });
 
-  const handleTableChange = (e: any) => {
-    console.log("running");
+  const handleTableChange = async ({
+    page,
+    pageSize,
+    sortModel,
+    filterModel,
+  }: any) => {
+    console.log("Table Changed:", { page, pageSize, sortModel, filterModel });
+
+    setPagination({ page, pageSize });
+
+    const sort = [["id", "DESC"]];
+    if (sortModel.length > 0) {
+      sort.push([sortModel[0].field, sortModel[0].sort.toUpperCase()]);
+    }
+
+    let newFilterModel = [];
+
+    if (filterModel.items.length > 0) {
+      newFilterModel = JSON.parse(JSON.stringify(filterModel)).items.map(
+        (x: any) => {
+          x.filter = x.value;
+          x.type = "string";
+
+          delete x.value;
+          delete x.fromInput;
+          delete x.id;
+          delete x.operator;
+          return x;
+        }
+      );
+    }
+
+    const query: getDataV2 = {
+      offset: page,
+      limit: pageSize,
+      sort: sort,
+      filter: newFilterModel,
+    };
+    dispatch(getDataFreeTicket_(query));
   };
   useEffect(() => {
     dispatch(getDataFreeTicket_());
+    setPagination(() => {
+      return { page: offset, pageSize: limit };
+    });
   }, []);
   const handleView = (e: any) => {
     setDialogOpen({ open: true, data: e, type: "View" });

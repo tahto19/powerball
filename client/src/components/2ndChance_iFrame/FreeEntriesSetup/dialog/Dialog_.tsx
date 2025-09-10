@@ -1,4 +1,3 @@
-import NewDatePicker from "@/components/addUser/NewDatePicker";
 import {
   Button,
   Dialog,
@@ -40,7 +39,7 @@ export default function Dialog_({
   });
   useEffect(() => {
     if (data)
-      setToSend((prev) => {
+      setToSend(() => {
         let value = data.value;
         let date_range = JSON.parse(data.date_range);
         console.log(date_range);
@@ -197,6 +196,7 @@ export default function Dialog_({
             onClick={() => {
               if (onSubmit) onSubmit(toSend);
             }}
+            disabled={loading}
           >
             Submit
           </Button>
