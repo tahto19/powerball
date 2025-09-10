@@ -27,13 +27,15 @@ FreeTickets.init(
     },
     fixed: {
       type: DataTypes.BOOLEAN,
-
       default: false,
     },
     date_range: {
       allowNull: false,
       required: true,
-      type: DataTypes.JSON,
+      type: DataTypes.TEXT("medium"),
+      set(val) {
+        this.setDataValue("date_range", JSON.stringify(val));
+      },
     },
   },
   {
