@@ -44,7 +44,6 @@ FreeTickets.init(
     modelName: "free_tickets",
     paranoid: true,
     tableName: process.env.DB_PREFIX + "free_tickets",
-    indexes: [{ name: "date_range_idx", fields: ["date_range"] }],
     // beforeCreate(raffle, options) {
     //   const timestamp = new Date()
     //     .toISOString()
