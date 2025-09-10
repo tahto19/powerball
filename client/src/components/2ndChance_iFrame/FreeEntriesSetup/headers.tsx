@@ -14,11 +14,12 @@ export const headers = (
     minWidth: 200,
     renderCell: (params: GridRenderCellParams<Date>) => {
       const dateRange = JSON.parse(params.value);
-
+      console.log(params.value);
       return (
         <>
-          {moment(dateRange[0]).format("MMMM DD yyyy, hh:mm a")} -{" "}
-          {moment(dateRange[1]).format("MMMM DD yyyy, hh:mm a")}
+          ss
+          {/* {moment(dateRange[0]).format("MMMM DD yyyy, hh:mm a")} -{" "}
+          {moment(dateRange[1]).format("MMMM DD yyyy, hh:mm a")} */}
         </>
       );
     },
