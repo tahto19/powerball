@@ -13,7 +13,7 @@ export const headers = (
     flex: 1,
     minWidth: 200,
     renderCell: (params: GridRenderCellParams<Date>) => {
-      const dateRange = JSON.parse(params.value);
+      // const dateRange = JSON.parse(params.value);
       console.log(params.value);
       return (
         <>
