@@ -3,7 +3,7 @@ import ec from "../lib/Export.class.js";
 export const exportDataController = async (req, res) => {
   try {
     const { type, dr, filter } = req.body;
-    console.log(dr);
+    console.log(type);
     const dr_ = dr
       ? [moment(dr[0]).startOf("day"), moment(dr[0]).endOf("day")]
       : [moment().startOf("year"), moment().endOf("year")];
