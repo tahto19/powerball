@@ -63,6 +63,19 @@ Users.init(
         this.setDataValue("lastname", encrpytPassword(val));
       },
     },
+    gender: {
+      allowNull: true,
+      type: DataTypes.STRING,
+
+      get() {
+        let val = this.getDataValue("gender");
+
+        return val ? decryptPassword(val) : this.getDataValue("gender");
+      },
+      set(val) {
+        this.setDataValue("gender", encrpytPassword(val));
+      },
+    },
     password: {
       allowNull: false,
       defaultValue: randomLetters(25),

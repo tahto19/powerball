@@ -41,6 +41,7 @@ export const updateSchema = {
         provinc: { type: "string" },
         baranga: { type: "string" },
         hbnandstr: { type: "string" },
+        gender: { type: "string" },
       },
     },
   },

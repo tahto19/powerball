@@ -19,6 +19,7 @@ export const auth = async (req, res) => {
 
     if (findNoP === undefined) {
       // check adminPaths
+
       let AdminP = getPath("/authentication/adminPath.json");
       let readAdminP = JSON.parse(fs.readFileSync(AdminP, "utf8"));
       let findNoAP = readAdminP.find((x) => {
@@ -31,6 +32,7 @@ export const auth = async (req, res) => {
       // if admin paths found check for the cookieChecker if the user is admin
       if (findNoAP) {
         let isAdmin = c_checkerDetails.isAdmin;
+
         if (!isAdmin) {
           throw new Error("ErrorCODE x138");
         }

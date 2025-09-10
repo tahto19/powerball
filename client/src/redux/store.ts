@@ -13,6 +13,7 @@ import RaffleDrawSlice from "./reducers/RaffleDraw/RaffleDrawSlice";
 import exportDataSlice from "./reducers/download/exportDataSlice";
 import alphaCodeSlice from "./reducers/alphaCode/alphacodeSlice";
 import raffleSlice from "./reducers/raffle/raffleSlice";
+import freeTicketsSlice from "./reducers/FreeTickets/freeTicketsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -30,6 +31,7 @@ export const store = configureStore({
     exportData: exportDataSlice,
     alphaCode: alphaCodeSlice,
     raffle: raffleSlice,
+    freeTickets: freeTicketsSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

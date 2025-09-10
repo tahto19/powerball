@@ -19,6 +19,7 @@ import {
   SettingsRounded,
   WbAuto,
   EmojiEventsOutlined,
+  LocalActivityOutlined,
 } from "@mui/icons-material";
 
 const mainListItems = [
@@ -36,6 +37,11 @@ const mainListItems = [
   { text: "Ticket Scanned", icon: <QrCodeScanner />, path: "/scan" },
   { text: "Alpha Code", icon: <WbAuto />, path: "/alphaCode" },
   { text: "Winners", icon: <EmojiEventsOutlined />, path: "/Winners" },
+  {
+    text: "Free tickets",
+    icon: <LocalActivityOutlined />,
+    path: "/freeTicket",
+  },
   // { text: "My Ticket Scan", icon: <QrCodeScanner />, path: "/myScan" },
 ];
 

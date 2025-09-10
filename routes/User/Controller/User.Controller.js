@@ -7,11 +7,15 @@ import {
   generateRandomChar,
   generateRandomNumber,
   getPath,
+  randomLetters,
   uploadImage,
 } from "../../../util/util.js";
 import otp from "../../OTP/Class/OTP.class.js";
 import uc from "../lib/User.class.js";
+import fc from "../../freeTickets/lib/FreeTickets.class.js";
+import tdc from "../../Ticket/lib/Ticket.class.js";
 import fs from "fs";
+import AuditTrail from "../../../models/AuditTrail.js";
 export const getController = async (req, res) => {
   const { offset, limit, sort, filter } = req.body;
 
@@ -65,6 +69,7 @@ export const updateController = async (req, res) => {
     province,
     barangay,
     hbnandstr,
+    gender,
   } = req.body;
 
   let data = {
@@ -80,6 +85,7 @@ export const updateController = async (req, res) => {
     province,
     barangay,
     hbnandstr,
+    gender,
   };
   const checkEmailExists = await uc.FetchOne([
     {
@@ -99,7 +105,7 @@ export const updateController = async (req, res) => {
   ]);
   if (checkMobile) {
     let v = checkMobile.toJSON();
-    if (data.id !== v.id) throw new Error("x908");
+    if (data.id !== v.id) throw new Error("errorcode x908");
   }
   if (file) {
     if (!file.mimetype.startsWith("image/")) throw new Error("ErrorCODE x91c");
@@ -158,6 +164,30 @@ export const createUser = async (req, res) => {
       birthdate: birthdate.value,
       idPath: file ? iUp.filename : null,
     });
+    // handle adding  free tickets
+    // check if theres a free ticket
+    console.log(r);
+    let findFreeTickets = await fc.findDate_range();
+    let getToday = moment().format("MMDDYYYYhhmmss");
+    for (let val of findFreeTickets) {
+      let i = val.toJSON();
+      let b = await tdc.Insert({
+        ticket_info: { details: "free" },
+        entries: i.value,
+        entries_used: 0,
+        user_id: r,
+        ticket_code: `FREE-TICKET-${randomLetters(4)}-${getToday}`,
+        VIN: `FREE-${randomLetters(4)}-${getToday}`,
+        alpha_code: "free",
+      });
+      await AuditTrail.create({
+        performedBy: r,
+        targetId: b,
+        path: "free tickets",
+        typeOfRequest: "free tickets",
+        status: 1,
+      });
+    }
     res.send(cSend(_path));
   } catch (err) {
     console.log(err);

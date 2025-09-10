@@ -9,7 +9,7 @@ import {
   GridRowsProp,
   GridColDef,
   getGridStringOperators,
-  GridRowProps
+  GridRowProps,
 } from "@mui/x-data-grid";
 import debounce from "lodash.debounce";
 import Box from "@mui/material/Box";
@@ -26,22 +26,22 @@ interface PaginationProps {
   pageSize: number | null;
 }
 interface GridProps<T> {
-  sx: any;
+  sx?: any;
   data: GridRowsProp | null;
   headers: GridColDef[];
-  pagination: PaginationProps;
-  pageLength: number | null;
-  rowHeight: number;
-  isActions: boolean;
-  loading: boolean;
+  pagination?: PaginationProps;
+  pageLength?: number | null;
+  rowHeight?: number;
+  isAction?: boolean;
+  loading?: boolean;
   onTableChange?: (params: {
     page: number;
     pageSize: number;
     sortModel: GridSortModel;
     filterModel: GridFilterModel;
   }) => void;
-  onEditAction: (row: T) => void | null | undefined;
-  onViewAction: (row: T) => void | null | undefined;
+  onEditAction?: (row: T) => void | null | undefined;
+  onViewAction?: (row: T) => void | null | undefined;
   onDeleteAction?: (row: T) => void | null | undefined;
 }
 
@@ -77,76 +77,75 @@ export default function CustomizedDataGrid<T>({
   );
 
   // Modify column to add "Actions" header
-  modifiedHeaders = !isAction ? modifiedHeaders : [
-    ...modifiedHeaders,
-    {
-      field: "actions",
-      headerName: "Actions",
-      sortable: false,
-      filterable: false,
-      width: 150,
-      renderCell: (params: any) => (
-        <Box
-          sx={{ display: "flex", height: "100%", gap: 1, alignItems: "center" }}
-        >
-          {
-            onEditAction ? (
-              <IconButton
-                aria-label="edit"
-                size="small"
-                onClick={(event) => {
-                  event.stopPropagation(); // ✅ Prevents row click from triggering sorting/filtering
-                  onEditAction(params.row);
-                }}
-              >
-                <EditIcon
-                  color="primary"
-                  fontSize="inherit"
-                />
-              </IconButton>
-            ) : null
-          }
+  modifiedHeaders = !isAction
+    ? modifiedHeaders
+    : [
+        ...modifiedHeaders,
+        {
+          field: "actions",
+          headerName: "Actions",
+          sortable: false,
+          filterable: false,
+          width: 150,
+          renderCell: (params: any) => (
+            <Box
+              sx={{
+                display: "flex",
+                height: "100%",
+                gap: 1,
+                alignItems: "center",
+              }}
+            >
+              {onEditAction ? (
+                <IconButton
+                  aria-label="edit"
+                  size="small"
+                  onClick={(event) => {
+                    event.stopPropagation(); // ✅ Prevents row click from triggering sorting/filtering
+                    onEditAction(params.row);
+                  }}
+                >
+                  <EditIcon
+                    color="primary"
+                    fontSize="inherit"
+                  />
+                </IconButton>
+              ) : null}
 
-          {
-            onViewAction ? (
-              <IconButton
-                aria-label="edit"
-                size="small"
-                onClick={(event) => {
-                  event.stopPropagation(); // ✅ Prevents row click from triggering sorting/filtering
-                  onViewAction(params.row);
-                }}
-              >
-                <RemoveRedEyeRoundedIcon
-                  color="success"
-                  fontSize="inherit"
-                />
-              </IconButton>
-            ) : null
-          }
-          {
-            onDeleteAction ? (
-              <IconButton
-                aria-label="delete"
-                size="small"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  onDeleteAction(params.row);
-                }}
-              >
-                <DeleteIcon
-                  color="error"
-                  fontSize="inherit"
-                />
-              </IconButton>
-            ) : null
-          }
-
-
-        </Box>
-      ),
-    },
-  ];
+              {onViewAction ? (
+                <IconButton
+                  aria-label="edit"
+                  size="small"
+                  onClick={(event) => {
+                    event.stopPropagation(); // ✅ Prevents row click from triggering sorting/filtering
+                    onViewAction(params.row);
+                  }}
+                >
+                  <RemoveRedEyeRoundedIcon
+                    color="success"
+                    fontSize="inherit"
+                  />
+                </IconButton>
+              ) : null}
+              {onDeleteAction ? (
+                <IconButton
+                  aria-label="delete"
+                  size="small"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    onDeleteAction(params.row);
+                  }}
+                >
+                  <DeleteIcon
+                    color="error"
+                    fontSize="inherit"
+                  />
+                </IconButton>
+              ) : null}
+            </Box>
+          ),
+        },
+      ];
 
   const [paginationModel, setPaginationModel] =
     React.useState<GridPaginationModel>(pagination);
@@ -184,9 +183,9 @@ export default function CustomizedDataGrid<T>({
       prevState.current.page !== paginationModel.page ||
       prevState.current.pageSize !== paginationModel.pageSize ||
       JSON.stringify(prevState.current.sortModel) !==
-      JSON.stringify(sortModel) ||
+        JSON.stringify(sortModel) ||
       JSON.stringify(prevState.current.filterModel) !==
-      JSON.stringify(filterModel);
+        JSON.stringify(filterModel);
 
     if (!hasChanged) return;
 
@@ -205,6 +204,7 @@ export default function CustomizedDataGrid<T>({
       filterModel,
     });
   }, [token, paginationModel, sortModel, filterModel, onTableChange]);
+
   return (
     <DataGrid
       sx={{
@@ -235,8 +235,8 @@ export default function CustomizedDataGrid<T>({
       loading={loading}
       slotProps={{
         loadingOverlay: {
-          variant: 'skeleton',
-          noRowsVariant: 'skeleton',
+          variant: "skeleton",
+          noRowsVariant: "skeleton",
         },
         filterPanel: {
           filterFormProps: {

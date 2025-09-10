@@ -12,8 +12,11 @@ import {
   Stack,
   Paper,
   Divider,
+  Select,
+  InputLabel,
+  MenuItem,
 } from "@mui/material";
-import { CameraAlt } from "@mui/icons-material";
+import { CameraAlt, Female, Male } from "@mui/icons-material";
 import rectangle from "@/assets/images/Rectangle 6691.png";
 import { useSelector } from "react-redux";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
@@ -409,6 +412,32 @@ const main = () => {
                       });
                     }}
                   />
+                </FormControl>
+              </Grid2>
+              <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+                <FormControl fullWidth>
+                  <FormLabel id="demo-customized-select-label">
+                    Gender {formData.gender}
+                  </FormLabel>
+                  <Select
+                    labelId="demo-customized-select-label"
+                    id="demo-customized-select"
+                    value={formData.gender}
+                    onChange={(e) => {
+                      setFormData((prev) => {
+                        return { ...prev, gender: e.target.value };
+                      });
+                    }}
+                  >
+                    <MenuItem value="Female">
+                      <Female sx={{ fill: "pink" }} />
+                      Female
+                    </MenuItem>
+                    <MenuItem value="Male">
+                      <Male sx={{ fill: "blue" }} />
+                      Male
+                    </MenuItem>
+                  </Select>
                 </FormControl>
               </Grid2>
               <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>

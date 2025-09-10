@@ -24,6 +24,7 @@ import {
   ticketState,
   TicketDraw,
   exportDataState,
+  freeTickets_,
 } from "@/types/allTypes";
 import {
   enterEntries,
@@ -450,7 +451,26 @@ export const apiService = {
     const response = await apiClient.get("api/alphacode/");
     return bodyDecrypt(response.data, token);
   },
+  getFreeTickets: async (data: getDataV2, token) => {
+    const r_ = await apiClient.post("api/freetickets", {
+      data: bodyEncrypt(JSON.stringify(data), token),
+    });
+    return bodyDecrypt(r_.data, token);
+  },
+  postFreeTickets: async (data: freeTickets_, token) => {
+    const r_ = await apiClient.post("api/freetickets/insert", {
+      data: bodyEncrypt(JSON.stringify(data), token),
+    });
+    console.log(r_);
+    return bodyDecrypt(r_.data, token);
+  },
+  patchFreeTickets: async (data: freeTickets_, token) => {
+    const r_ = await apiClient.put("api/freetickets/patch", {
+      data: bodyEncrypt(JSON.stringify(data), token),
+    });
 
+    return bodyDecrypt(r_.data, token);
+  },
   postInquiry: async (data) => {
     const response = await apiClient.post("api/inquiry/send", data);
     return response.data;

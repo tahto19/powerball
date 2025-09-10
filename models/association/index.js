@@ -9,6 +9,7 @@ import PrizeList from "../PrizeList.model.js";
 import WiningDrawDetails from "../WiningDrawDetails.model.js";
 import PasswordResets from "../PasswordResets.model.js";
 import AuditTrail from "../AuditTrail.js";
+import FreeTickets from "../FreeTickets.js";
 
 export default function Associations() {
   Users.hasMany(TicketDetails, {
@@ -144,4 +145,6 @@ export default function Associations() {
     foreignKey: "id",
     sourceKey: "performedBy",
   });
+  FreeTickets.hasOne(Users, { foreignKey: "id", sourceKey: "user" });
+  Users.belongsTo(FreeTickets, { foreignKey: "id", sourceKey: "user" });
 }

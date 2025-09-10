@@ -33,7 +33,7 @@ export type getDataV2 = {
   offset: number | null;
   filter: Array<any> | null;
   sort: Array<any> | null;
-  location: undefined | null | string;
+  location?: undefined | null | string;
 };
 export type DataProps = {
   id: number | null;
@@ -56,8 +56,8 @@ export const postAdminType = {
   dialogType: string | null | undefined,
 };
 export interface paginationType {
-  page: number;
-  pageSize: number;
+  page: number | null;
+  pageSize: number | null;
 }
 export type raffle = {
   ticketID: string | null;
@@ -158,4 +158,10 @@ export interface imageUpload {
   file: File[];
   name: null | string;
   id?: number;
+}
+export interface freeTickets_ {
+  startDate: undefined | Date;
+  endDate: undefined | Date;
+  value: null | number;
+  id?: null | number;
 }

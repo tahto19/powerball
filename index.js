@@ -30,6 +30,7 @@ import PasswordResets from "./routes/PasswordResets/PasswordResets.route.js";
 import { exportRoute } from "./routes/exports/Export.js";
 import alphaCode from "./routes/AlphaCode/routes.js";
 import Inquiry from "./routes/Inquiry/Inquiry.route.js";
+import FreeTickets from "./routes/freeTickets/FreeTickets.route.js";
 
 const fastify = Fastify({
   trustProxy: true,
@@ -247,15 +248,22 @@ const start = async () => {
     fastify.register(Inquiry, {
       prefix: process.env.ROUTES_PREFIX + "inquiry",
     });
+    fastify.register(FreeTickets, {
+      prefix: process.env.ROUTES_PREFIX + "freetickets",
+    });
     /**
      *error handler
      */
     fastify.setErrorHandler((err, req, res) => {
-      console.log(err);
-      if (err.code === undefined) {
+      if (
+        !err.message.toLowerCase().includes("error") &&
+        err.message.trim() !== "Need login!"
+      ) {
+        console.log(err);
+        res.status(400).send({ result: "error", message: "Server Error" });
+      } else if (err.code === undefined) {
         res.status(400).send({ result: "error", message: err.message });
       } else {
-        logger.error(err);
         if (err.code === "FST_ERR_VALIDATION") {
           res
             .status(err.statusCode)
@@ -267,7 +275,14 @@ const start = async () => {
         }
       }
     });
-
+    // if not found return server error only
+    fastify.setNotFoundHandler((request, reply) => {
+      reply.status(404).send({
+        error: "Error Found",
+        message: `Something went wrong please contact us`,
+        statusCode: 404,
+      });
+    });
     fastify.listen({ port: process.env.PORT }, function (err, address) {
       if (err) {
         fastify.log.error(err);

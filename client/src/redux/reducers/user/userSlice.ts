@@ -71,6 +71,7 @@ interface userState {
   province: string | null;
   barangay: string | null;
   hbnandstr: string | null;
+  gender: string | null;
 }
 
 const initialState: userState = {
@@ -106,6 +107,7 @@ const initialState: userState = {
   verifiedAndCreatedAccount: false,
   password: null,
   isAdmin: false,
+  gender: null,
 };
 
 const userSlice = createSlice({
