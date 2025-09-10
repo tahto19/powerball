@@ -13,13 +13,12 @@ export const headers = (
     flex: 1,
     minWidth: 200,
     renderCell: (params: GridRenderCellParams<Date>) => {
-      // const dateRange = JSON.parse(params.value);
-      console.log(params.value);
+      const dateRange = params.value;
+
       return (
         <>
-          ss
-          {/* {moment(dateRange[0]).format("MMMM DD yyyy, hh:mm a")} -{" "}
-          {moment(dateRange[1]).format("MMMM DD yyyy, hh:mm a")} */}
+          {moment(dateRange[0]).format("MMMM DD yyyy, hh:mm a")} -{" "}
+          {moment(dateRange[1]).format("MMMM DD yyyy, hh:mm a")}
         </>
       );
     },
