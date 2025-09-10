@@ -4,7 +4,6 @@ import { showToaster } from "../global/globalSlice";
 import { RootState } from "@/redux/store";
 import apiService from "@/services/apiService";
 import { addGetDataFreeT } from "./freeTicketsSlice";
-import { delay } from "@/utils/util";
 
 export const getDataFreeTicket_ = createAsyncThunk(
   "freeTicket/getData",
