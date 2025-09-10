@@ -11,9 +11,9 @@ export const headers = (
     field: "date_range",
     headerName: "Free Entry Dates",
     flex: 1,
-    minWidth: 400,
+    minWidth: 200,
     renderCell: (params: GridRenderCellParams<Date>) => {
-      const dateRange = params.value;
+      const dateRange = JSON.parse(params.value);
 
       return (
         <>
@@ -27,7 +27,7 @@ export const headers = (
     field: "value",
     headerName: "Value",
     flex: 1,
-    minWidth: 100,
+    minWidth: 200,
     renderCell: (params: GridRenderCellParams<any, Date>) => {
       return <>{params.value}</>;
     },
@@ -36,7 +36,7 @@ export const headers = (
     field: "createdAt",
     headerName: "Date Created",
     flex: 1,
-    minWidth: 100,
+    minWidth: 200,
     renderCell: (params: GridRenderCellParams<any, Date>) => {
       return <>{moment(params.value).format("MMMM DD yyyy, hh:mm a")}</>;
     },
