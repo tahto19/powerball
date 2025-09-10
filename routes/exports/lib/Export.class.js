@@ -76,6 +76,7 @@ class Export_data_class {
         "mobileNumber",
         "createdAt",
         "birthdate",
+        "gender",
       ],
     });
     let r = _r.map((v) => v.toJSON());
@@ -100,6 +101,7 @@ class Export_data_class {
         "barangay",
         "province",
         "city",
+        "gender",
       ],
     });
     let r = _r.map((v) => v.toJSON());
