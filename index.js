@@ -31,6 +31,7 @@ import { exportRoute } from "./routes/exports/Export.js";
 import alphaCode from "./routes/AlphaCode/routes.js";
 import Inquiry from "./routes/Inquiry/Inquiry.route.js";
 import FreeTickets from "./routes/freeTickets/FreeTickets.route.js";
+import siteDefaults from "./routes/SCSiteDefaults/siteDefaults.js";
 
 const fastify = Fastify({
   trustProxy: true,
@@ -250,6 +251,9 @@ const start = async () => {
     });
     fastify.register(FreeTickets, {
       prefix: process.env.ROUTES_PREFIX + "freetickets",
+    });
+    fastify.register(siteDefaults, {
+      prefix: process.env.ROUTES_PREFIX + "site-defaults",
     });
     /**
      *error handler

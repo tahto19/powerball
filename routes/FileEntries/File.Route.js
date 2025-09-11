@@ -3,6 +3,7 @@ import {
   updateImageSchema,
   getSchema,
   serveImageSchema,
+  serveVideoSchema,
 } from "./Schema/File.Schema.js";
 import bodyChecker from "../../helpers/bodyChecker.js";
 import { auth } from "../../authentication/auth.js";
@@ -27,6 +28,8 @@ const file = (app, opts, done) => {
   app.put("/image", updateImageSchema);
   app.post("/", getSchema);
   app.get("/serve/image/:id", serveImageSchema);
+  app.get("/serve/video/:id", serveVideoSchema);
+
   done();
 };
 

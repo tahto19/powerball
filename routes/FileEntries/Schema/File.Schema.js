@@ -3,6 +3,7 @@ import {
   updateImageController,
   getController,
   serveImageController,
+  serveVideoController,
 } from "../Controller/File.Controller.js";
 export const insertImageSchema = {
   handler: insertImageController,
@@ -39,4 +40,8 @@ export const serveImageSchema = {
   onSend: async (req, reply, payload) => {
     return payload; // Just return the payload untouched
   },
+};
+
+export const serveVideoSchema = {
+  handler: serveVideoController,
 };
