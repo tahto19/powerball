@@ -76,7 +76,7 @@ export const mobileNumberController = async (req, res) => {
       req.ip || req.headers["x-forwarded-for"] || req.connection?.remoteAddress;
     let dd_ = decryptData(data, req.headers.time);
     let dd = dd_.charAt(0) == "0" ? "63" + dd_.slice(1) : dd_;
-
+    console.log(dd);
     let findMobile = await UserClass.FetchOneV2([
       {
         filter: dd,
