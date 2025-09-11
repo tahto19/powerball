@@ -122,7 +122,6 @@ export const serveVideoController = async (req, res) => {
     return;
   }
 
-  // Fetch video metadata from DB
   const findVideo = await fc.FetchOne([
     { filter: id, field: "id", type: "number" },
     { filter: "video", field: "type", type: "string" },
@@ -135,7 +134,6 @@ export const serveVideoController = async (req, res) => {
   const _path = getPath(
     "/uploads/video_page/" + findVideo.dataValues.file_location
   );
-
   if (!fs.existsSync(_path)) {
     res.code(404).send("Video file missing on server");
     return;
@@ -148,31 +146,29 @@ export const serveVideoController = async (req, res) => {
   const range = req.headers.range;
 
   if (!range) {
-    // No Range → send full file
+    // Send whole video if no range requested
+    res.code(200);
     res.header("Content-Length", fileSize);
     res.header("Content-Type", mimeType);
-    fs.createReadStream(_path, { highWaterMark: 1024 * 1024 }).pipe(res.raw);
+    res.header("Accept-Ranges", "bytes");
+    fs.createReadStream(_path).pipe(res.raw);
     return;
   }
 
-  // Handle Range requests
+  // Parse Range header
   const [startStr, endStr] = range.replace(/bytes=/, "").split("-");
   const start = parseInt(startStr, 10);
   const end = endStr ? parseInt(endStr, 10) : fileSize - 1;
 
-  if (start >= fileSize || end >= fileSize) {
+  if (start >= fileSize) {
     res.code(416).header("Content-Range", `bytes */${fileSize}`).send();
     return;
   }
 
   const chunkSize = end - start + 1;
-  const fileStream = fs.createReadStream(_path, {
-    start,
-    end,
-    highWaterMark: 1024 * 1024, // 1MB chunks
-  });
+  const fileStream = fs.createReadStream(_path, { start, end });
 
-  res.code(206);
+  res.code(206); // ✅ Must be 206
   res.header("Content-Range", `bytes ${start}-${end}/${fileSize}`);
   res.header("Accept-Ranges", "bytes");
   res.header("Content-Length", chunkSize);
