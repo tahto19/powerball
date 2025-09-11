@@ -82,12 +82,12 @@ class User_class {
           as: "myUserType",
         },
       ],
-      // attributes: [
-      //   [fn("SUM", col("entries")), "totalEntries"],
-      //   [fn("SUM", col("TicketDetails.entries_used")), "totalUsedEntries"],
-      // ],
-      // distinct: true, // ensure proper count when joins are present
-      // group: ["Users.id"], // group by user to get correct counts
+      attributes: [
+        [fn("SUM", col("entries")), "totalEntries"],
+        [fn("SUM", col("TicketDetails.entries_used")), "totalUsedEntries"],
+      ],
+      distinct: true, // ensure proper count when joins are present
+      group: ["Users.id"], // group by user to get correct counts
     };
     query["where"] = WhereFilters(filter);
     console.log(query["where"], filter);
