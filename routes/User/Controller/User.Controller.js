@@ -209,7 +209,7 @@ export const getUserController = async (req, res) => {
     var user_id = req.user_id;
     let filter = [{ type: "number", field: "id", filter: user_id }];
 
-    const getUser = await uc.FetchOne(filter);
+    const getUser = await uc.FetchOneV2(filter);
     // getUser.password = "";
     res.send(cSend(getUser));
   } catch (err) {
