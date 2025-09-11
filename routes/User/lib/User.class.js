@@ -99,7 +99,7 @@ class User_class {
     var query = {};
     query["where"] = WhereFilters(filter);
     let list = await Users.findOne(query);
-    return list.length > 0 ? list[0] : null;
+    return list;
   }
 }
 
