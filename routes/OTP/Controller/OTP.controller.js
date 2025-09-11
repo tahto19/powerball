@@ -37,7 +37,7 @@ export const createOTPController = async (req, res) => {
         if (findUser !== null) throw new Error("ErrorCODE x909");
       }
       if (mobileNumber) {
-        let findUser = await UserClass.FetchOne([
+        let findUser = await UserClass.FetchOneV2([
           {
             filter: mobileNumber,
             field: "mobileNumber",
