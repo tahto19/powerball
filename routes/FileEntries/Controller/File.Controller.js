@@ -115,11 +115,6 @@ export const serveImageController = async (req, res) => {
 const videoCache = new Map();
 
 export const serveVideoController = async (req, res) => {
-  import fs from "fs";
-import path from "path";
-import { getPath } from "../utils/getPath.js"; // adjust to your project
-
-export const serveVideoController = async (req, res) => {
   const { id } = req.params;
 
   if (!id || id === "undefined") {
@@ -166,10 +161,7 @@ export const serveVideoController = async (req, res) => {
   const end = endStr ? parseInt(endStr, 10) : fileSize - 1;
 
   if (start >= fileSize || end >= fileSize) {
-    res
-      .code(416)
-      .header("Content-Range", `bytes */${fileSize}`)
-      .send();
+    res.code(416).header("Content-Range", `bytes */${fileSize}`).send();
     return;
   }
 
@@ -209,5 +201,4 @@ export const serveVideoController = async (req, res) => {
 
   // // Redirect frontend <video> to Nginx
   // res.redirect(302, fileUrl);
- 
 };
