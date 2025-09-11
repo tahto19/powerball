@@ -13,6 +13,16 @@ import FreeTickets from "../FreeTickets.js";
 import UserType from "../UserType.js";
 
 export default function Associations() {
+  UserType.hasMany(Users, {
+    foreignKey: "userType",
+    sourceKey: "id",
+    as: "allUsers",
+  });
+  Users.belongsTo(UserType, {
+    foreignKey: "userType",
+    targetKey: "id",
+    as: "myUserType",
+  });
   Users.hasMany(TicketDetails, {
     foreignKey: "user_id",
     targetKey: "id",
@@ -155,16 +165,6 @@ export default function Associations() {
     sourceKey: "user",
   });
 
-  UserType.hasMany(Users, {
-    foreignKey: "userType",
-    sourceKey: "id",
-    as: "allUsers",
-  });
-  Users.belongsTo(UserType, {
-    foreignKey: "userType",
-    targetKey: "id",
-    as: "myUserType",
-  });
   // UserType.belongsTo(Users, {
   //   foreignKey: "createdBy",
   //   targetKey: "id",
