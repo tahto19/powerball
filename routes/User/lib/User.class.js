@@ -96,7 +96,27 @@ class User_class {
     return list.length > 0 ? list[0] : null;
   }
   async FetchOneV2(filter) {
-    var query = {};
+    var query = {
+      include: [
+        {
+          model: Files,
+          as: "fileInfo",
+          required: false,
+        },
+        {
+          model: TicketDetails,
+          attributes: [
+            [fn("SUM", col("entries")), "totalEntries"],
+            [fn("SUM", col("entries_used")), "totalUsedEntries"],
+          ],
+          required: false,
+        },
+        {
+          model: UserType,
+          as: "myUserType",
+        },
+      ],
+    };
     query["where"] = WhereFilters(filter);
     console.log(query);
     let list = await Users.findOne(query);

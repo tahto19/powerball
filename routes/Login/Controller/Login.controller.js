@@ -151,7 +151,7 @@ export const loginUsingMobileNumberController = async (req, res) => {
     ]);
 
     if (!r) throw new Error("ErrorCODE x58");
-    let getUserDetails = await UserClass.FetchOne([
+    let getUserDetails = await UserClass.FetchOneV2([
       {
         filter: dd,
         type: "string",
