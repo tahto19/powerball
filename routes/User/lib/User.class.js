@@ -98,6 +98,7 @@ class User_class {
   async FetchOneV2(filter) {
     var query = {};
     query["where"] = WhereFilters(filter);
+    console.log(query);
     let list = await Users.findOne(query);
     return list;
   }
