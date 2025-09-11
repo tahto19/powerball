@@ -115,6 +115,11 @@ export const serveImageController = async (req, res) => {
 const videoCache = new Map();
 
 export const serveVideoController = async (req, res) => {
+  import fs from "fs";
+import path from "path";
+import { getPath } from "../utils/getPath.js"; // adjust to your project
+
+export const serveVideoController = async (req, res) => {
   const { id } = req.params;
 
   if (!id || id === "undefined") {
@@ -122,7 +127,7 @@ export const serveVideoController = async (req, res) => {
     return;
   }
 
-  // Get video metadata from DB
+  // Fetch video metadata from DB
   const findVideo = await fc.FetchOne([
     { filter: id, field: "id", type: "number" },
     { filter: "video", field: "type", type: "string" },
@@ -132,94 +137,77 @@ export const serveVideoController = async (req, res) => {
     return;
   }
 
-  // Build Nginx-served URL
-  const fileUrl = `/uploads/video_page/${findVideo.dataValues.file_location}`;
+  const _path = getPath(
+    "/uploads/video_page/" + findVideo.dataValues.file_location
+  );
 
-  // Redirect frontend <video> to Nginx
-  res.redirect(302, fileUrl);
+  if (!fs.existsSync(_path)) {
+    res.code(404).send("Video file missing on server");
+    return;
+  }
+
+  const stat = fs.statSync(_path);
+  const fileSize = stat.size;
+  const mimeType = findVideo.dataValues.mimetype || "video/mp4";
+
+  const range = req.headers.range;
+
+  if (!range) {
+    // No Range → send full file
+    res.header("Content-Length", fileSize);
+    res.header("Content-Type", mimeType);
+    fs.createReadStream(_path, { highWaterMark: 1024 * 1024 }).pipe(res.raw);
+    return;
+  }
+
+  // Handle Range requests
+  const [startStr, endStr] = range.replace(/bytes=/, "").split("-");
+  const start = parseInt(startStr, 10);
+  const end = endStr ? parseInt(endStr, 10) : fileSize - 1;
+
+  if (start >= fileSize || end >= fileSize) {
+    res
+      .code(416)
+      .header("Content-Range", `bytes */${fileSize}`)
+      .send();
+    return;
+  }
+
+  const chunkSize = end - start + 1;
+  const fileStream = fs.createReadStream(_path, {
+    start,
+    end,
+    highWaterMark: 1024 * 1024, // 1MB chunks
+  });
+
+  res.code(206);
+  res.header("Content-Range", `bytes ${start}-${end}/${fileSize}`);
+  res.header("Accept-Ranges", "bytes");
+  res.header("Content-Length", chunkSize);
+  res.header("Content-Type", mimeType);
+
+  fileStream.pipe(res.raw);
   // const { id } = req.params;
+
   // if (!id || id === "undefined") {
-  //   throw new Error("id is undefined");
-  // }
-
-  // let cached = videoCache.get(id);
-
-  // if (!cached) {
-  //   // ---- Fetch video once ----
-  //   const findVideo = await fc.FetchOne([
-  //     { filter: id, field: "id", type: "number" },
-  //     { filter: "video", field: "type", type: "string" },
-  //   ]);
-  //   if (!findVideo) {
-  //     res.code(404).send("Video not found in DB");
-  //     return;
-  //   }
-
-  //   const _path = getPath(
-  //     "/uploads/video_page/" + findVideo.dataValues.file_location
-  //   );
-
-  //   if (!fs.existsSync(_path)) {
-  //     res.code(404).send("Video file not found");
-  //     return;
-  //   }
-
-  //   const stat = fs.statSync(_path);
-  //   cached = {
-  //     path: _path,
-  //     size: stat.size,
-  //     mimeType: findVideo.dataValues.mimetype || "video/mp4",
-  //   };
-
-  //   videoCache.set(id, cached); // ✅ cache result
-  // }
-
-  // const { path: _path, size: fileSize, mimeType } = cached;
-
-  // // ---- HEAD request ----
-  // if (req.method === "HEAD") {
-  //   res.header("Accept-Ranges", "bytes");
-  //   res.header("Content-Length", fileSize);
-  //   res.header("Content-Type", mimeType);
-  //   res.code(200).send();
+  //   res.code(400).send("Invalid video ID");
   //   return;
   // }
 
-  // // ---- Range request ----
-  // const range = req.headers.range;
-  // if (range) {
-  //   const [startStr, endStr] = range.replace(/bytes=/, "").split("-");
-  //   const start = parseInt(startStr, 10);
-  //   const end = endStr ? parseInt(endStr, 10) : fileSize - 1;
-
-  //   if (start >= fileSize || end >= fileSize) {
-  //     res.code(416).header("Content-Range", `bytes */${fileSize}`).send();
-  //     return;
-  //   }
-
-  //   const chunksize = end - start + 1;
-  //   console.log(`Streaming bytes ${start}-${end} of ${fileSize}`);
-
-  //   const fileStream = fs.createReadStream(_path, {
-  //     start,
-  //     end,
-  //     highWaterMark: 1024 * 1024,
-  //   });
-
-  //   res.code(206);
-  //   res.header("Content-Range", `bytes ${start}-${end}/${fileSize}`);
-  //   res.header("Accept-Ranges", "bytes");
-  //   res.header("Content-Length", chunksize);
-  //   res.header("Content-Type", mimeType);
-
-  //   fileStream.pipe(res.raw);
+  // // Get video metadata from DB
+  // const findVideo = await fc.FetchOne([
+  //   { filter: id, field: "id", type: "number" },
+  //   { filter: "video", field: "type", type: "string" },
+  // ]);
+  // if (!findVideo) {
+  //   res.code(404).send("Video not found");
   //   return;
   // }
 
-  // // ---- No Range → full file ----
-  // res.code(200);
-  // res.header("Content-Length", fileSize);
-  // res.header("Content-Type", mimeType);
+  // // Build Nginx-served URL
+  // const fileUrl = `/uploads/video_page/${findVideo.dataValues.file_location}`;
 
-  // fs.createReadStream(_path, { highWaterMark: 1024 * 1024 }).pipe(res.raw);
+  // // Redirect frontend <video> to Nginx
+  // res.redirect(302, fileUrl);
+ 
 };
