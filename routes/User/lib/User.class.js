@@ -105,10 +105,7 @@ class User_class {
         },
         {
           model: TicketDetails,
-          attributes: [
-            [fn("SUM", col("entries")), "totalEntries"],
-            [fn("SUM", col("entries_used")), "totalUsedEntries"],
-          ],
+
           required: false,
         },
         {
