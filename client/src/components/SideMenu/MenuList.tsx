@@ -46,7 +46,7 @@ const mainListItems = [
 ];
 
 const secondaryListItems = [
-  { text: "System Defaults", icon: <SettingsRounded /> },
+  { text: "SC Site Defaults", icon: <SettingsRounded /> },
 ];
 
 export default function MenuContent() {

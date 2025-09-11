@@ -55,6 +55,8 @@ import Aplhacode from "./components/2ndChance_iFrame/alphacode/Aplhacode";
 import PhoneNumberLogin from "./components/2ndChance_iFrame/Login/PhoneNumberLogin";
 import FreeEntriesSetup from "./components/2ndChance_iFrame/FreeEntriesSetup/FreeEntriesSetup";
 
+import Defaults from "./components/Defaults/index";
+
 const routes = [
   { path: "/dashboard", component: <Dashboard />, title: "Dashboard" },
   {
@@ -111,6 +113,11 @@ const routes = [
     path: "/freeTicket",
     component: <FreeEntriesSetup />,
     title: "Free Ticket",
+  },
+  {
+    path: "/defaults",
+    component: <Defaults />,
+    title: "Defaults",
   },
 ];
 
