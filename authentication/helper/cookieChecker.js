@@ -21,7 +21,7 @@ export const cookieChecker = async (req) => {
 
     if (!getCookeDetails) throw new Error("ErrorCODE x33");
 
-    let userDetails = await UserClass.FetchOne([
+    let userDetails = await UserClass.FetchOneV2([
       { filter: getCookeDetails.id, type: "number", field: "id" },
       {
         filter: getCookeDetails.mobileNumber,
