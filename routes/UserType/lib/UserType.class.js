@@ -10,7 +10,7 @@ class UserTypeClass {
         edit: false,
       },
       administrator: {
-        view: false,
+        view: true,
         add: false,
         edit: false,
         export: false,

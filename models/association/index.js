@@ -162,18 +162,18 @@ export default function Associations() {
   });
   Users.belongsTo(UserType, {
     foreignKey: "userType",
-    sourceKey: "id",
+    targetKey: "id",
     as: "myUserType",
   });
-  UserType.belongsTo(Users, {
-    foreignKey: "createdBy",
-    targetKey: "id",
-    as: "creator",
-  });
+  // UserType.belongsTo(Users, {
+  //   foreignKey: "createdBy",
+  //   targetKey: "id",
+  //   as: "creator",
+  // });
 
-  Users.hasMany(UserType, {
-    foreignKey: "createdBy",
-    sourceKey: "id",
-    as: "createdTypes",
-  });
+  // Users.hasMany(UserType, {
+  //   foreignKey: "createdBy",
+  //   sourceKey: "id",
+  //   as: "createdTypes",
+  // });
 }
