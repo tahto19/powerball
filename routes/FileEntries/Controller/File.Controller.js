@@ -131,50 +131,11 @@ export const serveVideoController = async (req, res) => {
     return;
   }
 
-  const _path = getPath(
-    "/uploads/video_page/" + findVideo.dataValues.file_location
-  );
-  if (!fs.existsSync(_path)) {
-    res.code(404).send("Video file missing on server");
-    return;
-  }
+  // Build the direct URL to Nginx
+  const fileUrl = `/uploads/video_page/${findVideo.dataValues.file_location}`;
 
-  const stat = fs.statSync(_path);
-  const fileSize = stat.size;
-  const mimeType = findVideo.dataValues.mimetype || "video/mp4";
-
-  const range = req.headers.range;
-
-  if (!range) {
-    // Send whole video if no range requested
-    res.code(200);
-    res.header("Content-Length", fileSize);
-    res.header("Content-Type", mimeType);
-    res.header("Accept-Ranges", "bytes");
-    fs.createReadStream(_path).pipe(res.raw);
-    return;
-  }
-
-  // Parse Range header
-  const [startStr, endStr] = range.replace(/bytes=/, "").split("-");
-  const start = parseInt(startStr, 10);
-  const end = endStr ? parseInt(endStr, 10) : fileSize - 1;
-
-  if (start >= fileSize) {
-    res.code(416).header("Content-Range", `bytes */${fileSize}`).send();
-    return;
-  }
-
-  const chunkSize = end - start + 1;
-  const fileStream = fs.createReadStream(_path, { start, end });
-
-  res.code(206); // ✅ Must be 206
-  res.header("Content-Range", `bytes ${start}-${end}/${fileSize}`);
-  res.header("Accept-Ranges", "bytes");
-  res.header("Content-Length", chunkSize);
-  res.header("Content-Type", mimeType);
-
-  fileStream.pipe(res.raw);
+  // Redirect frontend <video> tag to Nginx
+  res.redirect(302, fileUrl);
   // const { id } = req.params;
 
   // if (!id || id === "undefined") {
