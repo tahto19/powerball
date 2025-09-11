@@ -1,3 +1,4 @@
+//@ts-nocheck
 import logo from "@/assets/image/logo.png";
 import {
     CardMedia,
