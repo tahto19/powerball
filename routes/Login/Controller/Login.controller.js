@@ -77,7 +77,7 @@ export const mobileNumberController = async (req, res) => {
     let dd_ = decryptData(data, req.headers.time);
     let dd = dd_.charAt(0) == "0" ? "63" + dd_.slice(1) : dd_;
 
-    let findMobile = await UserClass.FetchOne([
+    let findMobile = await UserClass.FetchOneV2([
       {
         filter: dd,
         field: "mobileNumber",
