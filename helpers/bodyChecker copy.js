@@ -127,6 +127,7 @@ const bodyChecker = async (req, res, payload) => {
 
         // parsed = { ...JSON.parse(a), file };
       }
+      // if(req.method === '')
     }
   } catch (err) {
     console.log(err);

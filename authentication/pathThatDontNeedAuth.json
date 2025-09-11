@@ -14,6 +14,5 @@
   { "path": "/api/raffleHistory/insert", "method": "!POST" },
   { "path": "/api/export/", "method": "POST" },
   { "path": "/inquiry", "method": "POST" },
-  { "path": "/inquiry/", "method": "POST" },
-  { "path": "/freetickets", "method": "GET" }
+  { "path": "/inquiry/", "method": "POST" }
 ]

@@ -1,6 +1,7 @@
 [
   { "path": "/raffle/" },
   { "path": "/ticket/entries", "method": "GET" },
+  { "path": "/UserType/byUser", "method": "GET" },
   { "path": "/ticket/draw", "method": "POST" },
   { "path": "/ticket/admin", "method": "POST" },
   { "path": "/user/", "method": "POST" },
@@ -9,5 +10,8 @@
   { "path": "/user/", "method": "POST" },
   { "path": "/export/", "method": "POST" },
   { "path": "/alphacode/", "method": "POST" },
-  { "path": "/ticket/allTicketDetails/", "method": "POST" }
+  { "path": "/ticket/allTicketDetails/", "method": "POST" },
+  { "path": "/export/", "method": "POST" },
+  { "path": "/UserType/", "method": "GET" },
+  { "path": "/UserType/", "method": "PUT" }
 ]

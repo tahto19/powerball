@@ -10,6 +10,7 @@ import WiningDrawDetails from "../WiningDrawDetails.model.js";
 import PasswordResets from "../PasswordResets.model.js";
 import AuditTrail from "../AuditTrail.js";
 import FreeTickets from "../FreeTickets.js";
+import UserType from "../UserType.js";
 
 export default function Associations() {
   Users.hasMany(TicketDetails, {
@@ -145,6 +146,34 @@ export default function Associations() {
     foreignKey: "id",
     sourceKey: "performedBy",
   });
-  FreeTickets.hasOne(Users, { foreignKey: "id", sourceKey: "user" });
-  Users.belongsTo(FreeTickets, { foreignKey: "id", sourceKey: "user" });
+  FreeTickets.hasOne(Users, {
+    foreignKey: "id",
+    sourceKey: "user",
+  });
+  Users.belongsTo(FreeTickets, {
+    foreignKey: "id",
+    sourceKey: "user",
+  });
+
+  UserType.hasMany(Users, {
+    foreignKey: "userType",
+    sourceKey: "id",
+    as: "allUsers",
+  });
+  Users.belongsTo(UserType, {
+    foreignKey: "userType",
+    sourceKey: "id",
+    as: "myUserType",
+  });
+  UserType.belongsTo(Users, {
+    foreignKey: "createdBy",
+    targetKey: "id",
+    as: "creator",
+  });
+
+  Users.hasMany(UserType, {
+    foreignKey: "createdBy",
+    sourceKey: "id",
+    as: "createdTypes",
+  });
 }

@@ -158,6 +158,15 @@ Users.init(
     },
     isAdmin: { allowNull: false, type: DataTypes.BOOLEAN, defaultValue: false },
     mobileNumber: { allowNull: true, type: DataTypes.STRING },
+    userType: {
+      allowNull: true,
+      type: DataTypes.INTEGER,
+      default: null,
+      references: {
+        model: process.env.DB_PREFIX + "user_type",
+        key: "id",
+      },
+    },
   },
   {
     timestamps: true,

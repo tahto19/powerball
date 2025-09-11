@@ -62,6 +62,14 @@ const bodyChecker = async (req, res, payload) => {
         // return Readable.from([a]);
         // parsed = { ...JSON.parse(a), file };
       }
+      const secure = req.headers["secure"];
+
+      if (req.method === "GET" && secure === "true") {
+        // let body = JSON.parse(a);
+        const { data } = req.query;
+        let decryptData_ = decryptData(data, req.cookies.cookie_pb_1271);
+        req.query = JSON.parse(decryptData_);
+      }
     }
   } catch (err) {
     throw err;

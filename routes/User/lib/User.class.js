@@ -3,6 +3,7 @@ import Users from "../../../models/Users.model.js";
 import Files from "../../../models/Files.model.js";
 import { col, fn } from "sequelize";
 import TicketDetails from "../../../models/TicketDetails.model.js";
+import UserType from "../../../models/UserType.js";
 class User_class {
   constructor() {}
   async Fetch(offset = 0, limit = 10, sort = [["id", "ASC"]], filter = []) {
@@ -76,15 +77,20 @@ class User_class {
           ],
           required: false,
         },
+        {
+          model: UserType,
+          as: "myUserType",
+        },
       ],
       // attributes: [
       //   [fn("SUM", col("entries")), "totalEntries"],
       //   [fn("SUM", col("TicketDetails.entries_used")), "totalUsedEntries"],
       // ],
-      distinct: true, // ensure proper count when joins are present
-      group: ["Users.id"], // group by user to get correct counts
+      // distinct: true, // ensure proper count when joins are present
+      // group: ["Users.id"], // group by user to get correct counts
     };
     query["where"] = WhereFilters(filter);
+    console.log(query["where"], filter);
     let list = await Users.findAll(query);
 
     return list.length > 0 ? list[0] : null;
