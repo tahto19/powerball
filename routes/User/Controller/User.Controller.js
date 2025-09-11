@@ -16,6 +16,7 @@ import fc from "../../freeTickets/lib/FreeTickets.class.js";
 import tdc from "../../Ticket/lib/Ticket.class.js";
 import fs from "fs";
 import AuditTrail from "../../../models/AuditTrail.js";
+import utc from "../../UserType/lib/UserType.class.js";
 export const getController = async (req, res) => {
   const { offset, limit, sort, filter } = req.body;
 
@@ -210,9 +211,18 @@ export const getUserController = async (req, res) => {
     let filter = [{ type: "number", field: "id", filter: user_id }];
 
     const getUser = await uc.FetchOneV2(filter);
+    let r_toJson = getUser.toJSON();
     // getUser.password = "";
+
+    if (!r_toJson.myUserType && r_toJson.isAdmin) {
+      let b = await utc.createUserType(r_toJson.id);
+      r_toJson["myUserType"] = b;
+      await uc.Edit({ id: r_toJson.id, userType: b.id });
+    }
+
     res.send(cSend(getUser));
   } catch (err) {
+    console.log(err);
     throw err;
   }
 };

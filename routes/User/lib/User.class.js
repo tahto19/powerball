@@ -90,7 +90,7 @@ class User_class {
       group: ["Users.id"], // group by user to get correct counts
     };
     query["where"] = WhereFilters(filter);
-    console.log(query["where"], filter);
+
     let list = await Users.findAll(query);
 
     return list.length > 0 ? list[0] : null;
@@ -115,7 +115,7 @@ class User_class {
       ],
     };
     query["where"] = WhereFilters(filter);
-    console.log(query);
+
     let list = await Users.findOne(query);
     return list;
   }

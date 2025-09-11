@@ -4,7 +4,7 @@ export const getUserTypeByUserController = async (req, res) => {
   try {
     const { id } = req.query;
 
-    const r_ = await uc.FetchOne([
+    const r_ = await uc.FetchOneV2([
       {
         field: "id",
         filter: parseInt(id),
@@ -18,7 +18,7 @@ export const getUserTypeByUserController = async (req, res) => {
       throw new Error("ErrorCode x933");
     }
 
-    if (!r_toJson.userType) {
+    if (!r_toJson.myUserType) {
       let b = await utc.createUserType(id);
       r_toJson["myUserType"] = b;
       await uc.Edit({ id, userType: b.id });

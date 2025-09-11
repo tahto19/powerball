@@ -202,9 +202,9 @@ export const getUser = createAsyncThunk(
       const token = state.token.token;
 
       const _r = await apiService.getUser();
-      console.log(_r);
-      let c = bodyDecrypt(_r.data, token);
 
+      let c = bodyDecrypt(_r.data, token);
+      console.log(c);
       dispatch(addUserDetails(c.data));
       dispatch(addMyPermissions(c.data.myUserType?.permissions));
     } catch (err) {

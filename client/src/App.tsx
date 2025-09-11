@@ -188,6 +188,7 @@ function AppRoutes() {
   }, []);
   const [newRoutes, setNewRoutes] = useState(null);
   useEffect(() => {
+    console.log(token);
     if (token && !myPermission) {
       dispatch(getUser());
     }
@@ -208,6 +209,7 @@ function AppRoutes() {
         }
       });
       setNewRoutes(a);
+      console.log(newRoutes);
     }
   }, [myPermission, token]);
 
@@ -227,116 +229,113 @@ function AppRoutes() {
   //     nav(redirectPath);
   //   }
   // }, [loading, token, location.pathname, nav]);
-  if (newRoutes === null) {
-    // still processing permissions/routes
-    return <div>Loading routes...</div>;
-  } else
-    return (
-      <Routes>
-        {/* Authentication Routes */}
-        <Route element={<AuthLoader />}>
-          <Route
-            path="/sign-in"
-            element={
-              <AppTheme>
-                <SignIn />
-              </AppTheme>
-            }
-          />
-          <Route
-            path="/"
-            element={
-              <Navigate
-                to="/sign-in"
-                replace
-              />
-            }
-          />
 
-          {/* Protected Routes */}
-
-          <Route element={<ProtectedRoute />}>
-            {!newRoutes ? (
-              // Show loading or nothing while routes not ready
-              <Route
-                path="*"
-                element={<div>Loading...</div>}
-              />
-            ) : (
-              newRoutes
-                .filter(({ view }) => view) // render only routes with view: true
-                .map(({ path, component, title }) => (
-                  <Route
-                    key={path}
-                    path={path}
-                    element={
-                      <AppTheme>
-                        <MainLayout title={title}>{component}</MainLayout>
-                      </AppTheme>
-                    }
-                  />
-                ))
-            )}
-          </Route>
-        </Route>
-
-        <Route>
-          {routes2.map(({ path, component, title }) => (
-            <Route
-              key={path}
-              path={path}
-              element={
-                <AppTheme2>
-                  <MainLayout2 title={title}>{component}</MainLayout2>
-                </AppTheme2>
-              }
+  return (
+    <Routes>
+      {/* Authentication Routes */}
+      <Route element={<AuthLoader />}>
+        <Route
+          path="/sign-in"
+          element={
+            <AppTheme>
+              <SignIn />
+            </AppTheme>
+          }
+        />
+        <Route
+          path="/"
+          element={
+            <Navigate
+              to="/sign-in"
+              replace
             />
-          ))}
+          }
+        />
+
+        {/* Protected Routes */}
+
+        <Route element={<ProtectedRoute />}>
+          {!newRoutes ? (
+            // Show loading or nothing while routes not ready
+            <Route
+              path="*"
+              element={<div>Loading...</div>}
+            />
+          ) : (
+            newRoutes
+              .filter(({ view }) => view) // render only routes with view: true
+              .map(({ path, component, title }) => (
+                <Route
+                  key={path}
+                  path={path}
+                  element={
+                    <AppTheme>
+                      <MainLayout title={title}>{component}</MainLayout>
+                    </AppTheme>
+                  }
+                />
+              ))
+          )}
         </Route>
+      </Route>
 
-        {/* Iframe Routes */}
-        <Route
-          path="/iframe/add-user"
-          element={<AdduserMain />}
-        />
-        <Route
-          path="/scanner"
-          element={<ScannerIframe />}
-        />
-        <Route
-          path="/iframe/2nd-chance/login"
-          element={<PhoneNumberLogin />}
-        />
-        <Route
-          path="/iframe/2nd-chance/forgot-password"
-          element={<ForgotPassword />}
-        />
-        <Route
-          path="/iframe/2nd-chance/reset-password"
-          element={<ResetPassword />}
-        />
-        <Route
-          path="/iframe/2nd-chance/login-button"
-          element={<LoginButton />}
-        />
-        <Route
-          path="/iframe/2nd-chance/inquiry"
-          element={<Inquiry />}
-        />
-        <Route
-          path="/iframe/2nd-chance/widget-image"
-          element={<WidgetImage />}
-        />
-
-        {/* Catch-All Error Page */}
-        {newRoutes && (
+      <Route>
+        {routes2.map(({ path, component, title }) => (
           <Route
-            path="*"
-            element={<ErrorPage />}
+            key={path}
+            path={path}
+            element={
+              <AppTheme2>
+                <MainLayout2 title={title}>{component}</MainLayout2>
+              </AppTheme2>
+            }
           />
-        )}
-      </Routes>
-    );
+        ))}
+      </Route>
+
+      {/* Iframe Routes */}
+      <Route
+        path="/iframe/add-user"
+        element={<AdduserMain />}
+      />
+      <Route
+        path="/scanner"
+        element={<ScannerIframe />}
+      />
+      <Route
+        path="/iframe/2nd-chance/login"
+        element={<PhoneNumberLogin />}
+      />
+      <Route
+        path="/iframe/2nd-chance/forgot-password"
+        element={<ForgotPassword />}
+      />
+      <Route
+        path="/iframe/2nd-chance/reset-password"
+        element={<ResetPassword />}
+      />
+      <Route
+        path="/iframe/2nd-chance/login-button"
+        element={<LoginButton />}
+      />
+      <Route
+        path="/iframe/2nd-chance/inquiry"
+        element={<Inquiry />}
+      />
+      <Route
+        path="/iframe/2nd-chance/widget-image"
+        element={<WidgetImage />}
+      />
+
+      {/* Catch-All Error Page */}
+      {newRoutes && (
+        <Route
+          path="*"
+          element={<ErrorPage />}
+        />
+      )}
+    </Routes>
+  );
 }
 
 function App() {

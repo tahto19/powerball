@@ -66,7 +66,7 @@ class UserTypeClass {
       createdBy: id,
     };
     let r = await UserType.create(toInsert);
-
+    console.log("created");
     return { toInsert, ...{ id: r.id } };
   }
   async updateUserType({ id, permissions }) {

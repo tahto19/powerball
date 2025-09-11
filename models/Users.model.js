@@ -13,6 +13,7 @@ class Users extends Model {
       password && password !== ""
         ? await decryptPassword(this.password)
         : false;
+    console.log(encrpytPassword(password), "here");
     if (password === hash) return true;
     else hash;
   }

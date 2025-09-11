@@ -11,13 +11,14 @@ import UserClass from "../../User/lib/User.class.js";
 
 export const LoginController = async (req, res) => {
   try {
-    let a = await UserClass.FetchOne([
+    let a = await UserClass.FetchOneV2([
       {
         filter: encrpytPassword(req.body.email),
         type: "string",
         field: "emailAddress",
       },
     ]);
+
     if (a === null) throw new Error("ErrorCODE X999");
     let b = await a.validPassword(req.body.password);
     if (!b) throw new Error("ErrorCODE X999");
