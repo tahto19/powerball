@@ -84,6 +84,7 @@ export const mobileNumberController = async (req, res) => {
         type: "string",
       },
     ]);
+    console.log(findMobile);
     if (!findMobile) throw new Error("ErrorCODE x910");
     // check if already created otp
     let r = await OTPClass.FetchOne([
