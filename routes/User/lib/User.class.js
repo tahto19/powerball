@@ -71,6 +71,7 @@ class User_class {
         },
         {
           model: TicketDetails,
+          as: "ticketDetails",
           attributes: [
             [fn("SUM", col("entries")), "totalEntries"],
             [fn("SUM", col("entries_used")), "totalUsedEntries"],
@@ -84,7 +85,7 @@ class User_class {
       ],
       attributes: [
         [fn("SUM", col("entries")), "totalEntries"],
-        [fn("SUM", col("TicketDetails.entries_used")), "totalUsedEntries"],
+        [fn("SUM", col("ticketDetails.entries_used")), "totalUsedEntries"],
       ],
       distinct: true, // ensure proper count when joins are present
       group: ["Users.id"], // group by user to get correct counts
