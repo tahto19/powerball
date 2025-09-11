@@ -244,13 +244,16 @@ export const uploadImage = async (file, filename) => {
   return { uploadeImage, filename: fName };
 };
 
-export const uploadImage2 = async (file, filename) => {
+export const uploadImage2 = async (file, filename, type = "image") => {
   let fName = filename;
   if (!filename)
     fName = `${moment().format(
       "MM-DD-YYYY"
     )}-${generateRandomNumber()}-${generateRandomChar(5)}-${file.filename}`;
-  let _path = getPath("/uploads/image_page/" + fName);
+
+  const folder =
+    type === "video" ? "/uploads/video_page/" : "/uploads/image_page/";
+  let _path = getPath(folder + fName);
   let toBuffer_ = await file.toBuffer();
   let uploadeImage = await fs.writeFileSync(_path, toBuffer_);
   return { uploadeImage, filename: fName, _path };

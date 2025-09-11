@@ -57,6 +57,8 @@ import FreeEntriesSetup from "./components/2ndChance_iFrame/FreeEntriesSetup/Fre
 import { getMyUserType } from "./redux/reducers/UserType/asyncCalls";
 import { getUser } from "./redux/reducers/user/asnycCalls";
 
+import Defaults from "./components/Defaults/index";
+
 const routes = [
   { path: "/dashboard", component: <Dashboard />, title: "Dashboard" },
   {
@@ -113,6 +115,11 @@ const routes = [
     path: "/freeTicket",
     component: <FreeEntriesSetup />,
     title: "Free Ticket",
+  },
+  {
+    path: "/defaults",
+    component: <Defaults />,
+    title: "Defaults",
   },
 ];
 

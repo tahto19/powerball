@@ -111,3 +111,51 @@ export const serveImageController = async (req, res) => {
     }
   }
 };
+
+const videoCache = new Map();
+
+export const serveVideoController = async (req, res) => {
+  const { id } = req.params;
+
+  if (!id || id === "undefined") {
+    res.code(400).send("Invalid video ID");
+    return;
+  }
+
+  const findVideo = await fc.FetchOne([
+    { filter: id, field: "id", type: "number" },
+    { filter: "video", field: "type", type: "string" },
+  ]);
+  if (!findVideo) {
+    res.code(404).send("Video not found");
+    return;
+  }
+
+  // Build the direct URL to Nginx
+  const fileUrl = `https://18.138.76.86/uploads/video_page/${findVideo.dataValues.file_location}`;
+
+  // Redirect frontend <video> tag to Nginx
+  res.redirect(302, fileUrl);
+  // const { id } = req.params;
+
+  // if (!id || id === "undefined") {
+  //   res.code(400).send("Invalid video ID");
+  //   return;
+  // }
+
+  // // Get video metadata from DB
+  // const findVideo = await fc.FetchOne([
+  //   { filter: id, field: "id", type: "number" },
+  //   { filter: "video", field: "type", type: "string" },
+  // ]);
+  // if (!findVideo) {
+  //   res.code(404).send("Video not found");
+  //   return;
+  // }
+
+  // // Build Nginx-served URL
+  // const fileUrl = `/uploads/video_page/${findVideo.dataValues.file_location}`;
+
+  // // Redirect frontend <video> to Nginx
+  // res.redirect(302, fileUrl);
+};

@@ -33,6 +33,7 @@ import {
 } from "@/components/2ndChance_iFrame/Raffles/interface";
 import { data } from "react-router-dom";
 import moment from "moment";
+import {MediaState} from "@/components/Defaults/tabs/interface"
 
 interface Credentials {
   email: string;
@@ -527,6 +528,22 @@ export const apiService = {
       { headers }
     );
     return response.data;
+  },
+  createMediaBanner: async (d: MediaState, token: string | null) => {
+    let fd = new FormData();
+
+    fd.append("data", bodyEncrypt(d, token));
+    fd.append("file", d.file);
+    const res = apiClient.post("/api/site-defaults/insert", fd, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return res;
+  },
+  getMediaBanner: async () => {
+    const res = apiClient.get("/api/site-defaults/media-banner");
+    return res;
   },
 };
 

@@ -31,7 +31,6 @@ import { exportRoute } from "./routes/exports/Export.js";
 import alphaCode from "./routes/AlphaCode/routes.js";
 import Inquiry from "./routes/Inquiry/Inquiry.route.js";
 import FreeTickets from "./routes/freeTickets/FreeTickets.route.js";
-import userType from "./routes/UserType/UserType.route.js";
 
 const fastify = Fastify({
   trustProxy: true,
@@ -252,9 +251,6 @@ const start = async () => {
     });
     fastify.register(FreeTickets, {
       prefix: process.env.ROUTES_PREFIX + "freetickets",
-    });
-    fastify.register(userType, {
-      prefix: process.env.ROUTES_PREFIX + "UserType",
     });
     /**
      *error handler
