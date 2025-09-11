@@ -62,6 +62,7 @@ export default function MenuContent() {
   const { myPermission } = useAppSelector((state: RootState) => state.userType);
   const [newRoutes, setNewRoutes] = React.useState(null);
   React.useEffect(() => {
+    console.log("here");
     if (myPermission) {
       let a = mainListItems.map((v) => {
         let removeForwardSlash = v.path.replace("/", "");
@@ -85,23 +86,24 @@ export default function MenuContent() {
         dense
         sx={{ gap: "5px" }}
       >
-        {newRoutes
-          .filter(({ view }) => view)
-          .map((item, index) => (
-            <ListItem
-              key={index}
-              disablePadding
-              sx={{ display: "block" }}
-            >
-              <ListItemButton
-                onClick={() => handleNavigation(item.path, index)}
-                selected={index === selected}
+        {newRoutes &&
+          newRoutes
+            .filter(({ view }) => view)
+            .map((item, index) => (
+              <ListItem
+                key={index}
+                disablePadding
+                sx={{ display: "block" }}
               >
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+                <ListItemButton
+                  onClick={() => handleNavigation(item.path, index)}
+                  selected={index === selected}
+                >
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItemButton>
+              </ListItem>
+            ))}
       </List>
       <List dense>
         {secondaryListItems.map((item, index) => (
