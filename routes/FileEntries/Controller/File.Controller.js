@@ -132,7 +132,7 @@ export const serveVideoController = async (req, res) => {
   }
 
   // Build the direct URL to Nginx
-  const fileUrl = `/uploads/video_page/${findVideo.dataValues.file_location}`;
+  const fileUrl = `https://18.138.76.86/uploads/video_page/${findVideo.dataValues.file_location}`;
 
   // Redirect frontend <video> tag to Nginx
   res.redirect(302, fileUrl);
