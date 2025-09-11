@@ -25,14 +25,14 @@ UserType.init(
         this.setDataValue("permissions", JSON.stringify(val));
       },
     },
-    // createdBy: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: false,
-    //   references: {
-    //     model: process.env.DB_PREFIX + "users",
-    //     key: "id",
-    //   },
-    // },
+    createdBy: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: process.env.DB_PREFIX + "users",
+        key: "id",
+      },
+    },
   },
   {
     timestamps: true,
