@@ -72,6 +72,7 @@ interface userState {
   barangay: string | null;
   hbnandstr: string | null;
   gender: string | null;
+  id: number | null;
 }
 
 const initialState: userState = {
@@ -108,6 +109,7 @@ const initialState: userState = {
   password: null,
   isAdmin: false,
   gender: null,
+  id: null,
 };
 
 const userSlice = createSlice({

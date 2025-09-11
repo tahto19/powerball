@@ -1,3 +1,4 @@
+//@ts-nocheck
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -21,6 +22,8 @@ import {
   EmojiEventsOutlined,
   LocalActivityOutlined,
 } from "@mui/icons-material";
+import { useAppSelector } from "@/redux/hook";
+import { RootState } from "@/redux/store";
 
 const mainListItems = [
   { text: "Home", icon: <HomeRounded />, path: "/dashboard" },
@@ -56,27 +59,49 @@ export default function MenuContent() {
     useSelected(index);
     navigate(path);
   };
+  const { myPermission } = useAppSelector((state: RootState) => state.userType);
+  const [newRoutes, setNewRoutes] = React.useState(null);
+  React.useEffect(() => {
+    if (myPermission) {
+      let a = mainListItems.map((v) => {
+        let removeForwardSlash = v.path.replace("/", "");
+        let changeUnderScore = removeForwardSlash
+          .replace("-", "_")
+          .toLowerCase();
+        let getPermission = myPermission[changeUnderScore];
+        if (getPermission) {
+          return { ...v, view: getPermission.view };
+        } else {
+          return { ...v, view: true };
+        }
+      });
+      setNewRoutes(a);
+    }
+    console.log(newRoutes);
+  }, [myPermission]);
   return (
     <Stack sx={{ flexGrow: 1, p: 1, justifyContent: "space-between" }}>
       <List
         dense
         sx={{ gap: "5px" }}
       >
-        {mainListItems.map((item, index) => (
-          <ListItem
-            key={index}
-            disablePadding
-            sx={{ display: "block" }}
-          >
-            <ListItemButton
-              onClick={() => handleNavigation(item.path, index)}
-              selected={index === selected}
+        {newRoutes
+          .filter(({ view }) => view)
+          .map((item, index) => (
+            <ListItem
+              key={index}
+              disablePadding
+              sx={{ display: "block" }}
             >
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+              <ListItemButton
+                onClick={() => handleNavigation(item.path, index)}
+                selected={index === selected}
+              >
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.text} />
+              </ListItemButton>
+            </ListItem>
+          ))}
       </List>
       <List dense>
         {secondaryListItems.map((item, index) => (

@@ -25,6 +25,7 @@ import {
   TicketDraw,
   exportDataState,
   freeTickets_,
+  updateDataUserType,
 } from "@/types/allTypes";
 import {
   enterEntries,
@@ -461,7 +462,7 @@ export const apiService = {
     const r_ = await apiClient.post("api/freetickets/insert", {
       data: bodyEncrypt(JSON.stringify(data), token),
     });
-    console.log(r_);
+
     return bodyDecrypt(r_.data, token);
   },
   patchFreeTickets: async (data: freeTickets_, token) => {
@@ -469,6 +470,26 @@ export const apiService = {
       data: bodyEncrypt(JSON.stringify(data), token),
     });
 
+    return bodyDecrypt(r_.data, token);
+  },
+  getUserTypeByUserId: async (id: number, token: string | null) => {
+    const r_ = await apiClient.get("api/UserType/byUser", {
+      params: { data: bodyEncrypt(JSON.stringify({ id }), token) },
+      headers: { secure: true },
+    });
+    return bodyDecrypt(r_.data, token);
+  },
+  patchUserType: async (data: updateDataUserType, token: string | null) => {
+    const r_ = await apiClient.put("api/UserType", {
+      data: bodyEncrypt(JSON.stringify(data), token),
+    });
+    return bodyDecrypt(r_.data, token);
+  },
+  getMyUserType: async (id, token) => {
+    const r_ = await apiClient.get("api", {
+      params: { data: bodyEncrypt(JSON.stringify({ id }), token) },
+      headers: { secure: true },
+    });
     return bodyDecrypt(r_.data, token);
   },
   postInquiry: async (data) => {

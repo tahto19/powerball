@@ -165,3 +165,8 @@ export interface freeTickets_ {
   value: null | number;
   id?: null | number;
 }
+
+export interface updateDataUserType {
+  id?: number;
+  permissions: any;
+}

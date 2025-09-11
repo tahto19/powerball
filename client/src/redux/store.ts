@@ -14,6 +14,7 @@ import exportDataSlice from "./reducers/download/exportDataSlice";
 import alphaCodeSlice from "./reducers/alphaCode/alphacodeSlice";
 import raffleSlice from "./reducers/raffle/raffleSlice";
 import freeTicketsSlice from "./reducers/FreeTickets/freeTicketsSlice";
+import userTypeSlice from "./reducers/UserType/userTypeSlice";
 
 export const store = configureStore({
   reducer: {
@@ -32,6 +33,7 @@ export const store = configureStore({
     alphaCode: alphaCodeSlice,
     raffle: raffleSlice,
     freeTickets: freeTicketsSlice,
+    userType: userTypeSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

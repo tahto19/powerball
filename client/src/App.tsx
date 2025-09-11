@@ -54,6 +54,8 @@ import { ExportDialog } from "./Global/ExportDialog/ExportDialog";
 import Aplhacode from "./components/2ndChance_iFrame/alphacode/Aplhacode";
 import PhoneNumberLogin from "./components/2ndChance_iFrame/Login/PhoneNumberLogin";
 import FreeEntriesSetup from "./components/2ndChance_iFrame/FreeEntriesSetup/FreeEntriesSetup";
+import { getMyUserType } from "./redux/reducers/UserType/asyncCalls";
+import { getUser } from "./redux/reducers/user/asnycCalls";
 
 const routes = [
   { path: "/dashboard", component: <Dashboard />, title: "Dashboard" },
@@ -163,14 +165,13 @@ function AppRoutes() {
   const { loading, token, doneLoading } = useAppSelector(
     (state) => state.token
   );
-
+  const { myPermission } = useAppSelector((state: RootState) => state.userType);
   const hasRun = useRef(false);
   useEffect(() => {
     if (hasRun.current) return; // already ran once, skip
     hasRun.current = true;
 
     const isInIframe = window.self !== window.top;
-    console.log(window.location);
 
     // Only call getToken if not in iframe
     // if (!isInIframe && !skipTokenPaths.includes(currentPath)) {
@@ -178,11 +179,34 @@ function AppRoutes() {
     if (loading) dispatch(getToken());
     // }
   }, []);
+  const [newRoutes, setNewRoutes] = useState(null);
+  useEffect(() => {
+    if (token && !myPermission) {
+      dispatch(getUser());
+    }
+    if (token && myPermission) {
+      let a = routes.map((v) => {
+        let removeForwardSlash = v.path.replace("/", "");
+        if (removeForwardSlash === "administrator") {
+          return { ...v, view: true };
+        }
+        let changeUnderScore = removeForwardSlash
+          .replace("-", "_")
+          .toLowerCase();
+        let getPermission = myPermission[changeUnderScore];
+        if (getPermission) {
+          return { ...v, view: getPermission.view };
+        } else {
+          return { ...v, view: true };
+        }
+      });
+      setNewRoutes(a);
+    }
+  }, [myPermission, token]);
 
   // useEffect(() => {
   //   // const loginPages = ["/sign-in", "/cms/", "/cms/sign-in"];
   //   // const isLoginPage = loginPages.includes(location.pathname);
-  //   // console.log(loading)
   //   // if (!loading && token && isLoginPage) {
   //   //   nav("/prize-list");
   //   // }
@@ -196,99 +220,116 @@ function AppRoutes() {
   //     nav(redirectPath);
   //   }
   // }, [loading, token, location.pathname, nav]);
-  return (
-    <Routes>
-      {/* Authentication Routes */}
-      <Route element={<AuthLoader />}>
-        <Route
-          path="/sign-in"
-          element={
-            <AppTheme>
-              <SignIn />
-            </AppTheme>
-          }
-        />
-        <Route
-          path="/"
-          element={
-            <Navigate
-              to="/sign-in"
-              replace
-            />
-          }
-        />
+  if (newRoutes === null) {
+    // still processing permissions/routes
+    return <div>Loading routes...</div>;
+  } else
+    return (
+      <Routes>
+        {/* Authentication Routes */}
+        <Route element={<AuthLoader />}>
+          <Route
+            path="/sign-in"
+            element={
+              <AppTheme>
+                <SignIn />
+              </AppTheme>
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <Navigate
+                to="/sign-in"
+                replace
+              />
+            }
+          />
 
-        {/* Protected Routes */}
-        <Route element={<ProtectedRoute />}>
-          {routes.map(({ path, component, title }) => (
+          {/* Protected Routes */}
+
+          <Route element={<ProtectedRoute />}>
+            {!newRoutes ? (
+              // Show loading or nothing while routes not ready
+              <Route
+                path="*"
+                element={<div>Loading...</div>}
+              />
+            ) : (
+              newRoutes
+                .filter(({ view }) => view) // render only routes with view: true
+                .map(({ path, component, title }) => (
+                  <Route
+                    key={path}
+                    path={path}
+                    element={
+                      <AppTheme>
+                        <MainLayout title={title}>{component}</MainLayout>
+                      </AppTheme>
+                    }
+                  />
+                ))
+            )}
+          </Route>
+        </Route>
+
+        <Route>
+          {routes2.map(({ path, component, title }) => (
             <Route
               key={path}
               path={path}
               element={
-                <AppTheme>
-                  <MainLayout title={title}>{component}</MainLayout>
-                </AppTheme>
+                <AppTheme2>
+                  <MainLayout2 title={title}>{component}</MainLayout2>
+                </AppTheme2>
               }
             />
           ))}
         </Route>
-      </Route>
 
-      <Route>
-        {routes2.map(({ path, component, title }) => (
+        {/* Iframe Routes */}
+        <Route
+          path="/iframe/add-user"
+          element={<AdduserMain />}
+        />
+        <Route
+          path="/scanner"
+          element={<ScannerIframe />}
+        />
+        <Route
+          path="/iframe/2nd-chance/login"
+          element={<PhoneNumberLogin />}
+        />
+        <Route
+          path="/iframe/2nd-chance/forgot-password"
+          element={<ForgotPassword />}
+        />
+        <Route
+          path="/iframe/2nd-chance/reset-password"
+          element={<ResetPassword />}
+        />
+        <Route
+          path="/iframe/2nd-chance/login-button"
+          element={<LoginButton />}
+        />
+        <Route
+          path="/iframe/2nd-chance/inquiry"
+          element={<Inquiry />}
+        />
+        <Route
+          path="/iframe/2nd-chance/widget-image"
+          element={<WidgetImage />}
+        />
+
+        {/* Catch-All Error Page */}
+        {newRoutes && (
           <Route
-            key={path}
-            path={path}
-            element={
-              <AppTheme2>
-                <MainLayout2 title={title}>{component}</MainLayout2>
-              </AppTheme2>
-            }
+            path="*"
+            element={<ErrorPage />}
           />
-        ))}
-      </Route>
-
-      {/* Iframe Routes */}
-      <Route
-        path="/iframe/add-user"
-        element={<AdduserMain />}
-      />
-      <Route
-        path="/scanner"
-        element={<ScannerIframe />}
-      />
-      <Route
-        path="/iframe/2nd-chance/login"
-        element={<PhoneNumberLogin />}
-      />
-      <Route
-        path="/iframe/2nd-chance/forgot-password"
-        element={<ForgotPassword />}
-      />
-      <Route
-        path="/iframe/2nd-chance/reset-password"
-        element={<ResetPassword />}
-      />
-      <Route
-        path="/iframe/2nd-chance/login-button"
-        element={<LoginButton />}
-      />
-      <Route
-        path="/iframe/2nd-chance/inquiry"
-        element={<Inquiry />}
-      />
-      <Route
-        path="/iframe/2nd-chance/widget-image"
-        element={<WidgetImage />}
-      />
-
-      {/* Catch-All Error Page */}
-      <Route
-        path="*"
-        element={<ErrorPage />}
-      />
-    </Routes>
-  );
+        )}
+      </Routes>
+    );
 }
 
 function App() {

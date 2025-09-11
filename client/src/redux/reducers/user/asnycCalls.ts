@@ -24,6 +24,7 @@ import {
 } from "./costumerUsers";
 import { toast } from "react-toastify";
 import _ from "lodash";
+import { addMyPermissions } from "../UserType/userTypeSlice";
 export const outsideAddUser = createAsyncThunk(
   "user/outsideAddUser",
   async (data: userState, { dispatch }) => {
@@ -199,11 +200,13 @@ export const getUser = createAsyncThunk(
     try {
       const state = getState() as RootState;
       const token = state.token.token;
-      console.log(data);
-      const _r = await apiService.getUser();
-      let c = bodyDecrypt(_r.data, token);
 
+      const _r = await apiService.getUser();
+      console.log(_r);
+      let c = bodyDecrypt(_r.data, token);
+      console.log(c, "asdfas");
       dispatch(addUserDetails(c.data));
+      dispatch(addMyPermissions(c.data.myUserType?.permissions));
     } catch (err) {
       dispatch(showToaster({ err, variant: "error", icon: "error" }));
     }

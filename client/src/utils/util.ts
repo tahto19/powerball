@@ -95,6 +95,8 @@ const getErrorsStatus = (code: string) => {
       return "A problem has been detected on your computer. Please contact your administrator for assistance. ";
     case "x910":
       return "Your mobile number is not registered";
+    case "x933":
+      return "This user is not allowed here";
     case "x908":
       return "Mobile Number Already Exists";
     default:
@@ -163,7 +165,7 @@ export const bodyEncrypt = (
   token: string | null
 ): any | null => {
   const data =
-    typeof d === "string"
+    (typeof d === "string") | (typeof d === "number")
       ? d
       : typeof d === "array" || typeof d === "object"
       ? JSON.stringify(d)
@@ -180,7 +182,7 @@ export const bodyEncrypt = (
     throw new Error('Encryption  failed: Missing token doesn"t exists.');
   }
   try {
-    const bytes = CryptoJS.AES.encrypt(data, token).toString();
+    const bytes = CryptoJS.AES.encrypt(data.toString(), token).toString();
     if (!bytes) {
       // Handle incorrect decryption. (returns an empty string, it does not throw an exception)
       console.error("Encryption failed: Invalid or corrupt data.");

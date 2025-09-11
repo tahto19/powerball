@@ -3,7 +3,20 @@
 import * as React from "react";
 import { useState } from "react";
 import TextField from "@mui/material/TextField";
-import { InputAdornment, IconButton, FormHelperText } from "@mui/material";
+import {
+  InputAdornment,
+  IconButton,
+  FormHelperText,
+  Skeleton,
+  Stack,
+  Divider,
+  Accordion,
+  AccordionSummary,
+  Typography,
+  AccordionDetails,
+  FormControlLabel,
+  Checkbox,
+} from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Dialog from "@mui/material/Dialog";
@@ -19,6 +32,11 @@ import { DataProps } from "@/types/allTypes";
 import { useForm, SubmitHandler, SubmitErrorHandler } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { postAdmin } from "@/redux/reducers/user/asnycCalls";
+import {
+  getUserTypeByUserID,
+  updateUserType,
+} from "@/redux/reducers/UserType/asyncCalls";
+import { GridArrowDownwardIcon } from "@mui/x-data-grid";
 
 interface MyDialogProps {
   open: boolean;
@@ -33,6 +51,10 @@ const FormControl = styled(MuiFormControl)(({ theme }) => ({
 
 const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
   // const [isOpen, setOpen] = React.useState(open);
+  const { loadingUserType, permissions, id } = useAppSelector(
+    (state) => state.userType
+  );
+
   const { loading } = useAppSelector((s) => s.user);
   const dispatch = useAppDispatch();
   const {
@@ -47,6 +69,8 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
   } = useForm<DataProps>({
     mode: "onChange",
   });
+
+  const [permissionsDetails, setPermissionsDetails] = useState({});
   const [dialog_type, setDialogType] = React.useState("");
   const [formData, setData] = React.useState<DataProps>(data);
   const [showPassword, setShowPassword] = useState(false);
@@ -85,12 +109,17 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
         setValue(v, val, { shouldValidate: true, required: true });
       });
     }
-    console.log(data);
+    if (open) dispatch(getUserTypeByUserID(data.id));
   }, [data, dialogType]);
+  React.useEffect(() => {
+    if (permissions) setPermissionsDetails(permissions);
+  }, [permissions]);
   const onSubmit: SubmitHandler<DataProps> = (data) => {
     let isSend = { ...data, isAdmin: true };
 
-    dispatch(postAdmin({ data: isSend, dialogType }));
+    // dispatch(postAdmin({ data: isSend, dialogType }));
+
+    dispatch(updateUserType({ permissions: permissionsDetails, id }));
   };
 
   return (
@@ -300,6 +329,89 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
                     {errors.password.message}
                   </FormHelperText>
                 )}
+            </Grid>
+            <Grid size={{ lg: 12, md: 12, xs: 12 }}>
+              {loadingUserType && (
+                <Stack spacing={1}>
+                  <Skeleton variant="rectangular" />
+                  <Divider />
+                  <Skeleton variant="rectangular" /> <Divider />
+                  <Skeleton variant="rectangular" /> <Divider />
+                  <Skeleton variant="rectangular" /> <Divider />
+                </Stack>
+              )}
+              {!loadingUserType && (
+                <>
+                  {permissions &&
+                    Object.keys(permissions).map((v) => {
+                      if (permissionsDetails[v])
+                        return (
+                          <Accordion>
+                            <AccordionSummary
+                              expandIcon={<GridArrowDownwardIcon />}
+                              aria-controls="panel1-content"
+                              id="panel1-header"
+                            >
+                              <Typography component="span">{v}</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                              <Stack
+                                direction="column"
+                                spacing={1}
+                              >
+                                {Object.keys(permissions[v]).map((vv) => {
+                                  return (
+                                    <FormControlLabel
+                                      control={
+                                        <Checkbox
+                                          // disabled={
+                                          //   !permissionsDetails[v]["view"] &&
+                                          //   vv !== "view"
+                                          // }
+                                          checked={
+                                            !!permissionsDetails?.[v]?.[vv]
+                                          }
+                                          onChange={(e) => {
+                                            setPermissionsDetails((prev) => {
+                                              const getData = { ...prev[v] };
+                                              getData[vv] = e.target.checked;
+
+                                              // If "view" is being unchecked, set all to false
+                                              if (
+                                                vv.toLowerCase() === "view" &&
+                                                !e.target.checked
+                                              ) {
+                                                const updated =
+                                                  Object.fromEntries(
+                                                    Object.entries(prev[v]).map(
+                                                      ([key]) => [key, false]
+                                                    )
+                                                  );
+                                                return {
+                                                  ...prev,
+                                                  [v]: updated,
+                                                };
+                                              }
+
+                                              return {
+                                                ...prev,
+                                                [v]: getData,
+                                              };
+                                            });
+                                          }}
+                                        />
+                                      }
+                                      label={vv.toUpperCase()}
+                                    />
+                                  );
+                                })}
+                              </Stack>
+                            </AccordionDetails>
+                          </Accordion>
+                        );
+                    })}
+                </>
+              )}
             </Grid>
           </Grid>
         </DialogContent>
