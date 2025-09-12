@@ -369,7 +369,7 @@ export const apiService = {
     });
   },
   ticketDraw: async (data: TicketDraw, token: string | null) => {
-    return apiClient.post("api/ticket/draw", {
+    return apiClient.post("api/ticket/drawV2", {
       data: bodyEncrypt(JSON.stringify(data), token),
     });
   },
