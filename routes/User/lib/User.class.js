@@ -53,8 +53,16 @@ class User_class {
           delete _data[v];
         }
       });
+    } else {
+      Object.keys(_data).forEach((v) => {
+        let val = _data[v];
+        console.log(val);
+        if (val === "" || !val) {
+          console.log(v);
+          delete _data[v];
+        }
+      });
     }
-    console.log(_data);
     await Users.update(_data, {
       where: { id },
       individualHooks: true,
