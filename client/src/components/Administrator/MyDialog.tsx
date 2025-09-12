@@ -120,8 +120,8 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
     let isSend = { ...data, isAdmin: true };
 
     dispatch(postAdmin({ data: isSend, dialogType }));
-
-    dispatch(updateUserType({ permissions: permissionsDetails, id }));
+    if (data.id && dialogType?.toLowerCase() !== "add")
+      dispatch(updateUserType({ permissions: permissionsDetails, id }));
   };
 
   return (
