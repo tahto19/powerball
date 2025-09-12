@@ -119,7 +119,7 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
   const onSubmit: SubmitHandler<DataProps> = (data) => {
     let isSend = { ...data, isAdmin: true };
 
-    // dispatch(postAdmin({ data: isSend, dialogType }));
+    dispatch(postAdmin({ data: isSend, dialogType }));
 
     dispatch(updateUserType({ permissions: permissionsDetails, id }));
   };
