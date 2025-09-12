@@ -27,7 +27,7 @@ UserType.init(
     },
     createdBy: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: process.env.DB_PREFIX + "users",
         key: "id",

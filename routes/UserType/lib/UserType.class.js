@@ -66,12 +66,42 @@ class UserTypeClass {
       createdBy: id,
     };
     let r = await UserType.create(toInsert);
-    console.log("created");
+
     return { toInsert, ...{ id: r.id } };
   }
   async updateUserType({ id, permissions }) {
     console.log(permissions, id);
     await UserType.update({ permissions }, { where: { id } });
+  }
+  async createSuperUser(id) {
+    console.log("creating super usertype");
+    let copy = { ...this.permissions };
+    for (let key in copy) {
+      for (let subKey in copy[key]) {
+        if (typeof copy[key][subKey] === "boolean") {
+          copy[key][subKey] = true;
+        }
+      }
+    }
+    let toInsert = {
+      permissions: copy,
+      Name: "admin type",
+      createdBy: id,
+    };
+    let r = await UserType.create(toInsert);
+    console.log("done creating super usertype");
+    return r;
+  }
+  async updateSuperUser(id) {
+    let copy = { ...this.permissions };
+    for (let key in copy) {
+      for (let subKey in copy[key]) {
+        if (typeof copy[key][subKey] === "boolean") {
+          copy[key][subKey] = true;
+        }
+      }
+    }
+    await UserType.update({ permissions: copy }, { where: { id } });
   }
 }
 export default new UserTypeClass();

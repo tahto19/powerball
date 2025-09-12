@@ -1,8 +1,7 @@
 import "dotenv/config";
 
 import Fastify from "fastify";
-import fs from "fs";
-import fp from "fastify-plugin";
+
 import cors from "@fastify/cors";
 
 import conn from "./dbConnections/conn.js";
@@ -32,6 +31,7 @@ import alphaCode from "./routes/AlphaCode/routes.js";
 import Inquiry from "./routes/Inquiry/Inquiry.route.js";
 import FreeTickets from "./routes/freeTickets/FreeTickets.route.js";
 import userType from "./routes/UserType/UserType.route.js";
+import { createSuperUser } from "./util/createSuperUser.js";
 
 const fastify = Fastify({
   trustProxy: true,
@@ -302,8 +302,11 @@ const start = async () => {
     const connected = await conn.auth();
     if (connected) {
       await conn.auth();
-      Associations();
+      await Associations();
       await conn.sync();
+      setTimeout(async () => {
+        await createSuperUser();
+      }, 500);
     }
 
     await fastify.ready();
