@@ -26,14 +26,15 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 const base_url = import.meta.env.VITE_API_BASE_URL;
-const apiEndpoint = base_url + "api/file/serve"
+const apiEndpoint = base_url + "api/file/serve/image/"
 
 const MediaBanner = () => {
     const dispatch = useAppDispatch();
     const { token } = useAppSelector((state) => state.token);
     const [formData, setFormData] = useState<MediaState>(mediaInitialData);
     const [isImage, setIsImage] = useState(false)
-
+    const [hasData, setHasData] = useState(false)
+    const [date, setDate] = useState(Date.now())
     const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
         console.log(event.target.files)
@@ -72,31 +73,33 @@ const MediaBanner = () => {
             return;
         }
 
-
         let message;
         let res;
-
         // setLoading(true)
         if (!formData.id) {
             res = await apiService.createMediaBanner(formData, token);
             message = "Record updated successfully."
         } else {
-            // res = await apiService.updateMediaBanner(formData, token);
-            // message = "Record created successfully."
+            res = await apiService.updateMediaBanner(formData, token);
+            message = "Record created successfully."
         }
-
+        GetData();
         // const d = bodyDecrypt(res.data, token)
     }
 
     const GetData = async () => {
+        setHasData(false)
         let res = await apiService.getMediaBanner();
         const d = bodyDecrypt(res.data, token)
 
         if (d.success === 'success') {
-            if (d.data.type) {
+            console.log(d.data)
+            if (d.data && d.data.type) {
                 const type = d.data.type === 'image' ? true : false;
                 setIsImage(type)
                 setFormData(d.data);
+                setHasData(true)
+                setDate(Date.now())//to refresh media when updated
             }
         }
         console.log(d)
@@ -110,19 +113,32 @@ const MediaBanner = () => {
 
     return (
         <>
-            <Typography>The Media Banner is the top section of your minisite where you can showcase your brand. You can upload a logo, an image, or a video to make a strong first impression. This banner appears above all other content and represents the visual identity of your site.</Typography>
-            {/* <CardMedia
-                component="img"
-                sx={{ width: "fit-content", height: "181px", border: "3px solid #000", borderRadius: "10px", marginTop: "20px" }}
-                image={logo}
-                alt="Logo"
-            ></CardMedia> */}
-            <CardMedia
-                component="video"
-                sx={{ width: "fit-content", height: "181px", border: "3px solid #000", borderRadius: "10px", marginTop: "20px" }}
-                src={apiEndpoint + "/video/6"}
-                controls
-            />
+            <Typography>The Media Banner is the top section of your second chance site where you can showcase your brand. You can upload a logo, an image, or a video to make a strong first impression. This banner appears above all other content and represents the visual identity of your site.</Typography>
+            {
+                hasData ?
+
+                    isImage ? (
+                        <CardMedia
+                            key={date}
+                            component="img"
+                            sx={{ width: "fit-content", height: "181px", border: "3px solid #000", borderRadius: "10px", marginTop: "20px" }}
+                            image={apiEndpoint + formData.id + "?t=" + date}
+                            alt="Logo"
+                        ></CardMedia>
+                    ) : (
+                        <CardMedia
+                            key={date}
+                            component="video"
+                            sx={{ width: "fit-content", height: "181px", border: "3px solid #000", borderRadius: "10px", marginTop: "20px" }}
+                            src={"https://18.138.76.86/media/videos/" + formData.file_location + "?t=" + date}
+                            controls
+                        />
+                    )
+
+                    : null
+
+            }
+
 
             <Box
                 sx={{

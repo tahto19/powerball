@@ -541,6 +541,19 @@ export const apiService = {
     });
     return res;
   },
+  updateMediaBanner: async (d: MediaState, token: string | null) => {
+    let fd = new FormData();
+
+    fd.append("data", bodyEncrypt(d, token));
+    fd.append("file", d.file);
+    const res = apiClient.put("/api/site-defaults/update", fd, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return res;
+  },
+  
   getMediaBanner: async () => {
     const res = apiClient.get("/api/site-defaults/media-banner");
     return res;

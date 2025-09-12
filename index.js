@@ -32,6 +32,7 @@ import Inquiry from "./routes/Inquiry/Inquiry.route.js";
 import FreeTickets from "./routes/freeTickets/FreeTickets.route.js";
 import userType from "./routes/UserType/UserType.route.js";
 import { createSuperUser } from "./util/createSuperUser.js";
+import siteDefaults from "./routes/SCSiteDefaults/siteDefaults.js";
 
 const fastify = Fastify({
   trustProxy: true,
@@ -255,6 +256,9 @@ const start = async () => {
     });
     fastify.register(userType, {
       prefix: process.env.ROUTES_PREFIX + "UserType",
+    });
+    fastify.register(siteDefaults, {
+      prefix: process.env.ROUTES_PREFIX + "site-defaults",
     });
     /**
      *error handler

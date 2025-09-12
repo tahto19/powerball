@@ -49,7 +49,7 @@ const mainListItems = [
 ];
 
 const secondaryListItems = [
-  { text: "SC Site Defaults", icon: <SettingsRounded /> },
+  { text: "SC Site Defaults", icon: <SettingsRounded />, path: "/second-chance-site-defaults" },
 ];
 
 export default function MenuContent() {
@@ -112,7 +112,10 @@ export default function MenuContent() {
             disablePadding
             sx={{ display: "block" }}
           >
-            <ListItemButton>
+            <ListItemButton
+              onClick={() => handleNavigation(item.path, index)}
+              selected={index === selected}
+            >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>
