@@ -161,7 +161,7 @@ const Dashboard = () => {
                 }}
               >
                 <video
-                  src={`https://18.138.76.86/media/videos/${formData.file_location}`}
+                  src={`/media/videos/${formData.file_location}`}
                   autoPlay
                   loop
                   muted
