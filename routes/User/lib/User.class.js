@@ -111,6 +111,7 @@ class User_class {
         {
           model: UserType,
           as: "myUserType",
+          required: false,
         },
       ],
     };
