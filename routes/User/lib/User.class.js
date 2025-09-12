@@ -48,6 +48,7 @@ class User_class {
       Object.keys(_data).forEach((v) => {
         let val = _data[v];
         if (val === "" || !val) {
+          console.log(v);
           delete _data[v];
         }
       });
