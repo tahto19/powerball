@@ -25,6 +25,9 @@ import logo from "@/assets/image/logo.png";
 import apiService from "@/services/apiService";
 import { MediaState, mediaInitialData } from "@/components/Defaults/tabs/interface"
 import { bodyDecrypt } from "@/utils/util";
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import VolumeOffIcon from '@mui/icons-material/VolumeOff';
+import IconButton from '@mui/material/IconButton';
 
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const endpoint = base_url + "api/file/serve/image/";
@@ -75,7 +78,6 @@ const Dashboard = () => {
     setHasData(false)
     let res = await apiService.getMediaBanner();
     const d = bodyDecrypt(res.data, token)
-    console.log(">>>>>", res.data)
 
     if (d.success === 'success') {
       if (d.data && d.data.type) {
@@ -119,6 +121,12 @@ const Dashboard = () => {
     setOpen(true);
   };
 
+  const [isOff, setIsOff] = useState(false)
+  const handleVolume = () => {
+    console.log("volume")
+    setIsOff(!isOff)
+  }
+
   return (
     <>
       <Box
@@ -153,18 +161,38 @@ const Dashboard = () => {
               // />
               <Box
                 sx={{
+                  position: "relative",
                   width: "100%",
                   height: isSmallScreen ? "auto" : "281px",
                   position: "relative",
                   overflow: "hidden",
                   borderRadius: "10px",
+                  '&:hover .play-box': {
+                    display: "flex"
+                  },
+                  "& .play-box": {
+                    position: "absolute",
+                    width: "100%",
+                    height: "100%",
+                    display: "none",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    background: "rgba(0, 0, 0, 0.7)",
+                  },
                 }}
               >
+                <div className="play-box">
+                  <IconButton sx={{ zIndex: "100", borderRadius: "100%" }} size="large" onClick={handleVolume}>
+                    {
+                      isOff ? (<VolumeOffIcon fontSize="inherit" />) : (<VolumeUpIcon fontSize="inherit" />)
+                    }
+                  </IconButton>
+                </div>
                 <video
                   src={`/media/videos/${formData.file_location}`}
                   autoPlay
                   loop
-                  muted
+                  muted={isOff}
                   playsInline
                   style={{
                     width: "100%",
