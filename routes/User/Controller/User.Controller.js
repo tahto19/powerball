@@ -122,7 +122,7 @@ export const updateController = async (req, res) => {
       idPath: iUp.filename,
     };
   }
-  console.log(data);
+
   let a = await uc.Edit(data);
   res.send(cSend(a));
 };

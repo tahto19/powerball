@@ -49,7 +49,6 @@ class User_class {
         let val = _data[v];
         console.log(val);
         if (val === "" || !val) {
-          console.log(v);
           delete _data[v];
         }
       });
@@ -58,7 +57,6 @@ class User_class {
         let val = _data[v];
         console.log(val);
         if (val === "" || !val) {
-          console.log(v);
           delete _data[v];
         }
       });
