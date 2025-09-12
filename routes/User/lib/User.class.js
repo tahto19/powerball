@@ -47,6 +47,7 @@ class User_class {
     if (_data.isAdmin) {
       Object.keys(_data).forEach((v) => {
         let val = _data[v];
+        console.log(val);
         if (val === "" || !val) {
           console.log(v);
           delete _data[v];
