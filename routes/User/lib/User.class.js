@@ -52,6 +52,7 @@ class User_class {
         }
       });
     }
+    console.log(_data);
     await Users.update(_data, {
       where: { id },
       individualHooks: true,
