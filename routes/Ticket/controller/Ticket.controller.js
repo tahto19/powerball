@@ -116,7 +116,7 @@ export const raffleDrawV2Controller = async (req, res) => {
     let userThatCantJoin = [];
     for (let val of getRaffleScheduletj.ticket_histories) {
       let getWinning = val.wining_draw_detail;
-      if (getWinning) userThatCantJoin.push(val.ticket_detail.user_id);
+      if (!getWinning) userThatCantJoin.push(val.ticket_detail.user_id);
       else {
         firstClear.push({
           ticket_code: val.ticket_history_generate,
@@ -131,7 +131,7 @@ export const raffleDrawV2Controller = async (req, res) => {
       let checkIfTicketIsHasSameUserId = userThatCantJoin.find(
         (v) => v === val.user
       );
-      if (checkIfTicketIsHasSameUserId) {
+      if (!checkIfTicketIsHasSameUserId) {
         ticketsThatCanJoin.push(val.ticket_code);
         secondClear.push(val);
       }
