@@ -16,6 +16,8 @@ import {
   AccordionDetails,
   FormControlLabel,
   Checkbox,
+  Alert,
+  Paper,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -109,7 +111,7 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
         setValue(v, val, { shouldValidate: true, required: true });
       });
     }
-    if (open) dispatch(getUserTypeByUserID(data.id));
+    if (open && data.id) dispatch(getUserTypeByUserID(data.id));
   }, [data, dialogType]);
   React.useEffect(() => {
     if (permissions) setPermissionsDetails(permissions);
@@ -331,7 +333,20 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
                 )}
             </Grid>
             <Grid size={{ lg: 12, md: 12, xs: 12 }}>
-              {loadingUserType && (
+              {!data.id &&
+                dialog_type &&
+                dialog_type.toLowerCase() === "add" && (
+                  <Paper
+                    elevation={2}
+                    sx={{ borderRadius: "0px" }}
+                  >
+                    <Alert severity="info">
+                      Before adding user permissions please save user then edit
+                      the account
+                    </Alert>
+                  </Paper>
+                )}
+              {data.id && loadingUserType && (
                 <Stack spacing={1}>
                   <Skeleton variant="rectangular" />
                   <Divider />
@@ -340,6 +355,7 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
                   <Skeleton variant="rectangular" /> <Divider />
                 </Stack>
               )}
+
               {!loadingUserType && (
                 <>
                   {permissions &&
