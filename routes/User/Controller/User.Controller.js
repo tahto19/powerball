@@ -32,7 +32,7 @@ export const getController = async (req, res) => {
 export const insertController = async (req, res) => {
   const { firstname, lastname, password, emailAddress, mobileNumber, isAdmin } =
     req.body;
-  const checkEmailExists = await uc.FetchOne([
+  const checkEmailExists = await uc.FetchOneV2([
     {
       filter: encrpytPassword(emailAddress),
       type: "string_eq",
@@ -40,7 +40,7 @@ export const insertController = async (req, res) => {
     },
   ]);
   if (checkEmailExists) throw new Error("x909");
-  const checkMobile = await uc.FetchOne([
+  const checkMobile = await uc.FetchOneV2([
     { filter: mobileNumber, type: "string_eq", field: "mobileNumber" },
   ]);
   if (checkMobile) throw new Error("x908");
