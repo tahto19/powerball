@@ -7,7 +7,7 @@
   { "path": "/logout", "method": "POST" },
   { "path": "/login/checkSession", "method": "GET" },
   { "path": "/login/mobileLogin", "method": "POST" },
-  { "path": "/ticket", "method": "POST" },
+  { "path": "/ticket", "method": "POST1" },
   { "path": "/cron", "method": "GET" },
   { "path": "/testingroutes(?:/.*)?$", "method": "POST" },
   { "path": "/password-reset", "method": "POST" },
