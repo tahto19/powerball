@@ -4,7 +4,7 @@ import sdc from "../lib/SiteDefault.class.js";
 
 export const insertSiteDefaultController = async (req, res) => {
   try {
-    const { description, file, name, category, winnerId } = req.body;
+    const { id, description, file, name, category, winnerId } = req.body;
     let type = "";
 
     if (file.mimetype.startsWith("image/")) type = "image";
@@ -31,11 +31,18 @@ export const insertSiteDefaultController = async (req, res) => {
       query["user_id"] = req.user_id;
     }
 
-    let r = await sdc.Insert(query);
+    let r;
+    if (id && id > 0) {
+      query["id"] = id;
+      r = await sdc.Update(query);
+    } else {
+      r = await sdc.Insert(query);
+    }
+    console.log(query);
 
     res.send(cSend(r));
-  } catch (error) {
-    throw error;
+  } catch (err) {
+    throw err;
   }
 };
 
@@ -43,7 +50,6 @@ export const getMediaBanner = async (req, res) => {
   console.log("hi");
   const a = await sdc.FetchOne([
     { filter: "media-banner", field: "category", type: "string" },
-    { filter: "video", field: "type", type: "string" },
   ]);
   res.send(cSend(a));
 };

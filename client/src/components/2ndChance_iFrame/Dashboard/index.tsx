@@ -22,6 +22,10 @@ import EntriesDialog from "./EntriesDialog";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import logo from "@/assets/image/logo.png";
+import apiService from "@/services/apiService";
+import { MediaState, mediaInitialData } from "@/components/Defaults/tabs/interface"
+import { bodyDecrypt } from "@/utils/util";
+
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const endpoint = base_url + "api/file/serve/image/";
 
@@ -54,6 +58,7 @@ const Dashboard = () => {
   // const { overallTotalEntries, totalEntries, totalTicket, totalUsedEntries } = useAppSelector(
   //     (state) => state.raffleEntry
   // );
+  const { token } = useAppSelector((state) => state.token);
 
   const userDetails = useAppSelector((state: RootState) => state.user);
   const navigate = useNavigate();
@@ -62,6 +67,26 @@ const Dashboard = () => {
   };
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const [formData, setFormData] = useState<MediaState>(mediaInitialData);
+  const [isImage, setIsImage] = useState(false)
+  const [hasData, setHasData] = useState(false)
+  const GetData = async () => {
+    setHasData(false)
+    let res = await apiService.getMediaBanner();
+    const d = bodyDecrypt(res.data, token)
+    console.log(">>>>>", res.data)
+
+    if (d.success === 'success') {
+      if (d.data && d.data.type) {
+        const type = d.data.type === 'image' ? true : false;
+        setIsImage(type)
+        setFormData(d.data);
+        setHasData(true)
+      }
+    }
+    console.log(d)
+  }
 
   const [availableTicket, setavailableTicket] = useState(0);
   useEffect(() => {
@@ -83,6 +108,7 @@ const Dashboard = () => {
     } else {
       setavailableTicket(0); // or handle negative case
     }
+    GetData()
   }, [userDetails]);
 
   const [open, setOpen] = useState(false);
@@ -107,12 +133,59 @@ const Dashboard = () => {
           gap: "30px",
         }}
       >
-        <CardMedia
+        {
+          hasData ?
+
+            isImage ? (
+              <CardMedia
+                component="img"
+                sx={{ width: "fit-content", height: "181px" }}
+                image={endpoint + formData.id}
+                alt="Logo"
+              ></CardMedia>
+            ) : (
+              // <CardMedia
+              //   component="video"
+              //   sx={{ width: "fit-content", height: "181px" }}
+              //   src={"https://18.138.76.86/media/videos/" + formData.file_location}
+              //   autoPlay
+              //   loop
+              // />
+              <Box
+                sx={{
+                  width: "100%",
+                  height: isSmallScreen ? "auto" : "281px",
+                  position: "relative",
+                  overflow: "hidden",
+                  borderRadius: "10px",
+                }}
+              >
+                <video
+                  src={`/media/videos/${formData.file_location}`}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover", // behaves like background-size: cover
+                  }}
+                />
+              </Box>
+            )
+
+            : null
+
+        }
+
+
+        {/* <CardMedia
           component="img"
           sx={{ width: "fit-content", height: "181px" }}
           image={logo}
           alt="Logo"
-        ></CardMedia>
+        ></CardMedia> */}
 
         <Box
           sx={{

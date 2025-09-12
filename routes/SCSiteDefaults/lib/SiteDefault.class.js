@@ -9,6 +9,16 @@ class SiteDefault {
     return create.id;
   }
 
+  async Update(_data) {
+    let count = await Files.count({ where: { id: _data.id } });
+    if (count === 0) throw new Error("User Not found");
+    const id = _data.id;
+    delete _data.id;
+
+    await Files.update(_data, { where: { id }, individualHooks: true });
+    return id;
+  }
+
   async FetchOne(filter) {
     if (filter.length === 0) throw new Error("ErrorCode X1");
     let query = {};

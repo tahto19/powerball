@@ -7,6 +7,10 @@ export const insertSiteDefaultsSchema = {
   handler: insertSiteDefaultController,
 };
 
+export const updateSiteDefaultsSchema = {
+  handler: insertSiteDefaultController,
+};
+
 export const getMediaBannerSchema = {
   handler: getMediaBanner,
 };

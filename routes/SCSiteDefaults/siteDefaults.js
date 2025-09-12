@@ -1,6 +1,7 @@
 import {
   insertSiteDefaultsSchema,
   getMediaBannerSchema,
+  updateSiteDefaultsSchema,
 } from "./Schema/siteDefaults.Schema.js";
 import { decryptData } from "../../util/util.js";
 
@@ -19,6 +20,7 @@ const siteDefaults = (app, opts, done) => {
   });
 
   app.post("/insert", insertSiteDefaultsSchema);
+  app.put("/update", updateSiteDefaultsSchema);
   app.get("/media-banner", getMediaBannerSchema);
 
   done();

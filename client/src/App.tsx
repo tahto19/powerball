@@ -117,9 +117,9 @@ const routes = [
     title: "Free Ticket",
   },
   {
-    path: "/defaults",
+    path: "/second-chance-site-defaults",
     component: <Defaults />,
-    title: "Defaults",
+    title: "Second Chance Site Defaults",
   },
 ];
 
