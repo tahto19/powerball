@@ -341,8 +341,8 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
                     sx={{ borderRadius: "0px" }}
                   >
                     <Alert severity="info">
-                      Before adding user permissions please save user then edit
-                      the account
+                      Please save the user first, then edit the account to add
+                      permissions.
                     </Alert>
                   </Paper>
                 )}
