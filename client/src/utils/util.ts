@@ -99,6 +99,10 @@ const getErrorsStatus = (code: string) => {
       return "This user is not allowed here";
     case "x908":
       return "Mobile Number Already Exists";
+    case "x12":
+      return "Scan Error. Please call (0917) 188 5885 or (0919) 099 1999 for assistance";
+    case "x13":
+      return "This is a winning ticket and is not eligible for raffle draw";
     default:
       return false;
   }

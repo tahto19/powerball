@@ -92,6 +92,8 @@ const fastify = Fastify({
  * x910 no user found
  * x933 this user is not allowed here
  * x876 all user already won
+ * x12  "Scan Error. Please call (0917) 188 5885 or (0919) 099 1999 for assistance"
+ * x13 "This is a winning ticket and is not eligible for raffle draw"
  */
 
 /**
