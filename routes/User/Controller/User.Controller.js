@@ -101,7 +101,7 @@ export const updateController = async (req, res) => {
     if (data.id !== v.id) throw new Error("errorcode x909");
   }
 
-  const checkMobile = await uc.FetchOne([
+  const checkMobile = await uc.FetchOneV2([
     { filter: mobileNumber, type: "string_eq", field: "mobileNumber" },
   ]);
   if (checkMobile) {
