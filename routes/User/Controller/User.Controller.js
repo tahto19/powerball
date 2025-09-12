@@ -88,7 +88,7 @@ export const updateController = async (req, res) => {
     hbnandstr,
     gender,
   };
-  const checkEmailExists = await uc.FetchOne([
+  const checkEmailExists = await uc.FetchOneV2([
     {
       filter: encrpytPassword(emailAddress),
       type: "string_eq",
