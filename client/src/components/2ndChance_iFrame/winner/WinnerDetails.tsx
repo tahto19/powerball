@@ -43,8 +43,7 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
         })
       );
     }
-    console.log(count);
-  }, [loading, token, location]);
+  }, [token, location]);
   const [headers, setHeaders] = useState([]);
   const [rowClicked, setRowClicked] = useState();
   const [imageLoading, setImageLoading] = useState(false);

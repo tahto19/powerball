@@ -33,7 +33,7 @@ import {
 } from "@/components/2ndChance_iFrame/Raffles/interface";
 import { data } from "react-router-dom";
 import moment from "moment";
-import {MediaState} from "@/components/Defaults/tabs/interface"
+import { MediaState } from "@/components/Defaults/tabs/interface";
 
 interface Credentials {
   email: string;
@@ -374,6 +374,7 @@ export const apiService = {
     });
   },
   getTicketDetails: async (data, token: string | null) => {
+    console.log(data);
     return apiClient.post("api/ticket/myTicketDetails", {
       data: bodyEncrypt(JSON.stringify(data), token),
     });

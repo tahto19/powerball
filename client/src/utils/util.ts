@@ -170,6 +170,7 @@ export const bodyEncrypt = (
       : typeof d === "array" || typeof d === "object"
       ? JSON.stringify(d)
       : d;
+
   if (!data || (typeof data === "string" && !data.trim())) {
     // Ensure data is not empty or just whitespace
     console.error("Decryption failed: Empty data.");
@@ -192,6 +193,7 @@ export const bodyEncrypt = (
     return bytes;
   } catch (error) {
     console.error("Decryption failed: ", error);
+
     throw error;
   }
 };

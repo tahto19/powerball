@@ -195,8 +195,9 @@ const Dashboard = () => {
           flexWrap: "wrap",
         }}
       >
-        {tabs.map((x) => (
+        {tabs.map((x, i) => (
           <Card
+            key={i}
             sx={{
               display: "flex",
               padding: "12px",

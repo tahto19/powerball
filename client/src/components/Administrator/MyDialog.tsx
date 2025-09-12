@@ -346,7 +346,7 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
                     Object.keys(permissions).map((v) => {
                       if (permissionsDetails[v])
                         return (
-                          <Accordion>
+                          <Accordion key={v}>
                             <AccordionSummary
                               expandIcon={<GridArrowDownwardIcon />}
                               aria-controls="panel1-content"
@@ -359,9 +359,10 @@ const MyDialog = ({ open, data, dialogType, onClose }: MyDialogProps) => {
                                 direction="column"
                                 spacing={1}
                               >
-                                {Object.keys(permissions[v]).map((vv) => {
+                                {Object.keys(permissions[v]).map((vv, i) => {
                                   return (
                                     <FormControlLabel
+                                      key={v + vv}
                                       control={
                                         <Checkbox
                                           // disabled={

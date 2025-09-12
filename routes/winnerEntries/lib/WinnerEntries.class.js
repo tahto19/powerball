@@ -32,11 +32,13 @@ class WiningDrawDetails_class {
     let { count, rows } = await WiningDrawDetails.findAndCountAll(query);
     return { count, rows };
   }
-  async FetchAll(sort = [["id", "ASC"]], filter = []) {
+  async FetchAll(sort = [["id", "ASC"]], filter = [], include = null) {
     let query = {
       order: sort,
     };
-
+    if (include) {
+      query["include"] = include;
+    }
     if (filter.length !== 0) query["where"] = WhereFilters(filter);
 
     // ✅ Fetch both filtered list and total count

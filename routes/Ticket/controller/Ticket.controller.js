@@ -14,6 +14,7 @@ import RaffleDetails from "../../../models/RaffleDetails.model.js";
 import rc from "../../GameMaintenance/lib/Raffle.class.js";
 import { Op } from "sequelize";
 import RafflePrize from "../../../models/RafflePrize.model.js";
+import TicketDetails from "../../../models/TicketDetails.model.js";
 export const raffleDrawController = async (req, res) => {
   try {
     const { raffle_id, prize_id } = req.body;
@@ -73,6 +74,89 @@ export const raffleDrawController = async (req, res) => {
     throw err;
   }
 };
+export const raffleDrawV2Controller = async (req, res) => {
+  try {
+    const { raffle_id, prize_id } = req.body;
+
+    if (!raffle_id || prize_id === -1 || !prize_id)
+      throw new Error("Error X984");
+    // check first if the raffle is already done
+    let getPrizeScheduleInfo = await RafflePrize.findOne({
+      where: { id: prize_id },
+    });
+    if (!getPrizeScheduleInfo) throw new Error("ErrorCODE X912");
+
+    let getPrizeScheduleInfoToJson = getPrizeScheduleInfo.toJSON();
+    let checkRaffleWinner = await wc.FetchAll(null, [
+      {
+        field: "raffle_prize_id",
+        filter: prize_id,
+        type: "number",
+      },
+    ]);
+    let prizeScheduleWinners = getPrizeScheduleInfoToJson.number_of_winners;
+    if (checkRaffleWinner.total >= prizeScheduleWinners)
+      throw new Error("ErrorCODE X911");
+
+    let getRaffleSchedule = await RaffleSchedule.findOne({
+      where: { id: raffle_id },
+      include: [
+        {
+          model: TicketHistory,
+          include: [{ model: WiningDrawDetails }, { model: TicketDetails }],
+        },
+      ],
+    });
+
+    if (!getRaffleSchedule) throw new Error("ErrorCODE X912");
+    let getRaffleScheduletj = getRaffleSchedule.toJSON();
+    let firstClear = [];
+    let secondClear = [];
+    let ticketsThatCanJoin = [];
+    let userThatCantJoin = [];
+    for (let val of getRaffleScheduletj.ticket_histories) {
+      let getWinning = val.wining_draw_detail;
+      if (getWinning) userThatCantJoin.push(val.ticket_detail.user_id);
+      else {
+        firstClear.push({
+          ticket_code: val.ticket_history_generate,
+          user: val.ticket_detail.user_id,
+          raffle_prize_id: val.raffle_id,
+          ticket_id: val.ticket_id,
+          ticket_history_id: val.id,
+        });
+      }
+    }
+    for (let val of firstClear) {
+      let checkIfTicketIsHasSameUserId = userThatCantJoin.find(
+        (v) => v === val.user
+      );
+      if (checkIfTicketIsHasSameUserId) {
+        ticketsThatCanJoin.push(val.ticket_code);
+        secondClear.push(val);
+      }
+    }
+
+    // if (!ticketsThatCanJoin.length) throw new Error("errorcode x876");
+    let a = random(ticketsThatCanJoin);
+    let getWinnerTicketDetails = secondClear.find((v) => v.ticket_code === a);
+
+    let b = await wc.Insert({
+      admin_id: req.user_id,
+      raffle_prize_id: prize_id,
+      ticket_history_id: getWinnerTicketDetails.ticket_history_id,
+      ticket_id: getWinnerTicketDetails.ticket_id,
+    });
+    res.send(
+      cSend({
+        winnerDetails: getWinnerTicketDetails,
+        totalEntries: secondClear.length,
+      })
+    );
+  } catch (err) {
+    throw err;
+  }
+};
 export const fetchTicketController = async (req, res) => {
   try {
     const { limit, sort, offset, filter, location } = req.body;
@@ -80,7 +164,7 @@ export const fetchTicketController = async (req, res) => {
     if (location && location.includes("myScan")) {
       filter_.push({ field: "user_id", filter: req.user_id, type: "number" });
     }
-    console.log(sort);
+
     let r = await tc.Fetch(offset, limit, sort, filter_);
 
     res.send(r);
@@ -207,7 +291,7 @@ export const ticketHistoryInEntriesController = async (req, res) => {
 export const detailedTicketDetailsHistoryController = async (req, res) => {
   try {
     const { id, limit, sort, offset, filter, location } = req.body;
-
+    console.log(req.body);
     var addFilter;
 
     if (id) {

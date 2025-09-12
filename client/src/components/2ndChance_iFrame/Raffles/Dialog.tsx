@@ -107,7 +107,8 @@ DialogProps) => {
                 <FormControl>
                   <FormLabel htmlFor="details">Tickets</FormLabel>
                   <Autocomplete
-                    options={details}
+                    noOptionsText={"No Tickets"}
+                    options={details ? details : []}
                     getOptionLabel={(option) =>
                       `${option.alpha_code} entries: ${
                         option.totalEntries - option.totalUsedEntries

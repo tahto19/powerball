@@ -188,7 +188,6 @@ function AppRoutes() {
   }, []);
   const [newRoutes, setNewRoutes] = useState(null);
   useEffect(() => {
-    console.log(token);
     if (token && !myPermission) {
       dispatch(getUser());
     }

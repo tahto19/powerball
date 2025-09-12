@@ -90,6 +90,7 @@ const fastify = Fastify({
  * x663 already have a winner cant join this event
  * x910 no user found
  * x933 this user is not allowed here
+ * x876 all user already won
  */
 
 /**
@@ -260,7 +261,6 @@ const start = async () => {
      *error handler
      */
     fastify.setErrorHandler((err, req, res) => {
-      console.log(err);
       if (
         !err.message.toLowerCase().includes("error") &&
         err.message.trim() !== "Need login!"

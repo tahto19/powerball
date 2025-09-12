@@ -3,11 +3,25 @@ import {
   fetchTicketController,
   postTicketController,
   raffleDrawController,
+  raffleDrawV2Controller,
   ticketHistoryInEntriesController,
 } from "../controller/Ticket.controller.js";
 
 export const raffleDrawSchema = {
   handler: raffleDrawController,
+  schema: {
+    body: {
+      type: "object",
+      required: ["prize_id", "raffle_id"],
+      properties: {
+        raffle_id: { type: "number" },
+        prize_id: { type: "number" },
+      },
+    },
+  },
+};
+export const raffleDrawV2Schema = {
+  handler: raffleDrawV2Controller,
   schema: {
     body: {
       type: "object",
@@ -54,14 +68,14 @@ export const detailedTicketDetailsHistorySchema = {
   schema: {
     body: {
       type: "object",
-      properties: {
-        sort: { type: "array" },
-        offset: { type: "number" },
-        filter: { type: "array" },
-        limit: { type: "number" },
-        id: { type: "number" },
-      },
-      required: ["sort", "offset"],
+      // properties: {
+      //   sort: { type: "array" },
+      //   offset: { type: "number" },
+      //   filter: { type: "array" },
+      //   limit: { type: "number" },
+      //   id: { type: "number" },
+      // },
+      // required: ["sort", "offset"],
     },
   },
 };
