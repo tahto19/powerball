@@ -147,7 +147,7 @@ const Dashboard = () => {
             isImage ? (
               <CardMedia
                 component="img"
-                sx={{ width: "fit-content", height: "auto" }}
+                sx={{ width: "fit-content", height: "181px" }}
                 image={endpoint + formData.id}
                 alt="Logo"
               ></CardMedia>
@@ -162,8 +162,8 @@ const Dashboard = () => {
               <Box
                 sx={{
                   position: "relative",
-                  width: "auto",
-                  height: "auto",
+                  width: "100%",
+                  height: isSmallScreen ? "auto" : "281px",
                   position: "relative",
                   overflow: "hidden",
                   borderRadius: "10px",
