@@ -110,7 +110,7 @@ export const raffleDrawV2Controller = async (req, res) => {
 
     if (!getRaffleSchedule) throw new Error("ErrorCODE X912");
     let getRaffleScheduletj = getRaffleSchedule.toJSON();
-    console.log(getRaffleScheduletj);
+
     let firstClear = [];
     let secondClear = [];
     let ticketsThatCanJoin = [];
@@ -129,7 +129,7 @@ export const raffleDrawV2Controller = async (req, res) => {
         });
       }
     }
-    console.log(firstClear, "first clear");
+
     for (let val of firstClear) {
       let checkIfTicketIsHasSameUserId = userThatCantJoin.find(
         (v) => v === val.user
@@ -144,12 +144,12 @@ export const raffleDrawV2Controller = async (req, res) => {
     let a = random(ticketsThatCanJoin);
     let getWinnerTicketDetails = secondClear.find((v) => v.ticket_code === a);
 
-    // let b = await wc.Insert({
-    //   admin_id: req.user_id,
-    //   raffle_prize_id: prize_id,
-    //   ticket_history_id: getWinnerTicketDetails.ticket_history_id,
-    //   ticket_id: getWinnerTicketDetails.ticket_id,
-    // });
+    let b = await wc.Insert({
+      admin_id: req.user_id,
+      raffle_prize_id: prize_id,
+      ticket_history_id: getWinnerTicketDetails.ticket_history_id,
+      ticket_id: getWinnerTicketDetails.ticket_id,
+    });
     res.send(
       cSend({
         winnerDetails: getWinnerTicketDetails,
