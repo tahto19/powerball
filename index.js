@@ -267,11 +267,11 @@ const start = async () => {
      *error handler
      */
     fastify.setErrorHandler((err, req, res) => {
+      console.log(err);
       if (
         !err.message.toLowerCase().includes("error") &&
         err.message.trim() !== "Need login!"
       ) {
-        console.log(err);
         res.status(400).send({ result: "error", message: "Server Error" });
       } else if (err.code === undefined) {
         res.status(400).send({ result: "error", message: err.message });
