@@ -210,7 +210,7 @@ export const getUserController = async (req, res) => {
     var user_id = req.user_id;
     let filter = [{ type: "number", field: "id", filter: user_id }];
 
-    const getUser = await uc.FetchOneV2(filter);
+    const getUser = await uc.FetchOne(filter);
     let r_toJson = getUser.toJSON();
     // getUser.password = "";
 
@@ -219,8 +219,9 @@ export const getUserController = async (req, res) => {
       r_toJson["myUserType"] = b;
       await uc.Edit({ id: r_toJson.id, userType: b.id });
     }
+    console.log(r_toJson, "here!!!!!!!!!!!");
 
-    res.send(cSend(getUser));
+    res.send(cSend(r_toJson));
   } catch (err) {
     console.log(err);
     throw err;

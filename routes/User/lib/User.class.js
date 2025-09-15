@@ -91,10 +91,10 @@ class User_class {
           as: "myUserType",
         },
       ],
-      attributes: [
-        [fn("SUM", col("entries")), "totalEntries"],
-        [fn("SUM", col("TicketDetails.entries_used")), "totalUsedEntries"],
-      ],
+      // attributes: [
+      //   [fn("SUM", col("entries")), "totalEntries"],
+      //   [fn("SUM", col("TicketDetails.entries_used")), "totalUsedEntries"],
+      // ],
       distinct: true, // ensure proper count when joins are present
       group: ["Users.id"], // group by user to get correct counts
     };
@@ -127,20 +127,7 @@ class User_class {
     query["where"] = WhereFilters(filter);
 
     let list = await Users.findOne(query);
-    if (!list) return null;
-    let getData = list.toJSON();
-    var total = {
-      totalEntries: 0,
-      totalUsedEntries: 0,
-    };
-    getData.ticket_details.forEach((v) => {
-      total.totalEntries = v.entries - v.entries_used;
-      total.totalUsedEntries = v.entries_used;
-    });
-    getData["totalEntries"] = total.totalEntries;
-    getData["totalEntries"] = total.totalUsedEntries;
-
-    return getData;
+    return list;
   }
 }
 
