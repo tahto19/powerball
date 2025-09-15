@@ -127,7 +127,20 @@ class User_class {
     query["where"] = WhereFilters(filter);
 
     let list = await Users.findOne(query);
-    return list;
+    if (!list) return null;
+    let getData = list.toJSON();
+    var total = {
+      totalEntries: 0,
+      totalUsedEntries: 0,
+    };
+    getData.ticket_details.forEach((v) => {
+      total.totalEntries = v.entries - v.entries_used;
+      total.totalUsedEntries = v.entries_used;
+    });
+    getData["totalEntries"] = total.totalEntries;
+    getData["totalEntries"] = total.totalUsedEntries;
+
+    return getData;
   }
 }
 
