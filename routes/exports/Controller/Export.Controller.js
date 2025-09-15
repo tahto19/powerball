@@ -3,7 +3,7 @@ import ec from "../lib/Export.class.js";
 export const exportDataController = async (req, res) => {
   try {
     const { type, dr, filter } = req.body;
-    console.log(dr);
+    console.log(dr, "here");
     const dr_ = dr
       ? [
           new Date(moment(dr[0]).startOf("day").toISOString()),
