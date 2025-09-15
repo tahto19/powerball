@@ -118,6 +118,7 @@ class Export_data_class {
           isAdmin: true,
         }
       : { isAdmin: true };
+    console.log(where);
     let _r = await Users.findAll({
       where: where,
       attributes: [
@@ -683,7 +684,7 @@ class Export_data_class {
           width: 10,
         };
       });
-    else throw new Error("no data found");
+    else throw new Error("ErrorCode x15");
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet(type);
     worksheet.columns = columns;

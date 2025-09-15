@@ -103,6 +103,8 @@ const getErrorsStatus = (code: string) => {
       return "Scan Error. Please call (0917) 188 5885 or (0919) 099 1999 for assistance";
     case "x13":
       return "This is a winning ticket and is not eligible for raffle draw";
+    case "x15":
+      return "No Data";
     default:
       return false;
   }
