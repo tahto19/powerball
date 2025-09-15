@@ -41,7 +41,6 @@ export const LoginController = async (req, res) => {
     let token = await res.jwtSign(changeDetails);
     let encryptToken = await encrpytPassword(token);
 
-    throw new Error("here");
     res
       .setCookie("cookie_pb_1271", encryptToken, {
         domain: "",
