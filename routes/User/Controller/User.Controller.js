@@ -179,7 +179,7 @@ export const createUser = async (req, res) => {
         user_id: r,
         ticket_code: `FREE-TICKET-${randomLetters(4)}-${getToday}`,
         VIN: `FREE-${randomLetters(4)}-${getToday}`,
-        alpha_code: "free",
+        alpha_code: "FREE",
       });
       await AuditTrail.create({
         performedBy: r,
@@ -219,7 +219,6 @@ export const getUserController = async (req, res) => {
       r_toJson["myUserType"] = b;
       await uc.Edit({ id: r_toJson.id, userType: b.id });
     }
-    console.log(r_toJson, "here!!!!!!!!!!!");
 
     res.send(cSend(r_toJson));
   } catch (err) {
