@@ -19,11 +19,11 @@ export const LoginController = async (req, res) => {
         field: "emailAddress",
       },
     ]);
-    console.log(a);
+
     if (a === null) throw new Error("ErrorCODE X999");
     let b = await a.validPassword(req.body.password);
     if (!b) throw new Error("ErrorCODE X999");
-    let changeDetails = a.toJSON();
+    let changeDetails = { ...a.toJSON() };
 
     delete changeDetails["password"];
     delete changeDetails["active"];
@@ -35,10 +35,10 @@ export const LoginController = async (req, res) => {
     changeDetails["platformversion"] = req.headers["platformversion"];
     changeDetails["platform"] = req.headers["platform"];
     changeDetails["login"] = new Date();
-
+    console.log("here");
     let token = await res.jwtSign(changeDetails);
     let encryptToken = await encrpytPassword(token);
-
+    console.log("here");
     res
       .setCookie("cookie_pb_1271", encryptToken, {
         domain: "",
