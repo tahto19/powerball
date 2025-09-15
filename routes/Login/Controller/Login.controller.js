@@ -38,9 +38,10 @@ export const LoginController = async (req, res) => {
     console.log("here1");
     let token = await res.jwtSign(changeDetails);
     let encryptToken = await encrpytPassword(token);
-    console.log(encryptToken);
+
     res
       .setCookie("cookie_pb_1271", encryptToken, {
+        domain: "",
         path: "/",
         secure: true,
         httpOnly: true,
@@ -179,7 +180,6 @@ export const loginUsingMobileNumberController = async (req, res) => {
 
     res
       .setCookie("cookie_pb_1271", encryptToken, {
-        domain: "",
         path: "/",
         secure: true,
         httpOnly: true,
