@@ -38,6 +38,7 @@ export const LoginController = async (req, res) => {
     console.log("here1");
     let token = await res.jwtSign(changeDetails);
     let encryptToken = await encrpytPassword(token);
+    console.log("typeof res.setCookie:", typeof res.setCookie);
 
     res
       .setCookie("cookie_pb_1271", encryptToken, {
