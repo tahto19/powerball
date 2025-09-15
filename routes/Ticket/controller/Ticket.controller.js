@@ -136,8 +136,8 @@ export const raffleDrawV2Controller = async (req, res) => {
         secondClear.push(val);
       }
     }
-
-    // if (!ticketsThatCanJoin.length) throw new Error("errorcode x876");
+    console.log(secondClear);
+    if (!ticketsThatCanJoin.length) throw new Error("errorcode x876");
     let a = random(ticketsThatCanJoin);
     let getWinnerTicketDetails = secondClear.find((v) => v.ticket_code === a);
 
