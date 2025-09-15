@@ -254,12 +254,18 @@ const PhoneNumberLogin = () => {
                   >
                     <div className="e-con-inner"></div>
                   </div> */}
+
                   <section
                     className="elementor-section elementor-top-section elementor-element elementor-element-4b9d4b03 elementor-section-content-middle elementor-section-boxed elementor-section-height-default elementor-section-height-default wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no"
                     data-id="4b9d4b03"
                     data-element_type="section"
                     data-settings='{"background_background":"classic","_ha_eqh_enable":false}'
                   >
+                    <div className="elementor-widget-container">
+                      <h1 style={{ color: "#2555A6" }} className="ha-gradient-heading">
+                        LOG IN YOUR ACCOUNT
+                      </h1>{" "}
+                    </div>
                     <div className="elementor-container elementor-column-gap-default">
                       <div
                         className="elementor-column elementor-col-50 elementor-top-column elementor-element elementor-element-20b54d12"
@@ -442,7 +448,7 @@ const PhoneNumberLogin = () => {
                           >
                             <div className="elementor-widget-container">
                               <h1 className="ha-gradient-heading">
-                                Sign Up for an Account
+                                DON'T HAVE AN ACCOUNT YET?
                               </h1>{" "}
                             </div>
                           </div>
@@ -457,10 +463,11 @@ const PhoneNumberLogin = () => {
                                 <a
                                   onClick={() => handleSignUp()}
                                   className="elementor-button elementor-button-link elementor-size-sm"
+                                  style={{ backgroundColor: "red", padding: "12px 44px", borderRadius: "10px" }}
                                 >
                                   <span className="elementor-button-content-wrapper">
                                     <span className="elementor-button-text">
-                                      Here
+                                      SIGN UP
                                     </span>
                                   </span>
                                 </a>
