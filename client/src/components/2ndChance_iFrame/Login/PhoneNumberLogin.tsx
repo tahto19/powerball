@@ -261,7 +261,7 @@ const PhoneNumberLogin = () => {
                     data-element_type="section"
                     data-settings='{"background_background":"classic","_ha_eqh_enable":false}'
                   >
-                    <div className="elementor-widget-container">
+                    <div style={{ textAlign: "center" }} className="elementor-widget-container">
                       <h1 style={{ color: "#2555A6" }} className="ha-gradient-heading">
                         LOG IN YOUR ACCOUNT
                       </h1>{" "}
