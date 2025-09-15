@@ -41,7 +41,6 @@ export const LoginController = async (req, res) => {
     console.log(encryptToken);
     res
       .setCookie("cookie_pb_1271", encryptToken, {
-        domain: "",
         path: "/",
         secure: true,
         httpOnly: true,
