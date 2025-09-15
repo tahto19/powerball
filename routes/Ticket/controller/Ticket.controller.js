@@ -144,12 +144,12 @@ export const raffleDrawV2Controller = async (req, res) => {
     let a = random(ticketsThatCanJoin);
     let getWinnerTicketDetails = secondClear.find((v) => v.ticket_code === a);
 
-    let b = await wc.Insert({
-      admin_id: req.user_id,
-      raffle_prize_id: prize_id,
-      ticket_history_id: getWinnerTicketDetails.ticket_history_id,
-      ticket_id: getWinnerTicketDetails.ticket_id,
-    });
+    // let b = await wc.Insert({
+    //   admin_id: req.user_id,
+    //   raffle_prize_id: prize_id,
+    //   ticket_history_id: getWinnerTicketDetails.ticket_history_id,
+    //   ticket_id: getWinnerTicketDetails.ticket_id,
+    // });
     res.send(
       cSend({
         winnerDetails: getWinnerTicketDetails,
