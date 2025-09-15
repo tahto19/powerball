@@ -618,6 +618,7 @@ class Export_data_class {
           ],
         },
       ],
+      logging: console.log,
     });
 
     let toSend = [];

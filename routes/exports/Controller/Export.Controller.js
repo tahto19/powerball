@@ -6,12 +6,12 @@ export const exportDataController = async (req, res) => {
 
     const dr_ = dr
       ? [
-          moment(dr[0]).startOf("day").toISOString(),
-          moment(dr[1]).endOf("day").toISOString(),
+          new Date(moment(dr[0]).startOf("day").toISOString()),
+          new Date(moment(dr[1]).endOf("day").toISOString()),
         ]
       : [
-          moment().startOf("year").toISOString(),
-          moment().endOf("year").toISOString(),
+          new Date(moment().startOf("year").toISOString()),
+          new Date(moment().endOf("year").toISOString()),
         ];
 
     let _r = await ec.getData(type, dr_, filter);
