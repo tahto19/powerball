@@ -590,6 +590,7 @@ class Export_data_class {
     return await this.toExcel(toSend, "Raffle Draw");
   }
   async get_raffleDraw_new(date_range) {
+    console.log(date_range);
     let r_ = await RaffleSchedule.findAll({
       where: {
         [Op.and]: [
