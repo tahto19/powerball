@@ -119,6 +119,7 @@ export const raffleDrawV2Controller = async (req, res) => {
       let getWinning = val.wining_draw_detail;
       if (!getWinning) userThatCantJoin.push(val.ticket_detail.user_id);
       else {
+        console.log("pushed");
         firstClear.push({
           ticket_code: val.ticket_history_generate,
           user: val.ticket_detail.user_id,
