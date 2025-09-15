@@ -310,7 +310,7 @@ class Export_data_class {
       where: {
         [Op.and]: [
           { createdAt: { [Op.gte]: date_range[0] } },
-          { createdAt: { [Op.lte]: date_range[1] } },
+          { createdAt: { [Op.lt]: date_range[1] } },
         ],
       },
       include: [
@@ -381,7 +381,7 @@ class Export_data_class {
       where: {
         [Op.and]: [
           { createdAt: { [Op.gte]: date_range[0] } },
-          { createdAt: { [Op.lte]: date_range[1] } },
+          { createdAt: { [Op.lt]: date_range[1] } },
           { entries_used: { [Op.gte]: 1 } },
         ],
       },
@@ -434,7 +434,7 @@ class Export_data_class {
       where: {
         [Op.and]: [
           { createdAt: { [Op.gte]: date_range[0] } },
-          { createdAt: { [Op.lte]: date_range[1] } },
+          { createdAt: { [Op.lt]: date_range[1] } },
         ],
       },
       include: [
@@ -481,8 +481,8 @@ class Export_data_class {
       where: {
         [Op.and]: [
           { createdAt: { [Op.gte]: date_range[0] } },
-          { createdAt: { [Op.lte]: date_range[1] } },
-          { entries_used: { [Op.lte]: 0 } },
+          { createdAt: { [Op.lt]: date_range[1] } },
+          { entries_used: { [Op.lt]: 0 } },
         ],
       },
       include: [
@@ -514,7 +514,7 @@ class Export_data_class {
       where: {
         [Op.and]: [
           { createdAt: { [Op.gte]: date_range[0] } },
-          { createdAt: { [Op.lte]: date_range[1] } },
+          { createdAt: { [Op.lt]: date_range[1] } },
         ],
       },
       include: [
@@ -558,7 +558,7 @@ class Export_data_class {
       where: {
         [Op.and]: [
           { createdAt: { [Op.gte]: date_range[0] } },
-          { createdAt: { [Op.lte]: date_range[1] } },
+          { createdAt: { [Op.lt]: date_range[1] } },
           { status: 3 },
         ],
       },
@@ -594,7 +594,7 @@ class Export_data_class {
       where: {
         [Op.and]: [
           { createdAt: { [Op.gte]: date_range[0] } },
-          { createdAt: { [Op.lte]: date_range[1] } },
+          { createdAt: { [Op.lt]: date_range[1] } },
         ],
       },
       include: [
@@ -624,7 +624,7 @@ class Export_data_class {
     let toSend = [];
     for (let val of r_) {
       let v = val.toJSON();
-      console.log(v);
+
       let temp = { "Raffle Id": "", "Draw raffle ticket": "" };
 
       for (let pVal of v.prizeInfo) {

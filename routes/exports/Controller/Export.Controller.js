@@ -7,7 +7,7 @@ export const exportDataController = async (req, res) => {
     const dr_ = dr
       ? [
           new Date(moment(dr[0]).startOf("day").toISOString()),
-          new Date(moment(dr[1]).add(1, "day").endOf("day").toISOString()),
+          new Date(moment(dr[1]).add(2, "day").startOf("day").toISOString()),
         ]
       : [
           new Date(moment().startOf("year").toISOString()),
