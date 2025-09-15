@@ -41,8 +41,6 @@ export const downloadData = createAsyncThunk(
     } catch (err: unknown) {
       let m = getMessage(err);
       if (axios.isAxiosError(err)) {
-        const responseData = err.response?.data?.message;
-
         toast.update(toastId, {
           render: "Error Download!: " + m,
           type: "error",
@@ -50,7 +48,7 @@ export const downloadData = createAsyncThunk(
           autoClose: 2000,
         });
       } else if (err instanceof Error) {
-        let message = toast.update(toastId, {
+        toast.update(toastId, {
           render: "Error Download Complete!: " + m,
           type: "error",
           isLoading: false,
