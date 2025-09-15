@@ -31,15 +31,17 @@ export const LoginController = async (req, res) => {
     delete changeDetails["createdAt"];
     delete changeDetails["updatedAt"];
     delete changeDetails["deletedAt"];
+    delete changeDetails["myUserType"];
+    delete changeDetails["ticket_details"];
     changeDetails["pm-scratch-it-m"] = req.headers["pm-scratch-it-m"];
     changeDetails["platformversion"] = req.headers["platformversion"];
     changeDetails["platform"] = req.headers["platform"];
     changeDetails["login"] = new Date();
-    console.log("here1");
+
     let token = await res.jwtSign(changeDetails);
     let encryptToken = await encrpytPassword(token);
-    console.log("typeof res.setCookie:", typeof res.setCookie);
 
+    throw new Error("here");
     res
       .setCookie("cookie_pb_1271", encryptToken, {
         domain: "",
