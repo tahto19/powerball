@@ -47,6 +47,7 @@ export const LoginController = async (req, res) => {
       })
       .send({ result: "success", token: encryptToken });
   } catch (err) {
+    console.log(err);
     throw err;
   }
 };
