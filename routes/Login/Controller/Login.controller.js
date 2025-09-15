@@ -172,6 +172,8 @@ export const loginUsingMobileNumberController = async (req, res) => {
     delete changeDetails["createdAt"];
     delete changeDetails["updatedAt"];
     delete changeDetails["deletedAt"];
+    delete changeDetails["myUserType"];
+    delete changeDetails["ticket_details"];
     changeDetails["pm-scratch-it-m"] = req.headers["pm-scratch-it-m"];
     changeDetails["platformversion"] = req.headers["platformversion"];
     changeDetails["platform"] = req.headers["platform"];
