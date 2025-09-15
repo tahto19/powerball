@@ -33,6 +33,8 @@ import { userState } from "./TypesHere.ts";
 import { useAppDispatch } from "@/redux/hook.ts";
 import { outsideAddUser } from "@/redux/reducers/user/asnycCalls.ts";
 import NewDatePicker from "./NewDatePicker.tsx";
+
+const REQUIRED_PREFIX = "63";
 const AddUserC = () => {
   const dispatch = useAppDispatch();
   const {
@@ -99,6 +101,7 @@ const AddUserC = () => {
     else dispatch(editDetails(data));
   };
   const [showPassword, setShowPassword] = useState(false);
+  const [phone, setPhone] = useState("+63");
   const changeDate = (d: Date | null) => {
     console.log(d);
   };
@@ -293,6 +296,12 @@ const AddUserC = () => {
                   }}
                   // value={this.state.phone}
                   onChange={(phone) => {
+                    if (!phone.startsWith(REQUIRED_PREFIX)) {
+                      phone =
+                        REQUIRED_PREFIX +
+                        phone.replace(/^\+*/, "").slice(REQUIRED_PREFIX.length);
+                    }
+
                     setValue("mobileNumber", phone, {
                       shouldValidate: true,
                       shouldDirty: true,
