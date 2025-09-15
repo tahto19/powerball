@@ -11,6 +11,7 @@ import UserClass from "../../User/lib/User.class.js";
 
 export const LoginController = async (req, res) => {
   try {
+    console.log("called here");
     let a = await UserClass.FetchOneV2([
       {
         filter: encrpytPassword(req.body.email),
