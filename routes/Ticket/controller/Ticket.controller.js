@@ -127,6 +127,7 @@ export const raffleDrawV2Controller = async (req, res) => {
         });
       }
     }
+    console.log(firstClear);
     for (let val of firstClear) {
       let checkIfTicketIsHasSameUserId = userThatCantJoin.find(
         (v) => v === val.user
@@ -136,7 +137,7 @@ export const raffleDrawV2Controller = async (req, res) => {
         secondClear.push(val);
       }
     }
-    console.log(secondClear);
+
     if (!ticketsThatCanJoin.length) throw new Error("errorcode x876");
     let a = random(ticketsThatCanJoin);
     let getWinnerTicketDetails = secondClear.find((v) => v.ticket_code === a);
