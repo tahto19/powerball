@@ -1,3 +1,4 @@
+import AlphaCode from "../models/AlphaCode.js";
 import Users from "../models/Users.model.js";
 import utc from "../routes/UserType/lib/UserType.class.js";
 import { encrpytPassword } from "./util.js";
@@ -34,6 +35,12 @@ export const createSuperUser = async () => {
       console.log("updating usertype: " + getIfAdminExists.id);
       await utc.updateSuperUser(getIfAdminExists.id);
       console.log("done updating usertype");
+    }
+    console.log("check if free alpha code is already created");
+    let r = await AlphaCode.findOne({ where: { name: "FREE" } });
+    console.log(r);
+    if (!r) {
+      await AlphaCode.create({ name: "FREE", active: true, entries: 1 });
     }
   } catch (err) {
     throw err;
