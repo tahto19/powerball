@@ -110,6 +110,7 @@ export const raffleDrawV2Controller = async (req, res) => {
 
     if (!getRaffleSchedule) throw new Error("ErrorCODE X912");
     let getRaffleScheduletj = getRaffleSchedule.toJSON();
+    console.log(getRaffleScheduletj);
     let firstClear = [];
     let secondClear = [];
     let ticketsThatCanJoin = [];
