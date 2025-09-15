@@ -20,6 +20,7 @@ import AuditTrail from "../../../models/AuditTrail.js";
 class Export_data_class {
   constructor() {}
   async getData(type, date_range, filter) {
+    console.log(date_range);
     switch (type) {
       case 1:
         return await this.User_data(date_range);
@@ -118,7 +119,7 @@ class Export_data_class {
           isAdmin: true,
         }
       : { isAdmin: true };
-    console.log(where);
+
     let _r = await Users.findAll({
       where: where,
       attributes: [
@@ -594,7 +595,6 @@ class Export_data_class {
         [Op.and]: [
           { createdAt: { [Op.gte]: date_range[0] } },
           { createdAt: { [Op.lte]: date_range[1] } },
-          { status: "2" },
         ],
       },
       include: [
