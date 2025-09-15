@@ -33,6 +33,7 @@ import { userState } from "./TypesHere.ts";
 import { useAppDispatch } from "@/redux/hook.ts";
 import { outsideAddUser } from "@/redux/reducers/user/asnycCalls.ts";
 import NewDatePicker from "./NewDatePicker.tsx";
+import { toast } from "react-toastify";
 
 const REQUIRED_PREFIX = "63";
 const AddUserC = () => {
@@ -312,9 +313,16 @@ const AddUserC = () => {
                       /[+\s]/g,
                       ""
                     ).length;
-                    const totalLength = e.format.replace(/[+\s]/g, "").length;
 
+                    const totalLength = e.format.replace(/[+\s]/g, "").length;
+                    let getPhoneNumber = phone.target.value;
                     if (totalLength - 1 > mobileNumber || mobileNumber <= 2) {
+                      setError("mobileNumber", {
+                        type: "mobileNumberLength",
+                        message: "Mobile Number is incorrect",
+                      });
+                      return;
+                    } else if (getPhoneNumber.slice(0, 4) !== "+639") {
                       setError("mobileNumber", {
                         type: "mobileNumberLength",
                         message: "Mobile Number is incorrect",
@@ -322,6 +330,8 @@ const AddUserC = () => {
                     } else {
                       clearErrors("mobileNumber");
                     }
+
+                    // if(getPhoneNumber)
                   }}
                 />
                 {errors &&
