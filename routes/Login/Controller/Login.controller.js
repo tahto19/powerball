@@ -19,7 +19,7 @@ export const LoginController = async (req, res) => {
         field: "emailAddress",
       },
     ]);
-
+    console.log(a);
     if (a === null) throw new Error("ErrorCODE X999");
     let b = await a.validPassword(req.body.password);
     if (!b) throw new Error("ErrorCODE X999");
