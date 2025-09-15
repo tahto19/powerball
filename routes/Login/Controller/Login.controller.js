@@ -35,7 +35,7 @@ export const LoginController = async (req, res) => {
     changeDetails["platformversion"] = req.headers["platformversion"];
     changeDetails["platform"] = req.headers["platform"];
     changeDetails["login"] = new Date();
-    console.log("here");
+    console.log("here1");
     let token = await res.jwtSign(changeDetails);
     let encryptToken = await encrpytPassword(token);
     console.log("here");
