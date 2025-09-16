@@ -651,10 +651,8 @@ class Export_data_class {
     for (let val of r_) {
       let v = val.toJSON();
 
-      let temp = { "Raffle Id": "", "Draw raffle ticket": "" };
-      let winners = [];
-
       for (let pVal of v.prizeInfo) {
+        let temp = { "Raffle Id": "", "Draw raffle ticket": "" };
         const winning_ticket =
           pVal.wining_draw_detail?.ticket_history?.ticket_history_generate ||
           "Ticket not found";
@@ -670,8 +668,9 @@ class Export_data_class {
           })
           .join("\n");
 
+        console.log(pVal.Prize_List.type === "grand" ? winner : "none", winner);
         temp["Raffle Id"] = v.raffleDetails.details;
-        temp["Draw raffle ticket"] = ticketsWinner ? "\n" + ticketsWinner : "";
+        temp["Draw raffle ticket"] += ticketsWinner ? "\n" + ticketsWinner : "";
 
         temp["Minor winner"] =
           pVal.Prize_List.type === "minor"
@@ -696,8 +695,6 @@ class Export_data_class {
         temp["Draw Date"] = v.raffleDetails.draw_date;
         toSend.push(temp);
       }
-
-      // toSend.push(temp);
     }
 
     return await this.toExcel(toSend, "Raffle Draw");
