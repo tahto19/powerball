@@ -668,10 +668,10 @@ class Export_data_class {
             return vv.ticket_history?.ticket_history_generate;
           })
           .join("\n");
-        console.log(ticketsWinner);
+
         console.log(pVal.Prize_List.type === "grand" ? winner : "none", winner);
         temp["Raffle Id"] = v.raffleDetails.details;
-        temp["Draw raffle ticket"] += ticketsWinner ? ticketsWinner : "";
+        temp["Draw raffle ticket"] += ticketsWinner ? "\n" + ticketsWinner : "";
 
         temp["Minor winner"] =
           pVal.Prize_List.type === "minor"
