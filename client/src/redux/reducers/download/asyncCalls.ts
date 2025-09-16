@@ -43,14 +43,14 @@ export const downloadData = createAsyncThunk(
       let type: TypeOptions = m === "No Data" ? "info" : "error";
       if (axios.isAxiosError(err)) {
         toast.update(toastId, {
-          render: m === "No Data" ? "Error Download!: " : "" + m,
+          render: m !== "No Data" ? "Error Download!: " + m : "" + m,
           type: type,
           isLoading: false,
           autoClose: 2000,
         });
       } else if (err instanceof Error) {
         toast.update(toastId, {
-          render: m === "No Data" ? "Error Download Complete!: " : "" + m,
+          render: m === "No Data" ? "Error Download Complete!: " + m : "" + m,
           type: type,
           isLoading: false,
           autoClose: 2000,

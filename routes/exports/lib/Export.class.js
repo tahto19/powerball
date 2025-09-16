@@ -508,7 +508,7 @@ class Export_data_class {
         [Op.and]: [
           { createdAt: { [Op.gte]: date_range[0] } },
           { createdAt: { [Op.lt]: date_range[1] } },
-          { entries_used: { [Op.lt]: 0 } },
+          // { entries_used: { [Op.lt]: 0 } },
         ],
       },
       include: [
