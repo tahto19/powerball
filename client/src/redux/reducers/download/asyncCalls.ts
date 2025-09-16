@@ -3,7 +3,7 @@ import apiService from "@/services/apiService";
 import { exportDataState } from "@/types/allTypes";
 import { base64ToFile, delay, getMessage } from "@/utils/util";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { toast } from "react-toastify";
+import { toast, TypeOptions } from "react-toastify";
 import axios from "axios";
 import moment from "moment";
 
@@ -40,17 +40,18 @@ export const downloadData = createAsyncThunk(
       });
     } catch (err: unknown) {
       let m = getMessage(err);
+      let type: TypeOptions = m === "No Data" ? "info" : "error";
       if (axios.isAxiosError(err)) {
         toast.update(toastId, {
-          render: "Error Download!: " + m,
-          type: "error",
+          render: m === "No Data" ? "Error Download!: " : "" + m,
+          type: type,
           isLoading: false,
           autoClose: 2000,
         });
       } else if (err instanceof Error) {
         toast.update(toastId, {
-          render: "Error Download Complete!: " + m,
-          type: "error",
+          render: m === "No Data" ? "Error Download Complete!: " : "" + m,
+          type: type,
           isLoading: false,
           autoClose: 2000,
         });
