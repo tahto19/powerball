@@ -670,9 +670,8 @@ class Export_data_class {
           })
           .join("\n");
 
-        console.log(pVal.Prize_List.type === "grand" ? winner : "none", winner);
         temp["Raffle Id"] = v.raffleDetails.details;
-        temp["Draw raffle ticket"] += ticketsWinner ? "\n" + ticketsWinner : "";
+        temp["Draw raffle ticket"] = ticketsWinner ? "\n" + ticketsWinner : "";
 
         temp["Minor winner"] =
           pVal.Prize_List.type === "minor"
