@@ -81,7 +81,7 @@ class Export_data_class {
     let changeDetails = tickets.map((val) => {
       let v = { ...val.toJSON() };
       v["fullName"] = v?.User.fullname;
-      v["fullName"] = v?.User.fullname;
+
       v["mobile Number"] = v?.User.mobileNumber;
       delete v["User"];
 
