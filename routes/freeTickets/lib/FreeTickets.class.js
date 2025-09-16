@@ -35,7 +35,7 @@ class FreeTicket_class {
   }
   async findDate_range() {
     const targetDate = moment().toISOString();
-    console.log(targetDate);
+
     let a = await FreeTickets.findAll({
       where: {
         [Op.and]: [

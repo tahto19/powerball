@@ -9,6 +9,7 @@ import {
   postDataFreeTicket_,
 } from "@/redux/reducers/FreeTickets/asyncCalls";
 import Dialog_ from "./dialog/Dialog_";
+import { openDialog } from "@/redux/reducers/download/exportDataSlice";
 
 export default function FreeEntriesSetup() {
   const { list, count, getData, loading } = useAppSelector(
@@ -126,23 +127,33 @@ export default function FreeEntriesSetup() {
         >
           List of Free Tickets
         </Typography>
-
-        <Button
-          sx={{
-            float: "right",
-            marginRight: "5px",
-          }}
-          variant="contained"
-          onClick={() => {
-            setDialogOpen({
-              open: true,
-              data: null,
-              type: "Add",
-            });
-          }}
-        >
-          Add
-        </Button>
+        <Box>
+          <Button
+            sx={{
+              float: "right",
+              marginRight: "5px",
+            }}
+            variant="contained"
+            onClick={() =>
+              dispatch(openDialog({ title: "Free Tickets", type: 17 }))
+            }
+          >
+            Export
+          </Button>
+          <Button
+            sx={{ marginRight: "5px" }}
+            variant="contained"
+            onClick={() => {
+              setDialogOpen({
+                open: true,
+                data: null,
+                type: "Add",
+              });
+            }}
+          >
+            Add
+          </Button>
+        </Box>
       </Box>
       <Box
         sx={{

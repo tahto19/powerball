@@ -60,9 +60,35 @@ class Export_data_class {
         // return await this.get_raffleDraw(date_range);
         return await this.get_raffleDraw_new(date_range);
       }
+      case 17:
+        return await this.getFreeTickets(date_range);
     }
   }
+  async getFreeTickets(dr) {
+    let query = {
+      createdAt: { [Op.between]: [dr[0], dr[1]] },
+      alpha_code: "FREE",
+    };
+    let tickets = await TicketDetails.findAll({
+      where: query,
+      include: [
+        {
+          model: Users,
+        },
+      ],
+      attributes: ["createdAt", "entries", "entries_used"],
+    });
+    let changeDetails = tickets.map((val) => {
+      let v = { ...val.toJSON() };
+      v["fullName"] = v?.User.fullname;
+      v["fullName"] = v?.User.fullname;
+      v["mobile Number"] = v?.User.mobileNumber;
+      delete v["User"];
 
+      return v;
+    });
+    return await this.toExcel(changeDetails, "Free Tickets");
+  }
   async User_data(date_range) {
     let where = date_range
       ? { createdAt: { [Op.between]: [date_range[0], date_range[1]] } }
