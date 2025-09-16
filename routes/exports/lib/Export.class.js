@@ -652,6 +652,7 @@ class Export_data_class {
       let v = val.toJSON();
 
       let temp = { "Raffle Id": "", "Draw raffle ticket": "" };
+      let winners = [];
 
       for (let pVal of v.prizeInfo) {
         const winning_ticket =
@@ -694,9 +695,10 @@ class Export_data_class {
 
         temp["Date Created"] = v.raffleDetails.createdAt;
         temp["Draw Date"] = v.raffleDetails.draw_date;
+        toSend.push(temp);
       }
 
-      toSend.push(temp);
+      // toSend.push(temp);
     }
 
     return await this.toExcel(toSend, "Raffle Draw");
