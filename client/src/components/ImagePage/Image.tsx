@@ -112,6 +112,7 @@ const ImagePage = () => {
         const res = await apiService.getFile(query, token);
         const d = bodyDecrypt(res.data, token)
         if (d && d.success === 'success') {
+            d.data.list = d.data.list.filter(x => x.type !== "video")
             setImageList(d.data.list)
             setListCount(d.data.total)
         }

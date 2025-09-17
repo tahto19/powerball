@@ -26,7 +26,7 @@ const ImageDrawer = ({ open, onChoose, onClose }: ImageDrawerProps) => {
     const getImageList = async (page = 0) => {
         setFetching(true)
         const query: getDataV2 = {
-            offset: page, limit: pageSize, sort: [['id', 'DESC']], filter: [{ field: "category", filter: "", type: "not_empty_string" }], location: null
+            offset: page, limit: pageSize, sort: [['id', 'DESC']], filter: [{ field: 'type', filter: 'image', type: 'string' }, { field: 'category', filter: '', type: 'string_eq' }], location: null
         }
 
         const res = await apiService.getFile(query, token);
