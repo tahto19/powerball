@@ -140,6 +140,7 @@ export const loginUsingMobileNumberController = async (req, res) => {
     let mobile = req.headers["pm-scratch-it-m"];
     let ip_address =
       req.ip || req.headers["x-forwarded-for"] || req.connection?.remoteAddress;
+    console.log(req.headers);
     let dd_ = decryptData(data.ta_, req.headers.time);
     let dd = dd_.charAt(0) == "0" ? "63" + dd_.slice(1) : dd_;
     let otp = decryptData(data.tb_, req.headers.time);
