@@ -50,14 +50,10 @@ const PhoneNumberLogin = () => {
         if (rememberMe) {
           localStorage.setItem(
             "JqNw1q3HCK-90t4y", // email
-            localEncrypt(email)
-          );
-          localStorage.setItem(
-            "OM8Ovhw79G-90t4y", // password
-            localEncrypt(password)
+            localEncrypt(mobileNumber)
           );
         }
-        console.log('redirecting')
+        console.log("redirecting");
 
         window.parent.location.href = base_url + "cms/2nd-chance/";
       }
@@ -152,6 +148,7 @@ const PhoneNumberLogin = () => {
         autoClose: 3000,
       });
       let r_ = await apiService.postSentOtpForLogin(mobileNumber);
+
       await delay(1000);
       toast.update(tId, {
         render:
@@ -164,7 +161,7 @@ const PhoneNumberLogin = () => {
       if (r_.result === "success") {
         setSentOtp(true);
       }
-      console.log(r_);
+
       setLoadingBtn(false);
     } catch (err) {
       let message = getMessage(err);
@@ -192,6 +189,12 @@ const PhoneNumberLogin = () => {
       });
       await delay(1000);
       if (r_.result == "success") {
+        if (rememberMe) {
+          localStorage.setItem(
+            "JqNw1q3HCK-90t4y", // email
+            localEncrypt(mobileNumber)
+          );
+        }
         // Redirect to dashboard after login
         // navigate("https://18.138.76.86/?page_id=279");
         window.parent.location.href = base_url + "cms/2nd-chance/";
@@ -261,8 +264,14 @@ const PhoneNumberLogin = () => {
                     data-element_type="section"
                     data-settings='{"background_background":"classic","_ha_eqh_enable":false}'
                   >
-                    <div style={{ textAlign: "center" }} className="elementor-widget-container">
-                      <h1 style={{ color: "#2555A6" }} className="ha-gradient-heading">
+                    <div
+                      style={{ textAlign: "center" }}
+                      className="elementor-widget-container"
+                    >
+                      <h1
+                        style={{ color: "#2555A6" }}
+                        className="ha-gradient-heading"
+                      >
                         LOG IN YOUR ACCOUNT
                       </h1>{" "}
                     </div>
@@ -308,7 +317,7 @@ const PhoneNumberLogin = () => {
                                       id="mobileNumber"
                                       type="mobileNumber"
                                       name="mobileNumber"
-                                      placeholder="+6391 *** *** *"
+                                      placeholder="6391 *** *** * / 091 *** *** *"
                                       autoFocus
                                       required
                                       fullWidth
@@ -463,7 +472,11 @@ const PhoneNumberLogin = () => {
                                 <a
                                   onClick={() => handleSignUp()}
                                   className="elementor-button elementor-button-link elementor-size-sm"
-                                  style={{ backgroundColor: "red", padding: "12px 44px", borderRadius: "10px" }}
+                                  style={{
+                                    backgroundColor: "red",
+                                    padding: "12px 44px",
+                                    borderRadius: "10px",
+                                  }}
                                 >
                                   <span className="elementor-button-content-wrapper">
                                     <span className="elementor-button-text">

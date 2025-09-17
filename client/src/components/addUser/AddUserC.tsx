@@ -24,7 +24,12 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useDropzone } from "react-dropzone";
-import { useForm, SubmitHandler, SubmitErrorHandler } from "react-hook-form";
+import {
+  useForm,
+  SubmitHandler,
+  SubmitErrorHandler,
+  Controller,
+} from "react-hook-form";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import PhoneInput, { CountryData } from "react-phone-input-2";
 import moment from "moment";
@@ -55,6 +60,7 @@ const AddUserC = () => {
     setValue,
     setError,
     clearErrors,
+    control,
     formState: { errors },
   } = useForm<userState>({
     mode: "onChange", // Validates on input change
@@ -268,7 +274,7 @@ const AddUserC = () => {
                   )}
               </Grid> */}
               <Grid size={{ xs: 12, md: 6 }}>
-                <PhoneInput
+                {/* <PhoneInput
                   value={getValues("mobileNumber")}
                   country={"ph"}
                   onlyCountries={["ph"]}
@@ -295,12 +301,11 @@ const AddUserC = () => {
                         ? "70%"
                         : "100%",
                   }}
-                  // value={this.state.phone}
                   onChange={(phone) => {
                     if (!phone.startsWith(REQUIRED_PREFIX)) {
-                      phone =
-                        REQUIRED_PREFIX +
-                        phone.replace(/^\+*/, "").slice(REQUIRED_PREFIX.length);
+                      phone =''
+                        REQUIRED_PREFIX + phone.replace(, "").slice(REQUIRED_PREFIX.length);
+                       
                     }
 
                     setValue("mobileNumber", phone, {
@@ -323,7 +328,7 @@ const AddUserC = () => {
                         message: "Mobile Number is incorrect",
                       });
                       return;
-                    } else if (getPhoneNumber.slice(0, 5) !== "+63 9") {
+                    } else if (getPhoneNumber.sliceye(0, 5) !== "+63 9") {
                       console.log(getPhoneNumber, getPhoneNumber.slice(0, 4));
                       setError("mobileNumber", {
                         type: "mobileNumberLength",
@@ -332,9 +337,21 @@ const AddUserC = () => {
                     } else {
                       clearErrors("mobileNumber");
                     }
-
-                    // if(getPhoneNumber)
                   }}
+                /> */}
+
+                <TextField
+                  size="medium"
+                  {...register("mobileNumber", {
+                    required: true,
+                    pattern: {
+                      value: /^(639\d{9}|09\d{9})$/,
+                      message:
+                        "Invalid mobile number. Must start with 63 or 09.",
+                    },
+                  })}
+                  type="number"
+                  placeholder="6391******** / 09*********"
                 />
                 {errors &&
                   errors.mobileNumber &&

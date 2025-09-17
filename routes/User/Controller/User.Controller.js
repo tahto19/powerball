@@ -155,19 +155,23 @@ export const createUser = async (req, res) => {
       var _path = getPath("/uploads/ids/" + newFileName);
       var iUp = await uploadImage(file);
     }
+    const mobilePrefix = "63";
+    let mobileNumber_ =
+      mobilePrefix +
+      mobileNumber.value.replace(/^0/, "63").slice(mobilePrefix.length);
 
     let r = await uc.Insert({
       firstname: firstname.value,
       lastname: lastname.value,
       password: password?.value || "",
       emailAddress: emailAddress?.value || "",
-      mobileNumber: mobileNumber.value,
+      mobileNumber: mobileNumber_,
       birthdate: birthdate.value,
       idPath: file ? iUp.filename : null,
     });
     // handle adding  free tickets
     // check if theres a free ticket
-    console.log(r);
+
     let findFreeTickets = await fc.findDate_range();
     let getToday = moment().format("MMDDYYYYhhmmss");
     for (let val of findFreeTickets) {

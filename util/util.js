@@ -222,10 +222,6 @@ If you did not request to log in to the Scratch It website, please ignore this m
       },
       function (err, message) {
         if (err) throw err;
-        console.log(
-          "successfully send otp in a mobile number : " + data.number
-        );
-        console.log(`message :` + message);
       }
     );
   } catch (err) {
