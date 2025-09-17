@@ -32,6 +32,7 @@ const ImageDrawer = ({ open, onChoose, onClose }: ImageDrawerProps) => {
         const res = await apiService.getFile(query, token);
         const d = bodyDecrypt(res.data, token)
         console.log(d)
+
         if (d && d.success === 'success') {
             setImageList(d.data.list)
 
