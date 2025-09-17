@@ -53,6 +53,8 @@ const headers: GridColDef[] = [
 ];
 const TicketScanner = () => {
   const dispatch = useAppDispatch();
+  const { myPermission } = useAppSelector((state: RootState) => state.userType);
+
   const { getData } = useAppSelector((state: RootState) => state.ticket);
   const { loading, filter, offset, limit, sort, list, count } = getData;
   const [pagination, setPagination] = useState<paginationType>({
@@ -187,17 +189,19 @@ const TicketScanner = () => {
         >
           Scan
         </Button> */}
-        <Button
-          sx={{
-            float: "right",
-          }}
-          variant="contained"
-          onClick={() => {
-            setOpenDialog(true);
-          }}
-        >
-          Exports
-        </Button>
+        {myPermission.scan.export && (
+          <Button
+            sx={{
+              float: "right",
+            }}
+            variant="contained"
+            onClick={() => {
+              setOpenDialog(true);
+            }}
+          >
+            Exports
+          </Button>
+        )}
       </Grid2>
       <Grid2 size={12}>
         <CustomizedDataGridBasic

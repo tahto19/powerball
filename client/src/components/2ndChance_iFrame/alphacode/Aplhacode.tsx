@@ -25,6 +25,8 @@ function Aplhacode() {
   const { getData, list, mainLoading, count } = useAppSelector(
     (s) => s.alphaCode
   );
+  const { myPermission } = useAppSelector((state: RootState) => state.userType);
+
   const { loading, token } = useAppSelector((state) => state.token);
   const { limit, offset, sort, filter } = getData;
 
@@ -91,6 +93,8 @@ function Aplhacode() {
     setDialogType("Edit");
   };
   const handleActive = (e) => {
+    if (myPermission.alphacode.edit)
+      throw new Error("You are not allow to edit");
     let toSend = { ...e, ...{ active: !e.active, type: "active" } };
     console.log(toSend);
     dispatch(putAlphaCode(toSend));
@@ -114,30 +118,34 @@ function Aplhacode() {
         </Typography>
       </Grid2>{" "}
       <Grid2 size={{ xs: 6, sm: 6, lg: 6 }}>
-        <Button
-          sx={{
-            float: "right",
-          }}
-          variant="contained"
-          onClick={() => {
-            setOpen(true);
-            setDialogType("Add");
-          }}
-        >
-          Add Alpha Code
-        </Button>
-        <Button
-          sx={{
-            float: "right",
-            marginRight: "5px",
-          }}
-          variant="contained"
-          onClick={() =>
-            dispatch(openDialog({ title: "Alpha Code List", type: 10 }))
-          }
-        >
-          Export
-        </Button>
+        {myPermission.alphacode.add && (
+          <Button
+            sx={{
+              float: "right",
+            }}
+            variant="contained"
+            onClick={() => {
+              setOpen(true);
+              setDialogType("Add");
+            }}
+          >
+            Add Alpha Code
+          </Button>
+        )}
+        {myPermission.alphacode.export && (
+          <Button
+            sx={{
+              float: "right",
+              marginRight: "5px",
+            }}
+            variant="contained"
+            onClick={() =>
+              dispatch(openDialog({ title: "Alpha Code List", type: 10 }))
+            }
+          >
+            Export
+          </Button>
+        )}
       </Grid2>
       <Grid2 size={12}>
         <CustomizedDataGrid

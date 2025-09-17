@@ -15,6 +15,8 @@ import apiService from "@/services/apiService";
 import { openDialog } from "@/redux/reducers/download/exportDataSlice";
 import CustomizedDataGrid from "@/components/CustomizedDataGrid";
 const WinnerDetails = ({ url }: { url: string | undefined }) => {
+  const { myPermission } = useAppSelector((state: RootState) => state.userType);
+
   const { loading, token } = useAppSelector((state) => state.token);
   const { _loading, filter, offset, limit, sort, list, count } = useAppSelector(
     (state) => state.winner.winnerList
@@ -50,6 +52,7 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
   const [imageUploaded, setImageUploaded] = useState([]);
   const handleRowClick = async (e, type) => {
     try {
+      if (!myPermission.winners.edit) throw new Error("your not Allow to Edit");
       setImageLoading(true);
 
       const getFile = await apiService.getFile(
@@ -211,7 +214,7 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
           >
             List of Winners
           </Typography>
-          {url && (
+          {url && myPermission.winners.export && (
             <Button
               sx={{
                 float: "right",

@@ -13,11 +13,13 @@ import { GridColDef } from "@mui/x-data-grid";
 import MyDialog from "./MyDialog";
 import { DataProps } from "@/types/allTypes";
 import { openDialog } from "@/redux/reducers/download/exportDataSlice";
+import { toast } from "react-toastify";
 const Index = () => {
   const dispatch = useAppDispatch();
   const { loading, list, offset, limit, sort, count } = useAppSelector(
     (state: RootState) => state.admin
   );
+  const { myPermission } = useAppSelector((state: RootState) => state.userType);
 
   const [pagination, setPagination] = useState({ page: 0, pageSize: 10 });
   const [open, setOpen] = useState(false);
@@ -78,6 +80,10 @@ const Index = () => {
     // const res = await apiService.getPrizeList(query);
   };
   const handleEditAction = (row: DataProps) => {
+    if (!myPermission.administrator.edit) {
+      toast.info("You are not allowed to edit");
+      return;
+    }
     setDialogType("Edit");
     setData(row);
     setOpen(true);
@@ -135,30 +141,34 @@ const Index = () => {
         </Typography>
       </Grid2>
       <Grid2 size={{ xs: 6, sm: 6, lg: 6 }}>
-        <Button
-          sx={{
-            float: "right",
-          }}
-          variant="contained"
-          onClick={() => {
-            setOpen(true);
-            setDialogType("Add");
-          }}
-        >
-          Add Admin
-        </Button>
-        <Button
-          sx={{
-            float: "right",
-            marginRight: "5px",
-          }}
-          variant="contained"
-          onClick={() =>
-            dispatch(openDialog({ title: "Administrator", type: 3 }))
-          }
-        >
-          Export
-        </Button>
+        {myPermission.administrator.add && (
+          <Button
+            sx={{
+              float: "right",
+            }}
+            variant="contained"
+            onClick={() => {
+              setOpen(true);
+              setDialogType("Add");
+            }}
+          >
+            Add Admin
+          </Button>
+        )}
+        {myPermission.administrator.export && (
+          <Button
+            sx={{
+              float: "right",
+              marginRight: "5px",
+            }}
+            variant="contained"
+            onClick={() =>
+              dispatch(openDialog({ title: "Administrator", type: 3 }))
+            }
+          >
+            Export
+          </Button>
+        )}
       </Grid2>
       <Grid2 size={12}>
         <CustomizedDataGrid

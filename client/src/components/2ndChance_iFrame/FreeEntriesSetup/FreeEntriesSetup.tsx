@@ -1,3 +1,4 @@
+//@ts-nocheck
 import CustomizedDataGrid from "@/components/CustomizedDataGrid";
 import { Box, Button, Typography } from "@mui/material";
 import { headers } from "./headers";
@@ -10,11 +11,14 @@ import {
 } from "@/redux/reducers/FreeTickets/asyncCalls";
 import Dialog_ from "./dialog/Dialog_";
 import { openDialog } from "@/redux/reducers/download/exportDataSlice";
+import { RootState } from "@/redux/store";
 
 export default function FreeEntriesSetup() {
   const { list, count, getData, loading } = useAppSelector(
-    (state) => state.freeTickets
+    (state: RootState) => state.freeTickets
   );
+  const { myPermission } = useAppSelector((state) => state.userType);
+
   const { offset, limit } = getData;
   const [pagination, setPagination] = useState<paginationType>({
     page: 0,
@@ -128,31 +132,35 @@ export default function FreeEntriesSetup() {
           List of Free Tickets
         </Typography>
         <Box>
-          <Button
-            sx={{
-              float: "right",
-              marginRight: "5px",
-            }}
-            variant="contained"
-            onClick={() =>
-              dispatch(openDialog({ title: "Free Tickets", type: 17 }))
-            }
-          >
-            Export
-          </Button>
-          <Button
-            sx={{ marginRight: "5px" }}
-            variant="contained"
-            onClick={() => {
-              setDialogOpen({
-                open: true,
-                data: null,
-                type: "Add",
-              });
-            }}
-          >
-            Add
-          </Button>
+          {myPermission?.freeTicket?.export && (
+            <Button
+              sx={{
+                float: "right",
+                marginRight: "5px",
+              }}
+              variant="contained"
+              onClick={() =>
+                dispatch(openDialog({ title: "Free Tickets", type: 17 }))
+              }
+            >
+              Export
+            </Button>
+          )}
+          {myPermission?.freeTicket?.add && (
+            <Button
+              sx={{ marginRight: "5px" }}
+              variant="contained"
+              onClick={() => {
+                setDialogOpen({
+                  open: true,
+                  data: null,
+                  type: "Add",
+                });
+              }}
+            >
+              Add
+            </Button>
+          )}
         </Box>
       </Box>
       <Box

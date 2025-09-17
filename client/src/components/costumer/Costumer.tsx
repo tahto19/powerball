@@ -23,6 +23,7 @@ const Costumer = () => {
   const { loading, list, offset, limit, sort, count } = useAppSelector(
     (state: RootState) => state.costumer
   );
+  const { myPermission } = useAppSelector((state: RootState) => state.userType);
 
   const [pagination, setPagination] = useState({ page: 0, pageSize: 10 });
   const [open, setOpen] = useState(false);
@@ -190,12 +191,14 @@ const Costumer = () => {
         sx={{ display: "flex", justifyContent: "end" }}
         size={{ xs: 6, sm: 6, lg: 6 }}
       >
-        <Button
-          onClick={() => dispatch(openDialog({ title: "Customer", type: 2 }))}
-          variant="contained"
-        >
-          Export
-        </Button>
+        {myPermission.customer.export && (
+          <Button
+            onClick={() => dispatch(openDialog({ title: "Customer", type: 2 }))}
+            variant="contained"
+          >
+            Export
+          </Button>
+        )}
       </Grid2>
       <Grid2 size={12}>
         <CustomizedDataGrid
