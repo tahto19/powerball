@@ -143,7 +143,7 @@ export const loginUsingMobileNumberController = async (req, res) => {
     let dd_ = decryptData(data.ta_, req.headers.time);
     let dd = dd_.charAt(0) == "0" ? "63" + dd_.slice(1) : dd_;
     let otp = decryptData(data.tb_, req.headers.time);
-
+    console.log(dd, otp);
     let r = await OTPClass.FetchOne([
       { filter: mobile, type: "string", field: "mobile" },
       { filter: ip_address, type: "string", field: "ip_address" },
