@@ -101,38 +101,44 @@ const ImageDrawer = ({ open, onChoose, onClose }: ImageDrawerProps) => {
                                                 }}> No Data Found</Typography>
                                             </ListItem>
                                         ) :
-                                            list.map((item, index) => (
-                                                <ListItem key={index} sx={{
-                                                    borderBottom: '1px solid #ccc'
-                                                }} disablePadding >
-                                                    <ListItemButton onDoubleClick={() => handleRowClick(item)} sx={{ display: "flex", alignItems: "flex-start", gap: "20px !important", opacity: "1 !important" }}>
-                                                        <div style={{
-                                                            width: "80px",
-                                                            height: "80px",
-                                                            display: "flex",
-                                                            justifyContent: "center",
-                                                            alignItems: "center",
-                                                            overflow: "hidden",
-                                                        }}>
-                                                            <CardMedia
-                                                                component="img"
-                                                                image={apiEndpoint + item.id}
-                                                                alt="Lazy-loaded image"
-                                                                loading="lazy"  // Native lazy loading for images
-                                                            />
-                                                        </div>
-                                                        <Box sx={{ width: "100%", }}>
-                                                            <Typography variant="subtitle2" sx={{
-                                                                padding: "15px 0",
-                                                                width: "100%",
-                                                                whiteSpace: "nowrap",
-                                                                textOverflow: 'ellipsis',
-                                                                overflow: 'hidden'
-                                                            }}> {item.name}</Typography>
-                                                        </Box>
-                                                    </ListItemButton>
-                                                </ListItem>
-                                            ))}
+                                            list.map((item, index) =>
+
+                                            (item.category === "" && item.type === "image" ?
+                                                (
+                                                    <ListItem key={index} sx={{
+                                                        borderBottom: '1px solid #ccc'
+                                                    }} disablePadding >
+                                                        <ListItemButton onDoubleClick={() => handleRowClick(item)} sx={{ display: "flex", alignItems: "flex-start", gap: "20px !important", opacity: "1 !important" }}>
+                                                            <div style={{
+                                                                width: "80px",
+                                                                height: "80px",
+                                                                display: "flex",
+                                                                justifyContent: "center",
+                                                                alignItems: "center",
+                                                                overflow: "hidden",
+                                                            }}>
+                                                                <CardMedia
+                                                                    component="img"
+                                                                    image={apiEndpoint + item.id}
+                                                                    alt="Lazy-loaded image"
+                                                                    loading="lazy"  // Native lazy loading for images
+                                                                />
+                                                            </div>
+                                                            <Box sx={{ width: "100%", }}>
+                                                                <Typography variant="subtitle2" sx={{
+                                                                    padding: "15px 0",
+                                                                    width: "100%",
+                                                                    whiteSpace: "nowrap",
+                                                                    textOverflow: 'ellipsis',
+                                                                    overflow: 'hidden'
+                                                                }}> {item.name}</Typography>
+                                                            </Box>
+                                                        </ListItemButton>
+                                                    </ListItem>
+                                                )
+                                                : null)
+
+                                            )}
                             </List>
                             <Stack sx={{
                                 padding: '15px 0',

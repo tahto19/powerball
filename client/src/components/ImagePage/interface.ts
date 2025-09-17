@@ -19,6 +19,8 @@ export interface ImageState {
       description: string;
       file_location: string;
       status: boolean;
+      type: string;
+      category: string;
 }
 
 export interface ImageState2 {
@@ -36,6 +38,8 @@ export const initialImageData: ImageState = {
       description: "",
       file_location: "",
       status: true,
+      type: "",
+      category: ""
 }
 
 export const initialImageData2: ImageState2 = {
