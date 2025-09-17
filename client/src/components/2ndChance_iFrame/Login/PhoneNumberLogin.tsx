@@ -328,7 +328,7 @@ const PhoneNumberLogin = () => {
                                       }
                                     />
                                   </div>
-                                  {!sentOtp && (
+                                  {sentOtp && (
                                     <div className="elementor-field-type-text elementor-field-group elementor-column elementor-col-100 elementor-field-required">
                                       <label
                                         htmlFor="password-938a465"
