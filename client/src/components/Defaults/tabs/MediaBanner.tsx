@@ -129,7 +129,7 @@ const MediaBanner = () => {
                         <CardMedia
                             key={date}
                             component="video"
-                            sx={{ width: "fit-content", height: "181px", border: "3px solid #000", borderRadius: "10px", marginTop: "20px" }}
+                            sx={{ maxWidth: "100%", width: "fit-content", height: "181px", border: "3px solid #000", borderRadius: "10px", marginTop: "20px" }}
                             src={"/media/videos/" + formData.file_location + "?t=" + date}
                             controls
                         />
