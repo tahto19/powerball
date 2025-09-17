@@ -337,6 +337,15 @@ const PhoneNumberLogin = () => {
                                         Password
                                       </label>
                                       <MuiOtpInput
+                                        TextFieldsProps={{
+                                          inputProps: {
+                                            inputMode: "numeric",
+                                            pattern: "[0-9]*",
+                                          },
+                                          variant: "outlined",
+                                          size: "small",
+                                          sx: { width: 40, mx: 0.5 }, // custom styling
+                                        }}
                                         value={otp}
                                         onChange={(e) => {
                                           setOTP(e);
