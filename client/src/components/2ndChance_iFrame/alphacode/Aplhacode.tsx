@@ -88,13 +88,19 @@ function Aplhacode() {
   };
 
   const handleEditAction = (e) => {
+    if (!myPermission.alphacode.edit) {
+      toast.info("youre not allowed to Edit");
+      return;
+    }
     setToEdit({ id: e.id, name: e.name, entries: e.entries });
     setOpen(true);
     setDialogType("Edit");
   };
   const handleActive = (e) => {
-    if (myPermission.alphacode.edit)
-      throw new Error("You are not allow to edit");
+    if (!myPermission.alphacode.edit) {
+      toast.info("youre not allowed to Edit");
+      return;
+    }
     let toSend = { ...e, ...{ active: !e.active, type: "active" } };
     console.log(toSend);
     dispatch(putAlphaCode(toSend));
