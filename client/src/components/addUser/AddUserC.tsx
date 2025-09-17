@@ -317,12 +317,14 @@ const AddUserC = () => {
                     const totalLength = e.format.replace(/[+\s]/g, "").length;
                     let getPhoneNumber = phone.target.value;
                     if (totalLength - 1 > mobileNumber || mobileNumber <= 2) {
+                      console.log("here");
                       setError("mobileNumber", {
                         type: "mobileNumberLength",
                         message: "Mobile Number is incorrect",
                       });
                       return;
-                    } else if (getPhoneNumber.slice(0, 4) !== "+639") {
+                    } else if (getPhoneNumber.slice(0, 5) !== "+63 9") {
+                      console.log(getPhoneNumber, getPhoneNumber.slice(0, 4));
                       setError("mobileNumber", {
                         type: "mobileNumberLength",
                         message: "Mobile Number is incorrect",
