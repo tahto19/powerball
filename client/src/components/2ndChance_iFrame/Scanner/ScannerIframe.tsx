@@ -25,15 +25,16 @@ import Scanner from "./Scanner";
 
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const endpoint = base_url + "member-area/";
-const ScannerIframe = () => {
+const ScannerIframe = ({ tester }: { tester?: boolean }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { ticketSubmit } = useAppSelector((state: RootState) => state.ticket);
   const [scanned, setScanned] = useState<string | null>();
   const { loading, token } = useAppSelector((state) => state.token);
   const handleScan = (e: string) => {
-    setScanned(e);
-    if (e) dispatch(addTicket(e));
+    // setScanned(e);
+    console.log(e);
+    // if (e) dispatch(addTicket(e)); uncomment this
   };
   const handleBackTo = () => {
     window.history.back();
@@ -47,13 +48,15 @@ const ScannerIframe = () => {
     //   window.history.back();
     // }
   };
+  const [test, setTest] = useState<Boolean | null>(null);
   useEffect(() => {
     if (!ticketSubmit) setScanned(null);
   }, [ticketSubmit]);
   useEffect(() => {
+    setTest(() => !!tester);
     if (!loading) {
       if (token === null) {
-        window.parent.location.href = endpoint;
+        // window.parent.location.href = endpoint;
         // navigate("/member-area");
       }
     }
@@ -100,10 +103,11 @@ const ScannerIframe = () => {
           },
         }}
       >
-        {scanned ? (
+        {scanned && test === null ? (
           <CircularProgress size="5rem" />
         ) : (
           <Scanner
+            test={test}
             onScanSuccess={(result: any) => {
               if (result) handleScan(result?.decodedText);
             }}

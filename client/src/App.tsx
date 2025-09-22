@@ -241,6 +241,14 @@ function AppRoutes() {
             </AppTheme>
           }
         />
+        {/* <Route
+          path="/sign-in"
+          element={
+            <AppTheme>
+              <ScannerIframe tester={true} />
+            </AppTheme>
+          }
+        /> */}
         <Route
           path="/"
           element={
@@ -299,6 +307,10 @@ function AppRoutes() {
       />
       <Route
         path="/scanner"
+        element={<ScannerIframe />}
+      />
+      <Route
+        path="/test-scanner"
         element={<ScannerIframe />}
       />
       <Route
