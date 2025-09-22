@@ -311,7 +311,7 @@ function AppRoutes() {
       />
       <Route
         path="/test-scanner"
-        element={<ScannerIframe />}
+        element={<ScannerIframe tester={true} />}
       />
       <Route
         path="/iframe/2nd-chance/login"
