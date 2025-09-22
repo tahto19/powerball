@@ -32,9 +32,9 @@ const ScannerIframe = ({ tester }: { tester?: boolean }) => {
   const [scanned, setScanned] = useState<string | null>();
   const { loading, token } = useAppSelector((state) => state.token);
   const handleScan = (e: string) => {
-    // setScanned(e);
-    console.log(e);
-    // if (e) dispatch(addTicket(e)); uncomment this
+    setScanned(e);
+
+    if (e) dispatch(addTicket(e)); //uncomment this
   };
   const handleBackTo = () => {
     window.history.back();
@@ -56,7 +56,7 @@ const ScannerIframe = ({ tester }: { tester?: boolean }) => {
     setTest(() => !!tester);
     if (!loading) {
       if (token === null) {
-        // window.parent.location.href = endpoint;
+        window.parent.location.href = endpoint;
         // navigate("/member-area");
       }
     }
