@@ -12,6 +12,7 @@ import { MediaState, mediaInitialData } from "./interface"
 import apiService from "@/services/apiService";
 import { useAppSelector, useAppDispatch } from "@/redux/hook";
 import { bodyDecrypt } from "@/utils/util";
+import { toast } from "react-toastify";
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -30,6 +31,8 @@ const apiEndpoint = base_url + "api/file/serve/image/"
 
 const MediaBanner = () => {
     const dispatch = useAppDispatch();
+    const { myPermission } = useAppSelector((state: RootState) => state.userType);
+
     const { token } = useAppSelector((state) => state.token);
     const [formData, setFormData] = useState<MediaState>(mediaInitialData);
     const [isImage, setIsImage] = useState(false)
@@ -37,6 +40,11 @@ const MediaBanner = () => {
     const [date, setDate] = useState(Date.now())
     const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
+
+        if (!myPermission.second_chance_site_defaults.brows) {
+            toast.info("You are not allowed to Add");
+            return;
+        }
         console.log(event.target.files)
         const selectedFile = event.target.files?.[0];
         if (!selectedFile) return;

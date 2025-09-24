@@ -95,8 +95,7 @@ export const serveImageController = async (req, res) => {
 
     // Check if file exists
     if (!fs.existsSync(_path)) {
-      res.code(404).send("Image not found");
-      return;
+      return res.code(404).send("Image not found");
     }
 
     try {
@@ -105,6 +104,7 @@ export const serveImageController = async (req, res) => {
       res.header("Content-Length", buffer.length);
       res.raw.writeHead(200); // needed to finalize headers for raw response
       res.raw.end(buffer); // send buffer manually
+      // return res.send(buffer); // ✅ Fastify handles headers + response
     } catch (err) {
       // console.error("Error reading file:", err);
       res.code(500).send("Error reading image");

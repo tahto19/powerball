@@ -10,6 +10,7 @@ import MyDialog from "./Dialog";
 import { getDataV2 } from "@/types/allTypes";
 import CustomizedDataGrid from "../CustomizedDataGrid.tsx";
 import { Card, CardMedia } from '@mui/material';
+import { toast } from "react-toastify";
 
 import { ImageState } from "./interface.ts"
 const base_url = import.meta.env.VITE_API_BASE_URL;
@@ -60,6 +61,7 @@ const ImagePage = () => {
     const [dialogType, setDialogType] = useState("Add")
     const [dataRow, setDataRow] = useState(initialImageData);
     const [list, setImageList] = useState<[]>([]);
+    const { myPermission } = useAppSelector((state: RootState) => state.userType);
 
     const [refreshKey, setRefreshKey] = useState(0);
     // Call this function when data updates
@@ -71,6 +73,10 @@ const ImagePage = () => {
     }
 
     const handleOpenDialog = () => {
+        if (!myPermission.images.add) {
+            toast.info("You're not allowed to Add");
+            return;
+        }
         setDialogType("Add");
         setDataRow(initialImageData)
         setOpen(true)
@@ -120,6 +126,10 @@ const ImagePage = () => {
 
 
     const handleEditAction = (row: ImageState) => {
+        if (!myPermission.images.edit) {
+            toast.info("You're not allowed to Edit");
+            return;
+        }
         setDialogType("Edit");
         setDataRow({ ...row })
         setOpen(true)
@@ -174,7 +184,8 @@ const ImagePage = () => {
                         onTableChange={handleTableChange}
                         onEditAction={handleEditAction}
                         onViewAction={handleViewAction}
-                        onDeleteAction={handleDeleteAction} />
+                    // onDeleteAction={handleDeleteAction} 
+                    />
                 </Grid2>
             </Grid2>
             <MyDialog open={open} data={dataRow} dialogType={dialogType} onClose={handleOnClose} onSubmit={refreshTable} />

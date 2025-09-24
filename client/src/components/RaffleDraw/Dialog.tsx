@@ -28,6 +28,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import moment from "moment";
 import PrizeListDialog from "./PrizeTypeDialog.tsx";
 import Participants from "./ParticipantsTable.tsx";
+import { toast } from "react-toastify";
 
 import {
   initialRaffleData,
@@ -100,6 +101,7 @@ function CustomTabPanel(props: TabPanelProps) {
 
 const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
   const dispatch = useAppDispatch();
+  const { myPermission } = useAppSelector((state: RootState) => state.userType);
 
   const [isOpen, setOpen] = useState(open);
   const [openPTDialog, setOpenPTDialog] = useState(false);
@@ -164,6 +166,11 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
     }
   };
   const handleDraw2 = async () => {
+    if (!myPermission.raffle_draw.draw) {
+      toast.info("You're not allowed to Draw");
+      return;
+    }
+
     try {
       setAllowDraw(false);
       const raffle_id = data.raffleSchedule[0].id;
@@ -197,6 +204,10 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
     }
   };
   const handleDraw = async () => {
+    if (!myPermission.raffle_draw.draw) {
+      toast.info("You're not allowed to Draw");
+      return;
+    }
     try {
       setAllowDraw(false);
       const raffle_id = data.raffleSchedule[0].id;

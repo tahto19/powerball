@@ -16,6 +16,7 @@ import { useAppDispatch } from "@/redux/hook";
 import { getData } from "@/types/allTypes"
 import { capitalizeFirstLetter } from "@/utils/util.ts"
 import { openDialog } from "@/redux/reducers/download/exportDataSlice";
+import { toast } from "react-toastify";
 
 //Temporary data
 const sampleHeaders = [
@@ -29,6 +30,7 @@ const samplePagination = { page: 0, pageSize: 10 }
 
 const PrizeList = () => {
     const dispatch = useAppDispatch();
+    const { myPermission } = useAppSelector((state: RootState) => state.userType);
 
     const { token } = useAppSelector((state) => state.token);
     const [dialogType, setDialogType] = React.useState("Add")
@@ -85,16 +87,28 @@ const PrizeList = () => {
     }
 
     const handleExport = () => {
+        if (!myPermission.prize_list.export) {
+            toast.info("You're not allowed to Export");
+            return;
+        }
         dispatch(openDialog({ title: 'Export Prize List', type: 4, filter: [] }))
     }
 
     const handleOpenDialog = () => {
+        if (!myPermission.prize_list.add) {
+            toast.info("You're not allowed to Add");
+            return;
+        }
         setDialogType("Add");
         setDataRow(initialData)
         setOpen(true)
     }
 
     const handleEditAction = (row: PrizeState) => {
+        if (!myPermission.prize_list.edit) {
+            toast.info("You're not allowed to Edit");
+            return;
+        }
         setDialogType("Edit");
         setDataRow(row)
         setOpen(true)
@@ -158,7 +172,8 @@ const PrizeList = () => {
                         onTableChange={handleTableChange}
                         onEditAction={handleEditAction}
                         onViewAction={handleViewAction}
-                        onDeleteAction={handleDeleteAction} />
+                    // onDeleteAction={handleDeleteAction} 
+                    />
                 </Grid>
             </Grid>
             <MyDialog open={open} dialogType={dialogType} data={data_row} onClose={handleOnClose} onSubmit={refreshTable} />
