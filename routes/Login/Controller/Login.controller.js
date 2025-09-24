@@ -47,6 +47,7 @@ export const LoginController = async (req, res) => {
         path: "/",
         secure: true,
         httpOnly: true,
+        maxAge: 180 * 24 * 60 * 60 * 1000,
       })
       .send({ result: "success", token: encryptToken });
   } catch (err) {
@@ -197,6 +198,7 @@ export const loginUsingMobileNumberController = async (req, res) => {
         path: "/",
         secure: true,
         httpOnly: true,
+        maxAge: 180 * 24 * 60 * 60 * 1000,
       })
       .send({ result: "success", token: encryptToken });
   } catch (err) {
