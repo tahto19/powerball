@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path"; // Ensure this is imported correctly
-import mkcert from "vite-plugin-mkcert";
+// import mkcert from "vite-plugin-mkcert";
 // https://vite.dev/config/
 export default defineConfig({
   base: process.env.NODE_ENV == "production" ? "/cms/" : "/",
