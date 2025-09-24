@@ -14,6 +14,7 @@ import CustomizedDataGrid from "../CustomizedDataGrid.tsx";
 import moment from "moment";
 import { showToaster } from "@/redux/reducers/global/globalSlice"
 import { openDialog } from "@/redux/reducers/download/exportDataSlice";
+import { toast } from "react-toastify";
 
 
 const renderStatus = (status: 'Ended' | 'Active') => {
@@ -78,6 +79,7 @@ const initialPrizeListData: PrizeListAll = {
 }
 const GameMaintenace = () => {
     const dispatch = useAppDispatch();
+    const { myPermission } = useAppSelector((state: RootState) => state.userType);
 
     const { token } = useAppSelector((state) => state.token);
     const [dialogType, setDialogType] = useState("Add")
@@ -133,17 +135,30 @@ const GameMaintenace = () => {
     }
 
     const handleExport = () => {
+        if (!myPermission.game_maintenance.export) {
+            toast.info("You're not allowed to Export");
+            return;
+        }
         dispatch(openDialog({ title: 'Game Maintenance Export', type: 9, filter: [] }))
 
     }
 
     const handleOpenDialog = () => {
+        if (!myPermission.game_maintenance.add) {
+            toast.info("You're not allowed to Add");
+            return;
+        }
         setDialogType("Add");
         setDataRow(initialRaffleData)
         setOpen(true)
     }
 
     const handleEditAction = (row: RaffleState) => {
+        if (!myPermission.game_maintenance.edit) {
+            toast.info("You're not allowed to Edit");
+            return;
+        }
+
         if (row && moment().isAfter(row.end_date)) {
             dispatch(showToaster({
                 message: "Raffle already ended.",
@@ -232,7 +247,8 @@ const GameMaintenace = () => {
                         onTableChange={handleTableChange}
                         onEditAction={handleEditAction}
                         onViewAction={handleViewAction}
-                        onDeleteAction={handleDeleteAction} />
+                    // onDeleteAction={handleDeleteAction} 
+                    />
                 </Grid2>
             </Grid2>
             <MyDialog open={open} prizeList={prizeList} dialogType={dialogType} data={dataRow} onClose={handleOnClose} onSubmit={refreshTable} />

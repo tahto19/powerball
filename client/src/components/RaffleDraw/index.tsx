@@ -21,6 +21,7 @@ import {
 import MyDialog from "./Dialog.tsx";
 import CustomizedDataGrid from "../CustomizedDataGrid.tsx";
 import { openDialog } from "@/redux/reducers/download/exportDataSlice.ts";
+import { toast } from "react-toastify";
 
 const endpoint = "http://localhost:5128/api/file/serve/image/";
 
@@ -49,6 +50,8 @@ const initialPaginationData = { page: 0, pageSize: 10 };
 
 const RaffleDraw = () => {
   const dispatch = useAppDispatch();
+  const { myPermission } = useAppSelector((state: RootState) => state.userType);
+
   const [list, setRaffleList] = useState<[]>([]);
   const [data, setData] = useState(initialRaffleData);
   const { token } = useAppSelector((state) => state.token);
@@ -146,8 +149,13 @@ const RaffleDraw = () => {
               float: "right",
               marginRight: "5px",
             }}
-            onClick={() =>
+            onClick={() => {
+              if (!myPermission.raffle_draw.export) {
+                toast.info("You're not allowed to export");
+                return;
+              }
               dispatch(openDialog({ title: "Raffle Draw", type: 16 }))
+            }
             }
           >
             Export

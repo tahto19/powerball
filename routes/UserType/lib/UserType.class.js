@@ -57,6 +57,10 @@ class UserTypeClass {
         view: false,
         edit: false,
       },
+      second_chance_site_defaults: {
+        view: false,
+        brows: false,
+      },
     };
   }
   async createUserType(id) {
