@@ -392,7 +392,10 @@ export const apiService = {
     token: string | null,
     url: string | undefined | null
   ) => {
-    return apiClient.post(`api/winner/${url}`, {
+    // return apiClient.post(`api/winner/${url}`, {
+    //   data: bodyEncrypt(JSON.stringify(data), token),
+    // });
+    return apiClient.post(`api/winner/getDataAll`, {
       data: bodyEncrypt(JSON.stringify(data), token),
     });
   },
@@ -554,7 +557,7 @@ export const apiService = {
     });
     return res;
   },
-  
+
   getMediaBanner: async () => {
     const res = apiClient.get("/api/site-defaults/media-banner");
     return res;

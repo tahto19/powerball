@@ -1,6 +1,6 @@
 //@ts-nocheck
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import {
   Card,
@@ -21,6 +21,7 @@ import { RootState } from "@/redux/store";
 import { getToken } from "@/redux/reducers/token/asyncCalls";
 import { useNavigate } from "react-router-dom";
 import Scanner from "./Scanner";
+// import UploadQRBtn from "../uploadQRcode/uploadQRBtn";
 // import { Scanner2ndTest } from "./Scanner2ndTest";
 
 const base_url = import.meta.env.VITE_API_BASE_URL;
@@ -31,32 +32,43 @@ const ScannerIframe = ({ tester }: { tester?: boolean }) => {
   const { ticketSubmit } = useAppSelector((state: RootState) => state.ticket);
   const [scanned, setScanned] = useState<string | null>();
   const { loading, token } = useAppSelector((state) => state.token);
+  const [check, setChecker] = useState(false);
+
+  const isSubmitting = useRef(false);
   const handleScan = (e: string) => {
     setScanned(e);
-
-    if (e) dispatch(addTicket(e)); //uncomment this
+    console.log(e, isSubmitting.current, "ticketSubmit");
+    if (e && !isSubmitting.current) {
+      isSubmitting.current = true;
+      // console.log("scann running");
+      dispatch(addTicket(e));
+    }
   };
   const handleBackTo = () => {
     window.history.back();
-    // const params = new URLSearchParams(window.location.search);
-    // const from = params.get('from');
-    // if (from) {
-    //   window.location.href = base_url + from;
-    // } else {
-    //   // fallback
-    //   // navigate("2nd-chance/");
-    //   window.history.back();
-    // }
+    const params = new URLSearchParams(window.location.search);
+    const from = params.get("from");
+    if (from) {
+      window.location.href = base_url + from;
+    } else {
+      // fallback
+      // navigate("2nd-chance/");
+      window.history.back();
+    }
   };
   const [test, setTest] = useState<Boolean | null>(null);
   useEffect(() => {
-    if (!ticketSubmit) setScanned(null);
+    if (!ticketSubmit) {
+      setScanned(null);
+      isSubmitting.current = false;
+    }
   }, [ticketSubmit]);
+
   useEffect(() => {
     setTest(() => !!tester);
     if (!loading) {
       if (token === null) {
-        window.parent.location.href = endpoint;
+        // window.parent.location.href = endpoint;
         // navigate("/member-area");
       }
     }
@@ -88,6 +100,7 @@ const ScannerIframe = ({ tester }: { tester?: boolean }) => {
             >
               Scanner
             </Typography>
+            {/* <UploadQRBtn /> */}
           </Toolbar>
         </AppBar>
       </Box>
@@ -103,7 +116,7 @@ const ScannerIframe = ({ tester }: { tester?: boolean }) => {
           },
         }}
       >
-        {scanned && test === null ? (
+        {isSubmitting && test === null ? (
           <CircularProgress size="5rem" />
         ) : (
           <Scanner

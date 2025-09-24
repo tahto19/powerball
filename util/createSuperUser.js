@@ -38,7 +38,7 @@ export const createSuperUser = async () => {
     }
     console.log("check if free alpha code is already created");
     let r = await AlphaCode.findOne({ where: { name: "FREE" } });
-    console.log(r);
+
     if (!r) {
       await AlphaCode.create({ name: "FREE", active: true, entries: 1 });
     }

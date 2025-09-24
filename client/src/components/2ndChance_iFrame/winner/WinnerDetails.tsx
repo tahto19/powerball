@@ -41,7 +41,8 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
           limit,
           offset,
           filter,
-          location: url ? url : "myWinners",
+          location: url ? url : "myWinners", //added this because client want to change it to see all winners
+          // location: url ? url : url,
         })
       );
     }

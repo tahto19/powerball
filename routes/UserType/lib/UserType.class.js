@@ -56,6 +56,7 @@ class UserTypeClass {
       freeTicket: {
         view: false,
         edit: false,
+        export: false,
       },
     };
   }

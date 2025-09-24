@@ -12,6 +12,7 @@ import {
   entriesChange,
 } from "./raffleEntrySlice";
 import { enterEntries } from "@/components/2ndChance_iFrame/Raffles/interface";
+import moment from "moment";
 
 interface GetRaffleParams {
   type: string | undefined;
@@ -48,7 +49,6 @@ export const postRaffleEntry = createAsyncThunk(
   "raffleEntry/postRaffle",
   async (data: postEntries, { dispatch, getState }) => {
     try {
-      console.log(data);
       let state = getState() as RootState;
       let token = state.token.token;
       let _r = await apiService.postRaffleEntry(data, token);
@@ -82,6 +82,10 @@ export const getRaffleEntryList = createAsyncThunk(
         let r_data = bodyDecrypt(_r.data, token);
 
         r_data.list = r_data.list.map((v) => {
+          const getEndDate = moment(
+            v.Raffle_Schedule.raffleDetails.end_date
+          ).diff(moment(), "hours");
+
           return {
             id: v.id,
             "$ticket_detail.ticket_code$": v.ticket_detail.ticket_code,
@@ -89,7 +93,9 @@ export const getRaffleEntryList = createAsyncThunk(
             "$Raffle_Schedule.status_text$":
               v.wining_draw_detail !== null
                 ? "Winner"
-                : v.Raffle_Schedule.status_text,
+                : getEndDate > 0
+                ? v.Raffle_Schedule.status_text
+                : "end",
             "$Raffle_Schedule.raffleDetails.name$":
               v.Raffle_Schedule.raffleDetails.name,
             "$Raffle_Schedule.schedule_date$": v.Raffle_Schedule.schedule_date,

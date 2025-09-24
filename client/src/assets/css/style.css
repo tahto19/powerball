@@ -1,21 +1,28 @@
 #iframe-login-button {
-    text-decoration: none;
-    border-radius: 30px !important;
-    background: #2555A6 !important;
-    color: #fff !important;
+  text-decoration: none;
+  border-radius: 30px !important;
+  background: #2555a6 !important;
+  color: #fff !important;
 }
 
 #iframe-login-button:hover {
-    background: #61CE70 !important;
+  background: #61ce70 !important;
 }
 
-
 #iframe-dashboard-button {
-    text-decoration: none;
-    font-weight: 600 !important;
-    color: #fff !important;
+  text-decoration: none;
+  font-weight: 600 !important;
+  color: #fff !important;
 }
 
 #iframe-dashboard-button:hover {
-    color: #ffde01 !important;
+  color: #ffde01 !important;
+}
+.react-datepicker-wrapper {
+  width: 100% !important;
+  box-sizing: border-box; /* to include padding/border */
+}
+#qr-reader__dashboard_section_csr,
+#qr-reader__dashboard_section {
+  display: none !important;
 }

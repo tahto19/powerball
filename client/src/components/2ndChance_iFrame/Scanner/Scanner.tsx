@@ -28,7 +28,6 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess, test }) => {
       document.documentElement.clientHeight
     );
     setQrCodeBox(() => ({ height: height / 3.5, width: width / 1.3 }));
-    console.log(height, width);
   }, []);
   const scannerRef = useRef<Html5QrcodeScanner | null>(null);
   const defaultvideoConstraints = {
@@ -45,7 +44,7 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess, test }) => {
             width: { ideal: 1600 },
             height: { ideal: 1600 },
             facingMode: { exact: "environment" },
-            advanced: [{ zoom: 2.5 }],
+            // advanced: [{ zoom: 2.2 }, { focusMode: "continuous" }],
           }
         : defaultvideoConstraints;
       const getQrBox = test ? qrCodeBox : defaultQrBox;
@@ -54,11 +53,14 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess, test }) => {
         const scanner = new Html5QrcodeScanner(
           "qr-reader",
           {
-            fps: 60,
+            fps: 5,
             qrbox: getQrBox,
             supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
             formatsToSupport: [Html5QrcodeSupportedFormats.PDF_417],
             useBarCodeDetectorIfSupported: true,
+            experimentalFeatures: {
+              useBarCodeDetectorIfSupported: true,
+            },
             // aspectRatio: 1.7777778,
             aspectRatio: 1.333334,
             disableFlip: false,
@@ -86,7 +88,7 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess, test }) => {
         }, 500);
       }
     }
-
+    console.log("running");
     return () => {
       scannerRef.current
         ?.clear()

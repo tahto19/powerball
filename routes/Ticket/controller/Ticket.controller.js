@@ -183,8 +183,9 @@ export const postTicketController = async (req, res) => {
       [["id", "ASC"]],
       [{ field: "VIN", filter: req.body.ticket_id, type: "string_eq" }]
     );
+
     if (getTicket_.list.length > 0) {
-      throw new Error("This ticket has already been entered into the raffle");
+      throw new Error("ErrorCode x314");
     }
     let _r = await axios.post(
       process.env.TICKET_VALIDATION_API,
@@ -204,9 +205,9 @@ export const postTicketController = async (req, res) => {
     } else if (_r.data.r.trim().toLowerCase() === "this is a winning ticket") {
       throw new Error("ErrorCode x13");
     } else if (_r.data.r.trim().toLowerCase() === "error checking ticket") {
-      throw new Error("x12");
+      throw new Error("ErrorCode x12");
     } else if (_r.data.r.trim().toLowerCase() === "error checking ticket") {
-      throw new Error("x12");
+      throw new Error("ErrorCode x12");
     }
     if (_r.data.t) {
       // check if the ticket is exists
@@ -258,7 +259,6 @@ export const ticketHistoryInEntriesController = async (req, res) => {
     let filter = [];
 
     if (alpha_code) {
-      console.log(JSON.parse(alpha_code));
       filter = [
         {
           field: "alpha_code",
@@ -276,7 +276,7 @@ export const ticketHistoryInEntriesController = async (req, res) => {
     if (req.url.includes("myEntries")) {
       filter.push({ field: "user_id", filter: req.user_id, type: "number" });
     }
-    console.log(filter);
+
     let r = await tc.getTotalEntries(filter);
 
     res.send(cSend(r));

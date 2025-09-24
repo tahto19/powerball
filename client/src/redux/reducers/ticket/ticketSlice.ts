@@ -16,7 +16,7 @@ const initialState: ticketState = {
     count: 0,
     location: null,
   },
-  ticketSubmit: true,
+  ticketSubmit: false,
 };
 
 const ticketSlice = createSlice({
@@ -34,10 +34,12 @@ const ticketSlice = createSlice({
     b.addCase(addTicket.pending, (state) => {
       state.loading = true;
       state.ticketSubmit = true;
+      // console.log("pending", state);
     });
     b.addCase(addTicket.fulfilled, (state) => {
       state.loading = false;
       state.ticketSubmit = false;
+      // console.log("fullfilled", state);
     });
     b.addCase(getTicket.pending, (state) => {
       state.loading = true;

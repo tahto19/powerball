@@ -136,6 +136,7 @@ const start = async () => {
           "localhost",
           "18.138.76.86",
           "scratchit.com.ph",
+          "192.168.8.107",
         ];
         if (allowedHostnames.includes(hostname)) {
           return cb(null, true);
@@ -159,6 +160,16 @@ const start = async () => {
       // hook: "onRequest", // set to false to disable cookie autoparsing or set autoparsing on any of the following hooks: 'onRequest', 'preParsing', 'preHandler', 'preValidation'. default: 'onRequest'
       // parseOptions: {}, // options for parsing cookies
     });
+    // fastify.register(import("@fastify/cookie"), {
+    //   secret: process.env.JWT_SECRET,
+    //   cookie: {
+    //     secure: true, // Insecure setting for development
+    //     httpOnly: true,
+    //     sameSite: "Lax",
+    //     path: "/",
+    //     maxAge: 60 * 24 * 60 * 60 * 1000, // 1 day
+    //   },
+    // });
     // multipart
     fastify.register(import("@fastify/multipart"), {
       limits: {
@@ -296,15 +307,18 @@ const start = async () => {
         statusCode: 404,
       });
     });
-    fastify.listen({ port: process.env.PORT }, function (err, address) {
-      if (err) {
-        fastify.log.error(err);
-        process.exit(1);
-      }
-      // Server is now listening on ${address}
+    fastify.listen(
+      { port: process.env.PORT, host: "0.0.0.0" },
+      function (err, address) {
+        if (err) {
+          fastify.log.error(err);
+          process.exit(1);
+        }
+        // Server is now listening on ${address}
 
-      fastify.log.info(` Server is now listening on ${address}`);
-    });
+        fastify.log.info(` Server is now listening on ${address}`);
+      }
+    );
 
     const connected = await conn.auth();
     if (connected) {

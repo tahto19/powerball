@@ -6,35 +6,49 @@ import { disableBtn, enableBtn, showToaster } from "../global/globalSlice";
 import apiService from "@/services/apiService";
 import { addTicketList } from "./ticketSlice";
 import { RootState } from "@/redux/store";
-import { bodyDecrypt } from "@/utils/util";
+import { bodyDecrypt, delay } from "@/utils/util";
+import { toast } from "react-toastify";
 
 export const addTicket = createAsyncThunk(
   "ticket/createTicket",
   async (data: string, { dispatch, getState }) => {
+    const toastId = toast.loading("Uploading...");
+    await delay(1000);
     try {
       dispatch(disableBtn());
-      dispatch(
-        showToaster({
-          message: "Checking Ticket..",
-          variant: "info",
-          icon: "info",
-        })
-      );
+      toast.update(toastId, {
+        render: "Checking Ticket",
+        type: "info",
+        isLoading: true,
+        autoClose: 2000,
+      });
+      await delay(1000);
       const state = getState() as RootState;
       const token = state.token.token;
-      let r = await apiService.postTicketList(data, token);
-      let r_data = bodyDecrypt(r.data, token);
+      await delay(3000);
+      // let r = await apiService.postTicketList(data, token);
+      // let r_data = bodyDecrypt(r.data, token);
 
-      dispatch(
-        showToaster({
-          message: r_data.message,
-          variant: "success",
-          icon: "success",
-        })
-      );
+      toast.update(toastId, {
+        // render: r_data.message,
+        render: "testing",
+        type: "success",
+        isLoading: false,
+        autoClose: 2000,
+      });
+      await delay(1000);
+
       // dispatch(getTicket());
+      return "success";
     } catch (err) {
-      dispatch(showToaster({ err, variant: "error", icon: "error" }));
+      let m = getMessage(err);
+      toast.update(toastId, {
+        render: m,
+        type: "error",
+        isLoading: false,
+        autoClose: 2000,
+      });
+      return "failed";
     }
   }
 );
@@ -53,6 +67,7 @@ export const getTicket = createAsyncThunk(
       dispatch(addTicketList(toReturn));
     } catch (err) {
       dispatch(showToaster({ err, variant: "error", icon: "error" }));
+      return "failed";
     }
   }
 );
