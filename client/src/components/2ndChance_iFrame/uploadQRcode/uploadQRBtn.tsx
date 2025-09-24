@@ -1,5 +1,4 @@
 import { Button, styled } from "@mui/material";
-import { useState } from "react";
 import Dialog_ from "./Dialog_";
 import { CloudUploadOutlined } from "@mui/icons-material";
 const VisuallyHiddenInput = styled("input")({
@@ -14,7 +13,6 @@ const VisuallyHiddenInput = styled("input")({
   width: 0,
 });
 export default function UploadQRBtn() {
-  const [openDialog, setOpenDialog] = useState(false);
   return (
     <>
       <Dialog_ open={false} />
@@ -33,9 +31,9 @@ export default function UploadQRBtn() {
       </Button>
       <Button
         variant="contained"
-        onClick={() => {
-          setOpenDialog(true);
-        }}
+        // onClick={() => {
+        //   setOpenDialog(true);
+        // }}
       ></Button>
     </>
   );

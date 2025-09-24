@@ -1,10 +1,4 @@
-import {
-  DialogActions,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-} from "@mui/material";
-import React from "react";
+import { Dialog, DialogTitle, DialogContent } from "@mui/material";
 
 export default function Dialog_({ open }: { open: boolean }) {
   return (
