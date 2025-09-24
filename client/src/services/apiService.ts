@@ -36,8 +36,9 @@ import moment from "moment";
 import { MediaState } from "@/components/Defaults/tabs/interface";
 
 interface Credentials {
-  email: string;
+  email?: string;
   password: string;
+  mobileNumber?: string;
 }
 
 let apiClient: any;
@@ -234,7 +235,7 @@ export const apiService = {
       const fd = new FormData();
       for (const _d in d) {
         const value = d[_d as keyof typeof d];
-        console.log(_d, d[_d as keyof typeof d]);
+
         if (value !== null) {
           if (typeof value === "string") {
             fd.append(_d, value); // Append string directly
@@ -243,11 +244,7 @@ export const apiService = {
           } else if (_d !== "file") {
             throw new Error(`${_d} has null`);
           }
-        } else if (
-          _d !== "file" &&
-          _d !== "emailAddress" &&
-          _d !== "password"
-        ) {
+        } else if (_d !== "file" && _d !== "emailAddress") {
           throw new Error(`${_d} has null`);
         }
       }

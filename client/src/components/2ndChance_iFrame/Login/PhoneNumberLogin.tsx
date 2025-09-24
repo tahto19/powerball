@@ -29,6 +29,10 @@ const PhoneNumberLogin = () => {
   const [mobileNumberErrorMessage, setMobileNumberErrorMessage] =
     React.useState("");
   const [passwordError, setPasswordError] = React.useState(false);
+  const [password, setPassword] = React.useState(null);
+  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState<
+    null | string
+  >(null);
   const [otp, setOTP] = React.useState("");
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
@@ -133,6 +137,49 @@ const PhoneNumberLogin = () => {
   };
   const handleSignUp = () => {
     window.parent.location.href = base_url + "create-an-account/";
+  };
+  const loginUsingPassword = async () => {
+    try {
+      if (!password) {
+        setPasswordError(true);
+        setPasswordErrorMessage("Required");
+        return;
+      } else {
+        setPasswordError(false);
+        setPasswordErrorMessage(null);
+      }
+      if (mobileNumber) {
+        setMobileNumberError(true);
+        setMobileNumberErrorMessage("Required");
+        return;
+      } else {
+        setPasswordError(false);
+        setPasswordErrorMessage(null);
+      }
+      const res = await apiService.login({ mobileNumber, password });
+      if (res.data.result == "success") {
+        // Redirect to dashboard after login
+        // navigate("https://18.138.76.86/?page_id=279");
+        if (rememberMe) {
+          localStorage.setItem(
+            "JqNw1q3HCK-90t4y", // email
+            localEncrypt(mobileNumber)
+          );
+        }
+        console.log("redirecting");
+
+        window.parent.location.href = base_url + "cms/2nd-chance/";
+      }
+    } catch (err) {
+      dispatch(
+        showToaster({
+          err,
+          show: true,
+          variant: "error",
+          icon: null,
+        })
+      );
+    }
   };
   const [loadingBtn, setLoadingBtn] = React.useState(false);
   const [sentOtp, setSentOtp] = React.useState(false);
@@ -328,6 +375,34 @@ const PhoneNumberLogin = () => {
                                       }
                                     />
                                   </div>
+                                  <div className="elementor-field-type-text elementor-field-group elementor-column elementor-col-100 elementor-field-required">
+                                    <label
+                                      htmlFor="user-938a465"
+                                      className="elementor-field-label"
+                                    >
+                                      Password
+                                    </label>
+                                    <TextField
+                                      value={password ? password : ""}
+                                      onChange={(e: any) => {
+                                        setPassword(e.target.value);
+                                      }}
+                                      error={passwordError}
+                                      helperText={passwordErrorMessage}
+                                      id="password"
+                                      type="password"
+                                      name="password"
+                                      placeholder="password"
+                                      autoFocus
+                                      required
+                                      fullWidth
+                                      size="small"
+                                      variant="outlined"
+                                      color={
+                                        mobileNumberError ? "error" : "primary"
+                                      }
+                                    />
+                                  </div>
                                   {sentOtp && (
                                     <div className="elementor-field-type-text elementor-field-group elementor-column elementor-col-100 elementor-field-required">
                                       <label
@@ -355,9 +430,9 @@ const PhoneNumberLogin = () => {
                                         }}
                                         length={6}
                                       />
-                                      {/* <TextField
+                                      <TextField
                                         value={password}
-                                        onChange={(e) => {
+                                        onChange={(e: any) => {
                                           setPassword(e.target.value);
                                         }}
                                         error={passwordError}
@@ -374,7 +449,7 @@ const PhoneNumberLogin = () => {
                                         color={
                                           passwordError ? "error" : "primary"
                                         }
-                                      /> */}
+                                      />
                                     </div>
                                   )}
 
@@ -410,6 +485,20 @@ const PhoneNumberLogin = () => {
                                       >
                                         <span className="elementor-button-text">
                                           Send OTP
+                                        </span>
+                                      </Button>
+                                      <Button
+                                        sx={{ marginLeft: "1px" }}
+                                        className="text-color-white elementor-size-sm elementor-button"
+                                        name="wp-submit"
+                                        loading={loadingBtn}
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          loginUsingPassword();
+                                        }}
+                                      >
+                                        <span className="elementor-button-text">
+                                          Login Password
                                         </span>
                                       </Button>
                                     </div>

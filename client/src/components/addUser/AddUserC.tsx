@@ -218,7 +218,7 @@ const AddUserC = () => {
                 )}
               </Grid> */}
               {/* remove password */}
-              {/* <Grid size={{ xs: 12, md: 6 }}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <TextField
                   type={showPassword ? "text" : "password"}
                   label="Password"
@@ -272,7 +272,7 @@ const AddUserC = () => {
                       {errors.password.message}
                     </FormHelperText>
                   )}
-              </Grid> */}
+              </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
                 {/* <PhoneInput
                   value={getValues("mobileNumber")}

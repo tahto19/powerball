@@ -45,27 +45,28 @@ export const outsideAddUser = createAsyncThunk(
 export const verfiyAccountUser = createAsyncThunk(
   "user/verifyAccount",
   async (data: veriyCode, { dispatch }) => {
+    const toastId = toast.loading("Verifying Account");
     try {
       await apiService.verifyOTP(data);
-      dispatch(
-        showToaster({
-          message: "successfully verified",
-          variant: "success",
-          icon: "success",
-        })
-      );
-      await delay(150);
-      dispatch(
-        showToaster({
-          message: "Please Wait Still creating an account",
-          variant: "info",
-          icon: "info",
-        })
-      );
-      dispatch(createAccount(data));
+
+      toast.update(toastId, {
+        render: "successfully verified...Please Wait Still creating an account",
+        type: "info",
+        isLoading: true,
+        autoClose: 2000,
+      });
+      await delay(553);
+
+      dispatch(createAccount({ ...data, ...{ toastID: toastId } }));
       return true;
     } catch (err) {
-      dispatch(showToaster({ err, variant: "error", icon: "error" }));
+      let m = getMessage(err);
+      toast.update(toastId, {
+        render: m,
+        type: "error",
+        isLoading: false,
+        autoClose: 2000,
+      });
       return false;
     }
   }
@@ -84,6 +85,7 @@ export const createAccount = createAsyncThunk(
         mobileNumber,
         birthdate,
         password,
+        toastID,
       } = state.user;
 
       await apiService.createUser({
@@ -95,17 +97,31 @@ export const createAccount = createAsyncThunk(
         emailAddress,
         password,
       });
-      dispatch(
-        showToaster({
-          message: "Done Creating User",
-          variant: "info",
-          icon: "info",
-        })
-      );
+      // dispatch(
+      //   showToaster({
+      //     message: "Done Creating User",
+      //     variant: "info",
+      //     icon: "info",
+      //   })
+      // );
 
+      let toaster__ = toast.update(data.toastID, {
+        render: "successfully created account",
+        type: "success",
+        isLoading: false,
+        autoClose: 2000,
+      });
+      console.log(toaster__);
       return true;
     } catch (err) {
-      dispatch(showToaster({ err, variant: "error", icon: "error" }));
+      let m = getMessage(err);
+      toast.update(toastID, {
+        render: m,
+        type: "error",
+        isLoading: false,
+        autoClose: 2000,
+      });
+
       return false;
     }
   }

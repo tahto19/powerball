@@ -16,7 +16,7 @@ const VerificationCode = () => {
   const dispatch = useAppDispatch();
   const [otp, setOTP] = useState("");
   const { otpID, loading } = useAppSelector((state: RootState) => state.user);
-  console.log(loading);
+
   useEffect(() => {
     console.log(loading, otpID);
   }, [loading]);

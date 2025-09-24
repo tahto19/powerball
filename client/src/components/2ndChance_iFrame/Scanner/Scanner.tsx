@@ -44,11 +44,11 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess, test }) => {
             width: { ideal: 1600 },
             height: { ideal: 1600 },
             facingMode: { exact: "environment" },
-            // advanced: [{ zoom: 2.2 }, { focusMode: "continuous" }],
+            advanced: [{ zoom: 2 }, { focusMode: "continuous" }],
           }
         : defaultvideoConstraints;
       const getQrBox = test ? qrCodeBox : defaultQrBox;
-      console.log(getQrBox);
+
       if (!scannerRef.current) {
         const scanner = new Html5QrcodeScanner(
           "qr-reader",
@@ -79,6 +79,7 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess, test }) => {
             onScanSuccess(decodedResult);
           },
           (error) => {
+            console.log(error);
             // Optional failure callback
           }
         );
