@@ -95,7 +95,7 @@ export const getRaffleEntryList = createAsyncThunk(
                 ? "Winner"
                 : getEndDate > 0
                 ? v.Raffle_Schedule.status_text
-                : "end",
+                : "inactive",
             "$Raffle_Schedule.raffleDetails.name$":
               v.Raffle_Schedule.raffleDetails.name,
             "$Raffle_Schedule.schedule_date$": v.Raffle_Schedule.schedule_date,
