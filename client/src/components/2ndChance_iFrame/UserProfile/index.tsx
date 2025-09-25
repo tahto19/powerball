@@ -37,6 +37,7 @@ import ProfileDialog from "./ProfileDialog";
 
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { useDropzone } from "react-dropzone";
+import DialogPassword from "./Dialog/DialogPassword";
 
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const endpoint = base_url + "api/file/serve/image/";
@@ -48,6 +49,7 @@ const main = () => {
   const [phoneError, setPhoneError] = useState("");
   const { token } = useAppSelector((state) => state.token);
   const [change, setChange] = useState(false);
+  const [openCP, setOpenCP] = useState(true);
   useEffect(() => {
     setFormData(userDetails);
   }, [userDetails]);
@@ -151,8 +153,10 @@ const main = () => {
     onDrop,
     multiple: false,
   });
+
   return (
     <>
+      <DialogPassword open={open} />
       <Box></Box>
       <Card
         sx={{
