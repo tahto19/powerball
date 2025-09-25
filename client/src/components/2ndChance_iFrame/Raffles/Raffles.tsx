@@ -197,7 +197,6 @@ const Raffles = () => {
                 position: "relative",
                 minWidth: "258px",
                 maxWidth: "258px",
-                height: "100%",
                 flex: 1,
                 // minHeight: "278px",
                 // maxHeight: "318px",
@@ -230,8 +229,8 @@ const Raffles = () => {
                     <Typography
                       sx={{
                         color: "text.secondary",
-                        fontSize: "14px",
-                        fontWeight: "500",
+                        fontSize: "16px",
+                        fontWeight: "600",
                         textAlign: "center"
                       }}
                     >
@@ -245,7 +244,21 @@ const Raffles = () => {
                       flexDirection: "column",
                     }}
                   >
-
+                    <Typography
+                      sx={{
+                        color: "text.secondary",
+                        fontSize: "13px",
+                        lineHeight: '21px',
+                        display: '-webkit-box',
+                        WebkitBoxOrient: 'vertical',
+                        WebkitLineClamp: 2,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        marginBottom: "10px"
+                      }}
+                    >
+                      {x.short_details}
+                    </Typography>
                     {/* <Box sx={{
                       // display: "flex",
                       // flexWrap: "wrap",
@@ -253,12 +266,12 @@ const Raffles = () => {
                       // justifyContent: "space-between"
                     }}> */}
                     <Typography
-                      sx={{ fontSize: "14px" }}
+                      sx={{ fontSize: "13px" }}
                     >
                       <b> Total Entries:</b> {x.totalEntries}
                     </Typography>
                     <Typography
-                      sx={{ fontSize: "14px" }}
+                      sx={{ fontSize: "13px" }}
                     >
                       <b>Your Entries:</b> {x.yourEntries}
                     </Typography>

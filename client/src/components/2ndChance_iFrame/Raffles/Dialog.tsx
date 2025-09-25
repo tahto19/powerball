@@ -131,7 +131,7 @@ const MyDialog = ({
                 whiteSpace: "pre-line",
               }}
             >
-              {formData.more_details}
+              {formData.full_details}
             </Typography>
             <Grid2
               container
