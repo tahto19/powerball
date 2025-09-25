@@ -6,14 +6,14 @@ import { disableBtn, enableBtn, showToaster } from "../global/globalSlice";
 import apiService from "@/services/apiService";
 import { addTicketList } from "./ticketSlice";
 import { RootState } from "@/redux/store";
-import { bodyDecrypt, delay } from "@/utils/util";
+import { bodyDecrypt, delay, getMessage } from "@/utils/util";
 import { toast } from "react-toastify";
 
 export const addTicket = createAsyncThunk(
   "ticket/createTicket",
   async (data: string, { dispatch, getState }) => {
     const toastId = toast.loading("Uploading...");
-    await delay(1000);
+
     try {
       dispatch(disableBtn());
       toast.update(toastId, {
@@ -31,7 +31,7 @@ export const addTicket = createAsyncThunk(
 
       toast.update(toastId, {
         // render: r_data.message,
-        render: "testing",
+        render: "Save Ticket",
         type: "success",
         isLoading: false,
         autoClose: 2000,
@@ -40,7 +40,9 @@ export const addTicket = createAsyncThunk(
       // dispatch(getTicket());
       return "success";
     } catch (err) {
+      console.log(err, "here");
       let m = getMessage(err);
+      console.log(m, "here");
       toast.update(toastId, {
         render: m,
         type: "error",

@@ -417,7 +417,7 @@ const main = () => {
               <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
                 <FormControl fullWidth>
                   <FormLabel id="demo-customized-select-label">
-                    Gender {formData.gender}
+                    Gender
                   </FormLabel>
                   <Select
                     labelId="demo-customized-select-label"
@@ -439,6 +439,9 @@ const main = () => {
                     </MenuItem>
                   </Select>
                 </FormControl>
+              </Grid2>
+              <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+                <Button variant="contained">Change Password</Button>
               </Grid2>
               <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
                 <Divider></Divider>
