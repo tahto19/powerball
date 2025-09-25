@@ -71,7 +71,7 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess, test }) => {
         ? {
             ...videoSize,
             facingMode: { exact: "environment" },
-            advanced: [{ zoom: 1.7 }, { focusMode: "continuous" }],
+            advanced: [{ zoom: 1.9 }, { focusMode: "continuous" }],
           }
         : defaultvideoConstraints;
       const getQrBox = test ? qrCodeBox : defaultQrBox;
