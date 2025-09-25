@@ -55,7 +55,7 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess, test }) => {
           {
             fps: 5,
             qrbox: getQrBox,
-            supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
+            // supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
             formatsToSupport: [Html5QrcodeSupportedFormats.PDF_417],
             useBarCodeDetectorIfSupported: true,
             experimentalFeatures: {
