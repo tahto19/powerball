@@ -244,7 +244,21 @@ const Raffles = () => {
                       flexDirection: "column",
                     }}
                   >
-
+                    <Typography
+                      sx={{
+                        color: "text.secondary",
+                        fontSize: "14px",
+                        lineHeight: '21px',
+                        display: '-webkit-box',
+                        WebkitBoxOrient: 'vertical',
+                        WebkitLineClamp: 2,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        marginBottom: "10px"
+                      }}
+                    >
+                      {x.more_details}
+                    </Typography>
                     {/* <Box sx={{
                       // display: "flex",
                       // flexWrap: "wrap",
