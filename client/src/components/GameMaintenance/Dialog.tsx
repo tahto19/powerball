@@ -251,8 +251,6 @@ const MyDialog = ({
         })),
       };
 
-      console.log(payload)
-
       if (dialogType === "Edit") {
         res = await apiService.updateGM(payload, token);
         message = "Record updated successfully.";
@@ -520,8 +518,6 @@ const MyDialog = ({
                     name="more_details"
                     placeholder=""
                     multiline
-
-
                     maxRows={Infinity}
                     autoFocus
                     fullWidth
