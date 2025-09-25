@@ -197,7 +197,6 @@ const Raffles = () => {
                 position: "relative",
                 minWidth: "258px",
                 maxWidth: "258px",
-                height: "100%",
                 flex: 1,
                 // minHeight: "278px",
                 // maxHeight: "318px",
