@@ -22,7 +22,7 @@
   width: 100% !important;
   box-sizing: border-box; /* to include padding/border */
 }
-#qr-reader__dashboard_section_csr,
+/* #qr-reader__dashboard_section_csr,
 #qr-reader__dashboard_section {
   display: none !important;
-}
+} */
