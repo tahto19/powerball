@@ -71,7 +71,7 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess, test }) => {
         ? {
             ...videoSize,
             facingMode: { exact: "environment" },
-            advanced: [{ zoom: 1.5 }, { focusMode: "continuous" }],
+            advanced: [{ zoom: 1.7 }, { focusMode: "continuous" }],
           }
         : defaultvideoConstraints;
       const getQrBox = test ? qrCodeBox : defaultQrBox;
@@ -137,13 +137,13 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess, test }) => {
       } else {
         document.querySelector(
           "#html5-qrcode-button-camera-permission"
-        ).innerText = "Will be Scan barcode";
+        ).innerText = "Scan barcode";
       }
       let upload = document.querySelector(
         "#html5-qrcode-anchor-scan-type-change"
       );
       upload.style.display = "block";
-      upload.innerText = "will be Upload an Image file";
+      upload.innerText = "Upload an Image file";
     });
   }, []);
   return (
