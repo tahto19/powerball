@@ -20,7 +20,7 @@ import {
 export default function DialogPassword({ open }: { open: boolean }) {
   //   const [showPass, setShowPass] = useState(false);
   return (
-    <Dialog open={true}>
+    <Dialog open={open}>
       <DialogTitle>Changing Of Password</DialogTitle>
       <DialogContent>
         <FormControl fullWidth>
