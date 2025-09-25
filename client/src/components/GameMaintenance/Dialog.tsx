@@ -250,7 +250,7 @@ const MyDialog = ({
           number_of_winners: x.number_of_winners,
         })),
       };
-
+      console.log(payload)
       if (dialogType === "Edit") {
         res = await apiService.updateGM(payload, token);
         message = "Record updated successfully.";
@@ -511,11 +511,11 @@ const MyDialog = ({
               </Grid2>
               <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
                 <FormControl>
-                  <FormLabel htmlFor="more_details">Short Description</FormLabel>
+                  <FormLabel htmlFor="short_details">Short Description</FormLabel>
                   <TextField
-                    id="more_details"
+                    id="short_details"
                     type="text"
-                    name="more_details"
+                    name="short_details"
                     placeholder=""
                     multiline
                     maxRows={Infinity}
@@ -535,11 +535,11 @@ const MyDialog = ({
               </Grid2>
               <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
                 <FormControl>
-                  <FormLabel htmlFor="more_details">Full Description</FormLabel>
+                  <FormLabel htmlFor="full_details">Full Description</FormLabel>
                   <TextField
-                    id="more_details"
+                    id="full_details"
                     type="text"
-                    name="more_details"
+                    name="full_details"
                     placeholder=""
                     multiline
                     maxRows={Infinity}
