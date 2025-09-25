@@ -46,16 +46,17 @@ const ScannerIframe = ({ tester }: { tester?: boolean }) => {
     }
   };
   const handleBackTo = () => {
-    window.history.back();
-    const params = new URLSearchParams(window.location.search);
-    const from = params.get("from");
-    if (from) {
-      window.location.href = base_url + from;
-    } else {
-      // fallback
-      // navigate("2nd-chance/");
-      window.history.back();
-    }
+    // window.history.back();
+    // const params = new URLSearchParams(window.location.search);
+    // const from = params.get("from");
+    // if (from) {
+    //   window.location.href = base_url + from;
+    // } else {
+    //   // fallback
+    //   // navigate("2nd-chance/");
+    //   window.history.back();
+    // }
+    navigate("/2nd-chance");
   };
 
   useEffect(() => {
