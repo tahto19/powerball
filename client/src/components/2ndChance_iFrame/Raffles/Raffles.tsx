@@ -229,8 +229,8 @@ const Raffles = () => {
                     <Typography
                       sx={{
                         color: "text.secondary",
-                        fontSize: "14px",
-                        fontWeight: "500",
+                        fontSize: "16px",
+                        fontWeight: "600",
                         textAlign: "center"
                       }}
                     >
@@ -247,7 +247,7 @@ const Raffles = () => {
                     <Typography
                       sx={{
                         color: "text.secondary",
-                        fontSize: "14px",
+                        fontSize: "13px",
                         lineHeight: '21px',
                         display: '-webkit-box',
                         WebkitBoxOrient: 'vertical',
@@ -266,12 +266,12 @@ const Raffles = () => {
                       // justifyContent: "space-between"
                     }}> */}
                     <Typography
-                      sx={{ fontSize: "14px" }}
+                      sx={{ fontSize: "13px" }}
                     >
                       <b> Total Entries:</b> {x.totalEntries}
                     </Typography>
                     <Typography
-                      sx={{ fontSize: "14px" }}
+                      sx={{ fontSize: "13px" }}
                     >
                       <b>Your Entries:</b> {x.yourEntries}
                     </Typography>
