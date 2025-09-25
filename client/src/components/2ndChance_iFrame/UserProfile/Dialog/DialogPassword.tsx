@@ -9,12 +9,18 @@ import {
   FormLabel,
   TextField,
 } from "@mui/material";
+import {
+  useForm,
+  SubmitHandler,
+  SubmitErrorHandler,
+  Controller,
+} from "react-hook-form";
 // import { useState } from "react";
 
 export default function DialogPassword({ open }: { open: boolean }) {
   //   const [showPass, setShowPass] = useState(false);
   return (
-    <Dialog open={open}>
+    <Dialog open={true}>
       <DialogTitle>Changing Of Password</DialogTitle>
       <DialogContent>
         <FormControl fullWidth>

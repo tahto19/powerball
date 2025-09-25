@@ -69,7 +69,7 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess, test }) => {
       const getVideoConstraints = test
         ? {
             ...videoSize,
-            facingMode: { exact: "environment" },
+            // facingMode: { exact: "environment" },
             advanced: [{ zoom: 1.9 }, { focusMode: "continuous" }],
           }
         : defaultvideoConstraints;
@@ -81,6 +81,8 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess, test }) => {
           {
             fps: 15,
             qrbox: getQrBox,
+            focusMode: "continuous",
+            willReadFrequently: true,
             supportedScanTypes: [
               Html5QrcodeScanType.SCAN_TYPE_CAMERA,
               Html5QrcodeScanType.SCAN_TYPE_FILE,
