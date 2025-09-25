@@ -181,7 +181,7 @@ export const postTicketController = async (req, res) => {
   try {
     let getTicket_ = await tc.FetchAll(
       [["id", "ASC"]],
-      [{ field: "VIN", filter: req.body.ticket_id, type: "string_eq" }]
+      [{ field: "VIN", filter: "test", type: "string_eq" }]
     );
 
     if (getTicket_.list.length > 0) {
@@ -247,9 +247,10 @@ export const postTicketController = async (req, res) => {
     // let _r = { data: { a: 3 } };
   } catch (err) {
     if (err.response) {
-      throw new Error(
-        `Request failed with status ${err.response.status}: ${err.response.data.m}`
-      );
+      console.log(err);
+      // throw new Error(
+      //   `Request failed with status ${err.response.status}: ${err.response.data.m}`
+      // );
     } else throw err;
   }
 };

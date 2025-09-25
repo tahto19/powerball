@@ -11,15 +11,25 @@ import UserClass from "../../User/lib/User.class.js";
 
 export const LoginController = async (req, res) => {
   try {
-    console.log("called here");
-    let a = await UserClass.FetchOneV2([
-      {
-        filter: encrpytPassword(req.body.email),
-        type: "string",
-        field: "emailAddress",
-      },
-    ]);
-
+    let a;
+    if (req.body.email)
+      a = await UserClass.FetchOneV2([
+        {
+          filter: encrpytPassword(req.body.email),
+          type: "string",
+          field: "emailAddress",
+        },
+      ]);
+    else {
+      const dd_ = req.body.mobileNumber;
+      a = await UserClass.FetchOneV2([
+        {
+          filter: dd_.charAt(0) == "0" ? "63" + dd_.slice(1) : dd_,
+          type: "string",
+          field: "mobileNumber",
+        },
+      ]);
+    }
     if (a === null) throw new Error("ErrorCODE X999");
     let b = await a.validPassword(req.body.password);
     if (!b) throw new Error("ErrorCODE X999");
@@ -40,7 +50,7 @@ export const LoginController = async (req, res) => {
 
     let token = await res.jwtSign(changeDetails);
     let encryptToken = await encrpytPassword(token);
-    console.log("runnnig");
+
     res
       .setCookie("cookie_pb_1271", encryptToken, {
         domain: "",

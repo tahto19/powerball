@@ -1,6 +1,6 @@
 //@ts-nocheck
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import {
   Card,
@@ -34,10 +34,11 @@ const ScannerIframe = ({ tester }: { tester?: boolean }) => {
   const { loading, token } = useAppSelector((state) => state.token);
   const [check, setChecker] = useState(false);
 
-  const isSubmitting = useRef(false);
+  const isSubmitting = useRef(true);
+  // const isSubmitting = { current: false };
   const handleScan = (e: string) => {
     setScanned(e);
-    console.log(e, isSubmitting.current, "ticketSubmit");
+
     if (e && !isSubmitting.current) {
       isSubmitting.current = true;
       // console.log("scann running");
@@ -56,16 +57,16 @@ const ScannerIframe = ({ tester }: { tester?: boolean }) => {
       window.history.back();
     }
   };
-  const [test, setTest] = useState<Boolean | null>(null);
+
   useEffect(() => {
     if (!ticketSubmit) {
       setScanned(null);
       isSubmitting.current = false;
+      console.log(isSubmitting.current, "here");
     }
   }, [ticketSubmit]);
 
   useEffect(() => {
-    setTest(() => !!tester);
     if (!loading) {
       if (token === null) {
         // window.parent.location.href = endpoint;
@@ -116,11 +117,11 @@ const ScannerIframe = ({ tester }: { tester?: boolean }) => {
           },
         }}
       >
-        {isSubmitting && test === null ? (
+        {!isSubmitting ? (
           <CircularProgress size="5rem" />
         ) : (
           <Scanner
-            test={test}
+            test={!!tester}
             onScanSuccess={(result: any) => {
               if (result) handleScan(result?.decodedText);
             }}

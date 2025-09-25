@@ -22,12 +22,12 @@ export const addTicket = createAsyncThunk(
         isLoading: true,
         autoClose: 2000,
       });
-      await delay(1000);
+
       const state = getState() as RootState;
       const token = state.token.token;
-      await delay(3000);
-      // let r = await apiService.postTicketList(data, token);
-      // let r_data = bodyDecrypt(r.data, token);
+
+      let r = await apiService.postTicketList(data, token);
+      let r_data = bodyDecrypt(r.data, token);
 
       toast.update(toastId, {
         // render: r_data.message,
@@ -36,7 +36,6 @@ export const addTicket = createAsyncThunk(
         isLoading: false,
         autoClose: 2000,
       });
-      await delay(1000);
 
       // dispatch(getTicket());
       return "success";

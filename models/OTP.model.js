@@ -82,22 +82,25 @@ OTP.init(
     hooks: {
       afterUpdate: async (otp, options) => {
         let val = otp.toJSON();
-        if (val.mobileNumber) {
-          await otp.mobileCode();
-        }
-        if (val.emailAddress) {
-          await otp.emailCode();
-        }
-      },
-      afterSave: async (otp, options) => {
-        if (otp._options.isNewRecord) {
-          let val = otp.toJSON();
+
+        if (!val.auth) {
           if (val.mobileNumber) {
             await otp.mobileCode();
           }
           if (val.emailAddress) {
             await otp.emailCode();
           }
+        }
+      },
+      afterSave: async (otp, options) => {
+        if (otp._options.isNewRecord) {
+          let val = otp.toJSON();
+          // if (val.mobileNumber) {
+          //   await otp.mobileCode();
+          // }
+          // if (val.emailAddress) {
+          //   await otp.emailCode();
+          // }
         }
 
         // For example: send notification after update is committed

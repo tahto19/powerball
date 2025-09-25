@@ -221,11 +221,11 @@ If you did not request to log in to the Scratch It website, please ignore this m
         route_id: process.env.OTP_ROUTE_ID,
       },
       function (err, message) {
-        if (err) throw err;
+        if (err) throw new Error(err);
       }
     );
   } catch (err) {
-    console.log(err);
+    console.log(err, "heree");
   }
 };
 export const uploadImage = async (file, filename) => {
@@ -265,3 +265,15 @@ export const randomLetters = (length) => {
   }
   return a;
 };
+export function replaceFirstZeroWith63(input) {
+  // Convert to string in case it's a number
+  let str = input.toString();
+
+  // If it already starts with "63", return as-is
+  if (str.startsWith("63")) {
+    return str;
+  }
+
+  // Otherwise, replace the first "0" with "63"
+  return str.replace("0", "63");
+}

@@ -307,7 +307,7 @@ function AppRoutes() {
       />
       <Route
         path="/scanner"
-        element={<ScannerIframe />}
+        element={<ScannerIframe tester={true} />}
       />
       <Route
         path="/test-scanner"

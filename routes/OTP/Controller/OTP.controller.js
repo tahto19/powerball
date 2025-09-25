@@ -2,6 +2,7 @@ import {
   cSend,
   encrpytPassword,
   generateRandomNumber,
+  replaceFirstZeroWith63,
 } from "../../../util/util.js";
 import UserClass from "../../User/lib/User.class.js";
 import OTPClass from "../Class/OTP.class.js";
@@ -9,7 +10,7 @@ import OTPClass from "../Class/OTP.class.js";
 export const createOTPController = async (req, res) => {
   try {
     const { emailAddress, outside, mobileNumber } = req.body;
-    console.log(mobileNumber);
+    console.log(req.body);
     let platform = req.headers.platform;
     let platformversion = req.headers.platformversion;
     let mobile = req.headers["pm-scratch-it-m"];
@@ -17,13 +18,17 @@ export const createOTPController = async (req, res) => {
       req.ip || req.headers["x-forwarded-for"] || req.connection?.remoteAddress;
 
     let r = await OTPClass.FetchOne([
-      { filter: mobile, type: "string", field: "code" },
-      { filter: emailAddress || "", type: "string", field: "code" },
-      { filter: mobileNumber || "", type: "string", field: "code" },
-      { filter: ip_address, type: "string", field: "ip_address" },
-      { filter: platformversion, type: "string", field: "platformversion" },
-      { filter: platform, type: "string", field: "platform" },
+      { filter: mobile, type: "string_eq", field: "mobile" },
+      {
+        filter: [mobileNumber, replaceFirstZeroWith63(mobileNumber)],
+        type: "array-or",
+        field: "mobileNumber",
+      },
+      { filter: ip_address, type: "string_eq", field: "ip_address" },
+      { filter: platformversion, type: "string_eq", field: "platformversion" },
+      { filter: platform, type: "string_eq", field: "platform" },
     ]);
+
     if (!outside) {
       if (emailAddress) {
         let findUser = await UserClass.FetchOne([
@@ -39,9 +44,9 @@ export const createOTPController = async (req, res) => {
       if (mobileNumber) {
         let findUser = await UserClass.FetchOneV2([
           {
-            filter: mobileNumber,
+            filter: replaceFirstZeroWith63(mobileNumber),
             field: "mobileNumber",
-            type: "string",
+            type: "string_eq",
           },
         ]);
 
@@ -66,14 +71,14 @@ export const createOTPController = async (req, res) => {
         platformversion,
         ip_address,
         emailAddress: emailAddress || "",
-        mobileNumber,
+        mobileNumber: replaceFirstZeroWith63(mobileNumber),
       });
-    // if (mobileNumber) {
-    //   await r.mobileCode();
-    // }
-    // if (emailAddress) {
-    //   await r.emailCode();
-    // }
+    if (mobileNumber) {
+      await r.mobileCode();
+    }
+    if (emailAddress) {
+      await r.emailCode();
+    }
 
     res.send(cSend(r.id));
   } catch (err) {

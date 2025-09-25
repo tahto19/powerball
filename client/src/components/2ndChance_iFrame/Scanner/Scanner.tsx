@@ -12,9 +12,32 @@ interface QrScannerProps {
   onScanFailure?: (error: string) => void;
   test?: boolean;
 }
-
+function waitForButton() {
+  const otherBtn = document.querySelector("#qr-reader__dashboard_section_csr");
+  const upload = document.querySelector(
+    "#html5-qrcode-anchor-scan-type-change"
+  );
+  if (upload) {
+    upload.style.display = "block";
+  }
+  if (otherBtn) {
+    otherBtn.style.display = "none";
+  }
+  const btn = document.querySelector(
+    "#qr-reader__dashboard_section_csr button"
+  );
+  const span = document.querySelector("#qr-reader__dashboard_section_csr span");
+  if (btn) {
+    btn.click();
+  } else {
+    setTimeout(waitForButton, 100); // retry after 100ms
+  }
+}
 const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess, test }) => {
   const [qrCodeBox, setQrCodeBox] = useState({ width: 350, height: 350 });
+
+  const [videoSize, setVideoSize] = useState(null);
+  const [getSize, setGetSize] = useState(false);
   useEffect(() => {
     // Get values once on mount
     const width = window.innerWidth;
@@ -28,6 +51,11 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess, test }) => {
       document.documentElement.clientHeight
     );
     setQrCodeBox(() => ({ height: height / 3.5, width: width / 1.3 }));
+    setVideoSize(() => ({
+      width: { ideal: width },
+      height: { ideal: height },
+    }));
+    setGetSize(true);
   }, []);
   const scannerRef = useRef<Html5QrcodeScanner | null>(null);
   const defaultvideoConstraints = {
@@ -38,24 +66,26 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess, test }) => {
   const defaultQrBox = { width: 350, height: 350 };
 
   useEffect(() => {
-    if (test !== null) {
+    if (test !== null && getSize) {
       const getVideoConstraints = test
         ? {
-            width: { ideal: 1600 },
-            height: { ideal: 1600 },
+            ...videoSize,
             facingMode: { exact: "environment" },
-            advanced: [{ zoom: 2 }, { focusMode: "continuous" }],
+            advanced: [{ zoom: 1.5 }, { focusMode: "continuous" }],
           }
         : defaultvideoConstraints;
       const getQrBox = test ? qrCodeBox : defaultQrBox;
-
+      console.log(getVideoConstraints);
       if (!scannerRef.current) {
         const scanner = new Html5QrcodeScanner(
           "qr-reader",
           {
             fps: 5,
             qrbox: getQrBox,
-            // supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
+            supportedScanTypes: [
+              Html5QrcodeScanType.SCAN_TYPE_CAMERA,
+              Html5QrcodeScanType.SCAN_TYPE_FILE,
+            ],
             formatsToSupport: [Html5QrcodeSupportedFormats.PDF_417],
             useBarCodeDetectorIfSupported: true,
             experimentalFeatures: {
@@ -65,7 +95,6 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess, test }) => {
             aspectRatio: 1.333334,
             disableFlip: false,
             rememberLastUsedCamera: true,
-            showTorchButtonIfSupported: true,
             videoConstraints: getVideoConstraints,
             // experimentalFeatures: {
             //   useBarCodeDetectorIfSupported: true, // uses native barcode scanning if available
@@ -79,7 +108,6 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess, test }) => {
             onScanSuccess(decodedResult);
           },
           (error) => {
-            console.log(error);
             // Optional failure callback
           }
         );
@@ -89,7 +117,7 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess, test }) => {
         }, 500);
       }
     }
-    console.log("running");
+
     return () => {
       scannerRef.current
         ?.clear()
@@ -100,8 +128,24 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess, test }) => {
           console.error("Clear error:", err);
         });
     };
-  }, [test]);
-
+  }, [getSize]);
+  // this part is for checking if the camera have permissions API
+  useEffect(() => {
+    navigator.permissions.query({ name: "camera" }).then((status) => {
+      if (status.state === "granted") {
+        waitForButton();
+      } else {
+        document.querySelector(
+          "#html5-qrcode-button-camera-permission"
+        ).innerText = "Will be Scan barcode";
+      }
+      let upload = document.querySelector(
+        "#html5-qrcode-anchor-scan-type-change"
+      );
+      upload.style.display = "block";
+      upload.innerText = "will be Upload an Image file";
+    });
+  }, []);
   return (
     <div
       style={{ width: "100%", height: "100%" }}
