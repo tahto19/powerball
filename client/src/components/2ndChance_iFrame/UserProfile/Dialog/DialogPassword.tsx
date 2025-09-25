@@ -54,7 +54,7 @@ export default function DialogPassword({ open }: { open: boolean }) {
     }
   };
   return (
-    <Dialog open={true}>
+    <Dialog open={open}>
       <DialogTitle>Changing Of Password</DialogTitle>
       <DialogContent>
         <form
