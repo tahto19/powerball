@@ -179,7 +179,7 @@ const Raffles = () => {
           display: "flex",
           gap: "18px",
           justifyContent: "center",
-          alignItems: "center",
+          // alignItems: "center",
           flexWrap: "wrap",
         }}
       >
@@ -191,11 +191,16 @@ const Raffles = () => {
             <Card
               key={i}
               sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
                 position: "relative",
-                width: "258px",
+                minWidth: "258px",
+                maxWidth: "258px",
                 height: "100%",
-                minHeight: "278px",
-                maxHeight: "318px",
+                flex: 1,
+                // minHeight: "278px",
+                // maxHeight: "318px",
                 padding: "12px",
                 borderRadius: "20px",
                 background: "#FFF",
@@ -207,7 +212,7 @@ const Raffles = () => {
                 {x.fileInfo ? (
                   <CardMedia
                     component="img"
-                    sx={{ height: "113px" }}
+                    // sx={{ height: "113px" }}
                     image={endpoint + x.fileInfo.id}
                     alt="Paella dish"
                   />
@@ -227,6 +232,7 @@ const Raffles = () => {
                         color: "text.secondary",
                         fontSize: "14px",
                         fontWeight: "500",
+                        textAlign: "center"
                       }}
                     >
                       {x.name}
@@ -258,7 +264,7 @@ const Raffles = () => {
                     </Typography>
                     {/* </Box> */}
                     <Typography
-                      sx={{ color: "text.secondary", fontSize: "14px" }}
+                      sx={{ color: "rgba(0,0,0,0.6) !important", fontSize: "13px", marginTop: "10px" }}
                     >
                       Draw on{" "}
                       {moment(x.raffleSchedule[0].schedule_date).format(
