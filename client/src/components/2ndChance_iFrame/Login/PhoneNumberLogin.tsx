@@ -148,7 +148,7 @@ const PhoneNumberLogin = () => {
         setPasswordError(false);
         setPasswordErrorMessage(null);
       }
-      if (mobileNumber) {
+      if (!mobileNumber) {
         setMobileNumberError(true);
         setMobileNumberErrorMessage("Required");
         return;
@@ -222,7 +222,6 @@ const PhoneNumberLogin = () => {
     }
   };
   const handleLogin = async (number?: string) => {
-    console.log(number);
     let tId = toast.loading("loading");
     setLoadingBtn(true);
     await delay(1000);
@@ -233,6 +232,7 @@ const PhoneNumberLogin = () => {
         type: "success",
         isLoading: false,
         closeButton: true,
+        autoClose: 1000,
       });
       await delay(1000);
       if (r_.result == "success") {
@@ -253,6 +253,7 @@ const PhoneNumberLogin = () => {
         type: "error",
         isLoading: false,
         closeButton: true,
+        autoClose: 1000,
       });
       setLoadingBtn(false);
     }
@@ -375,34 +376,38 @@ const PhoneNumberLogin = () => {
                                       }
                                     />
                                   </div>
-                                  <div className="elementor-field-type-text elementor-field-group elementor-column elementor-col-100 elementor-field-required">
-                                    <label
-                                      htmlFor="user-938a465"
-                                      className="elementor-field-label"
-                                    >
-                                      Password
-                                    </label>
-                                    <TextField
-                                      value={password ? password : ""}
-                                      onChange={(e: any) => {
-                                        setPassword(e.target.value);
-                                      }}
-                                      error={passwordError}
-                                      helperText={passwordErrorMessage}
-                                      id="password"
-                                      type="password"
-                                      name="password"
-                                      placeholder="password"
-                                      autoFocus
-                                      required
-                                      fullWidth
-                                      size="small"
-                                      variant="outlined"
-                                      color={
-                                        mobileNumberError ? "error" : "primary"
-                                      }
-                                    />
-                                  </div>
+                                  {!sentOtp && (
+                                    <div className="elementor-field-type-text elementor-field-group elementor-column elementor-col-100 elementor-field-required">
+                                      <label
+                                        htmlFor="user-938a465"
+                                        className="elementor-field-label"
+                                      >
+                                        Password
+                                      </label>
+                                      <TextField
+                                        value={password ? password : ""}
+                                        onChange={(e: any) => {
+                                          setPassword(e.target.value);
+                                        }}
+                                        error={passwordError}
+                                        helperText={passwordErrorMessage}
+                                        id="password"
+                                        type="password"
+                                        name="password"
+                                        placeholder="password"
+                                        autoFocus
+                                        required
+                                        fullWidth
+                                        size="small"
+                                        variant="outlined"
+                                        color={
+                                          mobileNumberError
+                                            ? "error"
+                                            : "primary"
+                                        }
+                                      />
+                                    </div>
+                                  )}
                                   {sentOtp && (
                                     <div className="elementor-field-type-text elementor-field-group elementor-column elementor-col-100 elementor-field-required">
                                       <label
@@ -429,26 +434,6 @@ const PhoneNumberLogin = () => {
                                           }
                                         }}
                                         length={6}
-                                      />
-                                      <TextField
-                                        value={password}
-                                        onChange={(e: any) => {
-                                          setPassword(e.target.value);
-                                        }}
-                                        error={passwordError}
-                                        helperText={passwordErrorMessage}
-                                        name="password"
-                                        placeholder="••••••"
-                                        type="password"
-                                        id="password"
-                                        autoFocus
-                                        required
-                                        fullWidth
-                                        size="small"
-                                        variant="outlined"
-                                        color={
-                                          passwordError ? "error" : "primary"
-                                        }
                                       />
                                     </div>
                                   )}
@@ -514,7 +499,7 @@ const PhoneNumberLogin = () => {
                                         }}
                                       >
                                         <span className="elementor-button-text">
-                                          Login
+                                          Submit OTP
                                         </span>
                                       </Button>
                                     </div>

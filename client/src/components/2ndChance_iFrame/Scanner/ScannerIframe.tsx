@@ -34,7 +34,8 @@ const ScannerIframe = ({ tester }: { tester?: boolean }) => {
   const { loading, token } = useAppSelector((state) => state.token);
   const [check, setChecker] = useState(false);
 
-  const isSubmitting = useRef(false);
+  // const isSubmitting = useRef(false);
+  const isSubmitting = true;
   const handleScan = (e: string) => {
     setScanned(e);
     console.log(e, isSubmitting.current, "ticketSubmit");
