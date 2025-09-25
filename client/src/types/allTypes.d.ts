@@ -170,3 +170,7 @@ export interface updateDataUserType {
   id?: number;
   permissions: any;
 }
+export type userPassword = {
+  password: null | string;
+  confirmPassword: null | string;
+};

@@ -1,3 +1,4 @@
+import { userPassword } from "@/types/allTypes";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Button,
@@ -17,10 +18,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 // import { useState } from "react";
-type userPassword = {
-  password: null | string;
-  confirmPassword: null | string;
-};
+
 export default function DialogPassword({ open }: { open: boolean }) {
   const [showPass, setShowPass] = useState(false);
   const {
@@ -36,17 +34,17 @@ export default function DialogPassword({ open }: { open: boolean }) {
     const { password, confirmPassword } = data;
     if (password !== confirmPassword) {
       if (getToastID === null) {
-        let a = toast.error("Password and Confirm password is not the same");
+        let a = toast.error("Your password and confirmation must match.");
         setToastID(a);
       } else {
         let b = toast.update(getToastID, {
           type: "error",
-          render: "Password and Confirm password is not the same",
+          render: "Your password and confirmation must match.",
           isLoading: false,
           autoClose: 300,
         });
         if (b === undefined) {
-          let a = toast.error("Password and Confirm password is not the same");
+          let a = toast.error("Your password and confirmation must match.");
           setToastID(a);
         }
       }
@@ -54,7 +52,7 @@ export default function DialogPassword({ open }: { open: boolean }) {
     }
   };
   return (
-    <Dialog open={open}>
+    <Dialog open={true}>
       <DialogTitle>Changing Of Password</DialogTitle>
       <DialogContent>
         <form

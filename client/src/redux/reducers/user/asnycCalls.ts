@@ -259,3 +259,20 @@ export const setUserToAdmin = createAsyncThunk(
     }
   }
 );
+export const applyForOTP = createAsyncThunk(
+  "user/updateToAdmin",
+  async (data: userPassword, { dispatch, getState }) => {
+    try {
+      const state = getState() as RootState;
+      const token = state.token.token;
+    } catch (err) {
+      let message = getMessage(err);
+      toast.update(tid, {
+        type: "error",
+        render: message,
+        isLoading: false,
+        hideProgressBar: true,
+      });
+    }
+  }
+);
