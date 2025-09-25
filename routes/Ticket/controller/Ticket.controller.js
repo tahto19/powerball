@@ -220,7 +220,7 @@ export const postTicketController = async (req, res) => {
       );
 
       if (getTicket.list.length > 0) {
-        throw new Error("This ticket has already been entered into the raffle");
+        throw new Error("ErrorCode x314");
       } else {
         let alpha_code = _r.data.t.split("-")[0];
         let getDetailsOfAlphaCode = await alphaCodeClass.FetchOne([
