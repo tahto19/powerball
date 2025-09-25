@@ -69,7 +69,7 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess, test }) => {
       const getVideoConstraints = test
         ? {
             ...videoSize,
-            // facingMode: { exact: "environment" },
+            facingMode: { exact: "environment" },
             advanced: [{ zoom: 1.9 }, { focusMode: "continuous" }],
           }
         : defaultvideoConstraints;
