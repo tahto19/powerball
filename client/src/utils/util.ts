@@ -108,7 +108,7 @@ const getErrorsStatus = (code: string) => {
     case "x15":
       return "No Data";
     case "x314":
-      return "This ticket has already been entered into the raffle";
+      return "This is an invalid ticket";
     default:
       return false;
   }
