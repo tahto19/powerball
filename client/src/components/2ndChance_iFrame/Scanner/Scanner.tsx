@@ -26,8 +26,10 @@ function waitForButton() {
   if (btn) {
     btn.click();
     let getSelectCamera = document.querySelector("#html5-qrcode-select-camera");
-    let getParentSelectCamera = getSelectCamera.parentElement;
-    // getParentSelectCamera.style.display = "none";
+    if (getSelectCamera) {
+      let getParentSelectCamera = getSelectCamera.parentElement;
+      // getParentSelectCamera.style.display = "none";
+    }
   } else {
     setTimeout(waitForButton, 100); // retry after 100ms
   }
