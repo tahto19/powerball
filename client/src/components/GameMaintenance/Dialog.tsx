@@ -511,7 +511,7 @@ const MyDialog = ({
               </Grid2>
               <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
                 <FormControl>
-                  <FormLabel htmlFor="more_details">Description</FormLabel>
+                  <FormLabel htmlFor="more_details">Short Description</FormLabel>
                   <TextField
                     id="more_details"
                     type="text"
@@ -521,7 +521,31 @@ const MyDialog = ({
                     maxRows={Infinity}
                     autoFocus
                     fullWidth
-                    value={formData.more_details}
+                    value={formData.short_details}
+                    onChange={(event) => handleInputChange(event)}
+                    variant="outlined"
+                    slotProps={{
+                      input: {
+                        readOnly: dialog_type === "View",
+                        style: { whiteSpace: "pre-line" },
+                      },
+                    }}
+                  />
+                </FormControl>
+              </Grid2>
+              <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                <FormControl>
+                  <FormLabel htmlFor="more_details">Full Description</FormLabel>
+                  <TextField
+                    id="more_details"
+                    type="text"
+                    name="more_details"
+                    placeholder=""
+                    multiline
+                    maxRows={Infinity}
+                    autoFocus
+                    fullWidth
+                    value={formData.full_details}
                     onChange={(event) => handleInputChange(event)}
                     variant="outlined"
                     slotProps={{

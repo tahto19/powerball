@@ -48,7 +48,12 @@ RaffleDetails.init(
         this.setDataValue("alpha_code", JSON.stringify(val));
       },
     },
-    more_details: {
+    full_details: {
+      type: DataTypes.TEXT("long"),
+      allowNull: true,
+      defaultValue: null,
+    },
+    short_details: {
       type: DataTypes.TEXT("long"),
       allowNull: true,
       defaultValue: null,

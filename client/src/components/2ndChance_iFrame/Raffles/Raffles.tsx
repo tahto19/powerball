@@ -257,7 +257,7 @@ const Raffles = () => {
                         marginBottom: "10px"
                       }}
                     >
-                      {x.more_details}
+                      {x.short_details}
                     </Typography>
                     {/* <Box sx={{
                       // display: "flex",
