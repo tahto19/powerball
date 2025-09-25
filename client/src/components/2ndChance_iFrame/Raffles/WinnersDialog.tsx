@@ -6,6 +6,7 @@ import {
     DialogTitle,
     Grid2,
     Typography,
+    IconButton
 } from "@mui/material";
 
 import {
@@ -15,10 +16,15 @@ import {
 import apiService from "@/services/apiService";
 import { useAppSelector } from "@/redux/hook";
 import { bodyDecrypt } from "@/utils/util";
+import { useMediaQuery, useTheme } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 
 const WinnersDialog = ({ data, open, onClose }: DialogProps) => {
     const [formData] = useState<RaffleState>(data);
     const { token } = useAppSelector((state) => state.token);
+
+    const theme = useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
     const [winners, setWinners] = useState<any[]>([]);
     const getWinners = async () => {
@@ -44,14 +50,28 @@ const WinnersDialog = ({ data, open, onClose }: DialogProps) => {
             <Dialog
                 open={open}
                 onClose={handleClose}
+                fullScreen={isSmallScreen ? true : false}
                 sx={{
                     "& .MuiPaper-root": {
-                        width: "30%",
-                        minWidth: "400px",
+                        width: isSmallScreen ? "100%" : "30%",
+                        minWidth: isSmallScreen ? "100%" : "400px",
                     },
                 }}
             >
-                <DialogTitle sx={{ border: "none" }}>Winners</DialogTitle>
+                <DialogTitle sx={{
+                    border: "none",
+                    display: "flex",
+                    gap: "20px",
+                    justifyContent: "space-between",
+                    alignItems: "center"
+                }}>Winners
+                    <IconButton
+                        onClick={handleClose}
+                        size="small"
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                </DialogTitle>
                 <DialogContent
                     sx={{
                         display: "flex",

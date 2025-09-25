@@ -24,7 +24,12 @@ import {
   Select,
   Autocomplete,
   Stack,
+  Typography,
+  IconButton
 } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
+import { useMediaQuery, useTheme } from "@mui/material";
+
 import MuiFormControl from "@mui/material/FormControl";
 import { styled } from "@mui/material/styles";
 import { useState, useEffect } from "react";
@@ -40,9 +45,13 @@ const MyDialog = ({
   onClose,
   onSubmit,
 }: // totalEntries,
-// totalUsedEntries,
-// btnLoading,
-DialogProps) => {
+  // totalUsedEntries,
+  // btnLoading,
+  DialogProps) => {
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   const dispatch = useAppDispatch();
   const [formData, setData] = useState<RaffleState>(data);
   const [alphaCodeChosen, setAlphaCodeChosen] = useState([]);
@@ -89,15 +98,41 @@ DialogProps) => {
       <Dialog
         open={open}
         onClose={handleClose}
+        fullScreen={isSmallScreen ? true : false}
       >
-        <form>
-          <DialogTitle>Participate</DialogTitle>
+        <form style={{
+          width: isSmallScreen ? "100%" : "600px"
+        }}>
+          <DialogTitle sx={{
+            display: "flex",
+            gap: "20px",
+            justifyContent: "space-between",
+            alignItems: "center"
+          }}>Participate
+            <IconButton
+              onClick={handleClose}
+              size="small"
+            >
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
           <DialogContent
             sx={{
               display: "flex",
               flexDirection: "column",
             }}
           >
+            <Typography
+              sx={{
+                color: "text.secondary",
+                fontSize: "14px",
+                lineHeight: '21px',
+                marginBottom: "30px",
+                whiteSpace: "pre-line",
+              }}
+            >
+              {formData.more_details}
+            </Typography>
             <Grid2
               container
               spacing={2}
@@ -107,17 +142,21 @@ DialogProps) => {
                 <FormControl>
                   <FormLabel htmlFor="details">Tickets</FormLabel>
                   <Autocomplete
+                    sx={{
+                      "& .MuiInputBase-root": {
+                        height: "auto",
+                      },
+                    }}
                     noOptionsText={"No Tickets"}
                     options={details ? details : []}
                     getOptionLabel={(option) =>
-                      `${option.alpha_code} entries: ${
-                        option.totalEntries - option.totalUsedEntries
+                      `${option.alpha_code} entries: ${option.totalEntries - option.totalUsedEntries
                       }`
                     }
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        variant="filled"
+
                         placeholder="Tickets"
                         helperText={
                           totalEntriesAlphaCodeSelected
@@ -229,11 +268,10 @@ DialogProps) => {
                             }));
                           }
                         }}
-                        helperText={`Total Entries Remaining: ${
-                          totalEntries !== null && totalUsedEntries !== null
-                            ? totalEntries - totalUsedEntries
-                            : "loading" + totalUsedEntries + totalEntries
-                        }`}
+                        helperText={`Total Entries Remaining: ${totalEntries !== null && totalUsedEntries !== null
+                          ? totalEntries - totalUsedEntries
+                          : "loading" + totalUsedEntries + totalEntries
+                          }`}
                       />
                     </Grid2>
                   );
@@ -252,7 +290,7 @@ DialogProps) => {
                     fullWidth
                     variant="outlined"
                     disabled
-                    sx={{ color: "black !important" }}
+                    sx={{ color: "black !important", "& .MuiInputBase-root": { height: "54.73px !important" } }}
                     value={entriesDetails.entries}
                     onChange={(e) => {
                       let getTotal =
@@ -276,11 +314,10 @@ DialogProps) => {
                         }));
                       }
                     }}
-                    helperText={`Total Entries Remaining: ${
-                      totalEntries !== null && totalUsedEntries !== null
-                        ? totalEntries - totalUsedEntries
-                        : "loading" + totalUsedEntries + totalEntries
-                    }`}
+                    helperText={`Total Entries Remaining: ${totalEntries !== null && totalUsedEntries !== null
+                      ? totalEntries - totalUsedEntries
+                      : "loading" + totalUsedEntries + totalEntries
+                      }`}
                   />
                 </FormControl>
               </Grid2>

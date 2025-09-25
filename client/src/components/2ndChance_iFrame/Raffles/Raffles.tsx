@@ -193,7 +193,9 @@ const Raffles = () => {
               sx={{
                 position: "relative",
                 width: "258px",
-                height: "288px",
+                height: "100%",
+                minHeight: "278px",
+                maxHeight: "318px",
                 padding: "12px",
                 borderRadius: "20px",
                 background: "#FFF",
@@ -237,16 +239,24 @@ const Raffles = () => {
                       flexDirection: "column",
                     }}
                   >
+
+                    {/* <Box sx={{
+                      // display: "flex",
+                      // flexWrap: "wrap",
+                      // gap: "10px",
+                      // justifyContent: "space-between"
+                    }}> */}
                     <Typography
-                      sx={{ color: "text.secondary", fontSize: "14px" }}
+                      sx={{ fontSize: "14px" }}
                     >
-                      Total Entries: {x.totalEntries}
+                      <b> Total Entries:</b> {x.totalEntries}
                     </Typography>
                     <Typography
-                      sx={{ color: "text.secondary", fontSize: "14px" }}
+                      sx={{ fontSize: "14px" }}
                     >
-                      Your Entries: {x.yourEntries}
+                      <b>Your Entries:</b> {x.yourEntries}
                     </Typography>
+                    {/* </Box> */}
                     <Typography
                       sx={{ color: "text.secondary", fontSize: "14px" }}
                     >

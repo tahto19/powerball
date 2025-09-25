@@ -49,7 +49,7 @@ RaffleDetails.init(
       },
     },
     more_details: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT("long"),
       allowNull: true,
       defaultValue: null,
     },

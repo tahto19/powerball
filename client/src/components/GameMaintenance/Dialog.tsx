@@ -250,6 +250,9 @@ const MyDialog = ({
           number_of_winners: x.number_of_winners,
         })),
       };
+
+      console.log(payload)
+
       if (dialogType === "Edit") {
         res = await apiService.updateGM(payload, token);
         message = "Record updated successfully.";
@@ -257,7 +260,6 @@ const MyDialog = ({
         res = await apiService.createGM(payload, token);
         message = "Record created successfully.";
       }
-
       const d = bodyDecrypt(res.data, token);
       if (d && d.success === "success") {
         dispatch(
@@ -509,7 +511,32 @@ const MyDialog = ({
                   </TextField>
                 </FormControl>
               </Grid2>
+              <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                <FormControl>
+                  <FormLabel htmlFor="more_details">Description</FormLabel>
+                  <TextField
+                    id="more_details"
+                    type="text"
+                    name="more_details"
+                    placeholder=""
+                    multiline
 
+
+                    maxRows={Infinity}
+                    autoFocus
+                    fullWidth
+                    value={formData.more_details}
+                    onChange={(event) => handleInputChange(event)}
+                    variant="outlined"
+                    slotProps={{
+                      input: {
+                        readOnly: dialog_type === "View",
+                        style: { whiteSpace: "pre-line" },
+                      },
+                    }}
+                  />
+                </FormControl>
+              </Grid2>
               <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
                 <FormControl>
                   <FormLabel htmlFor="value">Start Date</FormLabel>
@@ -649,7 +676,7 @@ const MyDialog = ({
                       <TextField
                         {...params}
                         name="alpha_code"
-                        // placeholder="e.g. GB, G20, RH"
+                      // placeholder="e.g. GB, G20, RH"
                       />
                     )}
                     sx={{

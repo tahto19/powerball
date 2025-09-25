@@ -399,24 +399,37 @@ export const inputsCustomizations: Components<Theme> = {
                         borderColor: gray[500],
                     },
                 }),
-                variants: [
-                    {
-                        props: {
-                            size: 'small',
-                        },
-                        style: {
-                            height: '2.25rem',
-                        },
+                // variants: [
+                //     {
+                //         props: {
+                //             size: 'small',
+                //         },
+                //         style: {
+                //             height: '2.25rem',
+                //         },
+                //     },
+                //     {
+                //         props: {
+                //             size: 'medium',
+                //         },
+                //         style: {
+                //             height: '2.5rem',
+                //         },
+                //     },
+                // ],
+
+
+                // ✅ Only apply fixed heights if NOT multiline
+                '&:not(.MuiInputBase-multiline)': {
+                    '&.MuiOutlinedInput-sizeSmall': {
+                        height: '2.25rem',
                     },
-                    {
-                        props: {
-                            size: 'medium',
-                        },
-                        style: {
-                            height: '2.5rem',
-                        },
+                    '&.MuiOutlinedInput-sizeMedium': {
+                        height: '2.5rem',
                     },
-                ],
+                },
+
+
             }),
             notchedOutline: {
                 border: 'none',
