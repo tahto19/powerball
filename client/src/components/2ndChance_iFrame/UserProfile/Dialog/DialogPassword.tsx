@@ -147,15 +147,15 @@ export default function DialogPassword({
                 }}
                 {...register("password", {
                   required: true,
-                  // minLength: {
-                  //   value: 6,
-                  //   message: "At least 6 characters required",
-                  // },
-                  // pattern: {
-                  //   value: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])/,
-                  //   message:
-                  //     "Must include uppercase, lowercase  number, and special character",
-                  // },
+                  minLength: {
+                    value: 6,
+                    message: "At least 6 characters required",
+                  },
+                  pattern: {
+                    value: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])/,
+                    message:
+                      "Must include uppercase, lowercase  number, and special character",
+                  },
                 })}
                 // value={details.password}
                 // onChange={(e) => {
@@ -183,7 +183,7 @@ export default function DialogPassword({
                 )}
             </FormControl>
             <FormControl fullWidth>
-              <FormLabel htmlFor="password">Password</FormLabel>
+              <FormLabel htmlFor="password">Confirm Password</FormLabel>
               <TextField
                 type="password"
                 placeholder=""
@@ -199,15 +199,15 @@ export default function DialogPassword({
                 variant="outlined"
                 {...register("confirmPassword", {
                   required: true,
-                  // minLength: {
-                  //   value: 6,
-                  //   message: "At least 6 characters required",
-                  // },
-                  // pattern: {
-                  //   value: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])/,
-                  //   message:
-                  //     "Must include uppercase, lowercase  number, and special character",
-                  // },
+                  minLength: {
+                    value: 6,
+                    message: "At least 6 characters required",
+                  },
+                  pattern: {
+                    value: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])/,
+                    message:
+                      "Must include uppercase, lowercase  number, and special character",
+                  },
                 })}
                 // value={details.password}
                 // onChange={(e) => {
