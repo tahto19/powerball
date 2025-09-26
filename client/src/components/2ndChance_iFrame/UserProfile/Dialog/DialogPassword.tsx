@@ -245,12 +245,13 @@ export default function DialogPassword({
                       inputMode: "numeric",
                       pattern: "[0-9]*",
                     },
-                    variant: "outlined",
+                    variant: "filled",
                     size: "small",
-                    sx: { width: "16%" }, // custom styling
+                    sx: { width: "70%" }, // custom styling
                   }}
                   value={!otp ? "" : otp}
                   autoFocus
+                  gap={1}
                   onChange={(e: any) => {
                     if (!disableBtn) {
                       setOTP(e);
