@@ -3,3 +3,7 @@ export type veriyCode = {
   id: number | null;
   toastID?: number | null;
 };
+export type verifyAndChangePassword = {
+  otp: string | null;
+  password: string | null;
+};

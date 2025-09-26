@@ -102,13 +102,18 @@ const getErrorsStatus = (code: string) => {
     case "x12":
       return "Scan Error. Please call (0917) 188 5885 or (0919) 099 1999 for assistance";
     case "x13":
-      return "Not a valid Ticket";
+      return "This is a winning ticket and is not eligible for he raffle draw";
     case "x876":
       return "No eligible tickets found for the draw";
     case "x15":
       return "No Data";
     case "x314":
-      return "This is an invalid ticket";
+      return "This ticket has already been entered into the raffle";
+    case "x944":
+      return "Expired OTP";
+    case "x971":
+      return "The raffle hasn't started yet. Please check back later.";
+
     default:
       return false;
   }

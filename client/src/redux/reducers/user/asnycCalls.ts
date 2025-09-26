@@ -5,7 +5,7 @@ import { addOTP, addUser, addUserDetails } from "./userSlice";
 import apiService from "@/services/apiService";
 import { showToaster } from "../global/globalSlice";
 import { bodyDecrypt, bodyEncrypt, delay, getMessage } from "@/utils/util";
-import { veriyCode } from "@/services/types/user";
+import { verifyAndChangePassword, veriyCode } from "@/services/types/user";
 import { RootState } from "@/redux/store";
 import { adminType, getData, postAdminType } from "@/types/allTypes";
 import {
@@ -260,19 +260,68 @@ export const setUserToAdmin = createAsyncThunk(
   }
 );
 export const applyForOTP = createAsyncThunk(
-  "user/updateToAdmin",
+  "user/apply",
   async (data: userPassword, { dispatch, getState }) => {
+    const tid = toast.loading("Updating");
     try {
       const state = getState() as RootState;
       const token = state.token.token;
+      const _r = await apiService.createOTPForChangePassword();
+      toast.update(tid, {
+        type: "success",
+        render: "Sent OTP to your mobile number",
+        isLoading: false,
+        hideProgressBar: false,
+        autoClose: 500,
+      });
+      return true;
     } catch (err) {
       let message = getMessage(err);
       toast.update(tid, {
         type: "error",
         render: message,
         isLoading: false,
-        hideProgressBar: true,
+        hideProgressBar: false,
+        autoClose: 2000,
       });
+      return false;
+    }
+  }
+);
+
+export const verifyOTPForChangePassword = createAsyncThunk(
+  "user/verifyAccount",
+  async (data: verifyAndChangePassword, { dispatch, getState }) => {
+    const state = getState() as RootState;
+    const token = state.token.token;
+    const toastId = toast.loading("Verifying OTP");
+    try {
+      await delay(1000);
+      await apiService.verifyOTPForChangePassword(data, token);
+
+      toast.update(toastId, {
+        render: "successfully verified...Please Wait Still creating an account",
+        type: "info",
+        isLoading: false,
+        autoClose: 2000,
+      });
+      await delay(553);
+      toast.update(toastId, {
+        render: "Successfully change password",
+        type: "success",
+        isLoading: false,
+        autoClose: 2000,
+      });
+      return true;
+    } catch (err) {
+      let m = getMessage(err);
+      toast.update(toastId, {
+        render: m,
+        type: "error",
+        isLoading: false,
+        autoClose: 2000,
+      });
+      return false;
     }
   }
 );

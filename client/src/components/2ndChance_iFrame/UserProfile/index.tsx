@@ -16,7 +16,7 @@ import {
   InputLabel,
   MenuItem,
 } from "@mui/material";
-import { CameraAlt, Female, Male } from "@mui/icons-material";
+import { CameraAlt, Clear, Female, Male } from "@mui/icons-material";
 import rectangle from "@/assets/images/Rectangle 6691.png";
 import { useSelector } from "react-redux";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
@@ -49,7 +49,7 @@ const main = () => {
   const [phoneError, setPhoneError] = useState("");
   const { token } = useAppSelector((state) => state.token);
   const [change, setChange] = useState(false);
-  const [openCP, setOpenCP] = useState(true);
+  const [openCP, setOpenCP] = useState(false);
   useEffect(() => {
     setFormData(userDetails);
   }, [userDetails]);
@@ -136,7 +136,9 @@ const main = () => {
     dispatch(getUser());
     refreshImage();
   };
-
+  const closeDialog = () => {
+    setOpenCP(false);
+  };
   const onDrop = useCallback((acceptedFiles: File[]) => {
     // Do something with the files
     setFormData((prev) => ({
@@ -156,7 +158,10 @@ const main = () => {
 
   return (
     <>
-      <DialogPassword open={open} />
+      <DialogPassword
+        open={openCP}
+        closeDialog={closeDialog}
+      />
       <Box></Box>
       <Card
         sx={{
@@ -426,13 +431,16 @@ const main = () => {
                   <Select
                     labelId="demo-customized-select-label"
                     id="demo-customized-select"
-                    value={formData.gender}
+                    value={!formData.gender ? "" : formData.gender}
                     onChange={(e) => {
                       setFormData((prev) => {
                         return { ...prev, gender: e.target.value };
                       });
                     }}
                   >
+                    <MenuItem value="">
+                      <Clear sx={{ fill: "red" }} />
+                    </MenuItem>
                     <MenuItem value="Female">
                       <Female sx={{ fill: "pink" }} />
                       Female
@@ -445,7 +453,12 @@ const main = () => {
                 </FormControl>
               </Grid2>
               <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
-                <Button variant="contained">Change Password</Button>
+                <Button
+                  variant="contained"
+                  onClick={() => setOpenCP(true)}
+                >
+                  Change Password
+                </Button>
               </Grid2>
               <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
                 <Divider></Divider>

@@ -268,6 +268,17 @@ export const apiService = {
       mobileNumber: d.mobileNumber,
     });
   },
+  createOTPForChangePassword: async () => {
+    return apiClient.get("/api/otp/changePassword");
+  },
+  verifyOTPForChangePassword: async (
+    data: verifyAndChangePassword,
+    token: string
+  ) => {
+    return apiClient.put("/api/users/verifyForChangePassword", {
+      data: bodyEncrypt(JSON.stringify(data), token),
+    });
+  },
   verifyOTP: async (data: veriyCode) => {
     return apiClient.post("/api/otp/verify", data);
   },
