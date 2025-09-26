@@ -247,7 +247,7 @@ export default function DialogPassword({
                     },
                     variant: "outlined",
                     size: "small",
-                    sx: { width: 40, mx: 0.5 }, // custom styling
+                    sx: { width: "16%" }, // custom styling
                   }}
                   value={!otp ? "" : otp}
                   autoFocus
