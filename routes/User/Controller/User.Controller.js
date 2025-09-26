@@ -17,6 +17,7 @@ import tdc from "../../Ticket/lib/Ticket.class.js";
 import fs from "fs";
 import AuditTrail from "../../../models/AuditTrail.js";
 import utc from "../../UserType/lib/UserType.class.js";
+import OTPClass from "../../OTP/Class/OTP.class.js";
 export const getController = async (req, res) => {
   const { offset, limit, sort, filter } = req.body;
 
@@ -227,6 +228,86 @@ export const getUserController = async (req, res) => {
     res.send(cSend(r_toJson));
   } catch (err) {
     console.log(err);
+    throw err;
+  }
+};
+export const verifyCodeAndUpdateUserController = async (req, res) => {
+  try {
+    const { password, otp } = req.body;
+    if (!password) throw new Error("ErrorCode x764");
+
+    const user_id = req.user_id;
+
+    const fUser = await uc.FetchOneV2([
+      {
+        filter: user_id,
+        field: "id",
+        type: "number",
+      },
+    ]);
+
+    if (!fUser) throw new Error("ErrorCode x910");
+    let toJSONUser = fUser.toJSON();
+    if (!toJSONUser.mobileNumber || toJSONUser.mobileNumber === "")
+      throw new Error("ErrorCode x414");
+    console.log(toJSONUser);
+    let platform = req.headers.platform;
+    let platformversion = req.headers.platformversion;
+    let mobile = req.headers["pm-scratch-it-m"];
+    let ip_address =
+      req.ip || req.headers["x-forwarded-for"] || req.connection?.remoteAddress;
+    let mobileNumber = toJSONUser.mobileNumber;
+
+    let getOTP = await OTPClass.FetchOne([
+      {
+        filter: mobileNumber,
+        field: "mobileNumber",
+        type: "string_eq",
+      },
+      {
+        filter: false,
+        field: "auth",
+        type: "boolean",
+      },
+      {
+        filter: otp,
+        field: "code",
+        type: "string_eq",
+      },
+      {
+        filter: platform,
+        field: "platform",
+        type: "string_eq",
+      },
+      {
+        filter: platformversion,
+        field: "platformversion",
+        type: "string_eq",
+      },
+      {
+        filter: mobile,
+        field: "mobile",
+        type: "string_eq",
+      },
+      {
+        filter: ip_address,
+        field: "ip_address",
+        type: "string_eq",
+      },
+    ]);
+    if (!getOTP) throw new Error("ErrorCode x58");
+    // console.log(getOTP.toJSON());
+    let otpDetails = getOTP.toJSON();
+    let getTime = moment(moment()).diff(otpDetails.updatedAt, "minutes");
+    if (getTime > 5) {
+      throw new Error("ErrorCode x944");
+    }
+    // update OTP
+    await OTPClass.Edit({ auth: true, id: getOTP.id });
+    // update password
+    await uc.Edit({ id: user_id, password: password });
+    res.send({ message: "successful" });
+  } catch (err) {
     throw err;
   }
 };

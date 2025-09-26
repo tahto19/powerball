@@ -125,7 +125,7 @@ class User_class {
       ],
     };
     query["where"] = WhereFilters(filter);
-    console.log(query);
+    console.log(query["where"]);
     let list = await Users.findOne(query);
     return list;
   }

@@ -2,20 +2,29 @@ import RaffleClass from "../../GameMaintenance/lib/Raffle.class.js";
 import winnerClass from "../../winnerEntries/lib/WinnerEntries.class.js";
 import td from "../../Ticket/lib/Ticket.class.js";
 import th from "../lib/raffleHistory.class.js";
+import moment from "moment";
 export const insertRaffleHistoryController = async (req, res) => {
   try {
     const { entriesDetails, alphaCodeChosen } = req.body;
     const { raffle_id, entries } = entriesDetails;
     let getAlphaCode_chosen = alphaCodeChosen.map((v) => v.alpha_code);
+    const getRaffleInfo = await RaffleClass.getRaffleSchedule([
+      { field: "id", filter: raffle_id, type: "number" },
+    ]);
+
+    // first check if the raffle is already drawn
+
+    let getRaffleStartDate = getRaffleInfo.raffleDetails.starting_date;
+
+    let dateDiff = moment().diff(getRaffleStartDate, "minutes");
+    console.log(dateDiff, "minutesdif");
+    if (dateDiff < 1) throw new Error("ErrorCode x971");
+
+    if (getRaffleInfo.length === 0) throw new Error("ErrorCode x999");
     for (let aac of alphaCodeChosen) {
       getAlphaCode_chosen = aac.alpha_code;
       if (aac.entriesInput === "") throw new Error("ERRORCode X921");
-      const getRaffleInfo = await RaffleClass.getRaffleSchedule([
-        { field: "id", filter: raffle_id, type: "number" },
-      ]);
 
-      // first check if the raffle is already drawn
-      if (getRaffleInfo.length === 0) throw new Error("ErrorCode x999");
       let getWinners = await winnerClass.FetchWithInclude({
         limit: 5,
         sort: [],
@@ -29,7 +38,7 @@ export const insertRaffleHistoryController = async (req, res) => {
         ],
         offset: 0,
       });
-      // if (getWinners.count > 0) throw new Error("ErrorCode x663");
+      if (getWinners.count > 0) throw new Error("ErrorCode x663");
 
       let getAlphaCode = getRaffleInfo.raffleDetails.alpha_code;
 

@@ -4,6 +4,7 @@ import {
   insertController,
   updateController,
   getUserController,
+  verifyCodeAndUpdateUserController,
 } from "../Controller/User.Controller.js";
 
 export const getSchema = {
@@ -67,5 +68,16 @@ export const getUserSchema = {
     emailAddres: { type: "string" },
     mobileNumber: { type: "string" },
     id: { type: "string" },
+  },
+};
+export const verifyCodeAndUpdateUserSchema = {
+  handler: verifyCodeAndUpdateUserController,
+  schema: {
+    type: "object",
+    properties: {
+      otp: { type: "string" },
+      password: { type: "string" },
+    },
+    required: ["otp", "password"],
   },
 };

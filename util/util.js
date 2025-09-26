@@ -224,6 +224,7 @@ If you did not request to log in to the Scratch It website, please ignore this m
         if (err) throw new Error(err);
       }
     );
+    console.log("send otp");
   } catch (err) {
     console.log(err, "heree");
   }

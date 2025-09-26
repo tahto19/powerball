@@ -10,7 +10,7 @@ import OTPClass from "../Class/OTP.class.js";
 export const createOTPController = async (req, res) => {
   try {
     const { emailAddress, outside, mobileNumber } = req.body;
-    console.log(req.body);
+
     let platform = req.headers.platform;
     let platformversion = req.headers.platformversion;
     let mobile = req.headers["pm-scratch-it-m"];
@@ -109,6 +109,73 @@ export const verifyCodeController = async (req, res) => {
     if (_r === null) throw new Error("ErrorCODE x58");
     else res.send(cSend("VERIFIED"));
   } catch (err) {
+    throw err;
+  }
+};
+export const createOTPForPasswordController = async (req, res) => {
+  try {
+    let user_id = req.user_id;
+    // get User first
+
+    let fUser = await UserClass.FetchOneV2([
+      { filter: user_id, field: "id", type: "number" },
+    ]);
+
+    if (!fUser) throw new Error("ErrorCode x910");
+    let toJSONUser = fUser.toJSON();
+
+    if (!toJSONUser.mobileNumber || toJSONUser.mobileNumber === "")
+      throw new Error("ErrorCode x414");
+    let platform = req.headers.platform;
+    let platformversion = req.headers.platformversion;
+    let mobile = req.headers["pm-scratch-it-m"];
+    let ip_address =
+      req.ip || req.headers["x-forwarded-for"] || req.connection?.remoteAddress;
+    //  this part is to check if already created or not
+
+    let mobileNumber = toJSONUser.mobileNumber;
+    // let mobileNumber = "09679669052";
+    let getID = await OTPClass.upsert(
+      [
+        {
+          filter: mobileNumber,
+          field: "mobileNumber",
+          type: "string_eq",
+        },
+        {
+          filter: false,
+          field: "auth",
+          type: "boolean",
+        },
+        {
+          filter: platform,
+          field: "platform",
+          type: "string_eq",
+        },
+        {
+          filter: platformversion,
+          field: "platformversion",
+          type: "string_eq",
+        },
+        {
+          filter: mobile,
+          field: "mobile",
+          type: "string_eq",
+        },
+        {
+          filter: ip_address,
+          field: "ip_address",
+          type: "string_eq",
+        },
+      ],
+      { platform, platformversion, mobile, ip_address, mobileNumber }
+    );
+
+    if (!getID)
+      throw new Error("error in upsert check here it should not be error");
+    res.send({ message: "success" });
+  } catch (err) {
+    console.log(err);
     throw err;
   }
 };

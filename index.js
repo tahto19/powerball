@@ -94,7 +94,9 @@ const fastify = Fastify({
  * x876 all user already won
  * x314 This ticket has already been entered into the raffle
  * x12  "Scan Error. Please call (0917) 188 5885 or (0919) 099 1999 for assistance"
- * x13 "This is a winning ticket and is not eligible for raffle draw"
+ * x13 "Not a valid Ticket"
+ * x414 no mobile number found
+ * x944 Expired OTP
  */
 
 /**
@@ -155,6 +157,7 @@ const start = async () => {
     });
     //cookie setter
     fastify.register(import("@fastify/cookie"), {
+      cookie: { maxAge: 180 * 24 * 60 * 60 * 1000 },
       parseOptions: { sameSite: "lax" },
       secret: process.env.COOKIE_SECRET, // for cookies signature
       // hook: "onRequest", // set to false to disable cookie autoparsing or set autoparsing on any of the following hooks: 'onRequest', 'preParsing', 'preHandler', 'preValidation'. default: 'onRequest'

@@ -1,4 +1,4 @@
-import { WhereFilters } from "../../../util/util.js";
+import { generateRandomNumber, WhereFilters } from "../../../util/util.js";
 
 import OTP from "../../../models/OTP.model.js";
 class OTP_class {
@@ -48,7 +48,7 @@ class OTP_class {
     if (filter.length === 0) throw new Error("ErrorCode X1");
     let query = {};
     query["where"] = WhereFilters(filter);
-
+    console.log(query["where"]);
     let list = await OTP.findOne(query);
     return list;
   }
@@ -66,19 +66,15 @@ class OTP_class {
   }
   async upsert(filter, data) {
     let list = await this.FetchOne(filter);
-    if (list.list === null) {
+    if (list === null) {
       let id = await this.Insert(data);
-      let list = await this.FetchOne([
-        {
-          field: "id",
-          type: "number",
-          filter: id,
-        },
-      ]);
-      return list;
+
+      return id.toJSON();
     } else {
-      const a = await this.Edit(list.list.toJSON());
-      return list;
+      let b = { ...list.toJSON() };
+      if (!b.auth) b.code = generateRandomNumber().toString();
+      const a = await this.Edit(b);
+      return a.toJSON();
     }
   }
 }

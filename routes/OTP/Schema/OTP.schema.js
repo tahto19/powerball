@@ -1,5 +1,6 @@
 import {
   createOTPController,
+  createOTPForPasswordController,
   verifyCodeController,
 } from "../Controller/OTP.controller.js";
 
@@ -28,4 +29,8 @@ export const verifyCodeSchema = {
       },
     },
   },
+};
+
+export const createOTPForPasswordSchema = {
+  handler: createOTPForPasswordController,
 };
