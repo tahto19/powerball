@@ -17,7 +17,6 @@ import {
   Grid2,
   IconButton,
   InputAdornment,
-  styled,
   TextField,
   Typography,
 } from "@mui/material";
@@ -28,10 +27,6 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 // import { useState } from "react";
 
-const MuiOtpInputStyled = styled(MuiOtpInput)`
-  display: flex;
-  margin-inline: auto;
-`;
 export default function DialogPassword({
   open,
   closeDialog,
@@ -244,9 +239,16 @@ export default function DialogPassword({
             <Grid2 size={{ lg: 12, md: 12 }}>
               <FormControl fullWidth>
                 <FormLabel htmlFor="password">OTP</FormLabel>
-                <MuiOtpInputStyled
-                  className="MuiOtpInput-TextField"
-                  TextFieldsProps={{ placeholder: "-" }}
+                <MuiOtpInput
+                  TextFieldsProps={{
+                    inputProps: {
+                      inputMode: "numeric",
+                      pattern: "[0-9]*",
+                    },
+                    variant: "outlined",
+                    size: "small",
+                    sx: { width: 40, mx: 0.5 }, // custom styling
+                  }}
                   value={!otp ? "" : otp}
                   autoFocus
                   onChange={(e: any) => {
