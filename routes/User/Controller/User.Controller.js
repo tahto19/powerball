@@ -92,7 +92,7 @@ export const updateController = async (req, res) => {
       gender,
     };
     if (!validator.isEmail(emailAddress)) {
-      throw new Error("ErrorCode X741");
+      throw new Error("ErrorCode X743");
     }
     const checkEmailExists = await uc.FetchOneV2([
       {
