@@ -18,6 +18,7 @@ import fs from "fs";
 import AuditTrail from "../../../models/AuditTrail.js";
 import utc from "../../UserType/lib/UserType.class.js";
 import OTPClass from "../../OTP/Class/OTP.class.js";
+import validator from "validator";
 export const getController = async (req, res) => {
   const { offset, limit, sort, filter } = req.body;
 
@@ -57,75 +58,84 @@ export const insertController = async (req, res) => {
   res.send(cSend(a));
 };
 export const updateController = async (req, res) => {
-  const {
-    id,
-    firstname,
-    file,
-    lastname,
-    mobileNumber,
-    birthdate,
-    emailAddress,
-    password,
-    isAdmin,
-    city,
-    province,
-    barangay,
-    hbnandstr,
-    gender,
-  } = req.body;
+  try {
+    const {
+      id,
+      firstname,
+      file,
+      lastname,
+      mobileNumber,
+      birthdate,
+      emailAddress,
+      password,
+      isAdmin,
+      city,
+      province,
+      barangay,
+      hbnandstr,
+      gender,
+    } = req.body;
 
-  let data = {
-    id,
-    firstname,
-    lastname,
-    password,
-    emailAddress,
-    mobileNumber,
-    birthdate,
-    isAdmin,
-    city,
-    province,
-    barangay,
-    hbnandstr,
-    gender,
-  };
-  const checkEmailExists = await uc.FetchOneV2([
-    {
-      filter: encrpytPassword(emailAddress),
-      type: "string_eq",
-      field: "emailAddress",
-    },
-  ]);
-
-  if (checkEmailExists) {
-    let v = checkEmailExists.toJSON();
-    if (data.id !== v.id) throw new Error("errorcode x909");
-  }
-
-  const checkMobile = await uc.FetchOneV2([
-    { filter: mobileNumber, type: "string_eq", field: "mobileNumber" },
-  ]);
-  if (checkMobile) {
-    let v = checkMobile.toJSON();
-    if (data.id !== v.id) throw new Error("errorcode x908");
-  }
-  if (file) {
-    if (!file.mimetype.startsWith("image/")) throw new Error("ErrorCODE x91c");
-
-    let newFileName = `${moment().format(
-      "MM-DD-YYYY"
-    )}-${generateRandomNumber()}-${generateRandomChar(5)}-${file.filename}`;
-    let _path = getPath("/uploads/ids/" + newFileName);
-
-    let iUp = await uploadImage(file);
-    data = {
-      ...data,
-      idPath: iUp.filename,
+    let data = {
+      id,
+      firstname,
+      lastname,
+      password,
+      emailAddress,
+      mobileNumber,
+      birthdate,
+      isAdmin,
+      city,
+      province,
+      barangay,
+      hbnandstr,
+      gender,
     };
-  }
+    if (!validator.isEmail(emailAddress)) {
+      throw new Error("ErrorCode X741");
+    }
+    const checkEmailExists = await uc.FetchOneV2([
+      {
+        filter: encrpytPassword(emailAddress),
+        type: "string_eq",
+        field: "emailAddress",
+      },
+    ]);
 
-  let a = await uc.Edit(data);
-  res.send(cSend(a));
+    if (checkEmailExists) {
+      let v = checkEmailExists.toJSON();
+      if (data.id !== v.id) throw new Error("errorcode x909");
+    }
+
+    const checkMobile = await uc.FetchOneV2([
+      { filter: mobileNumber, type: "string_eq", field: "mobileNumber" },
+    ]);
+    if (checkMobile) {
+      let v = checkMobile.toJSON();
+      if (data.id !== v.id) throw new Error("errorcode x908");
+    }
+    if (file) {
+      if (!file.mimetype.startsWith("image/"))
+        throw new Error("ErrorCODE x91c");
+
+      let newFileName = `${moment().format(
+        "MM-DD-YYYY"
+      )}-${generateRandomNumber()}-${generateRandomChar(5)}-${file.filename}`;
+      let _path = getPath("/uploads/ids/" + newFileName);
+
+      let iUp = await uploadImage(file);
+      data = {
+        ...data,
+        idPath: iUp.filename,
+      };
+    }
+
+    let a = await uc.Edit(data);
+    res.send(cSend(a));
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
 };
 
 export const createUser = async (req, res) => {

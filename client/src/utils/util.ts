@@ -113,6 +113,8 @@ const getErrorsStatus = (code: string) => {
       return "Expired OTP";
     case "x971":
       return "The raffle hasn't started yet. Please check back later.";
+    case "X743":
+      return "Invalid Email Format";
 
     default:
       return false;

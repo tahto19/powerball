@@ -202,11 +202,20 @@ export const postTicketController = async (req, res) => {
     // _r.data.r.trim() === "This is a non-winning ticket." ||
     if (_r.data.r.trim() === "Error checking ticket.") {
       throw new Error("ErrorCode x12");
-    } else if (_r.data.r.trim().toLowerCase() === "this is a winning ticket") {
+    } else if (
+      _r.data.r.trim().toLowerCase() === "this is a winning ticket." ||
+      _r.data.r.trim().toLowerCase() === "this is a winning ticket."
+    ) {
       throw new Error("ErrorCode x13");
-    } else if (_r.data.r.trim().toLowerCase() === "error checking ticket") {
+    } else if (
+      _r.data.r.trim().toLowerCase() === "error checking ticket." ||
+      _r.data.r.trim().toLowerCase() === "error checking ticket"
+    ) {
       throw new Error("ErrorCode x12");
-    } else if (_r.data.r.trim().toLowerCase() === "error checking ticket") {
+    } else if (
+      _r.data.r.trim().toLowerCase() === "error checking ticket." ||
+      _r.data.r.trim().toLowerCase() === "error checking ticket"
+    ) {
       throw new Error("ErrorCode x12");
     }
     if (_r.data.t) {

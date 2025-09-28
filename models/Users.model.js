@@ -151,7 +151,7 @@ Users.init(
       async set(val) {
         if (val !== "") {
           if (!val || !validator.isEmail(val)) {
-            throw new Error("Invalid email format");
+            throw new Error("ErrorCode X741");
           }
           this.setDataValue("emailAddress", encrpytPassword(val));
         }

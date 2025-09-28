@@ -97,6 +97,7 @@ const fastify = Fastify({
  * x13 "Not a valid Ticket"
  * x414 no mobile number found
  * x944 Expired OTP
+ * X743 invalid email format
  */
 
 /**

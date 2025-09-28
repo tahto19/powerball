@@ -37,37 +37,41 @@ class User_class {
     return create.id;
   }
   async Edit(_data) {
-    let count = await Users.count({ where: { id: _data.id } });
-    if (count < 0) throw new Error("User Not found");
-    const id = _data.id;
-    delete _data.id;
-    if (_data.password === "") {
-      delete _data.password;
-    }
-    if (_data.isAdmin) {
-      Object.keys(_data).forEach((v) => {
-        let val = _data[v];
-        console.log(val);
-        if (val === "" || !val) {
-          delete _data[v];
-        }
+    try {
+      let count = await Users.count({ where: { id: _data.id } });
+      if (count < 0) throw new Error("User Not found");
+      const id = _data.id;
+      delete _data.id;
+      if (_data.password === "") {
+        delete _data.password;
+      }
+      if (_data.isAdmin) {
+        Object.keys(_data).forEach((v) => {
+          let val = _data[v];
+          console.log(val);
+          if (val === "" || !val) {
+            delete _data[v];
+          }
+        });
+      } else {
+        Object.keys(_data).forEach((v) => {
+          let val = _data[v];
+          console.log(val);
+          if (val === "" || !val) {
+            delete _data[v];
+          }
+        });
+      }
+      await Users.update(_data, {
+        where: { id },
+        individualHooks: true,
+        fields: Object.keys(_data),
       });
-    } else {
-      Object.keys(_data).forEach((v) => {
-        let val = _data[v];
-        console.log(val);
-        if (val === "" || !val) {
-          delete _data[v];
-        }
-      });
-    }
-    await Users.update(_data, {
-      where: { id },
-      individualHooks: true,
-      fields: Object.keys(_data),
-    });
 
-    return id;
+      return id;
+    } catch (err) {
+      throw err;
+    }
   }
   async FetchOne(filter) {
     if (filter.length === 0) throw new Error("ErrorCode X1");
