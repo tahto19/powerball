@@ -181,7 +181,7 @@ export const postTicketController = async (req, res) => {
   try {
     let getTicket_ = await tc.FetchAll(
       [["id", "ASC"]],
-      [{ field: "VIN", filter: "test", type: "string_eq" }]
+      [{ field: "VIN", filter: req.body.ticket_id, type: "string_eq" }]
     );
 
     if (getTicket_.list.length > 0) {
