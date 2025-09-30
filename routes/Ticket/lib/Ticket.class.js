@@ -30,7 +30,9 @@ class TicketDetails_class {
     // return r;
   }
   async FetchAll_(filter = []) {
-    if (filter.length !== 0) query["where"] = WhereFilters(filter);
+    let query = {
+      include,
+    };
 
     // ✅ Fetch both filtered list and total count
     let { count, rows } = await TicketDetails.findAndCountAll(query);
