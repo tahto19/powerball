@@ -29,12 +29,11 @@ class TicketDetails_class {
     return { list: rows.map((v) => v.toJSON()), count };
     // return r;
   }
-  async FetchAll_(include = []) {
+  async FetchAll_(filter, include = []) {
     let query = {
       include,
-      where: { active: true },
     };
-
+    if (filter.length !== 0) query["where"] = WhereFilters(filter);
     // ✅ Fetch both filtered list and total count
     let { count, rows } = await TicketDetails.findAndCountAll(query);
 

@@ -303,8 +303,8 @@ export const detailedTicketDetailsHistoryController = async (req, res) => {
     if (req.url.includes("myTicketDetails")) {
       filter.push({ field: "user_id", filter: req.user_id, type: "number" });
     }
-
-    const get = await tc.FetchAll_([
+    filter.push({ field: "active", filter: true, type: "boolean" });
+    const get = await tc.FetchAll_(filter, [
       {
         model: TicketHistory,
         attributes: ["ticket_history_generate", "createdAt"],
