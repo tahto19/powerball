@@ -31,7 +31,7 @@ class TicketDetails_class {
   }
   async FetchAll_(include = []) {
     let query = {
-      include,
+      // include,
       where: { active: true },
     };
 
