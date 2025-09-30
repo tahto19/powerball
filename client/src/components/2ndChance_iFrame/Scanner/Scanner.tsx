@@ -35,14 +35,6 @@ function waitForButton() {
   }
 }
 
-const getVideoConstraints_ = () => ({
-  facingMode: "environment", // Use the rear camera
-  width: { min: 1280 }, // Request high width
-  height: { min: 720 }, // Request high height
-  advanced: [
-    { focusMode: "continuous" }, // Explicitly request continuous focus
-  ],
-});
 const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess, test }) => {
   const [qrCodeBox, setQrCodeBox] = useState({ width: 350, height: 350 });
 
@@ -122,7 +114,14 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess, test }) => {
             // focusMode: "continuous", // REMOVE this and control focus via videoConstraints
             willReadFrequently: true,
             // ... other properties
-            videoConstraints: getVideoConstraints(), // IMPORTANT: call the function
+            videoConstraints: {
+              facingMode: "environment", // Use the rear camera
+              width: { min: 1280 }, // Request high width
+              height: { min: 720 }, // Request high height
+              advanced: [
+                { focusMode: "continuous" }, // Explicitly request continuous focus
+              ],
+            }, // IMPORTANT: call the function
             // ... other properties
           },
           true
