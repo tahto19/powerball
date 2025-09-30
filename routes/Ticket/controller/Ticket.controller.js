@@ -329,11 +329,9 @@ export const detailedTicketDetailsHistoryController = async (req, res) => {
           },
         ],
       },
-      { model: Users, required: false },
     ]);
     let toReturn = [];
     for (let v of get.list) {
-      console.log(v);
       let temp = {
         alphaCode: v.alpha_code,
         availableEntries: v.entries - v.entries_used,
