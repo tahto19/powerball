@@ -157,23 +157,23 @@ const start = async () => {
       secret: process.env.JWT_SECRET,
     });
     //cookie setter
-    fastify.register(import("@fastify/cookie"), {
-      cookie: { maxAge: 180 * 24 * 60 * 60 * 1000 },
-      parseOptions: { sameSite: "lax" },
-      secret: process.env.COOKIE_SECRET, // for cookies signature
-      // hook: "onRequest", // set to false to disable cookie autoparsing or set autoparsing on any of the following hooks: 'onRequest', 'preParsing', 'preHandler', 'preValidation'. default: 'onRequest'
-      // parseOptions: {}, // options for parsing cookies
-    });
     // fastify.register(import("@fastify/cookie"), {
-    //   secret: process.env.JWT_SECRET,
-    //   cookie: {
-    //     secure: true, // Insecure setting for development
-    //     httpOnly: true,
-    //     sameSite: "Lax",
-    //     path: "/",
-    //     maxAge: 60 * 24 * 60 * 60 * 1000, // 1 day
-    //   },
+    //   cookie: { maxAge: 180 * 24 * 60 * 60 * 1000 },
+    //   parseOptions: { sameSite: "lax" },
+    //   secret: process.env.COOKIE_SECRET, // for cookies signature
+    //   // hook: "onRequest", // set to false to disable cookie autoparsing or set autoparsing on any of the following hooks: 'onRequest', 'preParsing', 'preHandler', 'preValidation'. default: 'onRequest'
+    //   // parseOptions: {}, // options for parsing cookies
     // });
+    fastify.register(import("@fastify/cookie"), {
+      secret: process.env.JWT_SECRET,
+      cookie: {
+        secure: true, // Insecure setting for development
+        httpOnly: true,
+        sameSite: "Lax",
+        path: "/",
+        maxAge: 60 * 24 * 60 * 60 * 1000, // 1 day
+      },
+    });
     // multipart
     fastify.register(import("@fastify/multipart"), {
       limits: {
