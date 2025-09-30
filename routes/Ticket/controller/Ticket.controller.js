@@ -254,7 +254,6 @@ export const postTicketController = async (req, res) => {
     // let _r = { data: { a: 3 } };
   } catch (err) {
     if (err.response) {
-      console.log(err);
       // throw new Error(
       //   `Request failed with status ${err.response.status}: ${err.response.data.m}`
       // );
