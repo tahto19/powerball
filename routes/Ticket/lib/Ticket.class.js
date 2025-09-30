@@ -29,11 +29,7 @@ class TicketDetails_class {
     return { list: rows.map((v) => v.toJSON()), count };
     // return r;
   }
-  async FetchAll_(sort = [["id", "ASC"]], filter = []) {
-    let query = {
-      order: sort,
-    };
-
+  async FetchAll_(filter = []) {
     if (filter.length !== 0) query["where"] = WhereFilters(filter);
 
     // ✅ Fetch both filtered list and total count
