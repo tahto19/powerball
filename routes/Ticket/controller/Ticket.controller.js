@@ -197,7 +197,7 @@ export const postTicketController = async (req, res) => {
         },
       }
     );
-    console.log(r.data);
+    console.log(_r.data);
     // _r.data.r.trim() === "This is a non-winning ticket." ||
     if (_r.data.r.trim() === "Error checking ticket.") {
       throw new Error("ErrorCode x12");
