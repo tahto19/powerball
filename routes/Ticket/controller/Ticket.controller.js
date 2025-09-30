@@ -334,13 +334,12 @@ export const detailedTicketDetailsHistoryController = async (req, res) => {
     for (let v of get.list) {
       const val = v.toJSON();
       let temp = {
-        ...val,
-        // id: v.id,
-        // active: v.active,
-        // alphaCode: v.alpha_code,
+        id: v.id,
+        active: v.active,
+        alphaCode: v.alpha_code,
         availableEntries: v.entries - v.entries_used,
-        // totalEntries: v.entries,
-        // entries_used: v.entries_used,
+        totalEntries: v.entries,
+        entries_used: v.entries_used,
         ticket_history: v.ticket_histories.map((vv) => {
           return {
             ticket_code: vv.ticket_history_generate,
