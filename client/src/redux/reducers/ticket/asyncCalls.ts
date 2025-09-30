@@ -31,7 +31,7 @@ export const addTicket = createAsyncThunk(
 
       toast.update(toastId, {
         // render: r_data.message,
-        render: "Save Ticket",
+        render: "Congratulations,your ticket has been successfully registered!",
         type: "success",
         isLoading: false,
         autoClose: 2000,

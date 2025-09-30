@@ -79,53 +79,53 @@ const Scanner: React.FC<QrScannerProps> = ({ onScanSuccess, test }) => {
       const getQrBox = test ? qrCodeBox : defaultQrBox;
 
       if (!scannerRef.current) {
-        // const scanner = new Html5QrcodeScanner(
-        //   "qr-reader",
-        //   {
-        //     fps: 15,
-        //     qrbox: getQrBox,
-        //     focusMode: "continuous",
-        //     willReadFrequently: true,
-        //     supportedScanTypes: [
-        //       Html5QrcodeScanType.SCAN_TYPE_CAMERA,
-        //       Html5QrcodeScanType.SCAN_TYPE_FILE,
-        //     ],
-        //     formatsToSupport: [Html5QrcodeSupportedFormats.PDF_417],
-        //     useBarCodeDetectorIfSupported: true,
-        //     experimentalFeatures: {
-        //       useBarCodeDetectorIfSupported: true,
-        //     },
-        //     // aspectRatio: 1.7777778,
-        //     aspectRatio: 1.333334,
-        //     disableFlip: false,
-        //     rememberLastUsedCamera: true,
-        //     videoConstraints: getVideoConstraints,
-        //     // experimentalFeatures: {
-        //     //   useBarCodeDetectorIfSupported: true, // uses native barcode scanning if available
-        //     // },
-        //   },
-        //   true
-        // );
         const scanner = new Html5QrcodeScanner(
           "qr-reader",
           {
-            fps: 10, // Slightly lower FPS for stability
+            fps: 15,
             qrbox: getQrBox,
-            // focusMode: "continuous", // REMOVE this and control focus via videoConstraints
+            focusMode: "continuous",
             willReadFrequently: true,
-            // ... other properties
-            videoConstraints: {
-              facingMode: "environment", // Use the rear camera
-              width: { min: 1280 }, // Request high width
-              height: { min: 720 }, // Request high height
-              advanced: [
-                { focusMode: "continuous" }, // Explicitly request continuous focus
-              ],
-            }, // IMPORTANT: call the function
-            // ... other properties
+            supportedScanTypes: [
+              Html5QrcodeScanType.SCAN_TYPE_CAMERA,
+              Html5QrcodeScanType.SCAN_TYPE_FILE,
+            ],
+            formatsToSupport: [Html5QrcodeSupportedFormats.PDF_417],
+            useBarCodeDetectorIfSupported: true,
+            experimentalFeatures: {
+              useBarCodeDetectorIfSupported: true,
+            },
+            // aspectRatio: 1.7777778,
+            aspectRatio: 1.333334,
+            disableFlip: false,
+            rememberLastUsedCamera: true,
+            videoConstraints: getVideoConstraints,
+            // experimentalFeatures: {
+            //   useBarCodeDetectorIfSupported: true, // uses native barcode scanning if available
+            // },
           },
           true
         );
+        // const scanner = new Html5QrcodeScanner(
+        //   "qr-reader",
+        //   {
+        //     fps: 10, // Slightly lower FPS for stability
+        //     qrbox: getQrBox,
+        //     // focusMode: "continuous", // REMOVE this and control focus via videoConstraints
+        //     willReadFrequently: true,
+        //     // ... other properties
+        //     videoConstraints: {
+        //       facingMode: "environment", // Use the rear camera
+        //       width: { min: 1280 }, // Request high width
+        //       height: { min: 720 }, // Request high height
+        //       advanced: [
+        //         { focusMode: "continuous" }, // Explicitly request continuous focus
+        //       ],
+        //     }, // IMPORTANT: call the function
+        //     // ... other properties
+        //   },
+        //   true
+        // );
 
         scanner.render(
           (decodedText, decodedResult) => {
