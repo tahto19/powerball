@@ -311,18 +311,15 @@ const start = async () => {
         statusCode: 404,
       });
     });
-    fastify.listen(
-      { port: process.env.PORT, host: "0.0.0.0" },
-      function (err, address) {
-        if (err) {
-          fastify.log.error(err);
-          process.exit(1);
-        }
-        // Server is now listening on ${address}
-
-        fastify.log.info(` Server is now listening on ${address}`);
+    fastify.listen({ port: process.env.PORT }, function (err, address) {
+      if (err) {
+        fastify.log.error(err);
+        process.exit(1);
       }
-    );
+      // Server is now listening on ${address}
+
+      fastify.log.info(` Server is now listening on ${address}`);
+    });
 
     const connected = await conn.auth();
     if (connected) {
