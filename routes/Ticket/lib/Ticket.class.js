@@ -40,6 +40,17 @@ class TicketDetails_class {
     // let list = await TicketDetails.findAll(query);
     return { list: rows, total: count };
   }
+  async FetchAll(filter, include = []) {
+    let query = {
+      include,
+    };
+    if (filter.length !== 0) query["where"] = WhereFilters(filter);
+    // ✅ Fetch both filtered list and total count
+    let { count, rows } = await TicketDetails.findAndCountAll(query);
+
+    // let list = await TicketDetails.findAll(query);
+    return { list: rows, total: count };
+  }
   async Insert(_data) {
     const create = await TicketDetails.create(_data);
     return create.id;
