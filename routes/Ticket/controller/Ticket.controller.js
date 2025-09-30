@@ -304,7 +304,7 @@ export const detailedTicketDetailsHistoryController = async (req, res) => {
       filter.push({ field: "user_id", filter: req.user_id, type: "number" });
     }
 
-    const get = await tc.FetchAll_(offset, limit, sort, filter, [
+    const get = await tc.FetchAll_([
       {
         model: TicketHistory,
         attributes: ["ticket_history_generate", "createdAt"],

@@ -29,7 +29,7 @@ class TicketDetails_class {
     return { list: rows.map((v) => v.toJSON()), count };
     // return r;
   }
-  async FetchAll(sort = [["id", "ASC"]], filter = []) {
+  async FetchAll_(sort = [["id", "ASC"]], filter = []) {
     let query = {
       order: sort,
     };
