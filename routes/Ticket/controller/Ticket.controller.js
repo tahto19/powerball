@@ -361,7 +361,7 @@ export const detailedTicketDetailsHistoryController = async (req, res) => {
 
       toReturn.push({ ...temp, raffles });
     }
-    console.log(toReturn);
+
     res.send(toReturn);
   } catch (err) {
     console.log(err);
