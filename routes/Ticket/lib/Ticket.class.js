@@ -44,6 +44,7 @@ class TicketDetails_class {
     const sort_ = sort.length === 0 ? [["id", "DESC"]] : sort;
     let query = {
       include,
+      where: { active: true },
     };
 
     if (filter.length !== 0) query["where"] = WhereFilters(filter);
