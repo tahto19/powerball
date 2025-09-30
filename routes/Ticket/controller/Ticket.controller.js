@@ -333,12 +333,7 @@ export const detailedTicketDetailsHistoryController = async (req, res) => {
     let toReturn = [];
     for (let v of get.list) {
       let temp = {
-        id: v.id,
-        active: v.active,
-        alphaCode: v.alpha_code,
-        availableEntries: v.entries - v.entries_used,
-        totalEntries: v.entries,
-        entries_used: v.entries_used,
+        ...v,
         ticket_history: v.ticket_histories.map((vv) => {
           return {
             ticket_code: vv.ticket_history_generate,
