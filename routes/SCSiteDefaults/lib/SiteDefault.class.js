@@ -23,7 +23,7 @@ class SiteDefault {
     if (filter.length === 0) throw new Error("ErrorCode X1");
     let query = {};
     query["where"] = WhereFilters(filter);
-    console.log(query);
+
     let list = await Files.findOne(query);
     return list;
   }

@@ -140,7 +140,6 @@ export const raffleDrawV2Controller = async (req, res) => {
         secondClear.push(val);
       }
     }
-    console.log(ticketsThatCanJoin, "tickets that can join");
     if (!ticketsThatCanJoin.length) throw new Error("errorcode x876");
     let a = random(ticketsThatCanJoin);
     let getWinnerTicketDetails = secondClear.find((v) => v.ticket_code === a);
@@ -198,7 +197,6 @@ export const postTicketController = async (req, res) => {
         },
       }
     );
-    console.log(_r.data);
     // _r.data.r.trim() === "This is a non-winning ticket." ||
     if (_r.data.r.trim() === "Error checking ticket.") {
       throw new Error("ErrorCode x12");
@@ -236,7 +234,6 @@ export const postTicketController = async (req, res) => {
           { field: "name", filter: alpha_code, type: "string" },
         ]);
         if (!getDetailsOfAlphaCode) {
-          console.log(alpha_code, "no aplha code found");
           throw new Error("ErrorCode x351");
         }
         let r = await tc.Insert({
@@ -297,7 +294,6 @@ export const ticketHistoryInEntriesController = async (req, res) => {
 export const detailedTicketDetailsHistoryController = async (req, res) => {
   try {
     const { id, limit, sort, offset, filter, location } = req.body;
-    console.log(req.body);
     var addFilter;
 
     if (id) {
@@ -365,7 +361,7 @@ export const detailedTicketDetailsHistoryController = async (req, res) => {
 
       toReturn.push({ ...temp, raffles });
     }
-
+    console.log(toReturn);
     res.send(toReturn);
   } catch (err) {
     console.log(err);

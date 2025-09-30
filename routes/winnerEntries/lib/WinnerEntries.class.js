@@ -110,13 +110,10 @@ class WiningDrawDetails_class {
     query["where"] = WhereFilters(getFilters);
 
     const { count, rows } = await WiningDrawDetails.findAndCountAll(query);
-    console.log(count);
+
     return {
       count,
       list: rows.map((v) => {
-        console.log("##############");
-        console.log(v.toJSON());
-        console.log("##############");
         return v.toJSON();
       }),
     };

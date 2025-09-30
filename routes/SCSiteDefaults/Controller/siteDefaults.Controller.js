@@ -11,9 +11,6 @@ export const insertSiteDefaultController = async (req, res) => {
     if (file.mimetype.startsWith("video/")) type = "video";
 
     let iUp = await uploadImage2(file, null, type);
-    console.log("===============", iUp);
-    console.log("===============", name);
-    console.log("===============", category);
 
     const new_name = name.trim() === "" ? file.filename : name;
 
@@ -38,7 +35,6 @@ export const insertSiteDefaultController = async (req, res) => {
     } else {
       r = await sdc.Insert(query);
     }
-    console.log(query);
 
     res.send(cSend(r));
   } catch (err) {
@@ -47,7 +43,6 @@ export const insertSiteDefaultController = async (req, res) => {
 };
 
 export const getMediaBanner = async (req, res) => {
-  console.log("hi");
   const a = await sdc.FetchOne([
     { filter: "media-banner", field: "category", type: "string" },
   ]);

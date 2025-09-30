@@ -48,7 +48,7 @@ class User_class {
       if (_data.isAdmin) {
         Object.keys(_data).forEach((v) => {
           let val = _data[v];
-          console.log(val);
+
           if (val === "" || !val) {
             delete _data[v];
           }
@@ -56,7 +56,7 @@ class User_class {
       } else {
         Object.keys(_data).forEach((v) => {
           let val = _data[v];
-          console.log(val);
+
           if (val === "" || !val) {
             delete _data[v];
           }
@@ -129,7 +129,7 @@ class User_class {
       ],
     };
     query["where"] = WhereFilters(filter);
-    console.log(query["where"]);
+
     let list = await Users.findOne(query);
     return list;
   }

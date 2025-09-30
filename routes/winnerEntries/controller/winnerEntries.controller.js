@@ -2,7 +2,7 @@ import wc from "../lib/WinnerEntries.class.js";
 export const getDataController = async (req, res) => {
   try {
     const _r = await wc.FetchWithInclude(req.body);
-    console.log(req.body);
+
     res.send(_r);
   } catch (err) {
     throw err;
@@ -20,7 +20,7 @@ export const getWinnersTableController = async (req, res) => {
       });
     }
     const _r = await wc.FetchWithInclude(req.body);
-    console.log(_r.list);
+
     res.send(_r);
   } catch (err) {
     console.log(err);
@@ -56,7 +56,6 @@ export const getOnlyTotalPerRaffleScheduleController = async (req, res) => {
           },
         });
       else {
-        console.log(findIndex);
         toReturn[findIndex].ticketsWinner.push({
           ticketHistory,
         });

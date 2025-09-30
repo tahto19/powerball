@@ -17,7 +17,7 @@ export const insertRaffleHistoryController = async (req, res) => {
     let getRaffleStartDate = getRaffleInfo.raffleDetails.starting_date;
 
     let dateDiff = moment().diff(getRaffleStartDate, "minutes");
-    console.log(dateDiff, "minutesdif");
+
     if (dateDiff < 1) throw new Error("ErrorCode x971");
 
     if (getRaffleInfo.length === 0) throw new Error("ErrorCode x999");
@@ -130,7 +130,7 @@ export const getRaffleEntriesController = async (req, res) => {
       });
     }
     let _r = await th.FetchWithInclude(offset, limit, sort, filter);
-    console.log(_r.list);
+
     res.send(_r);
   } catch (err) {
     console.log(err);

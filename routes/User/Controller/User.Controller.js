@@ -260,7 +260,7 @@ export const verifyCodeAndUpdateUserController = async (req, res) => {
     let toJSONUser = fUser.toJSON();
     if (!toJSONUser.mobileNumber || toJSONUser.mobileNumber === "")
       throw new Error("ErrorCode x414");
-    console.log(toJSONUser);
+
     let platform = req.headers.platform;
     let platformversion = req.headers.platformversion;
     let mobile = req.headers["pm-scratch-it-m"];

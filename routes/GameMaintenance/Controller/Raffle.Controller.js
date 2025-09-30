@@ -93,7 +93,6 @@ export const get2ndChanceControllerAll = async (req, res) => {
   ];
 
   const new_offset = limit * offset; // Calculate offset
-  console.log(">>>>>>>>>>>>-----", req.user_id);
 
   let a = await rc._2ndChanceFetchAll(
     new_offset,

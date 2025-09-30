@@ -35,7 +35,7 @@ import { createSuperUser } from "./util/createSuperUser.js";
 import siteDefaults from "./routes/SCSiteDefaults/siteDefaults.js";
 
 const fastify = Fastify({
-  trustProxy: true,
+  // trustProxy: true,
   // logger: {
   //   transport: {
   //     target: "pino-pretty",

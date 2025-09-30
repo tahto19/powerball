@@ -184,8 +184,6 @@ class Raffle_class {
       { where: { raffle_id: id }, individualHooks: true }
     );
     const prizeInfo = _data.raffleSchedule[0].prizeInfo;
-    console.log("=====", newPrizeList);
-    console.log("----", prizeInfo);
 
     // Update prize info status to 2 if the old prize info is not present in the new prize info.
     for (const item of prizeInfo) {
@@ -259,8 +257,6 @@ class Raffle_class {
     filter = [],
     user_id
   ) {
-    console.log(sort);
-
     let query = {
       limit: parseInt(limit),
       offset: parseInt(offset),

@@ -25,7 +25,7 @@ const bodyChecker = async (req, res, payload) => {
           chunks.push(chunk);
         }
         const rawBody = Buffer.concat(chunks).toString("utf8");
-        console.log(rawBody);
+
         parsed = rawBody === "" ? false : JSON.parse(rawBody);
       }
       if (req.method === "POST" && !parsed && !formHeader)
