@@ -108,7 +108,7 @@ const getErrorsStatus = (code: string) => {
     case "x15":
       return "No Data";
     case "x314":
-      return "This ticket has already been entered into the raffle";
+      return "This ticket has been already scanned";
     case "x944":
       return "Expired OTP";
     case "x971":
