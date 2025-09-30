@@ -197,7 +197,7 @@ export const postTicketController = async (req, res) => {
         },
       }
     );
-    console.log(_r.data);
+
     // _r.data.r.trim() === "This is a non-winning ticket." ||
     if (_r.data.r.trim() === "Error checking ticket.") {
       throw new Error("ErrorCode x12");
@@ -254,6 +254,7 @@ export const postTicketController = async (req, res) => {
     // let _r = { data: { a: 3 } };
   } catch (err) {
     if (err.response) {
+      console.log(err.response.data);
       // throw new Error(
       //   `Request failed with status ${err.response.status}: ${err.response.data.m}`
       // );
