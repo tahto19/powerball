@@ -332,6 +332,7 @@ export const detailedTicketDetailsHistoryController = async (req, res) => {
     ]);
     let toReturn = [];
     for (let v of get.list) {
+      console.log(v.toJSON());
       let temp = {
         alphaCode: v.alpha_code,
         availableEntries: v.entries - v.entries_used,
