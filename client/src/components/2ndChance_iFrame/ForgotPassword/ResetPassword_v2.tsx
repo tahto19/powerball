@@ -46,7 +46,7 @@ const ResetPassword = () => {
         // const password = document.getElementById("password") as HTMLInputElement;
 
         let isValid = true;
-
+        console.log(mobileNumber)
         if (!mobileNumber.value) {
             setMobileNumberError(true);
             setMobileNumberErrorMessage("Please enter a mobile number.");
@@ -82,12 +82,14 @@ const ResetPassword = () => {
             const mobileNumber = formData.get("mobileNumber") as string; // ✅ Ensure it's a string
 
             const res = await apiService.resetOtp({ mobileNumber });
+            setSendOTP(true);
 
             if (res.data.result == "success") {
                 setSendOTP(true);
             }
 
         } catch (err) {
+            console.log(err)
             dispatch(
                 showToaster({
                     err,
@@ -101,15 +103,13 @@ const ResetPassword = () => {
         }
     };
 
-    const handleVerifyOTP = async () => {
+    const handleVerifyOTP = async (otp: string) => {
         try {
-            if (!validateNumberInput()) return;
-            if (!validateInputs()) return;
+            // if (!validateNumberInput()) return;
+            // if (!validateInputs()) return;
             if (!otp || otp.trim() === "") {
                 return;
             }
-
-
 
             const res = await apiService.verifyOtp({ mobileNumber, otp, password });
 
@@ -174,7 +174,7 @@ const ResetPassword = () => {
                                             onChange={(e) => {
                                                 setOTP(e);
                                                 if (e.length === 6) {
-                                                    handleVerifyOTP();
+                                                    handleVerifyOTP(e);
                                                 }
                                             }}
                                             length={6}
