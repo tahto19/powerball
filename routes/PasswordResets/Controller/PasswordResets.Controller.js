@@ -156,7 +156,7 @@ export const verifyResetPasswordOTP = async (req, res) => {
     await OTPClass.Edit({ auth: true, id: getOTP.id });
     // update password
     await uc.Edit({ id: userDetails.id, password: password });
-    res.send({ message: "successful" });
+    res.send({ result: "successful" });
   } catch (err) {
     throw err;
   }
