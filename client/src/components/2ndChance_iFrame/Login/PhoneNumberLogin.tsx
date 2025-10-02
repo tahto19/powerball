@@ -19,12 +19,19 @@ import { toast } from "react-toastify";
 
 import { MuiOtpInput } from "mui-one-time-password-input";
 
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import FormHelperText from '@mui/material/FormHelperText';
+
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const PhoneNumberLogin = () => {
   const dispatch = useAppDispatch();
   // const navigate = useNavigate();
   const { token } = useAppSelector((state) => state.token);
-
+  const [showPassword, setShowPassword] = React.useState(false)
   const [mobileNumberError, setMobileNumberError] = React.useState(false);
   const [mobileNumberErrorMessage, setMobileNumberErrorMessage] =
     React.useState("");
@@ -384,7 +391,42 @@ const PhoneNumberLogin = () => {
                                       >
                                         Password
                                       </label>
-                                      <TextField
+                                      <OutlinedInput
+                                        value={password ? password : ""}
+                                        onChange={(e: any) => {
+                                          setPassword(e.target.value);
+                                        }}
+                                        error={passwordError}
+                                        id="password"
+                                        type={showPassword ? "text" : "password"}
+                                        name="password"
+                                        placeholder="password"
+                                        autoFocus
+                                        required
+                                        fullWidth
+                                        size="small"
+                                        // variant="outlined"
+                                        color={
+                                          mobileNumberError
+                                            ? "error"
+                                            : "primary"
+                                        }
+                                        endAdornment={
+                                          <InputAdornment position="end">
+                                            <IconButton
+                                              onClick={() => setShowPassword(!showPassword)}
+                                              edge="end"
+                                            >
+                                              {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                                            </IconButton>
+                                          </InputAdornment>
+                                        }
+
+                                      />
+                                      {passwordError ? (<FormHelperText sx={{ margin: "4px 14px 0 14px" }} error id="component-error-text">{passwordErrorMessage}</FormHelperText>) : null}
+
+
+                                      {/* <TextField
                                         value={password ? password : ""}
                                         onChange={(e: any) => {
                                           setPassword(e.target.value);
@@ -405,7 +447,7 @@ const PhoneNumberLogin = () => {
                                             ? "error"
                                             : "primary"
                                         }
-                                      />
+                                      /> */}
                                     </div>
                                   )}
                                   {sentOtp && (

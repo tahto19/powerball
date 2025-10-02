@@ -285,7 +285,7 @@ const Dashboard = () => {
         </Box>
       </Box>
 
-      <Box
+      {/* <Box
         sx={{
           my: "24px",
           display: "flex",
@@ -316,7 +316,9 @@ const Dashboard = () => {
             <Typography>{x.text}</Typography>
           </Card>
         ))}
-      </Box>
+      </Box> */}
+      <br />
+      <br />
       <Raffles />
       <Box
         sx={{
