@@ -8,6 +8,8 @@ import {
   Button,
   AppBar,
   Dialog,
+  DialogContent,
+  DialogActions,
   Card,
   CardContent,
   CardMedia,
@@ -18,6 +20,7 @@ import {
   Slide,
   Tabs,
   Tab,
+  CircularProgress
 } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
 import CustomizedDataGrid from "../CustomizedDataGrid.tsx";
@@ -203,7 +206,14 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
       );
     }
   };
+
+  const [confirmationDialog, setConfirmationDialog] = useState(false)
+  const handleConfirmationDialog = () => {
+    setConfirmationDialog(false)
+  }
   const handleDraw = async () => {
+    setConfirmationDialog(false)
+
     if (!myPermission.raffle_draw.draw) {
       toast.info("You're not allowed to Draw");
       return;
@@ -422,8 +432,8 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
                 >
                   <CountDown time={timeLeft} />
                   <Button
-                    onClick={handleDraw2}
-                    // disabled={!datePassed || !allowDraw}
+                    onClick={() => setConfirmationDialog(true)}
+                    disabled={!allowDraw}
                     variant="contained"
                     sx={{
                       padding: "10px 40px",
@@ -431,10 +441,11 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
                       // opacity: !datePassed ? "0.6" : "1",
                     }}
                   >
+                    {!allowDraw ? <CircularProgress size="20px" color="inherit" sx={{ marginRight: '10px' }} /> : null}
                     Draw Now
                   </Button>
                   <Button
-                    onClick={handleDraw}
+                    onClick={() => setConfirmationDialog(true)}
                     disabled={!datePassed || !allowDraw}
                     variant="contained"
                     sx={{
@@ -443,6 +454,7 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
                       opacity: !datePassed ? "0.6" : "1",
                     }}
                   >
+                    {!allowDraw ? <CircularProgress size="20px" color="inherit" sx={{ marginRight: '10px' }} /> : null}
                     Draw
                   </Button>
                 </Box>
@@ -504,6 +516,18 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
           ticket={winnerDetails.ticket_history_generate}
           onClose={handleWinnerDialogClose}
         />
+
+        <Dialog open={confirmationDialog} >
+          <DialogContent dividers sx={{ width: "300px", textAlign: "center", padding: "30px 20px !important" }}>
+            Are you sure you want to draw?
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleConfirmationDialog}>No</Button>
+            <Button onClick={handleDraw} autoFocus>
+              Yes
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Dialog>
     </>
   );
