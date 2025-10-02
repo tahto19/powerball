@@ -14,5 +14,7 @@
   { "path": "/api/raffleHistory/insert", "method": "!POST" },
   { "path": "/api/export/", "method": "POST" },
   { "path": "/inquiry", "method": "POST" },
-  { "path": "/inquiry/", "method": "POST" }
+  { "path": "/inquiry/", "method": "POST" },
+  { "path": "/reset-password-otp", "method": "POST" },
+  { "path": "/verify-reset-password-otp", "method": "POST" }
 ]

@@ -570,6 +570,15 @@ export const apiService = {
     const res = apiClient.get("/api/site-defaults/media-banner");
     return res;
   },
+
+   resetOtp: async (data) => {
+    const response = await apiClient.post("/api/password-reset/reset-password-otp", data);
+    return response;
+  },
+  verifyOtp: async (data) => {
+    const response = await apiClient.post("/api/password-reset/verify-reset-password-otp", data);
+    return response;
+  },
 };
 
 export default apiService;

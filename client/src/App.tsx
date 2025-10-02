@@ -42,7 +42,7 @@ import Raffles from "./components/2ndChance_iFrame/Raffles/Raffles";
 import Dashboard2 from "./components/2ndChance_iFrame/Dashboard";
 import UserProfile from "./components/2ndChance_iFrame/UserProfile";
 import ForgotPassword from "./components/2ndChance_iFrame/ForgotPassword";
-import ResetPassword from "./components/2ndChance_iFrame/ForgotPassword/ResetPassword";
+import ResetPassword from "./components/2ndChance_iFrame/ForgotPassword/ResetPassword_v2";
 
 import ImagePage from "./components/ImagePage/Image";
 import ScannerIframe from "./components/2ndChance_iFrame/Scanner/ScannerIframe";
@@ -319,12 +319,16 @@ function AppRoutes() {
       />
       <Route
         path="/iframe/2nd-chance/forgot-password"
-        element={<ForgotPassword />}
-      />
-      <Route
-        path="/iframe/2nd-chance/reset-password"
         element={<ResetPassword />}
       />
+      {/* <Route
+        path="/iframe/2nd-chance/forgot-password"
+        element={<ForgotPassword />}
+      /> */}
+      {/* <Route
+        path="/iframe/2nd-chance/reset-password"
+        element={<ResetPassword />}
+      /> */}
       <Route
         path="/iframe/2nd-chance/login-button"
         element={<LoginButton />}
