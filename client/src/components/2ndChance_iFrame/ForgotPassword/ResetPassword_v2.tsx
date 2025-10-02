@@ -68,6 +68,7 @@ const ResetPassword = () => {
     };
 
     const handleMobileNumberSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        setLoading(true)
         try {
             event.preventDefault();
             if (!validateNumberInput()) return;
@@ -95,6 +96,8 @@ const ResetPassword = () => {
                     icon: null,
                 })
             );
+        } finally {
+            setLoading(false)
         }
     };
 
