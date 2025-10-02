@@ -152,10 +152,10 @@ export const verifyResetPasswordOTP = async (req, res) => {
     if (getTime > 5) {
       throw new Error("ErrorCode x944");
     }
-    // // update OTP
-    // await OTPClass.Edit({ auth: true, id: getOTP.id });
-    // // update password
-    // await uc.Edit({ id: userDetails.id, password: password });
+    // update OTP
+    await OTPClass.Edit({ auth: true, id: getOTP.id });
+    // update password
+    await uc.Edit({ id: userDetails.id, password: password });
     res.send({ message: "successful" });
   } catch (err) {
     throw err;
