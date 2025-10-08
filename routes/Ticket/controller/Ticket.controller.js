@@ -286,7 +286,7 @@ export const ticketHistoryInEntriesController = async (req, res) => {
     }
 
     let r = await tc.getTotalEntries(filter);
-
+    console.log(r.details);
     res.send(cSend(r));
   } catch (err) {
     throw err;

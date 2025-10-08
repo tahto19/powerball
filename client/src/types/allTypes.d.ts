@@ -50,6 +50,7 @@ export type alphaCodeProps = {
   type?: string | undefined;
   active?: Boolean | null;
   id: number | null | undefined;
+  label: string | null;
 };
 export const postAdminType = {
   data: adminType,

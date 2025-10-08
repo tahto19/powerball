@@ -82,11 +82,43 @@ export default function Dialog_({
         >
           <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
             <FormControl>
+              <FormLabel htmlFor="first name">label</FormLabel>
+              <TextField
+                id="label"
+                type="text"
+                placeholder="label"
+                autoComplete="label"
+                {...register("label", {
+                  required: true,
+                })}
+                autoFocus
+                required
+                fullWidth
+                variant="outlined"
+                slotProps={{
+                  input: {
+                    readOnly: dialogType === "View",
+                  },
+                }}
+              />
+              {errors &&
+                errors?.label &&
+                errors?.label.type &&
+                errors?.label.type === "required" && (
+                  <FormHelperText sx={{ color: "red" }}>
+                    Required
+                  </FormHelperText>
+                )}
+            </FormControl>
+          </Grid2>
+
+          <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+            <FormControl>
               <FormLabel htmlFor="first name">Alpha Code</FormLabel>
               <TextField
                 id="name"
                 type="text"
-                placeholder="Aplha Code"
+                placeholder="Alpha Code"
                 autoComplete="name"
                 {...register("name", {
                   required: true,

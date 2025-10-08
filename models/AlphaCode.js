@@ -9,6 +9,10 @@ AlphaCode.init(
       allowNull: false,
       type: DataTypes.CHAR(20),
     },
+    label: {
+      allowNull: false,
+      type: DataTypes.CHAR(255),
+    },
     active: {
       allowNull: true,
       default: true,

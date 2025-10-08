@@ -25,9 +25,9 @@ import {
   Autocomplete,
   Stack,
   Typography,
-  IconButton
+  IconButton,
 } from "@mui/material";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 import { useMediaQuery, useTheme } from "@mui/material";
 
 import MuiFormControl from "@mui/material/FormControl";
@@ -35,6 +35,7 @@ import { styled } from "@mui/material/styles";
 import { useState, useEffect } from "react";
 import { getRaffleEntry } from "@/redux/reducers/raffleEntry/asyncCalls";
 import { showToaster } from "@/redux/reducers/global/globalSlice";
+import apiService from "@/services/apiService";
 
 const FormControl = styled(MuiFormControl)(() => ({
   width: "100%",
@@ -45,10 +46,9 @@ const MyDialog = ({
   onClose,
   onSubmit,
 }: // totalEntries,
-  // totalUsedEntries,
-  // btnLoading,
-  DialogProps) => {
-
+// totalUsedEntries,
+// btnLoading,
+DialogProps) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -61,6 +61,7 @@ const MyDialog = ({
     entries: null,
     raffle_id: null,
   });
+  const [alphaCodeDetails, setAlphaCodeDetails] = useState();
   const handleClose = () => {
     onClose(false);
     setAlphaCodeChosen([]);
@@ -68,7 +69,7 @@ const MyDialog = ({
   const handleSubmit = () => {
     dispatch(postRaffleEntry({ entriesDetails, alphaCodeChosen }));
   };
-
+  const { token } = useAppSelector((state) => state.token);
   const {
     btnLoading,
     loading,
@@ -77,15 +78,38 @@ const MyDialog = ({
     totalEntries,
     details,
   } = useAppSelector((state) => state.raffleEntry);
-
+  const findAlphaCodeLabel = (ac) => {
+    let find;
+    if (alphaCodeDetails && alphaCodeDetails.length > 0) {
+      let find = alphaCodeDetails.find((v: any) => v.name === ac);
+    }
+    console.log(find, alphaCodeDetails, alphaCodeChosen);
+    return find ? find.label : ac;
+  };
+  const getAplhaCode = async () => {
+    try {
+      alert("running");
+      if (!token) return;
+      const res = await apiService.getAllAlphaCode(token);
+      console.log(res, "herererre");
+      setAlphaCodeDetails([...res.data]);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   useEffect(() => {
     if (open) {
+      // if (alphaCodeDetails && alphaCodeDetails.length < 0) {
+      //   getAplhaCode();
+      // }
+      getAplhaCode();
       dispatch(
         getRaffleEntry({
           type: "myEntries",
           alpha_code: JSON.stringify(data.alpha_code),
         })
       );
+
       setData(data);
       setTotalEntriesDetails((prev) => ({
         ...prev,
@@ -93,6 +117,7 @@ const MyDialog = ({
       }));
     }
   }, [open]);
+  useEffect(() => {}, []);
   return (
     <>
       <Dialog
@@ -100,15 +125,20 @@ const MyDialog = ({
         onClose={handleClose}
         fullScreen={isSmallScreen ? true : false}
       >
-        <form style={{
-          width: isSmallScreen ? "100%" : "600px"
-        }}>
-          <DialogTitle sx={{
-            display: "flex",
-            gap: "20px",
-            justifyContent: "space-between",
-            alignItems: "center"
-          }}>Participate
+        <form
+          style={{
+            width: isSmallScreen ? "100%" : "600px",
+          }}
+        >
+          <DialogTitle
+            sx={{
+              display: "flex",
+              gap: "20px",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            Participate
             <IconButton
               onClick={handleClose}
               size="small"
@@ -126,7 +156,7 @@ const MyDialog = ({
               sx={{
                 color: "text.secondary",
                 fontSize: "14px",
-                lineHeight: '21px',
+                lineHeight: "21px",
                 marginBottom: "30px",
                 whiteSpace: "pre-line",
               }}
@@ -150,13 +180,13 @@ const MyDialog = ({
                     noOptionsText={"No Tickets"}
                     options={details ? details : []}
                     getOptionLabel={(option) =>
-                      `${option.alpha_code} entries: ${option.totalEntries - option.totalUsedEntries
+                      `${findAlphaCodeLabel(option.alpha_code)} entries: ${
+                        option.totalEntries - option.totalUsedEntries
                       }`
                     }
                     renderInput={(params) => (
                       <TextField
                         {...params}
-
                         placeholder="Tickets"
                         helperText={
                           totalEntriesAlphaCodeSelected
@@ -268,10 +298,11 @@ const MyDialog = ({
                             }));
                           }
                         }}
-                        helperText={`Total Entries Remaining: ${totalEntries !== null && totalUsedEntries !== null
-                          ? totalEntries - totalUsedEntries
-                          : "loading" + totalUsedEntries + totalEntries
-                          }`}
+                        helperText={`Total Entries Remaining: ${
+                          totalEntries !== null && totalUsedEntries !== null
+                            ? totalEntries - totalUsedEntries
+                            : "loading" + totalUsedEntries + totalEntries
+                        }`}
                       />
                     </Grid2>
                   );
@@ -290,7 +321,10 @@ const MyDialog = ({
                     fullWidth
                     variant="outlined"
                     disabled
-                    sx={{ color: "black !important", "& .MuiInputBase-root": { height: "54.73px !important" } }}
+                    sx={{
+                      color: "black !important",
+                      "& .MuiInputBase-root": { height: "54.73px !important" },
+                    }}
                     value={entriesDetails.entries}
                     onChange={(e) => {
                       let getTotal =
@@ -314,10 +348,11 @@ const MyDialog = ({
                         }));
                       }
                     }}
-                    helperText={`Total Entries Remaining: ${totalEntries !== null && totalUsedEntries !== null
-                      ? totalEntries - totalUsedEntries
-                      : "loading" + totalUsedEntries + totalEntries
-                      }`}
+                    helperText={`Total Entries Remaining: ${
+                      totalEntries !== null && totalUsedEntries !== null
+                        ? totalEntries - totalUsedEntries
+                        : "loading" + totalUsedEntries + totalEntries
+                    }`}
                   />
                 </FormControl>
               </Grid2>

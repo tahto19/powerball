@@ -26,7 +26,7 @@ import { getRaffleEntry } from "@/redux/reducers/raffleEntry/asyncCalls";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import IconButton from "@mui/material/IconButton";
 import endedImage from "@/assets/image/ended.png";
-import { raffleListAdd } from "@/redux/reducers/raffle/raffleSlice"
+import { raffleListAdd } from "@/redux/reducers/raffle/raffleSlice";
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const endpoint = base_url + "api/file/serve/image/";
 
@@ -76,9 +76,9 @@ const Raffles = () => {
 
         return isAfterA ? -1 : 1; // future dates first
       });
-      console.log(data)
+      console.log(data);
       setRaffleList(data);
-      dispatch(raffleListAdd(data))
+      dispatch(raffleListAdd(data));
     }
     setIsFetching(false);
   };
@@ -231,7 +231,7 @@ const Raffles = () => {
                         color: "text.secondary",
                         fontSize: "16px",
                         fontWeight: "600",
-                        textAlign: "center"
+                        textAlign: "center",
                       }}
                     >
                       {x.name}
@@ -248,13 +248,13 @@ const Raffles = () => {
                       sx={{
                         color: "text.secondary",
                         fontSize: "13px",
-                        lineHeight: '21px',
-                        display: '-webkit-box',
-                        WebkitBoxOrient: 'vertical',
+                        lineHeight: "21px",
+                        display: "-webkit-box",
+                        WebkitBoxOrient: "vertical",
                         WebkitLineClamp: 2,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        marginBottom: "10px"
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        marginBottom: "10px",
                       }}
                     >
                       {x.short_details}
@@ -265,19 +265,19 @@ const Raffles = () => {
                       // gap: "10px",
                       // justifyContent: "space-between"
                     }}> */}
-                    <Typography
-                      sx={{ fontSize: "13px" }}
-                    >
+                    <Typography sx={{ fontSize: "13px" }}>
                       <b> Total Entries:</b> {x.totalEntries}
                     </Typography>
-                    <Typography
-                      sx={{ fontSize: "13px" }}
-                    >
+                    <Typography sx={{ fontSize: "13px" }}>
                       <b>Your Entries:</b> {x.yourEntries}
                     </Typography>
                     {/* </Box> */}
                     <Typography
-                      sx={{ color: "rgba(0,0,0,0.6) !important", fontSize: "13px", marginTop: "10px" }}
+                      sx={{
+                        color: "rgba(0,0,0,0.6) !important",
+                        fontSize: "13px",
+                        marginTop: "10px",
+                      }}
                     >
                       Draw on{" "}
                       {moment(x.raffleSchedule[0].schedule_date).format(
