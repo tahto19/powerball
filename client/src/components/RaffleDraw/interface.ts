@@ -46,6 +46,7 @@ export interface WinnerDetailState {
 export interface WinnerDialogProps {
   ticket: string; 
   open: boolean;
+  name: string;
   onClose: (value: boolean) => void;
 }
 

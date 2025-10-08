@@ -16,13 +16,15 @@ export const getData = createAsyncThunk(
       const getFilter = data ? data : state.ticket.getData;
       const _r = await apiService.getWinner(getFilter, token);
       const _rD = bodyDecrypt(_r.data, token);
-
+      console.log(_rD.list)
       _rD.list = _rD.list.map((v: any) => {
         return {
           id: v.id,
           winningTicket: v.ticket_history.ticket_history_generate,
           type: v.Raffle_Prize.Prize_List.type,
           value: v.Raffle_Prize.amount,
+          name: v.ticket_detail.User.fullname
+
         };
       });
       const toReturn = { ...getFilter, ..._rD };

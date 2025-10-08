@@ -83,7 +83,7 @@ export const updateController = async (req, res) => {
   res.send(cSend(a));
 };
 
-export const get2ndChanceControllerAll = async (req, res) => {
+export const get2ndChanceControllerAll_old = async (req, res) => {
   const { limit, offset, sort, filter, user_id } = req.body;
   let parsedSort = !sort ? [["id", "DESC"]] : JSON.parse(sort);
   let parsedFilter = !filter ? [] : JSON.parse(filter);
@@ -101,5 +101,23 @@ export const get2ndChanceControllerAll = async (req, res) => {
     parsedFilter,
     req.user_id
   );
+  res.send(cSend(a));
+};
+
+export const get2ndChanceControllerAll = async (req, res) => {
+  const { limit, offset, sort, filter, user_id } = req.body;
+  // let parsedSort = !sort ? [["id", "DESC"]] : JSON.parse(sort);
+  let parsedFilter = !filter ? [] : JSON.parse(filter);
+
+  const new_offset = limit * offset; // Calculate offset
+
+  let a = await rc._2ndChanceFetchAll(
+    new_offset,
+    limit,
+    parsedFilter,
+    req.user_id
+  );
+
+  console.log("======", a);
   res.send(cSend(a));
 };

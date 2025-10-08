@@ -13,11 +13,13 @@ function randomChar2() {
 const RandomString = ({
   winner,
   seconds,
-  onDone
+  onDone,
+  onFinish
 }: {
   winner: string;
   seconds: undefined | number;
   onDone: (value: boolean) => void;
+  onFinish: () => void;
 }) => {
   const waitForMe = () => {
     return new Promise((resolve) => {
@@ -91,6 +93,7 @@ const RandomString = ({
         if (v === vv) break;
       }
     }
+    onFinish()
   };
 
   return <div style={{

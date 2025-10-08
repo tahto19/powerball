@@ -191,6 +191,8 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
       if (d && d.success === "success") {
         setWinnerDialog(true);
         setWinnerDetails(d.data.winnerDetails);
+        console.log("=====", d.data.winnerDetails)
+
       }
 
       setAllowDraw(true);
@@ -235,6 +237,8 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
       if (d && d.success === "success") {
         setWinnerDialog(true);
         setWinnerDetails(d.data.winnerDetails);
+        console.log("=====", d.data.winnerDetails)
+
       }
 
       setAllowDraw(true);
@@ -258,6 +262,10 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
     limit: 10,
     offset: 0,
   });
+  useEffect(() => {
+    console.log("=====", list)
+
+  }, list)
   useEffect(() => {
     setOpen(open);
     setPrizeData(initialRaffleData.raffleSchedule[0].prizeInfo[0]);
@@ -514,6 +522,7 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
         <WinnerDialog
           open={winnerDialog}
           ticket={winnerDetails.ticket_history_generate}
+          name={winnerDetails.user_name}
           onClose={handleWinnerDialogClose}
         />
 
