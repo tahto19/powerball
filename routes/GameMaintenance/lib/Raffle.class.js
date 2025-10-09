@@ -7,7 +7,7 @@ import TicketHistory from "../../../models/TicketHistory.model.js";
 import TicketDetails from "../../../models/TicketDetails.model.js";
 
 import { WhereFilters } from "../../../util/util.js";
-import { fn, col } from "sequelize";
+import { fn, col, literal } from "sequelize";
 
 /**
  * Filter structure:
@@ -250,7 +250,7 @@ class Raffle_class {
     return id;
   }
 
-  async _2ndChanceFetchAll(
+  async _2ndChanceFetchAll_old(
     offset = 0,
     limit = 10,
     sort = [["id", "ASC"]],
@@ -268,6 +268,94 @@ class Raffle_class {
           as: "raffleSchedule",
           attributes: ["id", "schedule_date"],
           limit: 1, // Tries to get only the latest RaffleSchedule
+        },
+        {
+          model: Files,
+          order: [["id", "DESC"]],
+          as: "fileInfo",
+          attributes: ["id", "name", "description"],
+        },
+      ],
+    };
+
+    if (filter.length !== 0) query["where"] = WhereFilters(filter);
+
+    // ✅ Fetch both filtered list and total count
+    let { count, rows } = await RaffleDetails.findAndCountAll(query);
+
+    // 2. Collect raffleSchedule IDs
+    const scheduleIds = rows
+      .map((x) => x.raffleSchedule[0]?.id)
+      .filter(Boolean);
+
+    // 3. Query all TicketHistory records with TicketDetails included
+    const allTickets = await TicketHistory.findAll({
+      where: { raffle_id: scheduleIds },
+      include: [
+        {
+          model: TicketDetails,
+          required: false, // ensures no exclusion
+        },
+      ],
+    });
+
+    // 4. Build maps
+    const totalEntryMap = {};
+    const userEntryMap = {};
+
+    for (const ticket of allTickets) {
+      const id = ticket.raffle_id;
+      totalEntryMap[id] = (totalEntryMap[id] || 0) + 1;
+
+      // if it includes ticket_detail with matching user_id
+      if (ticket.ticket_detail && ticket.ticket_detail.user_id === user_id) {
+        userEntryMap[id] = (userEntryMap[id] || 0) + 1;
+      }
+    }
+
+    // 5. Merge into response
+    const new_rows = rows.map((x) => {
+      const raffleId = x.raffleSchedule[0]?.id;
+      return {
+        ...x.toJSON(),
+        totalEntries: totalEntryMap[raffleId] || 0,
+        yourEntries: userEntryMap[raffleId] || 0,
+      };
+    });
+
+    return { list: new_rows };
+  }
+
+  async _2ndChanceFetchAll(
+    offset = 0,
+    limit = 10,
+    sort = [["id", "ASC"]],
+    filter = [],
+    user_id
+  ) {
+    // ✅ Use your actual table name (or use `RaffleSchedule.getTableName()`)
+    const scheduleTable = RaffleSchedule.getTableName(); // usually 'pb_raffle_schedules'
+
+    // ✅ Use MAX() to get the latest schedule_date for ordering
+    const latestScheduleDateLiteral = literal(`(
+    SELECT MAX(\`schedule_date\`)
+    FROM \`${scheduleTable}\`
+    WHERE \`${scheduleTable}\`.\`raffle_id\` = \`Raffle_Details\`.\`id\`
+  )`);
+
+    let query = {
+      limit: parseInt(limit),
+      offset: parseInt(offset),
+      order: [[latestScheduleDateLiteral, "DESC"]],
+      include: [
+        {
+          model: RaffleSchedule,
+          // order: [["id", "DESC"]],
+          as: "raffleSchedule",
+          attributes: ["id", "schedule_date"],
+          separate: true, // ✅ important for limit
+          limit: 1, // Tries to get only the latest RaffleSchedule
+          order: [["schedule_date", "DESC"]],
         },
         {
           model: Files,
@@ -349,4 +437,5 @@ class Raffle_class {
     return list;
   }
 }
+
 export default new Raffle_class();

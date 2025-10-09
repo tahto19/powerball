@@ -6,7 +6,8 @@ import {
     DialogTitle,
     TextField,
     MenuItem,
-    IconButton
+    IconButton,
+    Typography
 } from '@mui/material';
 
 import { WinnerDialogProps } from "./interface.ts"
@@ -15,10 +16,13 @@ import CloseIcon from '@mui/icons-material/Close';
 import RandomLetters from '@/animated/RandomLettersNew.tsx';
 import TestRandom from '@/animated/TestRandom.tsx';
 
-const WinnerDialog = ({ open, ticket, onClose }: WinnerDialogProps) => {
+const WinnerDialog = ({ open, ticket, name, onClose }: WinnerDialogProps) => {
     const [allowCLose, setAllowClose] = useState(false)
+    const [showName, setShowName] = useState(false)
 
     const handleDone = (value: boolean) => {
+        console.log("Doneeeeeeeee")
+
         setAllowClose(value)
     }
     const handleClose = () => {
@@ -27,6 +31,10 @@ const WinnerDialog = ({ open, ticket, onClose }: WinnerDialogProps) => {
         }
     }
 
+    const handleSecondFinish = () => {
+        console.log("showwwwwwwww")
+        setShowName(true)
+    }
     return (
         <>
             <Dialog open={open} >
@@ -51,16 +59,22 @@ const WinnerDialog = ({ open, ticket, onClose }: WinnerDialogProps) => {
                     <div style={{
                         fontSize: "50px",
                         padding: "30px",
+                        paddingBottom: showName ? "10px" : "30px",
                         display: "flex",
                         justifyContent: "center"
                     }}>
-                        <RandomLetters winner={ticket} seconds={3} onDone={handleDone} />
+                        <RandomLetters winner={ticket} seconds={3} onFinish={handleSecondFinish} onDone={handleDone} />
                     </div>
+                    {
+                        showName ? (<Typography variant="h4" sx={{ width: '100%', textAlign: "center" }}>{name}</Typography>
+                        ) : null
+                    }
                     {/* <TestRandom /> */}
                     <div style={{
                         display: allowCLose ? "flex" : "none",
                         justifyContent: "center",
-                        marginTop: "10px"
+                        marginTop: "10px",
+                        paddingTop: "20px",
                     }}>
 
                         <Button

@@ -103,7 +103,10 @@ export const raffleDrawV2Controller = async (req, res) => {
       include: [
         {
           model: TicketHistory,
-          include: [{ model: WiningDrawDetails }, { model: TicketDetails }],
+          include: [
+            { model: WiningDrawDetails },
+            { model: TicketDetails, include: [{ model: Users }] },
+          ],
         },
       ],
     });
@@ -124,6 +127,7 @@ export const raffleDrawV2Controller = async (req, res) => {
           ...val,
           ticket_code: val.ticket_history_generate,
           user: val.ticket_detail.user_id,
+          user_name: val.ticket_detail.User.fullname,
           raffle_prize_id: val.raffle_id,
           ticket_id: val.ticket_id,
           ticket_history_id: val.id,

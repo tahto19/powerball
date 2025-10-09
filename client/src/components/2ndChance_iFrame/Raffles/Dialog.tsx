@@ -46,9 +46,9 @@ const MyDialog = ({
   onClose,
   onSubmit,
 }: // totalEntries,
-// totalUsedEntries,
-// btnLoading,
-DialogProps) => {
+  // totalUsedEntries,
+  // btnLoading,
+  DialogProps) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -118,7 +118,7 @@ DialogProps) => {
       }));
     }
   }, [open]);
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
   return (
     <>
       <Dialog
@@ -181,8 +181,7 @@ DialogProps) => {
                     noOptionsText={"No Tickets"}
                     options={details ? details : []}
                     getOptionLabel={(option) =>
-                      `${findAlphaCodeLabel(option.alpha_code)} entries: ${
-                        option.totalEntries - option.totalUsedEntries
+                      `${findAlphaCodeLabel(option.alpha_code)} entries: ${option.totalEntries - option.totalUsedEntries
                       }`
                     }
                     renderInput={(params) => (
@@ -299,11 +298,10 @@ DialogProps) => {
                             }));
                           }
                         }}
-                        helperText={`Total Entries Remaining: ${
-                          totalEntries !== null && totalUsedEntries !== null
+                        helperText={`Total Entries Remaining: ${totalEntries !== null && totalUsedEntries !== null
                             ? totalEntries - totalUsedEntries
                             : "loading" + totalUsedEntries + totalEntries
-                        }`}
+                          }`}
                       />
                     </Grid2>
                   );
@@ -349,11 +347,10 @@ DialogProps) => {
                         }));
                       }
                     }}
-                    helperText={`Total Entries Remaining: ${
-                      totalEntries !== null && totalUsedEntries !== null
+                    helperText={`Total Entries Remaining: ${totalEntries !== null && totalUsedEntries !== null
                         ? totalEntries - totalUsedEntries
                         : "loading" + totalUsedEntries + totalEntries
-                    }`}
+                      }`}
                   />
                 </FormControl>
               </Grid2>
