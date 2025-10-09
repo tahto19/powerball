@@ -24,6 +24,7 @@ export const getWinnerListAsync = createAsyncThunk(
           if (url === "getDataAll")
             return {
               id: v.id,
+
               "$ticket_detail.User.fullname$": v.ticket_detail.User.fullname,
               "$ticket_detail.User.mobileNumber$":
                 v.ticket_detail.User.mobileNumber,
@@ -43,6 +44,7 @@ export const getWinnerListAsync = createAsyncThunk(
                 " __ " +
                 v.ticket_detail.User.fullname.substring(3, 4),
               id: v.id,
+              "$Raffle_Prize.createdAt$": v.Raffle_Prize.createdAt,
               "$ticket_history.ticket_history_generate$":
                 v.ticket_history.ticket_history_generate,
               "$Raffle_Prize.Raffle_Schedule.raffleDetails.name$":
@@ -51,8 +53,9 @@ export const getWinnerListAsync = createAsyncThunk(
             };
           // return v;
         });
+
         const toReturn = { ..._rData, ...getFilter, loading: false };
-        console.log(toReturn);
+
         dispatch(addWinnerList(toReturn));
       }
     } catch (err) {
