@@ -111,7 +111,6 @@ export const createAccount = createAsyncThunk(
         isLoading: false,
         autoClose: 2000,
       });
-      console.log(toaster__);
       return true;
     } catch (err) {
       let m = getMessage(err);
@@ -163,7 +162,6 @@ export const postAdmin = createAsyncThunk(
 
       if (dialogType.toLowerCase() === "add") {
         let p = await apiService.insertAdmin(data, token);
-        console.log(p);
       }
       // await apiService.insertAdmin(bodyEncrypt(data, token));
       else if (dialogType.toLowerCase() === "edit")
@@ -220,7 +218,6 @@ export const getUser = createAsyncThunk(
       const _r = await apiService.getUser();
 
       let c = bodyDecrypt(_r.data, token);
-      console.log(c);
       dispatch(addUserDetails(c.data));
       dispatch(addMyPermissions(c.data.myUserType?.permissions));
     } catch (err) {

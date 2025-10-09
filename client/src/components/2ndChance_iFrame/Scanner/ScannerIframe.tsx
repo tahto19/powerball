@@ -21,6 +21,7 @@ import { RootState } from "@/redux/store";
 import { getToken } from "@/redux/reducers/token/asyncCalls";
 import { useNavigate } from "react-router-dom";
 import Scanner from "./Scanner";
+import mySound from "@/assets/alert.mp3";
 // import UploadQRBtn from "../uploadQRcode/uploadQRBtn";
 // import { Scanner2ndTest } from "./Scanner2ndTest";
 
@@ -40,6 +41,7 @@ const ScannerIframe = ({ tester }: { tester?: boolean }) => {
     setScanned(e);
 
     if (e && !isSubmitting.current) {
+      playSound();
       isSubmitting.current = true;
       // console.log("scann running");
       dispatch(addTicket(e));
@@ -70,16 +72,34 @@ const ScannerIframe = ({ tester }: { tester?: boolean }) => {
   useEffect(() => {
     if (!loading) {
       if (token === null) {
-        // window.parent.location.href = endpoint;
-        // navigate("/member-area");
+        window.parent.location.href = endpoint;
+        navigate("/member-area");
       }
     }
   }, [loading]);
 
   //html 5 qr code
+  const audioRef = useRef(null);
 
+  const playSound = () => {
+    if (audioRef.current) {
+      audioRef.current.play();
+    }
+  };
+
+  const pauseSound = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+  };
   return (
     <>
+      <audio
+        ref={audioRef}
+        src={mySound}
+        preload="auto"
+      />
+
       <Box sx={{ flexGrow: 1 }}>
         <AppBar
           position="static"
@@ -102,6 +122,7 @@ const ScannerIframe = ({ tester }: { tester?: boolean }) => {
             >
               Scanner
             </Typography>
+
             {/* <UploadQRBtn /> */}
           </Toolbar>
         </AppBar>

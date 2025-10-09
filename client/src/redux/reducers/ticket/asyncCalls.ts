@@ -12,11 +12,13 @@ import { toast } from "react-toastify";
 export const addTicket = createAsyncThunk(
   "ticket/createTicket",
   async (data: string, { dispatch, getState }) => {
-    const toastId = toast.loading("Uploading...");
+    toast.loading("Uploading...", {
+      toastId: "scanning_here",
+    });
 
     try {
       dispatch(disableBtn());
-      toast.update(toastId, {
+      toast.update("scanning_here", {
         render: "Checking Ticket",
         type: "info",
         isLoading: true,
@@ -29,7 +31,7 @@ export const addTicket = createAsyncThunk(
       let r = await apiService.postTicketList(data, token);
       let r_data = bodyDecrypt(r.data, token);
 
-      toast.update(toastId, {
+      toast.update("scanning_here", {
         // render: r_data.message,
         render: "Congratulations,your ticket has been successfully registered!",
         type: "success",
@@ -40,15 +42,15 @@ export const addTicket = createAsyncThunk(
       // dispatch(getTicket());
       return "success";
     } catch (err) {
-      console.log(err, "here");
       let m = getMessage(err);
-      console.log(m, "here");
-      toast.update(toastId, {
+
+      let b = toast.update("scanning_here", {
         render: m,
         type: "error",
         isLoading: false,
         autoClose: 2000,
       });
+      console.log(b);
       return "failed";
     }
   }

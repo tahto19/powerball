@@ -69,7 +69,7 @@ const headers: GridColDef[] = [
     editable: true,
   },
   {
-    field: "createdAt",
+    field: "date_entered",
     headerName: "Date Entered",
     flex: 1,
     minWidth: 200,
