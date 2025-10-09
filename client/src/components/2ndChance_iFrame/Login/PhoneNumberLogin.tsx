@@ -22,16 +22,16 @@ import { MuiOtpInput } from "mui-one-time-password-input";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import FormHelperText from '@mui/material/FormHelperText';
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import FormHelperText from "@mui/material/FormHelperText";
 
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const PhoneNumberLogin = () => {
   const dispatch = useAppDispatch();
   // const navigate = useNavigate();
   const { token } = useAppSelector((state) => state.token);
-  const [showPassword, setShowPassword] = React.useState(false)
+  const [showPassword, setShowPassword] = React.useState(false);
   const [mobileNumberError, setMobileNumberError] = React.useState(false);
   const [mobileNumberErrorMessage, setMobileNumberErrorMessage] =
     React.useState("");
@@ -229,6 +229,8 @@ const PhoneNumberLogin = () => {
     }
   };
   const handleLogin = async (number?: string) => {
+    console.log(number || otp);
+    console.log(number, otp);
     let tId = toast.loading("loading");
     setLoadingBtn(true);
     await delay(1000);
@@ -398,7 +400,9 @@ const PhoneNumberLogin = () => {
                                         }}
                                         error={passwordError}
                                         id="password"
-                                        type={showPassword ? "text" : "password"}
+                                        type={
+                                          showPassword ? "text" : "password"
+                                        }
                                         name="password"
                                         placeholder="password"
                                         autoFocus
@@ -414,17 +418,29 @@ const PhoneNumberLogin = () => {
                                         endAdornment={
                                           <InputAdornment position="end">
                                             <IconButton
-                                              onClick={() => setShowPassword(!showPassword)}
+                                              onClick={() =>
+                                                setShowPassword(!showPassword)
+                                              }
                                               edge="end"
                                             >
-                                              {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                                              {showPassword ? (
+                                                <VisibilityOffIcon />
+                                              ) : (
+                                                <VisibilityIcon />
+                                              )}
                                             </IconButton>
                                           </InputAdornment>
                                         }
-
                                       />
-                                      {passwordError ? (<FormHelperText sx={{ margin: "4px 14px 0 14px" }} error id="component-error-text">{passwordErrorMessage}</FormHelperText>) : null}
-
+                                      {passwordError ? (
+                                        <FormHelperText
+                                          sx={{ margin: "4px 14px 0 14px" }}
+                                          error
+                                          id="component-error-text"
+                                        >
+                                          {passwordErrorMessage}
+                                        </FormHelperText>
+                                      ) : null}
 
                                       {/* <TextField
                                         value={password ? password : ""}
@@ -499,7 +515,7 @@ const PhoneNumberLogin = () => {
                                     </label>
                                   </div>
 
-                                  {!sentOtp ? (
+                                  {sentOtp ? (
                                     <div className="elementor-field-group elementor-column elementor-field-type-submit elementor-col-100">
                                       <Button
                                         className="text-color-white elementor-size-sm elementor-button"
