@@ -515,7 +515,7 @@ const PhoneNumberLogin = () => {
                                     </label>
                                   </div>
 
-                                  {sentOtp ? (
+                                  {!sentOtp ? (
                                     <div className="elementor-field-group elementor-column elementor-field-type-submit elementor-col-100">
                                       <Button
                                         className="text-color-white elementor-size-sm elementor-button"
