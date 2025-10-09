@@ -46,9 +46,9 @@ const MyDialog = ({
   onClose,
   onSubmit,
 }: // totalEntries,
-  // totalUsedEntries,
-  // btnLoading,
-  DialogProps) => {
+// totalUsedEntries,
+// btnLoading,
+DialogProps) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -89,7 +89,6 @@ const MyDialog = ({
   };
   const getAplhaCode = async () => {
     try {
-      alert("running");
       if (!token) return;
       const res = await apiService.getAllAlphaCode(token);
       console.log(res, "herererre");
@@ -118,7 +117,7 @@ const MyDialog = ({
       }));
     }
   }, [open]);
-  useEffect(() => { }, []);
+  useEffect(() => {}, []);
   return (
     <>
       <Dialog
@@ -181,7 +180,8 @@ const MyDialog = ({
                     noOptionsText={"No Tickets"}
                     options={details ? details : []}
                     getOptionLabel={(option) =>
-                      `${findAlphaCodeLabel(option.alpha_code)} entries: ${option.totalEntries - option.totalUsedEntries
+                      `${findAlphaCodeLabel(option.alpha_code)} entries: ${
+                        option.totalEntries - option.totalUsedEntries
                       }`
                     }
                     renderInput={(params) => (
@@ -298,10 +298,11 @@ const MyDialog = ({
                             }));
                           }
                         }}
-                        helperText={`Total Entries Remaining: ${totalEntries !== null && totalUsedEntries !== null
+                        helperText={`Total Entries Remaining: ${
+                          totalEntries !== null && totalUsedEntries !== null
                             ? totalEntries - totalUsedEntries
                             : "loading" + totalUsedEntries + totalEntries
-                          }`}
+                        }`}
                       />
                     </Grid2>
                   );
@@ -347,10 +348,11 @@ const MyDialog = ({
                         }));
                       }
                     }}
-                    helperText={`Total Entries Remaining: ${totalEntries !== null && totalUsedEntries !== null
+                    helperText={`Total Entries Remaining: ${
+                      totalEntries !== null && totalUsedEntries !== null
                         ? totalEntries - totalUsedEntries
                         : "loading" + totalUsedEntries + totalEntries
-                      }`}
+                    }`}
                   />
                 </FormControl>
               </Grid2>
