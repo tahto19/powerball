@@ -85,7 +85,7 @@ DialogProps) => {
       find = alphaCodeDetails.find((v: any) => v.name === ac);
     }
     console.log(find, alphaCodeDetails, ac);
-    return find ? find.label : ac;
+    return find ? find?.label || ac : ac;
   };
   const getAplhaCode = async () => {
     try {
