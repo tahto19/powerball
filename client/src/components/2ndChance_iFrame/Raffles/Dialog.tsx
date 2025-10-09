@@ -80,10 +80,11 @@ DialogProps) => {
   } = useAppSelector((state) => state.raffleEntry);
   const findAlphaCodeLabel = (ac) => {
     let find;
+
     if (alphaCodeDetails && alphaCodeDetails.length > 0) {
-      let find = alphaCodeDetails.find((v: any) => v.name === ac);
+      find = alphaCodeDetails.find((v: any) => v.name === ac);
     }
-    console.log(find, alphaCodeDetails, alphaCodeChosen);
+    console.log(find, alphaCodeDetails, ac);
     return find ? find.label : ac;
   };
   const getAplhaCode = async () => {
