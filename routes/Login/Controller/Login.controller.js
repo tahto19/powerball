@@ -167,7 +167,7 @@ export const loginUsingMobileNumberController = async (req, res) => {
     );
     let r = await OTPClass.FetchOne([
       { filter: mobile, type: "string", field: "mobile" },
-      { filter: ip_address, type: "string", field: "ip_address" },
+
       { filter: platformversion, type: "string", field: "platformversion" },
       { filter: platform, type: "string", field: "platform" },
       { filter: dd, type: "string", field: "mobileNumber" },
