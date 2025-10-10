@@ -40,7 +40,12 @@ export const createSuperUser = async () => {
     let r = await AlphaCode.findOne({ where: { name: "FREE" } });
 
     if (!r) {
-      await AlphaCode.create({ name: "FREE", active: true, entries: 1 });
+      await AlphaCode.create({
+        name: "FREE",
+        active: true,
+        entries: 1,
+        label: "FREE",
+      });
     }
   } catch (err) {
     throw err;
