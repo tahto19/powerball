@@ -2,6 +2,7 @@ import {PrizeListAll} from "@/components/PrizeList/interface";
 import moment from "moment";
 export interface MyDialogProps {
     open: boolean;
+    allowEdit: boolean;
     prizeList: PrizeListAll;
     data: RaffleState;
     dialogType: string;

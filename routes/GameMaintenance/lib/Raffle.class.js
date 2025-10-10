@@ -177,7 +177,7 @@ class Raffle_class {
 
     _data.file_id = _data.fileInfo ? _data.fileInfo.id : null;
     delete _data.fileInfo;
-
+    console.log("=========", _data);
     await RaffleDetails.update(_data, { where: { id }, individualHooks: true });
     await RaffleSchedule.update(
       { schedule_date: _data.draw_date },
@@ -250,7 +250,7 @@ class Raffle_class {
     return id;
   }
 
-  async _2ndChanceFetchAll_old(
+  async _2ndChanceFetchAll(
     offset = 0,
     limit = 10,
     sort = [["id", "ASC"]],
@@ -326,7 +326,7 @@ class Raffle_class {
     return { list: new_rows };
   }
 
-  async _2ndChanceFetchAll(
+  async _2ndChanceFetchAllv2(
     offset = 0,
     limit = 10,
     sort = [["id", "ASC"]],

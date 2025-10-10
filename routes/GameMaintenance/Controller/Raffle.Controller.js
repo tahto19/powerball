@@ -83,17 +83,17 @@ export const updateController = async (req, res) => {
   res.send(cSend(a));
 };
 
-export const get2ndChanceControllerAll_old = async (req, res) => {
+export const get2ndChanceControllerAll = async (req, res) => {
   const { limit, offset, sort, filter, user_id } = req.body;
   let parsedSort = !sort ? [["id", "DESC"]] : JSON.parse(sort);
   let parsedFilter = !filter ? [] : JSON.parse(filter);
 
-  parsedSort = [
-    [literal(`CASE WHEN end_date > NOW() THEN 0 ELSE 1 END`), "ASC"],
-  ];
+  // parsedSort = [
+  //   [literal(`CASE WHEN end_date > NOW() THEN 0 ELSE 1 END`), "ASC"],
+  // ];
 
   const new_offset = limit * offset; // Calculate offset
-
+  console.log("======", parsedSort);
   let a = await rc._2ndChanceFetchAll(
     new_offset,
     limit,
@@ -104,7 +104,7 @@ export const get2ndChanceControllerAll_old = async (req, res) => {
   res.send(cSend(a));
 };
 
-export const get2ndChanceControllerAll = async (req, res) => {
+export const get2ndChanceControllerAllv2 = async (req, res) => {
   const { limit, offset, sort, filter, user_id } = req.body;
   // let parsedSort = !sort ? [["id", "DESC"]] : JSON.parse(sort);
   let parsedFilter = !filter ? [] : JSON.parse(filter);

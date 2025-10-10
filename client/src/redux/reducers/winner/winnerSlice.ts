@@ -15,7 +15,7 @@ const winnerList: winnerListInterface = {
   _loading: false,
   offset: 0,
   limit: 10,
-  sort: [],
+  sort: [['id', 'DESC']],
   filter: [],
   list: [],
   count: 0,

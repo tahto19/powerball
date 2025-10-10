@@ -59,7 +59,7 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
       const getFile = await apiService.getFile(
         {
           filter: [{ field: "winnerId", filter: e.id, type: "number" }],
-          sort: [],
+          sort: [['id', 'DESC']],
           limit: 1,
           offset: 0,
         },
