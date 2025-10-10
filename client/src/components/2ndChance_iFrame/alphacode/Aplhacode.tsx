@@ -92,7 +92,7 @@ function Aplhacode() {
       toast.info("youre not allowed to Edit");
       return;
     }
-    setToEdit({ id: e.id, name: e.name, entries: e.entries });
+    setToEdit({ id: e.id, name: e.name, entries: e.entries, label: e.label });
     setOpen(true);
     setDialogType("Edit");
   };
