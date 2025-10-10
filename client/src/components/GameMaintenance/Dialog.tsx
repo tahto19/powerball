@@ -188,6 +188,7 @@ function CustomTabPanel(props: TabPanelProps) {
 
 const MyDialog = ({
   open,
+  allowEdit,
   prizeList,
   data,
   dialogType,
@@ -310,6 +311,9 @@ const MyDialog = ({
   ) => {
     if (moment.isMoment(event)) {
       // If the change comes from DateTimePicker
+      if (dialog_type === 'Edit' && !allowEdit) {
+        return;
+      }
       setData((prevData) => ({
         ...prevData,
         [name as string]: event ? event.toISOString() : null, // Store as ISO string
@@ -477,7 +481,7 @@ const MyDialog = ({
                     variant="outlined"
                     slotProps={{
                       input: {
-                        readOnly: dialog_type === "View",
+                        readOnly: dialog_type === "View" || (dialog_type === 'Edit' && !allowEdit),
                       },
                     }}
                   />
@@ -500,7 +504,7 @@ const MyDialog = ({
                     onChange={(event) => handleInputChange(event)}
                     slotProps={{
                       input: {
-                        readOnly: dialog_type === "View",
+                        readOnly: dialog_type === "View" || (dialog_type === 'Edit' && !allowEdit),
                       },
                     }}
                   >
@@ -526,7 +530,7 @@ const MyDialog = ({
                     variant="outlined"
                     slotProps={{
                       input: {
-                        readOnly: dialog_type === "View",
+                        readOnly: dialog_type === "View" || (dialog_type === 'Edit' && !allowEdit),
                         style: { whiteSpace: "pre-line" },
                       },
                     }}
@@ -550,7 +554,7 @@ const MyDialog = ({
                     variant="outlined"
                     slotProps={{
                       input: {
-                        readOnly: dialog_type === "View",
+                        readOnly: dialog_type === "View" || (dialog_type === 'Edit' && !allowEdit),
                         style: { whiteSpace: "pre-line" },
                       },
                     }}
@@ -562,6 +566,7 @@ const MyDialog = ({
                   <FormLabel htmlFor="value">Start Date</FormLabel>
                   <LocalizationProvider dateAdapter={AdapterMoment}>
                     <DateTimePicker
+                      disabled={dialog_type === 'View' || (dialog_type === 'Edit' && !allowEdit)}
                       views={["year", "month", "day", "hours", "minutes"]}
                       name="starting_date"
                       onChange={(date: any) =>
@@ -581,6 +586,7 @@ const MyDialog = ({
                   <FormLabel htmlFor="value">End Date</FormLabel>
                   <LocalizationProvider dateAdapter={AdapterMoment}>
                     <DateTimePicker
+                      disabled={dialog_type === 'View' || (dialog_type === 'Edit' && !allowEdit)}
                       views={["year", "month", "day", "hours", "minutes"]}
                       name="end_date"
                       onChange={(date: any) =>
@@ -598,6 +604,7 @@ const MyDialog = ({
                   <FormLabel htmlFor="value">Draw Date</FormLabel>
                   <LocalizationProvider dateAdapter={AdapterMoment}>
                     <DateTimePicker
+                      disabled={dialog_type === 'View' || (dialog_type === 'Edit' && !allowEdit)}
                       views={["year", "month", "day", "hours", "minutes"]}
                       name="draw_date"
                       onChange={(date: any) =>
@@ -623,6 +630,7 @@ const MyDialog = ({
                         <IconButton
                           onClick={handleImage}
                           edge="end"
+                          disabled={dialog_type === 'View' || (dialog_type === 'Edit' && !allowEdit)}
                         >
                           <ImageIcon />
                         </IconButton>
@@ -642,6 +650,7 @@ const MyDialog = ({
                 <FormControl>
                   <FormLabel htmlFor="alpha_code">Alpha Code</FormLabel>
                   <Autocomplete
+                    disabled={dialog_type === 'View' || (dialog_type === 'Edit' && !allowEdit)}
                     multiple
                     id="alpha_code"
                     options={["All", ...alphaCodes]} // Add 'All' option
@@ -823,6 +832,7 @@ const MyDialog = ({
                     <Button
                       variant="contained"
                       onClick={handleOpenPrizeListDialog}
+                      disabled={dialog_type === 'View' || (dialog_type === 'Edit' && !allowEdit)}
                     >
                       {dialog_type} Prizes
                     </Button>

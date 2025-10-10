@@ -84,7 +84,7 @@ const GameMaintenace = () => {
     const { token } = useAppSelector((state) => state.token);
     const [dialogType, setDialogType] = useState("Add")
     const [dataRow, setDataRow] = useState(initialRaffleData);
-
+    const [allowEdit, setAllowEdit] = useState(false);
     const [list, setRaffleList] = useState<[]>([]);
     const [listCount, setListCount] = useState<number>(0);
     const [pagination, setPagination] = useState(initialPaginationData);
@@ -159,15 +159,21 @@ const GameMaintenace = () => {
             return;
         }
 
+        // if (row && moment().isAfter(row.end_date)) {
+        //     dispatch(showToaster({
+        //         message: "Raffle already ended.",
+        //         show: true,
+        //         variant: "error",
+        //         icon: null,
+        //     }))
+        //     return;
+        // }
+        setAllowEdit(true)
         if (row && moment().isAfter(row.end_date)) {
-            dispatch(showToaster({
-                message: "Raffle already ended.",
-                show: true,
-                variant: "error",
-                icon: null,
-            }))
-            return;
+            setAllowEdit(false)
+
         }
+
         setDialogType("Edit");
         setDataRow({ ...row })
         setOpen(true)
@@ -251,7 +257,7 @@ const GameMaintenace = () => {
                     />
                 </Grid2>
             </Grid2>
-            <MyDialog open={open} prizeList={prizeList} dialogType={dialogType} data={dataRow} onClose={handleOnClose} onSubmit={refreshTable} />
+            <MyDialog open={open} allowEdit={allowEdit} prizeList={prizeList} dialogType={dialogType} data={dataRow} onClose={handleOnClose} onSubmit={refreshTable} />
         </>
     )
 }
