@@ -58,6 +58,7 @@ class UserTypeClass {
         view: false,
         edit: false,
         export: false,
+        add: false,
       },
       second_chance_site_defaults: {
         view: false,
