@@ -177,7 +177,7 @@ class Raffle_class {
 
     _data.file_id = _data.fileInfo ? _data.fileInfo.id : null;
     delete _data.fileInfo;
-
+    console.log("=========", _data);
     await RaffleDetails.update(_data, { where: { id }, individualHooks: true });
     await RaffleSchedule.update(
       { schedule_date: _data.draw_date },
