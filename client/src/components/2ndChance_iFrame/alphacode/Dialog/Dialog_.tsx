@@ -64,6 +64,7 @@ export default function Dialog_({
   useEffect(() => {
     console.log(dialogType);
     if (dialogType === "Edit") {
+      setValue("label", data.name);
       setValue("name", data.name);
       setValue("entries", data.entries);
       setValue("id", data.id);
