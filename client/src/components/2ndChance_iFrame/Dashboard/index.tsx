@@ -147,7 +147,8 @@ const Dashboard = () => {
             isImage ? (
               <CardMedia
                 component="img"
-                sx={{ width: "fit-content", height: "181px" }}
+                // sx={{ width: "fit-content", height: "181px" }}
+                sx={{ width: "fit-content" }}
                 image={endpoint + formData.id}
                 alt="Logo"
               ></CardMedia>
