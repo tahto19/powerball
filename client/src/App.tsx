@@ -208,6 +208,7 @@ function AppRoutes() {
         }
       });
       setNewRoutes(a);
+      console.log(newRoutes);
     }
   }, [myPermission, token]);
 

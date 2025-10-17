@@ -76,6 +76,7 @@ const Raffles = () => {
 
       //   return isAfterA ? -1 : 1; // future dates first
       // });
+      console.log(data);
       setRaffleList(data);
       dispatch(raffleListAdd(data));
     }

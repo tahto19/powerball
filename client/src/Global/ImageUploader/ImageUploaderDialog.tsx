@@ -80,6 +80,7 @@ export default function ImageUploaderDialog({
   //   }
   // }, [open]);
   useEffect(() => {
+    console.log(imageUploaded);
 
     if (imageUploaded.length > 0) {
       setValue('name', imageUploaded[0].name)
