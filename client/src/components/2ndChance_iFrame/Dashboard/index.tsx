@@ -156,12 +156,11 @@ const Dashboard = () => {
                   background: "#FFF",
                   boxShadow: "0px 14px 42px 0px rgba(8, 15, 52, 0.06)",
                 }}
-                onClick={() => handleViewWinners(x)}
               >
                 <CardMedia
                   component="img"
                   // sx={{ width: "fit-content", height: "181px" }}
-                  sx={{ width: "100%" }}
+                  sx={{ width: "100%", minHeight: isSmallScreen ? "auto" : "181px", }}
                   image={endpoint + formData.id}
                   alt="Logo"
                 ></CardMedia>
