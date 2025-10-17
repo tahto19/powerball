@@ -382,7 +382,6 @@ export const apiService = {
     });
   },
   getTicketDetails: async (data, token: string | null) => {
-    console.log(data);
     return apiClient.post("api/ticket/myTicketDetails", {
       data: bodyEncrypt(JSON.stringify(data), token),
     });

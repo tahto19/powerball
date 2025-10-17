@@ -51,7 +51,6 @@ const Costumer = () => {
     sortModel,
     filterModel,
   }: any) => {
-    console.log("Table Changed:", { page, pageSize, sortModel, filterModel });
 
     setPagination({ page, pageSize });
 
@@ -211,8 +210,8 @@ const Costumer = () => {
           onTableChange={handleTableChange}
           pageLength={count}
           isAction={false}
-          // onEditAction={handleEditAction}
-          // onViewAction={handleViewAction}
+        // onEditAction={handleEditAction}
+        // onViewAction={handleViewAction}
         />
       </Grid2>
       <MyDialog

@@ -65,7 +65,6 @@ const ScannerIframe = ({ tester }: { tester?: boolean }) => {
     if (!ticketSubmit) {
       setScanned(null);
       isSubmitting.current = false;
-      console.log(isSubmitting.current, "here");
     }
   }, [ticketSubmit]);
 

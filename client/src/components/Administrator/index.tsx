@@ -45,7 +45,6 @@ const Index = () => {
     sortModel,
     filterModel,
   }: any) => {
-    console.log("Table Changed:", { page, pageSize, sortModel, filterModel });
 
     setPagination({ page, pageSize });
 

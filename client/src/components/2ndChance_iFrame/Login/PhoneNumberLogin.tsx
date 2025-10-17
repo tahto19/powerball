@@ -229,8 +229,6 @@ const PhoneNumberLogin = () => {
     }
   };
   const handleLogin = async (number?: string) => {
-    console.log(number || otp);
-    console.log(number, otp);
     let tId = toast.loading("loading");
     setLoadingBtn(true);
     await delay(1000);
@@ -269,7 +267,6 @@ const PhoneNumberLogin = () => {
   };
   React.useEffect(() => {
     if (token) {
-      console.log(token);
       window.parent.location.href = base_url + "cms/2nd-chance/";
     }
   }, [token]);
