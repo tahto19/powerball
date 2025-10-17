@@ -200,7 +200,7 @@ const EntriesDialog = ({ open, onClose }: DialogProps) => {
                 columns={12}
               >
                 {ticketList.length > 0 &&
-                  ticketList.map((x, i) => (
+                  ticketList.map((x) => (
                     <>
                       <Grid2 size={{ xs: 9, sm: 9, md: 9, lg: 9 }}>
                         <Typography
