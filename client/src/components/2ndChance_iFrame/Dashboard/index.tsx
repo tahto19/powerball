@@ -160,7 +160,7 @@ const Dashboard = () => {
                 <CardMedia
                   component="img"
                   // sx={{ width: "fit-content", height: "181px" }}
-                  sx={{ width: "100%", minHeight: isSmallScreen ? "auto" : "181px", }}
+                  sx={{ width: "100%", minHeight: isSmallScreen ? "181px" : "auto", }}
                   image={endpoint + formData.id}
                   alt="Logo"
                 ></CardMedia>
