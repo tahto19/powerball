@@ -147,12 +147,8 @@ const Dashboard = () => {
             isImage ? (
               <Card
                 sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
                   position: "relative",
-                  width: "100%",
-                  flex: 1,
+                  width: "fit-content",
                   // minHeight: "278px",
                   // maxHeight: "318px",
                   padding: "12px",
