@@ -185,12 +185,12 @@ const MyDialog = ({
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        placeholder="Tickets"
-                        helperText={
-                          totalEntriesAlphaCodeSelected
-                            ? `Total Entries Remaining selected: ${totalEntriesAlphaCodeSelected}`
-                            : ""
-                        }
+                        placeholder="Select ticket variants to use"
+                        // helperText={
+                        //   totalEntriesAlphaCodeSelected
+                        //     ? `Total Entries Remaining selected: ${totalEntriesAlphaCodeSelected}`
+                        //     : ""
+                        // }
 
                         inputProps={{
                           ...params.inputProps,
@@ -257,7 +257,7 @@ const MyDialog = ({
                       key={i}
                     >
                       <FormLabel htmlFor="details">
-                        {v.alpha_code} - {v.totalEntries - v.totalUsedEntries}
+                        {findAlphaCodeLabel(v.alpha_code)} - {v.totalEntries - v.totalUsedEntries}
                       </FormLabel>
 
                       <TextField
@@ -301,10 +301,10 @@ const MyDialog = ({
                             }));
                           }
                         }}
-                        helperText={`Total Entries Remaining: ${totalEntries !== null && totalUsedEntries !== null
-                          ? totalEntries - totalUsedEntries
-                          : "loading" + totalUsedEntries + totalEntries
-                          }`}
+                      // helperText={`Total Entries Remaining: ${totalEntries !== null && totalUsedEntries !== null
+                      //   ? totalEntries - totalUsedEntries
+                      //   : "loading" + totalUsedEntries + totalEntries
+                      //   }`}
                       />
                     </Grid2>
                   );
