@@ -84,14 +84,12 @@ const MyDialog = ({
     if (alphaCodeDetails && alphaCodeDetails.length > 0) {
       find = alphaCodeDetails.find((v: any) => v.name === ac);
     }
-    console.log(find, alphaCodeDetails, ac);
     return find ? find?.label || ac : ac;
   };
   const getAplhaCode = async () => {
     try {
       if (!token) return;
       const res = await apiService.getAllAlphaCode(token);
-      console.log(res, "herererre");
       setAlphaCodeDetails([...res.data]);
     } catch (err) {
       console.log(err);
@@ -193,6 +191,11 @@ const MyDialog = ({
                             ? `Total Entries Remaining selected: ${totalEntriesAlphaCodeSelected}`
                             : ""
                         }
+
+                        inputProps={{
+                          ...params.inputProps,
+                          readOnly: true,
+                        }}
                       />
                     )}
 
@@ -211,7 +214,6 @@ const MyDialog = ({
                         );
                       })
                     }
-                    onKeyDown={(e) => { e.preventDefault(); }}
                     onChange={(e, v) => {
                       const changeData = v.map((vv) => ({
                         ...vv,
@@ -232,7 +234,6 @@ const MyDialog = ({
                         );
                         setTotalEntriesAlphaCodeSelected(total);
                       }
-                      console.log(v);
                     }}
                   >
                     {/* {details?.map((v, i) => (
