@@ -159,5 +159,14 @@ class WiningDrawDetails_class {
 
     return { list: rows.map((v) => v.toJSON()), count };
   }
+  async getDeleteWinner(filter) {
+    if (!filter.id) {
+      throw new Error("ErrorCode x922");
+    }
+    let query = {};
+    query["where"] = filter;
+    await WiningDrawDetails.destroy(query);
+    return true;
+  }
 }
 export default new WiningDrawDetails_class();

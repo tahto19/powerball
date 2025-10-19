@@ -385,7 +385,7 @@ const PhoneNumberLogin = () => {
                                       }
                                     />
                                   </div>
-                                  {!sentOtp && (
+                                  {/* {!sentOtp && (
                                     <div className="elementor-field-type-text elementor-field-group elementor-column elementor-col-100 elementor-field-required">
                                       <label
                                         htmlFor="user-938a465"
@@ -442,30 +442,9 @@ const PhoneNumberLogin = () => {
                                         </FormHelperText>
                                       ) : null}
 
-                                      {/* <TextField
-                                        value={password ? password : ""}
-                                        onChange={(e: any) => {
-                                          setPassword(e.target.value);
-                                        }}
-                                        error={passwordError}
-                                        helperText={passwordErrorMessage}
-                                        id="password"
-                                        type="password"
-                                        name="password"
-                                        placeholder="password"
-                                        autoFocus
-                                        required
-                                        fullWidth
-                                        size="small"
-                                        variant="outlined"
-                                        color={
-                                          mobileNumberError
-                                            ? "error"
-                                            : "primary"
-                                        }
-                                      /> */}
+                                  
                                     </div>
-                                  )}
+                                  )} */}
                                   {sentOtp && (
                                     <div className="elementor-field-type-text elementor-field-group elementor-column elementor-col-100 elementor-field-required">
                                       <label
@@ -530,7 +509,7 @@ const PhoneNumberLogin = () => {
                                           Send OTP
                                         </span>
                                       </Button>
-                                      <Button
+                                      {/* <Button
                                         sx={{ marginLeft: "1px" }}
                                         className="text-color-white elementor-size-sm elementor-button"
                                         name="wp-submit"
@@ -543,7 +522,7 @@ const PhoneNumberLogin = () => {
                                         <span className="elementor-button-text">
                                           Login Password
                                         </span>
-                                      </Button>
+                                      </Button> */}
                                     </div>
                                   ) : (
                                     <div className="elementor-field-group elementor-column elementor-field-type-submit elementor-col-100">

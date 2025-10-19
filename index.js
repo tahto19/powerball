@@ -98,6 +98,8 @@ const fastify = Fastify({
  * x414 no mobile number found
  * x944 Expired OTP
  * X743 invalid email format
+ * x913 No Winner Found
+ * x922 Error in deleting filter is not set
  */
 
 /**
