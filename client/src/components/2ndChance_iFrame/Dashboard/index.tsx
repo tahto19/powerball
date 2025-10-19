@@ -87,7 +87,6 @@ const Dashboard = () => {
         setHasData(true)
       }
     }
-    console.log(d)
   }
 
   const [availableTicket, setavailableTicket] = useState(0);
@@ -139,18 +138,33 @@ const Dashboard = () => {
           flexDirection: "column",
           alignItems: "center",
           gap: "30px",
+          overflowY: "hidden"
         }}
       >
         {
           hasData ?
 
             isImage ? (
-              <CardMedia
-                component="img"
-                sx={{ width: "fit-content", height: "181px" }}
-                image={endpoint + formData.id}
-                alt="Logo"
-              ></CardMedia>
+              <Card
+                sx={{
+                  position: "relative",
+                  width: "fit-content",
+                  // minHeight: "278px",
+                  // maxHeight: "318px",
+                  padding: "12px",
+                  borderRadius: "20px",
+                  background: "#FFF",
+                  boxShadow: "0px 14px 42px 0px rgba(8, 15, 52, 0.06)",
+                }}
+              >
+                <CardMedia
+                  component="img"
+                  // sx={{ width: "fit-content", height: "181px" }}
+                  sx={{ width: "100%", minHeight: isSmallScreen ? "181px" : "auto", }}
+                  image={endpoint + formData.id}
+                  alt="Logo"
+                ></CardMedia>
+              </Card>
             ) : (
               // <CardMedia
               //   component="video"

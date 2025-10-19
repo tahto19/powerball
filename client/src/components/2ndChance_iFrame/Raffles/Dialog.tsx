@@ -46,9 +46,9 @@ const MyDialog = ({
   onClose,
   onSubmit,
 }: // totalEntries,
-// totalUsedEntries,
-// btnLoading,
-DialogProps) => {
+  // totalUsedEntries,
+  // btnLoading,
+  DialogProps) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -84,14 +84,12 @@ DialogProps) => {
     if (alphaCodeDetails && alphaCodeDetails.length > 0) {
       find = alphaCodeDetails.find((v: any) => v.name === ac);
     }
-    console.log(find, alphaCodeDetails, ac);
     return find ? find?.label || ac : ac;
   };
   const getAplhaCode = async () => {
     try {
       if (!token) return;
       const res = await apiService.getAllAlphaCode(token);
-      console.log(res, "herererre");
       setAlphaCodeDetails([...res.data]);
     } catch (err) {
       console.log(err);
@@ -117,7 +115,7 @@ DialogProps) => {
       }));
     }
   }, [open]);
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
   return (
     <>
       <Dialog
@@ -177,24 +175,30 @@ DialogProps) => {
                         height: "auto",
                       },
                     }}
+
                     noOptionsText={"No Tickets"}
                     options={details ? details : []}
                     getOptionLabel={(option) =>
-                      `${findAlphaCodeLabel(option.alpha_code)} entries: ${
-                        option.totalEntries - option.totalUsedEntries
+                      `${findAlphaCodeLabel(option.alpha_code)} entries: ${option.totalEntries - option.totalUsedEntries
                       }`
                     }
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        placeholder="Tickets"
-                        helperText={
-                          totalEntriesAlphaCodeSelected
-                            ? `Total Entries Remaining selected: ${totalEntriesAlphaCodeSelected}`
-                            : ""
-                        }
+                        placeholder="Select ticket variants to use"
+                        // helperText={
+                        //   totalEntriesAlphaCodeSelected
+                        //     ? `Total Entries Remaining selected: ${totalEntriesAlphaCodeSelected}`
+                        //     : ""
+                        // }
+
+                        inputProps={{
+                          ...params.inputProps,
+                          readOnly: true,
+                        }}
                       />
                     )}
+
                     label="Tickets List"
                     multiple
                     renderValue={(value: readonly string[], getItemProps) =>
@@ -230,7 +234,6 @@ DialogProps) => {
                         );
                         setTotalEntriesAlphaCodeSelected(total);
                       }
-                      console.log(v);
                     }}
                   >
                     {/* {details?.map((v, i) => (
@@ -254,7 +257,7 @@ DialogProps) => {
                       key={i}
                     >
                       <FormLabel htmlFor="details">
-                        {v.alpha_code} - {v.totalEntries - v.totalUsedEntries}
+                        {findAlphaCodeLabel(v.alpha_code)} - {v.totalEntries - v.totalUsedEntries}
                       </FormLabel>
 
                       <TextField
@@ -298,11 +301,10 @@ DialogProps) => {
                             }));
                           }
                         }}
-                        helperText={`Total Entries Remaining: ${
-                          totalEntries !== null && totalUsedEntries !== null
-                            ? totalEntries - totalUsedEntries
-                            : "loading" + totalUsedEntries + totalEntries
-                        }`}
+                      // helperText={`Total Entries Remaining: ${totalEntries !== null && totalUsedEntries !== null
+                      //   ? totalEntries - totalUsedEntries
+                      //   : "loading" + totalUsedEntries + totalEntries
+                      //   }`}
                       />
                     </Grid2>
                   );
@@ -348,11 +350,10 @@ DialogProps) => {
                         }));
                       }
                     }}
-                    helperText={`Total Entries Remaining: ${
-                      totalEntries !== null && totalUsedEntries !== null
-                        ? totalEntries - totalUsedEntries
-                        : "loading" + totalUsedEntries + totalEntries
-                    }`}
+                    helperText={`Total Entries Remaining: ${totalEntries !== null && totalUsedEntries !== null
+                      ? totalEntries - totalUsedEntries
+                      : "loading" + totalUsedEntries + totalEntries
+                      }`}
                   />
                 </FormControl>
               </Grid2>

@@ -219,7 +219,9 @@ export const postTicketController = async (req, res) => {
       throw new Error("ErrorCode x12");
     } else if (
       _r.data.r.trim().toLowerCase() === "this is a winning ticket." ||
-      _r.data.r.trim().toLowerCase() === "this is a winning ticket."
+      _r.data.r.trim().toLowerCase() === "this is a winning ticket." ||
+      _r.data.r.trim().toLowerCase() === "this ticket has already been paid." ||
+      _r.data.r.trim().toLowerCase() === "this ticket has already been paid"
     ) {
       throw new Error("ErrorCode x13");
     } else if (

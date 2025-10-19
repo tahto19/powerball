@@ -110,7 +110,6 @@ const AddUserC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [phone, setPhone] = useState("+63");
   const changeDate = (d: Date | null) => {
-    console.log(d);
   };
   const onError: SubmitErrorHandler<userState> = (error) => console.log(error);
   return (

@@ -18,7 +18,6 @@ const VerificationCode = () => {
   const { otpID, loading } = useAppSelector((state: RootState) => state.user);
 
   useEffect(() => {
-    console.log(loading, otpID);
   }, [loading]);
   return (
     <AnimatedContent

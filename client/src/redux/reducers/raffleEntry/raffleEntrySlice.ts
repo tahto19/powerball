@@ -21,7 +21,7 @@ const initialState: raffleEntries = {
     offset: 0,
     limit: 10,
     filter: [],
-    sort: [],
+    sort: [['id', 'DESC']],
   },
 };
 

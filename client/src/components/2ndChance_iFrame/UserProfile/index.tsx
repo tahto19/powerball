@@ -87,7 +87,6 @@ const main = () => {
       if (JSON.stringify(userDetails) === JSON.stringify(formData)) {
         throw new Error("Nothing change");
       }
-      console.log(formData);
       let res = await apiService.updateAdmin(formData, token);
 
       const d = bodyDecrypt(res.data, token);

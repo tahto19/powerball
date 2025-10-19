@@ -90,7 +90,6 @@ const EntriesDialog = ({ open, onClose }: DialogProps) => {
     if (d) {
       let new_raffle: any = [];
       let new_ticket_list: any = [];
-      console.log("000000", d);
 
       d.forEach((x: any) => {
         const f = new_ticket_list.find((c: any) => c.alphaCode === x.alphaCode);
