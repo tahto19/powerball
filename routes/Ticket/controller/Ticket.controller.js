@@ -88,8 +88,20 @@ export const raffleDrawController = async (req, res) => {
 };
 export const raffleDrawV2Controller = async (req, res) => {
   try {
-    const { raffle_id, prize_id } = req.body;
+    const { raffle_id, prize_id, winner_id } = req.body;
 
+    if (winner_id) {
+      let getWinner = await wc.Fetch(null, [
+        {
+          field: "id",
+          filter: winner_id,
+          type: "number",
+        },
+      ]);
+      if (getWinner === 0) throw new Error("ErrorCODE x913");
+
+      await getDeleteWinner.wc({ id: winner_id });
+    }
     if (!raffle_id || prize_id === -1 || !prize_id)
       throw new Error("Error X984");
     // check first if the raffle is already done
