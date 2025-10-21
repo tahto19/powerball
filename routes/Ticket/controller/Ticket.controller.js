@@ -100,7 +100,7 @@ export const raffleDrawV2Controller = async (req, res) => {
       ]);
       if (getWinner === 0) throw new Error("ErrorCODE x913");
 
-      await getDeleteWinner.wc({ id: winner_id });
+      await wc.getDeleteWinner({ id: winner_id });
     }
     if (!raffle_id || prize_id === -1 || !prize_id)
       throw new Error("Error X984");
