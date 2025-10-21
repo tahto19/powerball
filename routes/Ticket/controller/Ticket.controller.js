@@ -91,7 +91,7 @@ export const raffleDrawV2Controller = async (req, res) => {
     const { raffle_id, prize_id, winner_id } = req.body;
 
     if (winner_id) {
-      let getWinner = await wc.Fetch(null, null,null[
+      let getWinner = await wc.Fetch(0, 10, null, [
         {
           field: "id",
           filter: winner_id,

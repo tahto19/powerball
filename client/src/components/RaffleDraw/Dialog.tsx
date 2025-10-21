@@ -133,7 +133,6 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
       (x) => x.Prize_List.type === value
     );
 
-    console.log(prize_data)
     if (prize_data) {
       setPrizeData(prize_data);
     } else {
@@ -188,16 +187,13 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
         winner_id: winnerID
       };
 
-      console.log(payload)
       const res = await apiService.ticketDraw(payload, token);
 
       const d = bodyDecrypt(res.data, token);
       if (d && d.success === "success") {
         setWinnerDialog(true);
-        setWinnerDetails(d.data.winnerDetails);
-        console.log("=====", d.data)
+        setWinnerDetails({ ...d.data.winnerDetails, _updatedAt: Date.now(), });
         setWinnerID(d.data.winner_id)
-        console.log("=====", d.data.winner_id)
 
       }
 
@@ -216,9 +212,9 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
   };
 
   const handleReDraw = async () => {
-    await handleDraw()
+    handleDraw()
   }
-
+  const [reDrawCount, setReDrawCount] = useState(0)
   const [confirmationDialog, setConfirmationDialog] = useState(false)
   const handleConfirmationDialog = () => {
     setConfirmationDialog(false)
@@ -243,16 +239,13 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
         winner_id: winnerID
       };
 
-      console.log(payload)
       const res = await apiService.ticketDraw(payload, token);
 
       const d = bodyDecrypt(res.data, token);
       if (d && d.success === "success") {
         setWinnerDialog(true);
-        setWinnerDetails(d.data.winnerDetails);
-        console.log("=====", d.data.winnerDetails)
+        setWinnerDetails({ ...d.data.winnerDetails, _updatedAt: Date.now(), });
         setWinnerID(d.data.winner_id)
-        console.log("=====", d.data.winner_id)
 
       }
 
@@ -535,6 +528,7 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
           onClose={handlePrizeClose}
         />
         <WinnerDialog
+          key={winnerDetails._updatedAt}
           open={winnerDialog}
           ticket={winnerDetails.ticket_history_generate}
           name={winnerDetails.user_name}

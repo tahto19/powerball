@@ -40,6 +40,7 @@ export interface WinnerDetailState {
   ticket_history_generate: string;
   ticket_id: number | null;
   wining_draw_detail: string;
+  _updatedAt: Date;
 }
 
 
@@ -57,5 +58,6 @@ export const initailWinnerData = {
   raffle_id: null,
   ticket_history_generate: "",
   ticket_id: null,
-  wining_draw_detail: ""
+  wining_draw_detail: "",
+  _updatedAt: null
 }

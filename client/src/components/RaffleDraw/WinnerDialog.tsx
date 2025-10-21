@@ -36,13 +36,15 @@ const WinnerDialog = ({ open, ticket, name, onClose, reDraw }: WinnerDialogProps
         setShowName(true)
     }
 
-    const handleRedraw = handleRedraw => {
+    const handleRedraw = () => {
+        setShowName(false)
+        setAllowClose(false)
         reDraw(true)
     }
 
-    useEffect(() => {
-        setAllowClose(false)
-    }, [ticket])
+    // useEffect(() => {
+    //     setAllowClose(false)
+    // }, [ticket])
     return (
         <>
             <Dialog open={open} >
