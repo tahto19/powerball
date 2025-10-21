@@ -180,6 +180,7 @@ export const raffleDrawV2Controller = async (req, res) => {
     });
     res.send(
       cSend({
+        winner_id: b,
         winnerDetails: getWinnerTicketDetails,
         totalEntries: secondClear.length,
       })
