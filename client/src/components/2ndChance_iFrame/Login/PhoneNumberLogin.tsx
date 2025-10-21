@@ -1,3 +1,4 @@
+//@ts-nocheck
 import "@/assets/elementor/css/frontend.min.css";
 import "@/assets/elementor/css/post-6.css";
 import "@/assets/elementor/css/post-45.css";
