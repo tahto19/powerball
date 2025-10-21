@@ -11,12 +11,12 @@ import {
 } from '@mui/material';
 
 import { WinnerDialogProps } from "./interface.ts"
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import RandomLetters from '@/animated/RandomLettersNew.tsx';
 import TestRandom from '@/animated/TestRandom.tsx';
 
-const WinnerDialog = ({ open, ticket, name, onClose }: WinnerDialogProps) => {
+const WinnerDialog = ({ open, ticket, name, onClose, reDraw }: WinnerDialogProps) => {
     const [allowCLose, setAllowClose] = useState(false)
     const [showName, setShowName] = useState(false)
 
@@ -35,6 +35,14 @@ const WinnerDialog = ({ open, ticket, name, onClose }: WinnerDialogProps) => {
         console.log("showwwwwwwww")
         setShowName(true)
     }
+
+    const handleRedraw = handleRedraw => {
+        reDraw(true)
+    }
+
+    useEffect(() => {
+        setAllowClose(false)
+    }, [ticket])
     return (
         <>
             <Dialog open={open} >
@@ -75,7 +83,19 @@ const WinnerDialog = ({ open, ticket, name, onClose }: WinnerDialogProps) => {
                         justifyContent: "center",
                         marginTop: "10px",
                         paddingTop: "20px",
+                        gap: '15px',
                     }}>
+                        <Button
+                            onClick={handleRedraw}
+                            variant="contained"
+                            sx={{
+                                background: "#F26A21 !important",
+                                padding: "10px 40px",
+                                color: "white !important",
+                            }}
+                        >
+                            Redraw
+                        </Button>
 
                         <Button
                             onClick={handleClose}
@@ -87,6 +107,7 @@ const WinnerDialog = ({ open, ticket, name, onClose }: WinnerDialogProps) => {
                         >
                             Close
                         </Button>
+
                     </div>
                 </DialogContent>
 

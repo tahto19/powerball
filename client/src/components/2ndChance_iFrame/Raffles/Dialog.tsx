@@ -125,7 +125,7 @@ const MyDialog = ({
       >
         <form
           style={{
-            width: isSmallScreen ? "100%" : "600px",
+            width: "100%",
           }}
         >
           <DialogTitle

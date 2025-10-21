@@ -117,6 +117,7 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
   const [winnerDetails, setWinnerDetails] = useState(initailWinnerData);
   const [allowDraw, setAllowDraw] = useState(true);
   const [winnerDialog, setWinnerDialog] = useState(false);
+  const [winnerID, setWinnerID] = useState(null);
   const [winnerList, setWinnerList] = useState([]);
   const { list, getDataLoading } = useAppSelector(
     (state: RootState) => state.raffleDraw.getData
@@ -184,14 +185,19 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
       const payload = {
         raffle_id,
         prize_id,
+        winner_id: winnerID
       };
+
+      console.log(payload)
       const res = await apiService.ticketDraw(payload, token);
 
       const d = bodyDecrypt(res.data, token);
       if (d && d.success === "success") {
         setWinnerDialog(true);
         setWinnerDetails(d.data.winnerDetails);
-        console.log("=====", d.data.winnerDetails)
+        console.log("=====", d.data)
+        setWinnerID(d.data.winner_id)
+        console.log("=====", d.data.winner_id)
 
       }
 
@@ -208,6 +214,10 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
       );
     }
   };
+
+  const handleReDraw = async () => {
+    await handleDraw()
+  }
 
   const [confirmationDialog, setConfirmationDialog] = useState(false)
   const handleConfirmationDialog = () => {
@@ -230,7 +240,10 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
       const payload = {
         raffle_id,
         prize_id,
+        winner_id: winnerID
       };
+
+      console.log(payload)
       const res = await apiService.ticketDraw(payload, token);
 
       const d = bodyDecrypt(res.data, token);
@@ -238,6 +251,8 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
         setWinnerDialog(true);
         setWinnerDetails(d.data.winnerDetails);
         console.log("=====", d.data.winnerDetails)
+        setWinnerID(d.data.winner_id)
+        console.log("=====", d.data.winner_id)
 
       }
 
@@ -524,6 +539,7 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
           ticket={winnerDetails.ticket_history_generate}
           name={winnerDetails.user_name}
           onClose={handleWinnerDialogClose}
+          reDraw={handleReDraw}
         />
 
         <Dialog open={confirmationDialog} >
