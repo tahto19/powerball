@@ -109,8 +109,7 @@ const AddUserC = () => {
   };
   const [showPassword, setShowPassword] = useState(false);
   const [phone, setPhone] = useState("+63");
-  const changeDate = (d: Date | null) => {
-  };
+  const changeDate = (d: Date | null) => {};
   const onError: SubmitErrorHandler<userState> = (error) => console.log(error);
   return (
     <Grid
@@ -244,16 +243,16 @@ const AddUserC = () => {
                     },
                   }}
                   {...register("password", {
-                    required: false,
-                    minLength: {
-                      value: 6,
-                      message: "At least 6 characters required",
-                    },
-                    pattern: {
-                      value: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])/,
-                      message:
-                        "Must include uppercase, lowercase  number, and special character",
-                    },
+                    required: true,
+                    // minLength: {
+                    //   value: 6,
+                    //   message: "At least 6 characters required",
+                    // },
+                    // pattern: {
+                    //   value: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])/,
+                    //   message:
+                    //     "Must include uppercase, lowercase  number, and special character",
+                    // },
                   })}
                 ></TextField>
                 {errors &&
