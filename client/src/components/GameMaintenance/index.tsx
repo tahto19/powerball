@@ -80,7 +80,7 @@ const initialPrizeListData: PrizeListAll = {
 const GameMaintenace = () => {
     const dispatch = useAppDispatch();
     const { myPermission } = useAppSelector((state: RootState) => state.userType);
-
+    const [loading, setLoading] = useState(false)
     const { token } = useAppSelector((state) => state.token);
     const [dialogType, setDialogType] = useState("Add")
     const [dataRow, setDataRow] = useState(initialRaffleData);
@@ -96,7 +96,7 @@ const GameMaintenace = () => {
 
     const handleTableChange = async ({ page, pageSize, sortModel, filterModel }: any) => {
         setPagination({ page, pageSize })
-
+        setLoading(true)
         let sort = [['id', 'DESC']];
         if (sortModel.length > 0) {
             sort = [[sortModel[0].field, sortModel[0].sort.toUpperCase()]];
@@ -123,7 +123,9 @@ const GameMaintenace = () => {
         const res = await apiService.getGMList(query, token);
 
         const d = bodyDecrypt(res.data, token)
+        setLoading(false)
         if (d && d.success === 'success') {
+            console.log(d.data)
             setRaffleList(d.data.list)
             setListCount(d.data.total)
         }
@@ -247,6 +249,7 @@ const GameMaintenace = () => {
                             width: "100%",
                         }}
                         data={list}
+                        loading={loading}
                         headers={headers}
                         pagination={pagination}
                         pageLength={listCount}

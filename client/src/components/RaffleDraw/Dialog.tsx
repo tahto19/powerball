@@ -118,6 +118,8 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
   const [allowDraw, setAllowDraw] = useState(true);
   const [winnerDialog, setWinnerDialog] = useState(false);
   const [winnerID, setWinnerID] = useState(null);
+  const [usersID, setUsersID] = useState([]);
+
   const [winnerList, setWinnerList] = useState([]);
   const { list, getDataLoading } = useAppSelector(
     (state: RootState) => state.raffleDraw.getData
@@ -184,9 +186,9 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
       const payload = {
         raffle_id,
         prize_id,
-        winner_id: winnerID
+        winner_id: winnerID,
+        users: usersID
       };
-
       const res = await apiService.ticketDraw(payload, token);
 
       const d = bodyDecrypt(res.data, token);
@@ -194,6 +196,10 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
         setWinnerDialog(true);
         setWinnerDetails({ ...d.data.winnerDetails, _updatedAt: Date.now(), });
         setWinnerID(d.data.winner_id)
+        setUsersID((prev) => [
+          ...prev,
+          d.data.user_id
+        ])
 
       }
 
@@ -236,17 +242,23 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
       const payload = {
         raffle_id,
         prize_id,
-        winner_id: winnerID
+        winner_id: winnerID,
+        users: usersID
+
       };
 
       const res = await apiService.ticketDraw(payload, token);
 
       const d = bodyDecrypt(res.data, token);
       if (d && d.success === "success") {
+
         setWinnerDialog(true);
         setWinnerDetails({ ...d.data.winnerDetails, _updatedAt: Date.now(), });
         setWinnerID(d.data.winner_id)
-
+        setUsersID((prev) => [
+          ...prev,
+          d.data.user_id
+        ])
       }
 
       setAllowDraw(true);
@@ -270,10 +282,7 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
     limit: 10,
     offset: 0,
   });
-  useEffect(() => {
-    console.log("=====", list)
 
-  }, list)
   useEffect(() => {
     setOpen(open);
     setPrizeData(initialRaffleData.raffleSchedule[0].prizeInfo[0]);
@@ -534,6 +543,7 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
           name={winnerDetails.user_name}
           onClose={handleWinnerDialogClose}
           reDraw={handleReDraw}
+          allowDraw={allowDraw}
         />
 
         <Dialog open={confirmationDialog} >

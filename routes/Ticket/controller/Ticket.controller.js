@@ -193,7 +193,7 @@ export const raffleDrawV2Controller = async (req, res) => {
         winner_id: b,
         winnerDetails: getWinnerTicketDetails,
         totalEntries: secondClear.length,
-        user_id: getWinnerTicketDetails.user_id,
+        user_id: getWinnerTicketDetails.user,
       })
     );
   } catch (err) {

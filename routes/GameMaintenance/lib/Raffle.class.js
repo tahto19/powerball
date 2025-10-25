@@ -77,19 +77,27 @@ class Raffle_class {
           separate: true,
           order: [["id", "DESC"]],
           as: "raffleSchedule",
-          // attributes: ["id"],
+          attributes: ["id", "raffle_id", "schedule_date", "status"],
           include: [
             {
               model: RafflePrize,
               separate: true,
               order: [["id", "DESC"]],
               as: "prizeInfo",
-              // attributes: ["id", "prize_id", "type", "name"],
+              attributes: [
+                "amount",
+                "id",
+                "number_of_winners",
+                "prize_id",
+                "raffle_schedule_id",
+                "status",
+              ],
               where: { status: 1 },
               required: false, // This ensures the RaffleSchedule is included even if there's no matching RafflePrize
               include: [
                 {
                   model: PrizeList,
+                  attributes: ["id", "type", "value"],
                   required: false, // This ensures the RaffleSchedule is included even if there's no matching RafflePrize
                 },
               ],
@@ -114,7 +122,13 @@ class Raffle_class {
     // ✅ Fetch both filtered list and total count
     let { count, rows } = await RaffleDetails.findAndCountAll(query);
 
-    return { list: rows, total: count };
+    console.log(
+      "Data size:",
+      Buffer.byteLength(JSON.stringify(rows)) / 1024 / 1024,
+      "MB"
+    );
+
+    return { list: JSON.parse(JSON.stringify(rows)), total: count };
   }
   async FetchAll(sort = [["id", "ASC"]], filter = []) {
     let query = {
