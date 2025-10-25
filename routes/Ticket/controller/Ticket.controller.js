@@ -88,7 +88,7 @@ export const raffleDrawController = async (req, res) => {
 };
 export const raffleDrawV2Controller = async (req, res) => {
   try {
-    const { raffle_id, prize_id, winner_id } = req.body;
+    const { raffle_id, prize_id, winner_id, users } = req.body;
 
     if (winner_id) {
       let getWinner = await wc.Fetch(0, 10, null, [
@@ -121,15 +121,25 @@ export const raffleDrawV2Controller = async (req, res) => {
     let prizeScheduleWinners = getPrizeScheduleInfoToJson.number_of_winners;
     if (checkRaffleWinner.total >= prizeScheduleWinners)
       throw new Error("ErrorCODE X911");
-
+    console.log(users);
     let getRaffleSchedule = await RaffleSchedule.findOne({
-      where: { id: raffle_id },
+      where: {
+        id: raffle_id,
+        "$ticket_histories.ticket_detail.user_id$": {
+          [Op.notIn]: users ? users : [],
+        },
+      },
+
       include: [
         {
           model: TicketHistory,
+
           include: [
             { model: WiningDrawDetails },
-            { model: TicketDetails, include: [{ model: Users }] },
+            {
+              model: TicketDetails,
+              include: [{ model: Users }],
+            },
           ],
         },
       ],
@@ -171,7 +181,7 @@ export const raffleDrawV2Controller = async (req, res) => {
     if (!ticketsThatCanJoin.length) throw new Error("errorcode x876");
     let a = random(ticketsThatCanJoin);
     let getWinnerTicketDetails = secondClear.find((v) => v.ticket_code === a);
-
+    console.log(getWinnerTicketDetails);
     let b = await wc.Insert({
       admin_id: req.user_id,
       raffle_prize_id: prize_id,
@@ -183,6 +193,7 @@ export const raffleDrawV2Controller = async (req, res) => {
         winner_id: b,
         winnerDetails: getWinnerTicketDetails,
         totalEntries: secondClear.length,
+        user_id: getWinnerTicketDetails.user_id,
       })
     );
   } catch (err) {
