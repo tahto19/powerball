@@ -218,14 +218,19 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
   };
 
   const handleReDraw = async () => {
-    handleDraw()
+    handleDraw(winnerID, usersID)
   }
   const [reDrawCount, setReDrawCount] = useState(0)
   const [confirmationDialog, setConfirmationDialog] = useState(false)
   const handleConfirmationDialog = () => {
     setConfirmationDialog(false)
   }
-  const handleDraw = async () => {
+
+  const proceedDraw = async () => {
+    handleDraw(null, [])
+  }
+
+  const handleDraw = async (winner_ID, users_ID) => {
     setConfirmationDialog(false)
 
     if (!myPermission.raffle_draw.draw) {
@@ -242,8 +247,8 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
       const payload = {
         raffle_id,
         prize_id,
-        winner_id: winnerID,
-        users: usersID
+        winner_id: winner_ID,
+        users: users_ID
 
       };
 
@@ -552,7 +557,7 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleConfirmationDialog}>No</Button>
-            <Button onClick={handleDraw} autoFocus>
+            <Button onClick={proceedDraw} autoFocus>
               Yes
             </Button>
           </DialogActions>
