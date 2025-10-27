@@ -121,7 +121,7 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
   const [usersID, setUsersID] = useState([]);
 
   const [winnerList, setWinnerList] = useState([]);
-  const { list, getDataLoading } = useAppSelector(
+  const { count, list, getDataLoading } = useAppSelector(
     (state: RootState) => state.raffleDraw.getData
   );
 
@@ -281,10 +281,12 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
   };
 
   const [timeLeft, setTimeLeft] = useState<TimeProps>(initailTimeData);
+  const [listCount, setListCount] = useState<number>(0);
+
   const [query, setQuery] = useState<getDataV2>({
     sort: [],
     filter: [],
-    limit: 10,
+    limit: 1,
     offset: 0,
   });
 
@@ -335,6 +337,20 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
     fetchDraw()
   };
 
+  const handleTableChange = async ({ page, pageSize, sortModel, filterModel }: any) => {
+    const copy = { ...query, offset: page, limit: pageSize, };
+    copy.filter = [
+      {
+        filter: data.raffleSchedule[0].id,
+        field: "$Raffle_Prize.raffle_schedule_id$",
+        type: "number",
+      },
+    ];
+
+    dispatch(getData(copy));
+  }
+
+
   const fetchDraw = () => {
     const copy = { ...query };
     copy.filter = [
@@ -347,15 +363,15 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
 
     dispatch(getData(copy));
   }
-  useEffect(() => {
-    if (open) {
-      //   getWinnerList(); // comment by crisanto
-      //   {
-      //     raffle_schedule_id: data.raffleSchedule[0].id,
-      //   }
-      fetchDraw()
-    }
-  }, [open]);
+  // useEffect(() => {
+  //   if (open) {
+  //     //   getWinnerList(); // comment by crisanto
+  //     //   {
+  //     //     raffle_schedule_id: data.raffleSchedule[0].id,
+  //     //   }
+  //     fetchDraw()
+  //   }
+  // }, [open]);
 
   return (
     <>
@@ -508,6 +524,8 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
               data={list}
               headers={columnHeader}
               pagination={paginationModel}
+              pageLength={count}
+              onTableChange={handleTableChange}
               checkboxSelection={false}
             />
             {/* <Box>
