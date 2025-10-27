@@ -284,7 +284,7 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
   const [listCount, setListCount] = useState<number>(0);
 
   const [query, setQuery] = useState<getDataV2>({
-    sort: [],
+    sort: [["id", "DESC"]],
     filter: [],
     limit: 1,
     offset: 0,
