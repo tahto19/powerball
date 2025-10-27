@@ -55,18 +55,18 @@ const headers = [
     {
         field: 'end_date', headerName: 'Status', flex: 1, minWidth: 200,
         renderCell: (params: any) => {
-            // const { end_date, active } = params.row;
-            // let displayStatus = '';
-            // if (moment().isAfter(end_date)) {
-            //     displayStatus = 'Ended';
-            // } else if (!active) {
-            //     displayStatus = 'Inactive';
-            // } else {
-            //     displayStatus = 'Active';
-            // }
-            const value = moment().isAfter(params.value) ? 'Ended' : 'Active'
-            return renderStatus(value as any)
-            // return renderStatus(displayStatus as any)
+            const { end_date, active } = params.row;
+            let displayStatus = '';
+            if (moment().isAfter(end_date)) {
+                displayStatus = 'Ended';
+            } else if (!active) {
+                displayStatus = 'Inactive';
+            } else {
+                displayStatus = 'Active';
+            }
+            // const value = moment().isAfter(params.value) ? 'Ended' : 'Active'
+            // return renderStatus(value as any)
+            return renderStatus(displayStatus as any)
         },
     }
 ]
@@ -130,8 +130,7 @@ const GameMaintenace = () => {
             offset: page, limit: pageSize, sort: JSON.stringify(sort), filter: JSON.stringify(newFilterModel)
         }
 
-        // const res = await apiService.getGMList(query, token);
-        const res = await apiService.getGMListV2(query, token);
+        const res = await apiService.getGMList(query, token);
 
         const d = bodyDecrypt(res.data, token)
         setLoading(false)

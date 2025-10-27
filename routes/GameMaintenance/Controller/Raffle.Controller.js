@@ -51,6 +51,39 @@ export const getController = async (req, res) => {
   res.send(cSend(a));
 };
 
+export const getControllerV2 = async (req, res) => {
+  const { limit, offset, sort, filter } = req.body;
+  let parsedSort = JSON.parse(sort);
+  let parsedFilter = JSON.parse(filter);
+  const new_offset = limit * offset; // Calculate offset
+  parsedSort = parsedSort.length > 0 ? parsedSort : [["id", "ASC"]];
+  let a = await rc.FetchV2(new_offset, limit, parsedSort, parsedFilter);
+
+  res.send(cSend(a));
+};
+
+export const getRaffleDetails = async (req, res) => {
+  const { limit, offset, sort, filter } = req.body;
+  let parsedSort = JSON.parse(sort);
+  let parsedFilter = JSON.parse(filter);
+  const new_offset = limit * offset; // Calculate offset
+  parsedSort = parsedSort.length > 0 ? parsedSort : [["id", "ASC"]];
+  // let a = await rc.Fetchv1(new_offset, limit, parsedSort, parsedFilter);
+  console.log("=======", parsedSort);
+  console.log("=======", parsedFilter);
+
+  console.log("=======", new_offset);
+
+  let a = await rc.FetchRaffleDetails(
+    new_offset,
+    limit,
+    parsedSort,
+    parsedFilter
+  );
+
+  res.send(cSend(a));
+};
+
 export const getControllerAll = async (req, res) => {
   const { sort, filter } = req.body;
   let parsedSort = !sort ? [["id", "DESC"]] : JSON.parse(sort);

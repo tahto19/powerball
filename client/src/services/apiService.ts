@@ -166,6 +166,18 @@ export const apiService = {
     });
     return res;
   },
+   getGMListV2: async (d: getData, token: string | null) => {
+    const res = apiClient.post("/api/game-maintenance/raffles", {
+      data: bodyEncrypt(d, token),
+    });
+    return res;
+  },
+   getGMDetails: async (d: getData, token: string | null) => {
+    const res = apiClient.post("/api/game-maintenance/raffle-details", {
+      data: bodyEncrypt(d, token),
+    });
+    return res;
+  },
   getGMListAll: async (d: fetchAll, token: string | null) => {
     const res = apiClient.post("/api/game-maintenance/all", {
       data: bodyEncrypt(d, token),
