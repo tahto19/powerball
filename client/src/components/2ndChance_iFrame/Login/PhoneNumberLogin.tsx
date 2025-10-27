@@ -315,14 +315,14 @@ const PhoneNumberLogin = () => {
                   </div> */}
 
                   <section
-                    className="elementor-section elementor-top-section elementor-element elementor-element-4b9d4b03 elementor-section-content-middle elementor-section-boxed elementor-section-height-default elementor-section-height-default wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no"
+                    className=" elementor-section elementor-top-section elementor-element elementor-element-4b9d4b03 elementor-section-content-middle elementor-section-boxed elementor-section-height-default elementor-section-height-default wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no"
                     data-id="4b9d4b03"
                     data-element_type="section"
                     data-settings='{"background_background":"classic","_ha_eqh_enable":false}'
                   >
                     <div
                       style={{ textAlign: "center" }}
-                      className="elementor-widget-container"
+                      className="login-your-account elementor-widget-container"
                     >
                       <h1
                         style={{ color: "#2555A6" }}
@@ -331,13 +331,28 @@ const PhoneNumberLogin = () => {
                         LOG IN YOUR ACCOUNT
                       </h1>{" "}
                     </div>
-                    <div className="elementor-container elementor-column-gap-default">
+                    <div
+                      className="elementor-container elementor-column-gap-default">
                       <div
                         className="elementor-column elementor-col-50 elementor-top-column elementor-element elementor-element-20b54d12"
                         data-id="20b54d12"
                         data-element_type="column"
                         data-settings='{"background_background":"classic"}'
+                        style={{
+                          flexDirection: "column"
+                        }}
                       >
+                        <div
+                          style={{ textAlign: "center" }}
+                          className="login-your-account2 elementor-widget-container"
+                        >
+                          <h1
+                            style={{ color: "#2555A6" }}
+                            className="ha-gradient-heading"
+                          >
+                            LOG IN YOUR ACCOUNT
+                          </h1>{" "}
+                        </div>
                         <div className="elementor-widget-wrap elementor-element-populated">
                           <div
                             className="elementor-element elementor-element-938a465 elementor-widget elementor-widget-login"
