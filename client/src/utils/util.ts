@@ -115,6 +115,8 @@ const getErrorsStatus = (code: string) => {
       return "The raffle hasn't started yet. Please check back later.";
     case "X743":
       return "Invalid Email Format";
+    case "X912":
+      return "No more eligible customers to win";
 
     default:
       return false;
