@@ -135,7 +135,14 @@ class Raffle_class {
       limit: parseInt(limit),
       offset: parseInt(offset),
       order: sort,
-      attributes: ["id", "details", "name", "schedule_type", "end_date"],
+      attributes: [
+        "id",
+        "details",
+        "name",
+        "schedule_type",
+        "end_date",
+        "active",
+      ],
     };
 
     if (filter.length !== 0) query["where"] = WhereFilters(filter);

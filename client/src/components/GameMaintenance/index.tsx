@@ -55,18 +55,19 @@ const headers = [
     {
         field: 'end_date', headerName: 'Status', flex: 1, minWidth: 200,
         renderCell: (params: any) => {
-            // const { end_date, active } = params.row;
-            // let displayStatus = '';
-            // if (moment().isAfter(end_date)) {
-            //     displayStatus = 'Ended';
-            // } else if (!active) {
-            //     displayStatus = 'Inactive';
-            // } else {
-            //     displayStatus = 'Active';
-            // }
-            const value = moment().isAfter(params.value) ? 'Ended' : 'Active'
-            return renderStatus(value as any)
-            // return renderStatus(displayStatus as any)
+            const { end_date, active } = params.row;
+            console.log(params.row)
+            let displayStatus = '';
+            if (moment().isAfter(end_date)) {
+                displayStatus = 'Ended';
+            } else if (!active) {
+                displayStatus = 'Inactive';
+            } else {
+                displayStatus = 'Active';
+            }
+            // const value = moment().isAfter(params.value) ? 'Ended' : 'Active'
+            // return renderStatus(value as any)
+            return renderStatus(displayStatus as any)
         },
     }
 ]
