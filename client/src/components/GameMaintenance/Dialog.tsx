@@ -35,7 +35,8 @@ import {
   PayloadState,
   RaffleState,
   MyDialogProps,
-  RafflePaginationState
+  RafflePaginationState,
+  initialRaffleData
 } from "@/components/GameMaintenance/interface.ts";
 import {
   PrizeListAll,
@@ -383,7 +384,11 @@ const MyDialog = ({
   }, [formData, dialogType, prizeList]);
 
   useEffect(() => {
-    getRaffleDetails();
+    if (dialogType === 'Add') {
+      setData(initialRaffleData)
+    } else {
+      getRaffleDetails();
+    }
   }, [data]);
 
   const [openPrizeList, setOpenPrizeListDialog] = useState(false);

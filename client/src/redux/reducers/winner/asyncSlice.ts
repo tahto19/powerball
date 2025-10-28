@@ -55,8 +55,6 @@ export const getWinnerListAsync = createAsyncThunk(
         });
 
         const toReturn = { ..._rData, ...getFilter, loading: false };
-console.log("------",toReturn)
-
         dispatch(addWinnerList(toReturn));
       }
     } catch (err) {

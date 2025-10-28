@@ -187,9 +187,7 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
     //   })
     // );
   };
-  useEffect(() => {
-    console.log("=====", list)
-  }, [list])
+
   return (
     <>
       <Box
@@ -248,6 +246,7 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
           onTableChange={(e) => {
             handleTableChange(e);
           }}
+          loading={_loading}
           pageLength={count}
           isAction={false}
         />

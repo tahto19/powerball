@@ -81,6 +81,7 @@ export const getRaffleEntryList = createAsyncThunk(
         let _r = await apiService.getRaffleEntryList(getFilter, token, url);
 
         let r_data = bodyDecrypt(_r.data, token);
+
         r_data.list = r_data.list.map((v) => {
           const getEndDate = moment(
             v.Raffle_Schedule.raffleDetails.end_date
@@ -99,7 +100,9 @@ export const getRaffleEntryList = createAsyncThunk(
               v.Raffle_Schedule.raffleDetails.name,
             "$Raffle_Schedule.schedule_date$": v.Raffle_Schedule.schedule_date,
             date_time: v.Raffle_Schedule.schedule_date,
-            date_entered: v.ticket_detail.createdAt,
+            // date_entered: v.ticket_detail.createdAt,
+            date_entered: v.createdAt,
+
           };
         });
 
