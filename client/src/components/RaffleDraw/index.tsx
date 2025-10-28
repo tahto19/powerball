@@ -108,11 +108,13 @@ const RaffleDraw = () => {
       filter: JSON.stringify(newFilterModel),
     };
 
-    const res = await apiService.getGMList(query, token);
+    // const res = await apiService.getGMList(query, token);
+    const res = await apiService.getRDList(query, token);
 
     const d = bodyDecrypt(res.data, token);
     setLoading(false)
     if (d && d.success === "success") {
+      console.log(d.data)
       setRaffleList(d.data.list);
       setListCount(d.data.total);
     }

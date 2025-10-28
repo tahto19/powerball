@@ -184,6 +184,12 @@ export const apiService = {
     });
     return res;
   },
+  getRDList: async (d: fetchAll, token: string | null) => {
+    const res = apiClient.post("/api/game-maintenance/raffle-draws-list", {
+      data: bodyEncrypt(d, token),
+    });
+    return res;
+  },
   get2ndChanceGMListAll: async (d: fetchAll, token: string | null) => {
     const res = apiClient.post("/api/game-maintenance/2nd-chance/list", {
       data: bodyEncrypt(d, token),

@@ -283,6 +283,71 @@ class Raffle_class {
     let { count, rows } = await RaffleDetails.findAndCountAll(query);
     return { list: rows, total: count };
   }
+  async FetchWithOutTicketHistory(
+    offset = 0,
+    limit = 10,
+    sort = [["id", "ASC"]],
+    filter = []
+  ) {
+    let query = {
+      limit: parseInt(limit),
+      offset: parseInt(offset),
+      order: sort,
+      include: [
+        {
+          model: RaffleSchedule,
+          separate: true,
+          order: [["id", "DESC"]],
+          as: "raffleSchedule",
+          attributes: ["id", "raffle_id", "schedule_date", "status"],
+          include: [
+            {
+              model: RafflePrize,
+              separate: true,
+              order: [["id", "DESC"]],
+              as: "prizeInfo",
+              attributes: [
+                "amount",
+                "id",
+                "number_of_winners",
+                "prize_id",
+                "raffle_schedule_id",
+                "status",
+              ],
+              where: { status: 1 },
+              required: false, // This ensures the RaffleSchedule is included even if there's no matching RafflePrize
+              include: [
+                {
+                  model: PrizeList,
+                  attributes: ["id", "type", "value"],
+                  required: false, // This ensures the RaffleSchedule is included even if there's no matching RafflePrize
+                },
+              ],
+            },
+          ],
+        },
+        {
+          model: Files,
+          order: [["id", "DESC"]],
+          as: "fileInfo",
+          attributes: ["id", "name", "description"],
+        },
+      ],
+    };
+
+    if (filter.length !== 0) query["where"] = WhereFilters(filter);
+
+    // ✅ Fetch both filtered list and total count
+    let { count, rows } = await RaffleDetails.findAndCountAll(query);
+
+    console.log(
+      "Data size:",
+      Buffer.byteLength(JSON.stringify(rows)) / 1024 / 1024,
+      "MB"
+    );
+
+    return { list: JSON.parse(JSON.stringify(rows)), total: count };
+  }
 
   async Edit(_data, newPrizeList) {
     let count = await RaffleDetails.count({ where: { id: _data.id } });

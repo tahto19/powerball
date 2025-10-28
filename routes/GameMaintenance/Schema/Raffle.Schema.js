@@ -6,6 +6,7 @@ import {
   get2ndChanceControllerAll,
   getRaffleDetails,
   getControllerV2,
+  getRaffleDrawListController,
 } from "../Controller/Raffle.Controller.js";
 
 export const insertSchema = {
@@ -81,5 +82,10 @@ export const updateSchema = {
 
 export const get2ndChanceSchemaAll = {
   handler: get2ndChanceControllerAll,
+  body: getBodySchema,
+};
+
+export const getRaffleDrawListSchema = {
+  handler: getRaffleDrawListController,
   body: getBodySchema,
 };

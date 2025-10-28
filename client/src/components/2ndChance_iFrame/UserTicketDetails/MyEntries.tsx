@@ -79,7 +79,7 @@ export function MyEntries() {
       return { page: offset, pageSize: limit };
     });
   }, [limit, offset]);
-  useEffect(() => {}, [_loading]);
+  useEffect(() => { }, [_loading]);
   const handleTableChange = async ({
     page,
     pageSize,
@@ -162,8 +162,9 @@ export function MyEntries() {
             handleTableChange(e);
           }}
           pageLength={count}
-          // onEditAction={handleEditAction}
-          // onViewAction={handleViewAction}
+          isAction={false}
+        // onEditAction={handleEditAction}
+        // onViewAction={handleViewAction}
         />
       </Box>
     </>
