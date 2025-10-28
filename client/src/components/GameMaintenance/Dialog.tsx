@@ -349,14 +349,15 @@ const MyDialog = ({
     const d = bodyDecrypt(res.data, token)
     setLoading(false)
     if (d && d.success === 'success') {
-      setData(d.data.list[0])
+      if (d.data.list.length > 0) {
+        setData(d.data.list[0])
+      }
     }
   };
   useEffect(() => {
-    if (formData?.raffleSchedule[0].id) {
+    if (dialogType === 'Add' || formData?.raffleSchedule[0].id) {
       setDialogType(dialogType);
       setPrizeList(prizeList);
-      console.log(prizeList, "###");
       const selected_prize = prizeList.list
         .map((o) => {
           const matchedPrizeInfo = formData.raffleSchedule[0].prizeInfo.find(
@@ -442,7 +443,7 @@ const MyDialog = ({
               justifyContent: "center",
               alignItems: "center",
             }}
-          ><CircularProgress enableTrackSlot size="30px" /></DialogContent>) : formData?.raffleSchedule[0].id ? (
+          ><CircularProgress enableTrackSlot size="30px" /></DialogContent>) : dialogType === 'Add' || formData?.raffleSchedule[0].id ? (
             <>
               <DialogContent
                 sx={{
