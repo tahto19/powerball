@@ -187,6 +187,9 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
     //   })
     // );
   };
+  useEffect(() => {
+    console.log("=====", list)
+  }, [list])
   return (
     <>
       <Box
