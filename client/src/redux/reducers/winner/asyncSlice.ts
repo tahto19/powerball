@@ -19,7 +19,7 @@ export const getWinnerListAsync = createAsyncThunk(
       if (token) {
         const _r = await apiService.getWinnerList(getFilter, token, url);
         const _rData = _.cloneDeep(bodyDecrypt(_r.data, token));
-
+console.log("------",_rData.list)
         _rData["list"] = _rData.list.map((v) => {
           if (url === "getDataAll")
             return {
