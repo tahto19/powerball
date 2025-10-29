@@ -156,6 +156,20 @@ const main = () => {
     onDrop,
     multiple: false,
   });
+  const [previewUrl, setPreviewUrl] = useState(null);
+
+  useEffect(() => {
+    if (formData.file && formData.file.length > 0) {
+      const file = formData.file[0];
+      const objectUrl = URL.createObjectURL(file);
+      setPreviewUrl(objectUrl);
+
+      // Cleanup object URL when file changes
+      return () => URL.revokeObjectURL(objectUrl);
+    } else {
+      setPreviewUrl(null);
+    }
+  }, [formData.file])
 
   return (
     <>
@@ -547,11 +561,15 @@ const main = () => {
                     "&:hover .mycontainer": formData.idPath
                       ? { display: "flex", bgcolor: "rgba(0, 0, 0, 0.4)" } // dark overlay on hover
                       : {},
+                    "&:hover .mycontainer .uploadimagetext": formData.idPath
+                      ? { color: "#ccc !important" } // dark overlay on hover
+                      : {},
                   }}
                 >
+
                   <CardMedia
                     component="img"
-                    image={validIDepoint + formData.idPath}
+                    image={previewUrl ? previewUrl : validIDepoint + formData.idPath}
                     alt="Lazy-loaded image"
                     loading="lazy"  // Native lazy loading for images
                     sx={{
@@ -607,13 +625,13 @@ const main = () => {
                           </Button>
                         </Box>
                         <Box>
-                          <Typography>
+                          <Typography className="uploadimagetext">
                             {formData.file && formData.file.length > 0
                               ? "Change "
                               : "Choose "}
                             a file or drag & drop it here
                           </Typography>
-                          <Typography sx={{ color: "#cacfdb" }}>
+                          <Typography className="uploadimagetext" sx={{ color: "#cacfdb" }}>
                             JPEG,PNG formats, up to 50MB
                           </Typography>
                         </Box>
