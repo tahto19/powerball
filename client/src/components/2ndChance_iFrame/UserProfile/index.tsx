@@ -15,6 +15,7 @@ import {
   Select,
   InputLabel,
   MenuItem,
+  CardMedia
 } from "@mui/material";
 import { CameraAlt, Clear, Female, Male } from "@mui/icons-material";
 import rectangle from "@/assets/images/Rectangle 6691.png";
@@ -41,7 +42,7 @@ import DialogPassword from "./Dialog/DialogPassword";
 
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const endpoint = base_url + "api/file/serve/image/";
-
+const validIDepoint = base_url + "api/file/serve/valid-id/"
 const main = () => {
   const dispatch = useAppDispatch();
   const userDetails = useSelector((state: RootState) => state.user);
@@ -535,15 +536,50 @@ const main = () => {
                 <Paper
                   elevation={0}
                   sx={{
+                    position: "relative",
                     borderStyle: "dashed",
                     borderWidth: "4px",
                     borderColor: "#cacfdb",
                     padding: "2%",
                     borderRadius: "25px",
+                    minHeight: "130px",
                     marginTop: 1,
+                    "&:hover .mycontainer": formData.idPath
+                      ? { display: "flex", bgcolor: "rgba(0, 0, 0, 0.4)" } // dark overlay on hover
+                      : {},
                   }}
                 >
-                  <div {...getRootProps()}>
+                  <CardMedia
+                    component="img"
+                    image={validIDepoint + formData.idPath}
+                    alt="Lazy-loaded image"
+                    loading="lazy"  // Native lazy loading for images
+                    sx={{
+                      borderRadius: "20px",
+                      display: formData.idPath ? "block" : "none", // hide if no image
+                      width: "100%",
+                      height: "auto",
+                    }}
+                  />
+                  <Box {...getRootProps()}
+                    sx={{
+                      position: formData.idPath ? "absolute" : "static",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                      bgcolor: formData.idPath ? "rgba(0, 0, 0, 0)" : "transparent",
+                      transition: "background-color 0.3s ease",
+
+                      zIndex: 2,
+                      cursor: "pointer",
+                      display: formData.idPath ? "none" : flex,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      borderRadius: "20px",
+                    }}
+                    className="mycontainer"
+                  >
                     {isDragActive ? (
                       <p>Drop the files here ...</p>
                     ) : (
@@ -583,7 +619,7 @@ const main = () => {
                         </Box>
                       </Stack>
                     )}
-                  </div>
+                  </Box>
                   <input {...getInputProps()} />
                 </Paper>
               </Grid2>
