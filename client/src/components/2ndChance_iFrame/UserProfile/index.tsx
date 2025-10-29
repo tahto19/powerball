@@ -51,6 +51,7 @@ const main = () => {
   const [change, setChange] = useState(false);
   const [openCP, setOpenCP] = useState(false);
   useEffect(() => {
+    console.log(userDetails)
     setFormData(userDetails);
   }, [userDetails]);
   useEffect(() => {

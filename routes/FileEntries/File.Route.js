@@ -4,6 +4,7 @@ import {
   getSchema,
   serveImageSchema,
   serveVideoSchema,
+  serveValidIDSchema,
 } from "./Schema/File.Schema.js";
 import bodyChecker from "../../helpers/bodyChecker.js";
 import { auth } from "../../authentication/auth.js";
@@ -29,6 +30,7 @@ const file = (app, opts, done) => {
   app.post("/", getSchema);
   app.get("/serve/image/:id", serveImageSchema);
   app.get("/serve/video/:id", serveVideoSchema);
+  app.get("/serve/valid-id/:id", serveValidIDSchema);
 
   done();
 };
