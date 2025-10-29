@@ -124,15 +124,12 @@ export const updateController = async (req, res) => {
       let _path = getPath("/uploads/ids/" + newFileName);
 
       let iUp = await uploadImage(file);
-      console.log(iUp);
-
       data = {
         ...data,
         idPath: iUp.filename,
       };
     }
 
-    console.log(data);
     let a = await uc.Edit(data);
     res.send(cSend(a));
   } catch (err) {
