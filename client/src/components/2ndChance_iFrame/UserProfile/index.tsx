@@ -39,11 +39,15 @@ import ProfileDialog from "./ProfileDialog";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { useDropzone } from "react-dropzone";
 import DialogPassword from "./Dialog/DialogPassword";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const endpoint = base_url + "api/file/serve/image/";
 const validIDepoint = base_url + "api/file/serve/valid-id/"
 const main = () => {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   const dispatch = useAppDispatch();
   const userDetails = useSelector((state: RootState) => state.user);
   const [formData, setFormData] = useState(userDetails);
@@ -52,7 +56,6 @@ const main = () => {
   const [change, setChange] = useState(false);
   const [openCP, setOpenCP] = useState(false);
   useEffect(() => {
-    console.log(userDetails)
     setFormData(userDetails);
   }, [userDetails]);
   useEffect(() => {
@@ -209,6 +212,7 @@ const main = () => {
               display: "flex",
               alignItems: "center",
               gap: 2,
+              flexDirection: isSmallScreen ? "column" : "row"
             }}
           >
             <Box
