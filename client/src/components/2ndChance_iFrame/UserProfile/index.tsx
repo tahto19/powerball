@@ -573,7 +573,7 @@ const main = () => {
 
                       zIndex: 2,
                       cursor: "pointer",
-                      display: formData.idPath ? "none" : flex,
+                      display: formData.idPath ? "none" : "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       borderRadius: "20px",
