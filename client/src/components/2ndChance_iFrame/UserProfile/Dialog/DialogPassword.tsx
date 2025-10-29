@@ -142,23 +142,23 @@ export default function DialogPassword({
                 }}
                 {...register("password", {
                   required: true,
-                  minLength: {
-                    value: 6,
-                    message: "At least 6 characters required",
-                  },
-                  pattern: {
-                    value: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])/,
-                    message:
-                      "Must include uppercase, lowercase  number, and special character",
-                  },
+                  // minLength: {
+                  //   value: 6,
+                  //   message: "At least 6 characters required",
+                  // },
+                  // pattern: {
+                  //   value: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])/,
+                  //   message:
+                  //     "Must include uppercase, lowercase  number, and special character",
+                  // },
                 })}
-                // value={details.password}
-                // onChange={(e) => {
-                //   setDetails(() => ({ ...details, ["password"]: e.target.value }));
-                //   console.log(details);
-                // }}
-                // value={formData.firstname}
-                // onChange={(event) => handleInputChange(event)}
+              // value={details.password}
+              // onChange={(e) => {
+              //   setDetails(() => ({ ...details, ["password"]: e.target.value }));
+              //   console.log(details);
+              // }}
+              // value={formData.firstname}
+              // onChange={(event) => handleInputChange(event)}
               />
 
               {errors &&
@@ -194,23 +194,23 @@ export default function DialogPassword({
                 variant="outlined"
                 {...register("confirmPassword", {
                   required: true,
-                  minLength: {
-                    value: 6,
-                    message: "At least 6 characters required",
-                  },
-                  pattern: {
-                    value: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])/,
-                    message:
-                      "Must include uppercase, lowercase  number, and special character",
-                  },
+                  // minLength: {
+                  //   value: 6,
+                  //   message: "At least 6 characters required",
+                  // },
+                  // pattern: {
+                  //   value: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])/,
+                  //   message:
+                  //     "Must include uppercase, lowercase  number, and special character",
+                  // },
                 })}
-                // value={details.password}
-                // onChange={(e) => {
-                //   setDetails(() => ({ ...details, ["password"]: e.target.value }));
-                //   console.log(details);
-                // }}
-                // value={formData.firstname}
-                // onChange={(event) => handleInputChange(event)}
+              // value={details.password}
+              // onChange={(e) => {
+              //   setDetails(() => ({ ...details, ["password"]: e.target.value }));
+              //   console.log(details);
+              // }}
+              // value={formData.firstname}
+              // onChange={(event) => handleInputChange(event)}
               />
 
               {errors &&
