@@ -2,6 +2,7 @@ import fc from "../lib/File.Class.js";
 import { cSend, getPath, uploadImage2 } from "../../../util/util.js";
 import fs from "fs";
 import uc from "../../User/lib/User.class.js";
+import mime from "mime-types";
 
 export const insertImageController = async (req, res) => {
   try {
@@ -125,16 +126,16 @@ export const serveValidIDController = async (req, res) => {
     }
 
     try {
-      // You can stream instead of reading the full buffer (more efficient)
-      const stream = fs.createReadStream(_path);
-
-      // optional: detect mime type if you store it in DB, else fallback
-      res.header("Content-Type", findImage.dataValues.mimetype || "image/jpeg");
-
-      return res.send(stream);
+      const mimeType = mime.lookup(_path); // fallback
+      const buffer = fs.readFileSync(_path);
+      res.header("Content-Type", mimeType || "image/jpeg"); // or your mimetype
+      res.header("Content-Length", buffer.length);
+      res.raw.writeHead(200); // needed to finalize headers for raw response
+      res.raw.end(buffer); // send buffer manually
+      // return res.send(buffer); // ✅ Fastify handles headers + response
     } catch (err) {
-      console.error("Error reading file:", err);
-      return res.code(500).send("Error reading image");
+      // console.error("Error reading file:", err);
+      res.code(500).send("Error reading image");
     }
   }
 };

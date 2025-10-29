@@ -49,4 +49,7 @@ export const serveVideoSchema = {
 
 export const serveValidIDSchema = {
   handler: serveValidIDController,
+  onSend: async (req, reply, payload) => {
+    return payload; // Just return the payload untouched
+  },
 };
