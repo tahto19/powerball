@@ -130,7 +130,7 @@ export const updateController = async (req, res) => {
       };
     }
 
-    console.log(iUp);
+    console.log(data);
     let a = await uc.Edit(data);
     res.send(cSend(a));
   } catch (err) {
