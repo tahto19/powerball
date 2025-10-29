@@ -201,7 +201,7 @@ const main = () => {
         <Box
           sx={{
             background: "#fff",
-            padding: "35px",
+            padding: isSmallScreen ? "35px 0" : "35px",
             display: "flex",
             flexDirection: "column",
           }}
