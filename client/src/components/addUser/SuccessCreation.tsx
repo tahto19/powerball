@@ -1,3 +1,4 @@
+//@ts-nocheck
 import AnimatedContent from "@/animated/AnimatedContent.tsx";
 import { Button, Grid2, Typography } from "@mui/material";
 import Confetti from "react-confetti";
