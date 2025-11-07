@@ -56,13 +56,13 @@ const SuccessCreation = () => {
           >
             Login Now
           </Button>
-          <Button
+          {/* <Button
             onClick={() => {
               dispatch(returnToVerification());
             }}
           >
             return
-          </Button>
+          </Button> */}
         </Grid2>
       </Grid2>
     </AnimatedContent>

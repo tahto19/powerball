@@ -234,7 +234,7 @@ const MyDialog = ({
         title: formData.name + " Participants",
         type: 7,
         filter: [
-          { field: "id", filter: data.raffleSchedule[0].id, type: "number" },
+          { field: "id", filter: formData.raffleSchedule[0].id, type: "number" },
         ],
       })
     );

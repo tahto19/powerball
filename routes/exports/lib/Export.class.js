@@ -116,10 +116,11 @@ class Export_data_class {
           isAdmin: false,
         }
       : { isAdmin: false };
-    console.log(where);
+
     let _r = await Users.findAll({
       where: where,
       attributes: [
+        "id",
         "fullname",
         "firstname",
         "lastname",
@@ -238,16 +239,29 @@ class Export_data_class {
       include: [
         {
           model: TicketHistory,
-          include: { model: WiningDrawDetails, required: false },
+          include: [
+            {
+              model: TicketDetails,
+              // required: true,
+              include: [
+                {
+                  model: Users,
+                },
+              ],
+            },
+            { model: WiningDrawDetails, required: false },
+          ],
         },
       ],
     });
     let r = _r.map((v) => v.toJSON());
     let b = [];
+
     r.forEach((v) => {
       v.ticket_histories.forEach((vv) =>
         b.push({
           ticket_history_generate: vv.ticket_history_generate,
+          name: vv.ticket_detail.User.fullname,
           wining: !!vv.wining_draw_detail,
           createdAt: vv.createdAt,
         })
