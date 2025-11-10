@@ -120,6 +120,7 @@ class Export_data_class {
     let _r = await Users.findAll({
       where: where,
       attributes: [
+        "id",
         "fullname",
         "firstname",
         "lastname",
