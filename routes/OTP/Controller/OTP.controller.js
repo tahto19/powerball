@@ -102,7 +102,7 @@ export const verifyCodeController = async (req, res) => {
   try {
     if (req.body.code === undefined) throw new Error("ErrorCODE X556");
     if (req.body.id === undefined) throw new Error("ErrorCODE x557");
-    const _r = await OTPClass.findAndUpdateAuth({
+    const _r = await OTPClass.findAndUpdateAuthV2({
       code: req.body.code,
       id: req.body.id,
     });
