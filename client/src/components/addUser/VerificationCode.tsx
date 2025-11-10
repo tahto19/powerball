@@ -68,6 +68,7 @@ const VerificationCode = () => {
             onClick={() => {
               dispatch(verfiyAccountUser({ code: otp, id: otpID }));
             }}
+            disabled={loading}
             loading={loading}
             sx={{
               background: "#000000",
