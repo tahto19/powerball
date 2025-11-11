@@ -734,6 +734,9 @@ class Export_data_class {
     worksheet.columns = columns;
     data.forEach((v) => {
       let temp = v;
+      if (!Object.keys(v)) {
+        console.log(v);
+      }
       let changeValue = Object.keys(v).forEach((vv) => {
         let val =
           v[vv] || v[vv] === 0 || v[vv] === false
