@@ -534,9 +534,7 @@ class Export_data_class {
     r_.forEach((val) => {
       let v = val.toJSON();
 
-      if (!v.User.fullname) {
-        console.log(JSON.stringify(v));
-      }
+      console.log(v);
       let temp = {
         entries: v.entries,
         "entries used": v.entries_used,
