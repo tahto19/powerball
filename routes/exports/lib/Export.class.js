@@ -533,18 +533,20 @@ class Export_data_class {
     let toSend = [];
     r_.forEach((val) => {
       let v = val.toJSON();
+      let temp;
+      if (v.User) {
+        temp = {
+          entries: v.entries,
+          "entries used": v.entries_used,
+          "Ticket number": v.ticket_code,
+          "Date Scanned": v.createdAt,
+          "Alpha Code": v.alpha_code,
+          Active: v.active ? "Yes" : "No",
+          fullname: v.User.fullname,
+          VIRN: v.VIN,
+        };
+      }
 
-      console.log(v);
-      let temp = {
-        entries: v.entries,
-        "entries used": v.entries_used,
-        "Ticket number": v.ticket_code,
-        "Date Scanned": v.createdAt,
-        "Alpha Code": v.alpha_code,
-        Active: v.active ? "Yes" : "No",
-        fullname: v.User.fullname,
-        VIRN: v.VIN,
-      };
       toSend.push(temp);
     });
     return await this.toExcel(toSend, "Ticket Scanned");
