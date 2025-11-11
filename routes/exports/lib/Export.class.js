@@ -1,4 +1,5 @@
-import { fn, Op, Sequelize } from "sequelize";
+import { fn, Op, QueryTypes, Sequelize } from "sequelize";
+import conn from "../../../dbConnections/conn.js";
 import Users from "../../../models/Users.model.js";
 import ExcelJS from "exceljs";
 import PrizeList from "../../../models/PrizeList.model.js";
@@ -17,10 +18,17 @@ import AlphaCode from "../../../models/AlphaCode.js";
 import RafflePrize from "../../../models/RafflePrize.model.js";
 import Files from "../../../models/Files.model.js";
 import AuditTrail from "../../../models/AuditTrail.js";
+import mysql2 from "mysql2";
 class Export_data_class {
-  constructor() {}
-  async getData(type, date_range, filter) {
-    console.log(date_range);
+  constructor() {
+    this.dbConfig = {
+      host: process.env.DB_SERVER,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.DB_NAME,
+    };
+  }
+  async getData(type, date_range, filter, req, res) {
     switch (type) {
       case 1:
         return await this.User_data(date_range);
@@ -52,7 +60,7 @@ class Export_data_class {
           date_range
         );
       case 14:
-        return await this.get_ticket_scanned(date_range);
+        return await this.get_ticket_scanned_stream(date_range, req, res);
       case 15: {
         return await this.get_winners(date_range);
       }
@@ -401,6 +409,61 @@ class Export_data_class {
     }
 
     return await this.toExcel(toSend, "TICKET SCANNED");
+  }
+  async get_ticket_scanned_stream(date_range, req, reply) {
+    try {
+      const connection = mysql2.createConnection(this.dbConfig);
+      reply
+        .header(
+          "Content-Type",
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+        .header(
+          "Content-Disposition",
+          `attachment; filename="ticket_scanned_${Date.now()}.xlsx"`
+        );
+
+      const workbook = new ExcelJS.stream.xlsx.WorkbookWriter({
+        stream: reply.raw,
+      });
+
+      const worksheet = workbook.addWorksheet("Ticket Scanned");
+
+      worksheet.columns = [
+        { header: "ID", key: "id", width: 10 },
+        { header: "Ticket Number", key: "ticket_no", width: 25 },
+        { header: "User", key: "user_name", width: 25 },
+        { header: "Scanned At", key: "scanned_at", width: 25 },
+      ];
+
+      // DO NOT use await here
+      const query = `SELECT * FROM ${process.env.DB_PREFIX}ticket_details`;
+
+      // create a query stream
+      const stream = connection.query(query).stream({ objectMode: true }); // <--- key option
+
+      stream.on("data", (row) => {
+        worksheet.addRow(row).commit(); // raw object
+      });
+
+      stream.on("end", async () => {
+        await worksheet.commit();
+        await workbook.commit();
+
+        console.log("end");
+        reply.raw.end();
+        connection.end();
+      });
+
+      stream.on("error", (err) => {
+        console.error("Stream error:", err);
+        reply.code(500).send("Error generating Excel");
+        connection.end();
+      });
+    } catch (err) {
+      console.error("Export error:", err);
+      reply.code(500).send("Error exporting data");
+    }
   }
   async get_ticket_scanned_without_raffle_code(date_range) {
     let r_ = await TicketDetails.findAll({

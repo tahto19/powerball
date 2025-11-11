@@ -121,38 +121,57 @@ export const raffleDrawV2Controller = async (req, res) => {
     let prizeScheduleWinners = getPrizeScheduleInfoToJson.number_of_winners;
     if (checkRaffleWinner.total >= prizeScheduleWinners)
       throw new Error("ErrorCODE X911");
+
+    // let getRaffleSchedule = await RaffleSchedule.findOne({
+    //   where: {
+    //     id: raffle_id,
+    //     // "$ticket_histories.ticket_detail.user_id$": {
+    //     //   [Op.notIn]: users ? users : [],
+    //     // },
+    //   },
+
+    //   include: [
+    //     {
+    //       model: TicketHistory,
+
+    //       include: [
+    //         { model: WiningDrawDetails },
+    //         {
+    //           model: TicketDetails,
+    //           where: { user_id: { [Op.notIn]: users ? users : [] } },
+    //           include: [{ model: Users }],
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // });
     console.log(users);
-    let getRaffleSchedule = await RaffleSchedule.findOne({
+    let getTickets = await TicketHistory.findAll({
       where: {
-        id: raffle_id,
-        "$ticket_histories.ticket_detail.user_id$": {
-          [Op.notIn]: users ? users : [],
-        },
+        "$Raffle_Schedule.id$": raffle_id,
+        "$ticket_detail.user_id$": { [Op.notIn]: users ? users : [] },
       },
-
       include: [
+        { model: RaffleSchedule, attributes: [] },
+        { model: WiningDrawDetails, attributes: ["ticket_id"] },
         {
-          model: TicketHistory,
+          model: TicketDetails,
 
-          include: [
-            { model: WiningDrawDetails },
-            {
-              model: TicketDetails,
-              include: [{ model: Users }],
-            },
-          ],
+          // include: [{ model: Users, attributes: ["fullname"] }],
         },
       ],
     });
 
-    if (!getRaffleSchedule) throw new Error("ErrorCODE X912");
-    let getRaffleScheduletj = getRaffleSchedule.toJSON();
-
+    console.log(getTickets.length);
+    if (getTickets.length <= 0) throw new Error("ErrorCODE X912");
+    // let getRaffleScheduletj = getRaffleSchedule.toJSON();
+    // console.log(getRaffleScheduletj.ticket_histories.length);
     let firstClear = [];
     let secondClear = [];
     let ticketsThatCanJoin = [];
     let userThatCantJoin = [];
-    for (let val of getRaffleScheduletj.ticket_histories) {
+    for (let v of getTickets) {
+      let val = v.toJSON();
       let getWinning = val.wining_draw_detail;
 
       if (getWinning) userThatCantJoin.push(val.ticket_detail.user_id);
@@ -161,7 +180,7 @@ export const raffleDrawV2Controller = async (req, res) => {
           ...val,
           ticket_code: val.ticket_history_generate,
           user: val.ticket_detail.user_id,
-          user_name: val.ticket_detail.User.fullname,
+          // user_name: val.ticket_detail.User.fullname,
           raffle_prize_id: val.raffle_id,
           ticket_id: val.ticket_id,
           ticket_history_id: val.id,
@@ -181,7 +200,7 @@ export const raffleDrawV2Controller = async (req, res) => {
     if (!ticketsThatCanJoin.length) throw new Error("errorcode x876");
     let a = random(ticketsThatCanJoin);
     let getWinnerTicketDetails = secondClear.find((v) => v.ticket_code === a);
-    console.log(getWinnerTicketDetails);
+
     let b = await wc.Insert({
       admin_id: req.user_id,
       raffle_prize_id: prize_id,

@@ -42,7 +42,10 @@ RaffleSchedule.init(
     modelName: "Raffle_Schedule",
     paranoid: true,
     tableName: process.env.DB_PREFIX + "raffle_details_schedule",
-    indexes: [{ name: "raffle_schedule_idx", fields: ["id"] }],
+    indexes: [
+      { name: "raffle_schedule_idx", fields: ["id"] },
+      { name: "raffle_id_idx", fields: ["raffle_id"] },
+    ],
   }
 );
 export default RaffleSchedule;

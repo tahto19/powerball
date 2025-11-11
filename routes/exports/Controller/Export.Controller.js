@@ -13,9 +13,11 @@ export const exportDataController = async (req, res) => {
           new Date(moment().startOf("year").toISOString()),
           new Date(moment().endOf("year").toISOString()),
         ];
+    console.log(type);
 
-    let _r = await ec.getData(type, dr_, filter);
-    res.send({ file: _r });
+    let _r = await ec.getData(type, dr_, filter, req, res);
+
+    // res.send({ file: _r });
   } catch (err) {
     console.log(err);
     throw err;

@@ -122,38 +122,51 @@ const start = async () => {
     //   origin: "*",
     //   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     // });
+
     await fastify.register(cors, {
       origin: (origin, cb) => {
-        if (!origin) {
-          // Allow no-origin requests (Postman, curl, some mobile apps)
-          return cb(null, true);
-        }
-
-        let hostname = "";
-        try {
-          hostname = new URL(origin).hostname;
-        } catch (err) {
-          console.error("Failed to parse Origin:", origin);
-          return cb(new Error("Invalid origin"));
-        }
-
-        const allowedHostnames = [
-          "localhost",
-          "18.138.76.86",
-          "scratchit.com.ph",
-          "192.168.8.107",
-        ];
-        if (allowedHostnames.includes(hostname)) {
-          return cb(null, true);
-        } else {
-          return cb(new Error("You are not allowed here"));
-        }
+        if (!origin) return cb(null, true); // allow non-browser requests
+        const allowed = ["localhost", "scratchit.com.ph"];
+        const hostname = new URL(origin).hostname;
+        if (allowed.includes(hostname)) cb(null, true);
+        else cb(new Error("Not allowed"));
       },
-      methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-      preflightContinue: false,
-      optionsSuccessStatus: 204,
-      credentials: true, // ✅ Allow cookies
+      methods: ["GET", "POST", "OPTIONS"],
+      credentials: true,
     });
+
+    // await fastify.register(cors, {
+    //   origin: (origin, cb) => {
+    //     if (!origin) {
+    //       // Allow no-origin requests (Postman, curl, some mobile apps)
+    //       return cb(null, true);
+    //     }
+
+    //     let hostname = "";
+    //     try {
+    //       hostname = new URL(origin).hostname;
+    //     } catch (err) {
+    //       console.error("Failed to parse Origin:", origin);
+    //       return cb(new Error("Invalid origin"));
+    //     }
+
+    //     const allowedHostnames = [
+    //       "localhost",
+    //       "18.138.76.86",
+    //       "scratchit.com.ph",
+    //       "192.168.8.107",
+    //     ];
+    //     if (allowedHostnames.includes(hostname)) {
+    //       return cb(null, true);
+    //     } else {
+    //       return cb(new Error("You are not allowed here"));
+    //     }
+    //   },
+    //   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    //   preflightContinue: false,
+    //   optionsSuccessStatus: 204,
+    //   credentials: true, // ✅ Allow cookies
+    // });
     // jwt
     fastify.register(import("@fastify/jwt"), {
       secret: process.env.JWT_SECRET,

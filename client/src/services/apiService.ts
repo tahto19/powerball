@@ -435,11 +435,28 @@ export const apiService = {
     return response;
   },
   exportData: async (data: exportDataState, token: string) => {
-    const response = await apiClient.post("api/export", {
-      data: bodyEncrypt(JSON.stringify(data), token),
-    });
+    const response = await apiClient.post(
+      "api/export",
+      { data: bodyEncrypt(JSON.stringify(data), token) }, // send raw string
+      {
+        responseType: "blob", // important for file
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
 
-    return bodyDecrypt(response.data, token);
+    // Trigger download
+    const blob = new Blob([response.data], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `ticket_scanned_${Date.now()}.xlsx`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+
+    // return bodyDecrypt(response.data, token);
   },
   // alpha code
   getAlphaCode: async (data, token) => {
@@ -570,12 +587,18 @@ export const apiService = {
     return res;
   },
 
-   resetOtp: async (data) => {
-    const response = await apiClient.post("/api/password-reset/reset-password-otp", data);
+  resetOtp: async (data) => {
+    const response = await apiClient.post(
+      "/api/password-reset/reset-password-otp",
+      data
+    );
     return response;
   },
   verifyOtp: async (data) => {
-    const response = await apiClient.post("/api/password-reset/verify-reset-password-otp", data);
+    const response = await apiClient.post(
+      "/api/password-reset/verify-reset-password-otp",
+      data
+    );
     return response;
   },
 };
