@@ -162,7 +162,6 @@ export const raffleDrawV2Controller = async (req, res) => {
       ],
     });
 
-    console.log(getTickets.length);
     if (getTickets.length <= 0) throw new Error("ErrorCODE X912");
     // let getRaffleScheduletj = getRaffleSchedule.toJSON();
     // console.log(getRaffleScheduletj.ticket_histories.length);
