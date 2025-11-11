@@ -18,7 +18,9 @@ export const downloadData = createAsyncThunk(
       const token = state.token.token;
       const title = state.exportData.title;
       const _r = await apiService.exportData(data, token ? token : "test");
-      let file = _r.file;
+      if (data.type !== 14) {
+        let file = _r.file;
+      }
 
       toast.update(toastId, {
         render: "Downloading...",

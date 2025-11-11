@@ -132,6 +132,7 @@ const start = async () => {
         else cb(new Error("Not allowed"));
       },
       methods: ["GET", "POST", "OPTIONS"],
+      exposedHeaders: ["Content-Disposition"],
       credentials: true,
     });
 

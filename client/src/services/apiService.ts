@@ -166,13 +166,13 @@ export const apiService = {
     });
     return res;
   },
-   getGMListV2: async (d: getData, token: string | null) => {
+  getGMListV2: async (d: getData, token: string | null) => {
     const res = apiClient.post("/api/game-maintenance/raffles", {
       data: bodyEncrypt(d, token),
     });
     return res;
   },
-   getGMDetails: async (d: getData, token: string | null) => {
+  getGMDetails: async (d: getData, token: string | null) => {
     const res = apiClient.post("/api/game-maintenance/raffle-details", {
       data: bodyEncrypt(d, token),
     });
@@ -452,29 +452,39 @@ export const apiService = {
     const response = await apiClient.post("/api/password-reset/confirm", data);
     return response;
   },
-  exportData: async (data: exportDataState, token: string) => {
-    const response = await apiClient.post(
-      "api/export",
-      { data: bodyEncrypt(JSON.stringify(data), token) }, // send raw string
-      {
-        responseType: "blob", // important for file
-        withCredentials: true,
-        headers: { "Content-Type": "application/json" },
+  exportData: async (data, token) => {
+    try {
+      const response = await apiClient.post("/api/export", data, {
+        responseType: "blob", // 👈 important
+        withCredentials: true, // 👈 must match backend CORS
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      // ✅ Extract filename from Content-Disposition header if available
+      let filename = `ticket_scanned_${Date.now()}.xlsx`;
+      const cd = response.headers["content-disposition"];
+      if (cd) {
+        const match = cd.match(/filename="?([^"]+)"?/);
+        if (match && match[1]) filename = match[1];
       }
-    );
 
-    // Trigger download
-    const blob = new Blob([response.data], {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `ticket_scanned_${Date.now()}.xlsx`;
-    a.click();
-    window.URL.revokeObjectURL(url);
-
-    // return bodyDecrypt(response.data, token);
+      // ✅ Create blob and trigger download
+      const blob = new Blob([response.data], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Download error:", err);
+    }
   },
   // alpha code
   getAlphaCode: async (data, token) => {
