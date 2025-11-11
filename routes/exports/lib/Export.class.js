@@ -549,6 +549,9 @@ class Export_data_class {
 
       toSend.push(temp);
     });
+
+    console.log(toSend.length);
+    console.log(toSend[toSend.length - 1]);
     return await this.toExcel(toSend, "Ticket Scanned");
   }
   async get_winners(date_range) {
