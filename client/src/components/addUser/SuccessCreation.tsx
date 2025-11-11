@@ -1,3 +1,4 @@
+//@ts-nocheck
 import AnimatedContent from "@/animated/AnimatedContent.tsx";
 import { Button, Grid2, Typography } from "@mui/material";
 import Confetti from "react-confetti";
@@ -56,13 +57,13 @@ const SuccessCreation = () => {
           >
             Login Now
           </Button>
-          <Button
+          {/* <Button
             onClick={() => {
               dispatch(returnToVerification());
             }}
           >
             return
-          </Button>
+          </Button> */}
         </Grid2>
       </Grid2>
     </AnimatedContent>

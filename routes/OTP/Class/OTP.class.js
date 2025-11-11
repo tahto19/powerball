@@ -64,6 +64,19 @@ class OTP_class {
     const a = await this.Edit(_data);
     return a;
   }
+  async findAndUpdateAuthV2(data) {
+    let getOTP = await this.FetchOne([
+      { filter: data.id, field: "id", type: "number" },
+      { filter: data.code, field: "code", type: "number" },
+      { filter: false, field: "auth", type: "boolean" },
+    ]);
+    if (getOTP === null) throw new Error("ERRORCODE x58");
+    let _data = getOTP.toJSON();
+    _data.auth = true;
+    // if (!getOTP) throw new Error("ErrorCode x58");
+    const a = await this.Edit(_data);
+    return a;
+  }
   async upsert(filter, data) {
     let list = await this.FetchOne(filter);
     if (list === null) {

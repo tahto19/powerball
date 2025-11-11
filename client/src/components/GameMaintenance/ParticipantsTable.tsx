@@ -28,6 +28,7 @@ const Participants = ({ raffle_schedule_id }: { raffle_schedule_id: number }) =>
             sort = [[sortModel[0].field, sortModel[0].sort.toUpperCase()]];
         }
 
+        let tempFilterModel = [];
         let newFilterModel = [];
 
         if (filterModel.items.length > 0) {
@@ -42,6 +43,16 @@ const Participants = ({ raffle_schedule_id }: { raffle_schedule_id: number }) =>
                 return x;
             })
         }
+
+        // for (let index = 0; index < tempFilterModel.length; index++) {
+        //     if (tempFilterModel[index].field === 'fullname') {
+        //         newFilterModel.push({ ...tempFilterModel[index], field: "firstname", })
+        //         newFilterModel.push({ ...tempFilterModel[index], field: "lastname", })
+        //     } else {
+        //         newFilterModel.push(tempFilterModel[index])
+        //     }
+        // }
+        // console.log(newFilterModel)
         const query: RafflePaginationState = {
             id: raffle_schedule_id, offset: page, limit: pageSize, sort: sort, filter: newFilterModel
         }
@@ -51,6 +62,7 @@ const Participants = ({ raffle_schedule_id }: { raffle_schedule_id: number }) =>
         const d = bodyDecrypt(res.data, token)
         if (d.list && d.list.length > 0) {
             d.list = d.list.map((x, i) => { x.id = i + 1; return x })
+            console.log(d.list)
             setList(d.list)
 
             setListCount(d.count)

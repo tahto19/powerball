@@ -150,10 +150,12 @@ export const getRaffleEntriesInScheduleController = async (req, res) => {
     }
 
     const _r = await th.FetchWithInclude(offset, limit, sort, filters);
+
     let reEditList = _r.list.map((v) => {
       return {
         ticket_history_generate: v.ticket_history_generate,
         createdAt: v.createdAt,
+        fullname: v.ticket_detail.User.fullname,
         ticketCode: v.ticket_detail.ticket_code,
       };
     });

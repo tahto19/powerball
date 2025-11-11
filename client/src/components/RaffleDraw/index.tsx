@@ -51,6 +51,7 @@ const initialPaginationData = { page: 0, pageSize: 10 };
 const RaffleDraw = () => {
   const dispatch = useAppDispatch();
   const { myPermission } = useAppSelector((state: RootState) => state.userType);
+  const [loading, setLoading] = useState(false)
 
   const [list, setRaffleList] = useState<[]>([]);
   const [data, setData] = useState(initialRaffleData);
@@ -76,7 +77,7 @@ const RaffleDraw = () => {
     filterModel,
   }: any) => {
     setPagination({ page, pageSize });
-
+    setLoading(true)
     let sort = [["id", "DESC"]];
     if (sortModel.length > 0) {
       sort = [[sortModel[0].field, sortModel[0].sort.toUpperCase()]];
@@ -107,10 +108,13 @@ const RaffleDraw = () => {
       filter: JSON.stringify(newFilterModel),
     };
 
-    const res = await apiService.getGMList(query, token);
+    // const res = await apiService.getGMList(query, token);
+    const res = await apiService.getRDList(query, token);
 
     const d = bodyDecrypt(res.data, token);
+    setLoading(false)
     if (d && d.success === "success") {
+      console.log(d.data)
       setRaffleList(d.data.list);
       setListCount(d.data.total);
     }
@@ -168,6 +172,7 @@ const RaffleDraw = () => {
             }}
             data={list}
             headers={headers}
+            loading={loading}
             pagination={pagination}
             pageLength={listCount}
             onTableChange={handleTableChange}

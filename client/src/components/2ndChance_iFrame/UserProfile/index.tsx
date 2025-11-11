@@ -15,6 +15,7 @@ import {
   Select,
   InputLabel,
   MenuItem,
+  CardMedia
 } from "@mui/material";
 import { CameraAlt, Clear, Female, Male } from "@mui/icons-material";
 import rectangle from "@/assets/images/Rectangle 6691.png";
@@ -38,11 +39,15 @@ import ProfileDialog from "./ProfileDialog";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { useDropzone } from "react-dropzone";
 import DialogPassword from "./Dialog/DialogPassword";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const endpoint = base_url + "api/file/serve/image/";
-
+const validIDepoint = base_url + "api/file/serve/valid-id/"
 const main = () => {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   const dispatch = useAppDispatch();
   const userDetails = useSelector((state: RootState) => state.user);
   const [formData, setFormData] = useState(userDetails);
@@ -154,6 +159,20 @@ const main = () => {
     onDrop,
     multiple: false,
   });
+  const [previewUrl, setPreviewUrl] = useState(null);
+
+  useEffect(() => {
+    if (formData.file && formData.file.length > 0) {
+      const file = formData.file[0];
+      const objectUrl = URL.createObjectURL(file);
+      setPreviewUrl(objectUrl);
+
+      // Cleanup object URL when file changes
+      return () => URL.revokeObjectURL(objectUrl);
+    } else {
+      setPreviewUrl(null);
+    }
+  }, [formData.file])
 
   return (
     <>
@@ -182,7 +201,7 @@ const main = () => {
         <Box
           sx={{
             background: "#fff",
-            padding: "35px",
+            padding: isSmallScreen ? "35px 0" : "35px",
             display: "flex",
             flexDirection: "column",
           }}
@@ -193,6 +212,7 @@ const main = () => {
               display: "flex",
               alignItems: "center",
               gap: 2,
+              flexDirection: isSmallScreen ? "column" : "row"
             }}
           >
             <Box
@@ -534,15 +554,54 @@ const main = () => {
                 <Paper
                   elevation={0}
                   sx={{
+                    position: "relative",
                     borderStyle: "dashed",
                     borderWidth: "4px",
                     borderColor: "#cacfdb",
                     padding: "2%",
                     borderRadius: "25px",
+                    minHeight: "130px",
                     marginTop: 1,
+                    "&:hover .mycontainer": formData.idPath
+                      ? { display: "flex", bgcolor: "rgba(0, 0, 0, 0.4)" } // dark overlay on hover
+                      : {},
+                    "&:hover .mycontainer .uploadimagetext": formData.idPath
+                      ? { color: "#ccc !important" } // dark overlay on hover
+                      : {},
                   }}
                 >
-                  <div {...getRootProps()}>
+
+                  <CardMedia
+                    component="img"
+                    image={previewUrl ? previewUrl : validIDepoint + formData.idPath}
+                    alt="Lazy-loaded image"
+                    loading="lazy"  // Native lazy loading for images
+                    sx={{
+                      borderRadius: "20px",
+                      display: formData.idPath ? "block" : "none", // hide if no image
+                      width: "100%",
+                      height: "auto",
+                    }}
+                  />
+                  <Box {...getRootProps()}
+                    sx={{
+                      position: formData.idPath ? "absolute" : "static",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                      bgcolor: formData.idPath ? "rgba(0, 0, 0, 0)" : "transparent",
+                      transition: "background-color 0.3s ease",
+
+                      zIndex: 2,
+                      cursor: "pointer",
+                      display: formData.idPath ? "none" : "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      borderRadius: "20px",
+                    }}
+                    className="mycontainer"
+                  >
                     {isDragActive ? (
                       <p>Drop the files here ...</p>
                     ) : (
@@ -570,19 +629,19 @@ const main = () => {
                           </Button>
                         </Box>
                         <Box>
-                          <Typography>
+                          <Typography className="uploadimagetext">
                             {formData.file && formData.file.length > 0
                               ? "Change "
                               : "Choose "}
                             a file or drag & drop it here
                           </Typography>
-                          <Typography sx={{ color: "#cacfdb" }}>
+                          <Typography className="uploadimagetext" sx={{ color: "#cacfdb" }}>
                             JPEG,PNG formats, up to 50MB
                           </Typography>
                         </Box>
                       </Stack>
                     )}
-                  </div>
+                  </Box>
                   <input {...getInputProps()} />
                 </Paper>
               </Grid2>

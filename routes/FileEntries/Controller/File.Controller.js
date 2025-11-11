@@ -2,6 +2,7 @@ import fc from "../lib/File.Class.js";
 import { cSend, getPath, uploadImage2 } from "../../../util/util.js";
 import fs from "fs";
 import uc from "../../User/lib/User.class.js";
+import mime from "mime-types";
 
 export const insertImageController = async (req, res) => {
   try {
@@ -101,6 +102,33 @@ export const serveImageController = async (req, res) => {
     try {
       const buffer = fs.readFileSync(_path);
       res.header("Content-Type", findImage.dataValues.mimetype || "image/jpeg"); // or your mimetype
+      res.header("Content-Length", buffer.length);
+      res.raw.writeHead(200); // needed to finalize headers for raw response
+      res.raw.end(buffer); // send buffer manually
+      // return res.send(buffer); // ✅ Fastify handles headers + response
+    } catch (err) {
+      // console.error("Error reading file:", err);
+      res.code(500).send("Error reading image");
+    }
+  }
+};
+
+export const serveValidIDController = async (req, res) => {
+  const { id } = req.params;
+  if (id === "undefined" || id === undefined || !id) {
+    throw new Error("id is undefined");
+  } else {
+    let _path = getPath("/uploads/ids/" + id);
+
+    // Check if file exists
+    if (!fs.existsSync(_path)) {
+      return res.code(404).send("Image not found");
+    }
+
+    try {
+      const mimeType = mime.lookup(_path); // fallback
+      const buffer = fs.readFileSync(_path);
+      res.header("Content-Type", mimeType || "image/jpeg"); // or your mimetype
       res.header("Content-Length", buffer.length);
       res.raw.writeHead(200); // needed to finalize headers for raw response
       res.raw.end(buffer); // send buffer manually

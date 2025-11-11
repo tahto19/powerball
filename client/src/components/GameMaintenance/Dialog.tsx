@@ -35,6 +35,8 @@ import {
   PayloadState,
   RaffleState,
   MyDialogProps,
+  RafflePaginationState,
+  initialRaffleData
 } from "@/components/GameMaintenance/interface.ts";
 import {
   PrizeListAll,
@@ -56,6 +58,7 @@ import ImageIcon from "@mui/icons-material/Image";
 import ImageDrawer from "@/components/ImageDrawer.tsx";
 import Participants from "./ParticipantsTable.tsx";
 import { openDialog } from "@/redux/reducers/download/exportDataSlice";
+import CircularProgress from '@mui/material/CircularProgress';
 
 import {
   getAlphaCodeList,
@@ -231,7 +234,7 @@ const MyDialog = ({
         title: formData.name + " Participants",
         type: 7,
         filter: [
-          { field: "id", filter: data.raffleSchedule[0].id, type: "number" },
+          { field: "id", filter: formData.raffleSchedule[0].id, type: "number" },
         ],
       })
     );
@@ -333,33 +336,60 @@ const MyDialog = ({
     onClose(false);
   };
 
-  useEffect(() => {
-    setData(data);
-    setDialogType(dialogType);
-    setPrizeList(prizeList);
-    console.log(prizeList, "###");
-    const selected_prize = prizeList.list
-      .map((o) => {
-        const matchedPrizeInfo = data.raffleSchedule[0].prizeInfo.find(
-          (z) => Number(z.prize_id) === Number(o.id)
-        );
-        if (matchedPrizeInfo) {
-          return {
-            ...o,
-            number_of_winners: Number(matchedPrizeInfo.number_of_winners),
-          };
-        }
-        return o;
-      })
-      .filter((x) =>
-        data.raffleSchedule[0].prizeInfo.some(
-          (z) => Number(z.prize_id) === Number(x.id)
-        )
-      );
+  const [loading, setLoading] = useState(true)
+  const getRaffleDetails = async () => {
+    setLoading(true)
+    let sort = [['id', 'DESC']];
 
-    setSelectedPrize(selected_prize);
-    setSubmitting(false);
-  }, [data, dialogType, prizeList]);
+    const query: RafflePaginationState = {
+      offset: 0, limit: 10, sort: JSON.stringify(sort), filter: JSON.stringify([{ type: 'number', field: 'id', filter: Number(data.id) }])
+    }
+    // const res = await apiService.getGMList(query, token);
+    const res = await apiService.getGMDetails(query, token);
+
+    const d = bodyDecrypt(res.data, token)
+    setLoading(false)
+    if (d && d.success === 'success') {
+      if (d.data.list.length > 0) {
+        setData(d.data.list[0])
+      }
+    }
+  };
+  useEffect(() => {
+    if (dialogType === 'Add' || formData?.raffleSchedule[0].id) {
+      setDialogType(dialogType);
+      setPrizeList(prizeList);
+      const selected_prize = prizeList.list
+        .map((o) => {
+          const matchedPrizeInfo = formData.raffleSchedule[0].prizeInfo.find(
+            (z) => Number(z.prize_id) === Number(o.id)
+          );
+          if (matchedPrizeInfo) {
+            return {
+              ...o,
+              number_of_winners: Number(matchedPrizeInfo.number_of_winners),
+            };
+          }
+          return o;
+        })
+        .filter((x) =>
+          formData.raffleSchedule[0].prizeInfo.some(
+            (z) => Number(z.prize_id) === Number(x.id)
+          )
+        );
+
+      setSelectedPrize(selected_prize);
+      setSubmitting(false);
+    }
+  }, [formData, dialogType, prizeList]);
+
+  useEffect(() => {
+    if (dialogType === 'Add') {
+      setData(initialRaffleData)
+    } else {
+      getRaffleDetails();
+    }
+  }, [data]);
 
   const [openPrizeList, setOpenPrizeListDialog] = useState(false);
   const handleOnClosePrizeList = (value: boolean) => {
@@ -409,312 +439,321 @@ const MyDialog = ({
         open={open}
         onClose={handleClose}
       >
+
         <form onSubmit={handleSubmit}>
           <DialogTitle>{dialog_type} Raffle Details</DialogTitle>
-          <DialogContent
+          {loading ? (<DialogContent
             sx={{
               display: "flex",
-              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
             }}
-          >
-            <Box>
-              <FormControl
+          ><CircularProgress enableTrackSlot size="30px" /></DialogContent>) : dialogType === 'Add' || formData?.raffleSchedule[0].id ? (
+            <>
+              <DialogContent
                 sx={{
                   display: "flex",
-                  alignItems: "end",
-                  height: "100%",
+                  flexDirection: "column",
                 }}
               >
-                <FormControlLabel
-                  control={
-                    <Switch
-                      name="active"
-                      checked={formData.active === true}
-                      onChange={(event) => handleInputChange(event)}
-                    />
-                  }
-                  label="Active"
-                />
-              </FormControl>
-            </Box>
-            <Grid2
-              container
-              spacing={2}
-              columns={12}
-            >
-              <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
-                <FormControl>
-                  <FormLabel htmlFor="details">Raffle ID</FormLabel>
-                  <TextField
-                    id="details"
-                    type="text"
-                    name="details"
-                    placeholder=""
-                    autoComplete="details"
-                    autoFocus
-                    fullWidth
-                    disabled
-                    value={formData.details}
-                    onChange={(event) => handleInputChange(event)}
-                    variant="outlined"
-                    slotProps={{
-                      input: {
-                        readOnly: dialog_type === "View",
-                      },
-                    }}
-                  />
-                </FormControl>
-              </Grid2>
-              <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
-                <FormControl>
-                  <FormLabel htmlFor="name">Raffle Name</FormLabel>
-                  <TextField
-                    id="name"
-                    type="text"
-                    name="name"
-                    placeholder=""
-                    autoFocus
-                    required
-                    fullWidth
-                    value={formData.name}
-                    onChange={(event) => handleInputChange(event)}
-                    variant="outlined"
-                    slotProps={{
-                      input: {
-                        readOnly: dialog_type === "View" || (dialog_type === 'Edit' && !allowEdit),
-                      },
-                    }}
-                  />
-                </FormControl>
-              </Grid2>
-              <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
-                <FormControl>
-                  <FormLabel htmlFor="schedule_type">Schedule Type</FormLabel>
-                  <TextField
-                    select
-                    id="schedule_type"
-                    type="text"
-                    name="schedule_type"
-                    autoComplete="schedule_type"
-                    autoFocus
-                    required
-                    fullWidth
-                    variant="outlined"
-                    value={formData.schedule_type}
-                    onChange={(event) => handleInputChange(event)}
-                    slotProps={{
-                      input: {
-                        readOnly: dialog_type === "View" || (dialog_type === 'Edit' && !allowEdit),
-                      },
+                <Box>
+                  <FormControl
+                    sx={{
+                      display: "flex",
+                      alignItems: "end",
+                      height: "100%",
                     }}
                   >
-                    <MenuItem value={"1"}>Daily</MenuItem>
-                    <MenuItem value={"2"}>Weekly</MenuItem>
-                  </TextField>
-                </FormControl>
-              </Grid2>
-              <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
-                <FormControl>
-                  <FormLabel htmlFor="short_details">Short Description</FormLabel>
-                  <TextField
-                    id="short_details"
-                    type="text"
-                    name="short_details"
-                    placeholder=""
-                    multiline
-                    maxRows={Infinity}
-                    autoFocus
-                    fullWidth
-                    value={formData.short_details}
-                    onChange={(event) => handleInputChange(event)}
-                    variant="outlined"
-                    slotProps={{
-                      input: {
-                        readOnly: dialog_type === "View" || (dialog_type === 'Edit' && !allowEdit),
-                        style: { whiteSpace: "pre-line" },
-                      },
-                    }}
-                  />
-                </FormControl>
-              </Grid2>
-              <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
-                <FormControl>
-                  <FormLabel htmlFor="full_details">Full Description</FormLabel>
-                  <TextField
-                    id="full_details"
-                    type="text"
-                    name="full_details"
-                    placeholder=""
-                    multiline
-                    maxRows={Infinity}
-                    autoFocus
-                    fullWidth
-                    value={formData.full_details}
-                    onChange={(event) => handleInputChange(event)}
-                    variant="outlined"
-                    slotProps={{
-                      input: {
-                        readOnly: dialog_type === "View" || (dialog_type === 'Edit' && !allowEdit),
-                        style: { whiteSpace: "pre-line" },
-                      },
-                    }}
-                  />
-                </FormControl>
-              </Grid2>
-              <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
-                <FormControl>
-                  <FormLabel htmlFor="value">Start Date</FormLabel>
-                  <LocalizationProvider dateAdapter={AdapterMoment}>
-                    <DateTimePicker
-                      disabled={dialog_type === 'View' || (dialog_type === 'Edit' && !allowEdit)}
-                      views={["year", "month", "day", "hours", "minutes"]}
-                      name="starting_date"
-                      onChange={(date: any) =>
-                        handleInputChange(date, "starting_date")
-                      } // Pass name explicitly
-                      value={
-                        formData.starting_date
-                          ? moment(formData.starting_date)
-                          : moment()
-                      }
-                    />
-                  </LocalizationProvider>
-                </FormControl>
-              </Grid2>
-              <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
-                <FormControl>
-                  <FormLabel htmlFor="value">End Date</FormLabel>
-                  <LocalizationProvider dateAdapter={AdapterMoment}>
-                    <DateTimePicker
-                      disabled={dialog_type === 'View' || (dialog_type === 'Edit' && !allowEdit)}
-                      views={["year", "month", "day", "hours", "minutes"]}
-                      name="end_date"
-                      onChange={(date: any) =>
-                        handleInputChange(date, "end_date")
-                      } // Pass name explicitly
-                      value={
-                        formData.end_date ? moment(formData.end_date) : moment()
-                      }
-                    />
-                  </LocalizationProvider>
-                </FormControl>
-              </Grid2>
-              <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
-                <FormControl>
-                  <FormLabel htmlFor="value">Draw Date</FormLabel>
-                  <LocalizationProvider dateAdapter={AdapterMoment}>
-                    <DateTimePicker
-                      disabled={dialog_type === 'View' || (dialog_type === 'Edit' && !allowEdit)}
-                      views={["year", "month", "day", "hours", "minutes"]}
-                      name="draw_date"
-                      onChange={(date: any) =>
-                        handleInputChange(date, "draw_date")
-                      } // Pass name explicitly
-                      value={
-                        formData.draw_date
-                          ? moment(formData.draw_date)
-                          : moment()
-                      }
-                    />
-                  </LocalizationProvider>
-                </FormControl>
-              </Grid2>
-              <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
-                <FormControl>
-                  <FormLabel htmlFor="value">Image</FormLabel>
-                  <OutlinedInput
-                    type="text"
-                    value={formData.fileInfo ? formData.fileInfo.name : ""}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={handleImage}
-                          edge="end"
-                          disabled={dialog_type === 'View' || (dialog_type === 'Edit' && !allowEdit)}
-                        >
-                          <ImageIcon />
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    label="Image"
-                    slotProps={{
-                      input: {
-                        readOnly: true,
-                      },
-                    }}
-                  />
-                </FormControl>
-              </Grid2>
-
-              <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
-                <FormControl>
-                  <FormLabel htmlFor="alpha_code">Alpha Code</FormLabel>
-                  <Autocomplete
-                    disabled={dialog_type === 'View' || (dialog_type === 'Edit' && !allowEdit)}
-                    multiple
-                    id="alpha_code"
-                    options={["All", ...alphaCodes]} // Add 'All' option
-                    defaultValue={formData.alpha_code}
-                    // freeSolo
-                    disableCloseOnSelect
-                    getOptionLabel={(option) => option}
-                    value={formData.alpha_code}
-                    onChange={(event, newValue, reason) => {
-                      const isAllSelected = newValue.includes("All");
-                      const isCurrentlyAll =
-                        formData.alpha_code.length === alphaCodes.length;
-
-                      if (isAllSelected) {
-                        // Toggle behavior
-                        setData((prevData) => ({
-                          ...prevData,
-                          alpha_code: isCurrentlyAll ? [] : alphaCodes,
-                        }));
-                      } else {
-                        setData((prevData) => ({
-                          ...prevData,
-                          alpha_code: newValue.filter((val) => val !== "All"),
-                        }));
-                      }
-                    }}
-                    renderOption={(props, option, { selected }) => {
-                      const isAllOption = option === "All";
-                      const isAllSelected =
-                        formData.alpha_code.length === alphaCodes.length;
-
-                      return (
-                        <li {...props}>
-                          <Checkbox
-                            style={{ marginRight: 8 }}
-                            checked={isAllOption ? isAllSelected : selected}
-                          />
-                          <ListItemText primary={option} />
-                        </li>
-                      );
-                    }}
-                    renderTags={(value: readonly string[], getTagProps) =>
-                      value.map((option: string, index: number) => (
-                        <Chip
-                          variant="outlined"
-                          label={option}
-                          {...getTagProps({ index })}
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          name="active"
+                          checked={formData.active === true}
+                          onChange={(event) => handleInputChange(event)}
                         />
-                      ))
-                    }
-                    renderInput={(params) => (
+                      }
+                      label="Active"
+                    />
+                  </FormControl>
+                </Box>
+                <Grid2
+                  container
+                  spacing={2}
+                  columns={12}
+                >
+                  <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                    <FormControl>
+                      <FormLabel htmlFor="details">Raffle ID</FormLabel>
                       <TextField
-                        {...params}
-                        name="alpha_code"
-                      // placeholder="e.g. GB, G20, RH"
+                        id="details"
+                        type="text"
+                        name="details"
+                        placeholder=""
+                        autoComplete="details"
+                        autoFocus
+                        fullWidth
+                        disabled
+                        value={formData.details}
+                        onChange={(event) => handleInputChange(event)}
+                        variant="outlined"
+                        slotProps={{
+                          input: {
+                            readOnly: dialog_type === "View",
+                          },
+                        }}
                       />
-                    )}
-                    sx={{
-                      "& .MuiInputBase-root": {
-                        height: "auto",
-                      },
-                    }}
-                  />
-                  {/* <Select
+                    </FormControl>
+                  </Grid2>
+                  <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+                    <FormControl>
+                      <FormLabel htmlFor="name">Raffle Name</FormLabel>
+                      <TextField
+                        id="name"
+                        type="text"
+                        name="name"
+                        placeholder=""
+                        autoFocus
+                        required
+                        fullWidth
+                        value={formData.name}
+                        onChange={(event) => handleInputChange(event)}
+                        variant="outlined"
+                        slotProps={{
+                          input: {
+                            readOnly: dialog_type === "View" || (dialog_type === 'Edit' && !allowEdit),
+                          },
+                        }}
+                      />
+                    </FormControl>
+                  </Grid2>
+                  <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+                    <FormControl>
+                      <FormLabel htmlFor="schedule_type">Schedule Type</FormLabel>
+                      <TextField
+                        select
+                        id="schedule_type"
+                        type="text"
+                        name="schedule_type"
+                        autoComplete="schedule_type"
+                        autoFocus
+                        required
+                        fullWidth
+                        variant="outlined"
+                        value={formData.schedule_type}
+                        onChange={(event) => handleInputChange(event)}
+                        slotProps={{
+                          input: {
+                            readOnly: dialog_type === "View" || (dialog_type === 'Edit' && !allowEdit),
+                          },
+                        }}
+                      >
+                        <MenuItem value={"1"}>Daily</MenuItem>
+                        <MenuItem value={"2"}>Weekly</MenuItem>
+                      </TextField>
+                    </FormControl>
+                  </Grid2>
+                  <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                    <FormControl>
+                      <FormLabel htmlFor="short_details">Short Description</FormLabel>
+                      <TextField
+                        id="short_details"
+                        type="text"
+                        name="short_details"
+                        placeholder=""
+                        multiline
+                        maxRows={Infinity}
+                        autoFocus
+                        fullWidth
+                        value={formData.short_details}
+                        onChange={(event) => handleInputChange(event)}
+                        variant="outlined"
+                        slotProps={{
+                          input: {
+                            readOnly: dialog_type === "View" || (dialog_type === 'Edit' && !allowEdit),
+                            style: { whiteSpace: "pre-line" },
+                          },
+                        }}
+                      />
+                    </FormControl>
+                  </Grid2>
+                  <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                    <FormControl>
+                      <FormLabel htmlFor="full_details">Full Description</FormLabel>
+                      <TextField
+                        id="full_details"
+                        type="text"
+                        name="full_details"
+                        placeholder=""
+                        multiline
+                        maxRows={Infinity}
+                        autoFocus
+                        fullWidth
+                        value={formData.full_details}
+                        onChange={(event) => handleInputChange(event)}
+                        variant="outlined"
+                        slotProps={{
+                          input: {
+                            readOnly: dialog_type === "View" || (dialog_type === 'Edit' && !allowEdit),
+                            style: { whiteSpace: "pre-line" },
+                          },
+                        }}
+                      />
+                    </FormControl>
+                  </Grid2>
+                  <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+                    <FormControl>
+                      <FormLabel htmlFor="value">Start Date</FormLabel>
+                      <LocalizationProvider dateAdapter={AdapterMoment}>
+                        <DateTimePicker
+                          disabled={dialog_type === 'View' || (dialog_type === 'Edit' && !allowEdit)}
+                          views={["year", "month", "day", "hours", "minutes"]}
+                          name="starting_date"
+                          onChange={(date: any) =>
+                            handleInputChange(date, "starting_date")
+                          } // Pass name explicitly
+                          value={
+                            formData.starting_date
+                              ? moment(formData.starting_date)
+                              : moment()
+                          }
+                        />
+                      </LocalizationProvider>
+                    </FormControl>
+                  </Grid2>
+                  <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+                    <FormControl>
+                      <FormLabel htmlFor="value">End Date</FormLabel>
+                      <LocalizationProvider dateAdapter={AdapterMoment}>
+                        <DateTimePicker
+                          disabled={dialog_type === 'View' || (dialog_type === 'Edit' && !allowEdit)}
+                          views={["year", "month", "day", "hours", "minutes"]}
+                          name="end_date"
+                          onChange={(date: any) =>
+                            handleInputChange(date, "end_date")
+                          } // Pass name explicitly
+                          value={
+                            formData.end_date ? moment(formData.end_date) : moment()
+                          }
+                        />
+                      </LocalizationProvider>
+                    </FormControl>
+                  </Grid2>
+                  <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+                    <FormControl>
+                      <FormLabel htmlFor="value">Draw Date</FormLabel>
+                      <LocalizationProvider dateAdapter={AdapterMoment}>
+                        <DateTimePicker
+                          disabled={dialog_type === 'View' || (dialog_type === 'Edit' && !allowEdit)}
+                          views={["year", "month", "day", "hours", "minutes"]}
+                          name="draw_date"
+                          onChange={(date: any) =>
+                            handleInputChange(date, "draw_date")
+                          } // Pass name explicitly
+                          value={
+                            formData.draw_date
+                              ? moment(formData.draw_date)
+                              : moment()
+                          }
+                        />
+                      </LocalizationProvider>
+                    </FormControl>
+                  </Grid2>
+                  <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+                    <FormControl>
+                      <FormLabel htmlFor="value">Image</FormLabel>
+                      <OutlinedInput
+                        type="text"
+                        value={formData.fileInfo ? formData.fileInfo.name : ""}
+                        endAdornment={
+                          <InputAdornment position="end">
+                            <IconButton
+                              onClick={handleImage}
+                              edge="end"
+                              disabled={dialog_type === 'View' || (dialog_type === 'Edit' && !allowEdit)}
+                            >
+                              <ImageIcon />
+                            </IconButton>
+                          </InputAdornment>
+                        }
+                        label="Image"
+                        slotProps={{
+                          input: {
+                            readOnly: true,
+                          },
+                        }}
+                      />
+                    </FormControl>
+                  </Grid2>
+
+                  <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                    <FormControl>
+                      <FormLabel htmlFor="alpha_code">Alpha Code</FormLabel>
+                      <Autocomplete
+                        disabled={dialog_type === 'View' || (dialog_type === 'Edit' && !allowEdit)}
+                        multiple
+                        id="alpha_code"
+                        options={["All", ...alphaCodes]} // Add 'All' option
+                        defaultValue={formData.alpha_code}
+                        // freeSolo
+                        disableCloseOnSelect
+                        getOptionLabel={(option) => option}
+                        value={formData.alpha_code}
+                        onChange={(event, newValue, reason) => {
+                          const isAllSelected = newValue.includes("All");
+                          const isCurrentlyAll =
+                            formData.alpha_code.length === alphaCodes.length;
+
+                          if (isAllSelected) {
+                            // Toggle behavior
+                            setData((prevData) => ({
+                              ...prevData,
+                              alpha_code: isCurrentlyAll ? [] : alphaCodes,
+                            }));
+                          } else {
+                            setData((prevData) => ({
+                              ...prevData,
+                              alpha_code: newValue.filter((val) => val !== "All"),
+                            }));
+                          }
+                        }}
+                        renderOption={(props, option, { selected }) => {
+                          const isAllOption = option === "All";
+                          const isAllSelected =
+                            formData.alpha_code.length === alphaCodes.length;
+
+                          return (
+                            <li {...props}>
+                              <Checkbox
+                                style={{ marginRight: 8 }}
+                                checked={isAllOption ? isAllSelected : selected}
+                              />
+                              <ListItemText primary={option} />
+                            </li>
+                          );
+                        }}
+                        renderTags={(value: readonly string[], getTagProps) =>
+                          value.map((option: string, index: number) => (
+                            <Chip
+                              variant="outlined"
+                              label={option}
+                              {...getTagProps({ index })}
+                            />
+                          ))
+                        }
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            name="alpha_code"
+                          // placeholder="e.g. GB, G20, RH"
+                          />
+                        )}
+                        sx={{
+                          "& .MuiInputBase-root": {
+                            height: "auto",
+                          },
+                        }}
+                      />
+                      {/* <Select
                                         sx={{
                                             backgroundColor: "white !important",
                                             '& .MuiSelect-select': { display: "block !important" }
@@ -747,115 +786,115 @@ const MyDialog = ({
                                             </MenuItem>
                                         ))}
                                     </Select> */}
-                </FormControl>
-              </Grid2>
-              {dialog_type === "View" ? (
-                <>
-                  <Box
-                    sx={{
-                      width: "100%",
-                      marginTop: "10px",
-                    }}
-                  >
-                    <Tabs
-                      centered
-                      value={tabValue}
-                      onChange={handleTabChange}
-                      aria-label="tab"
-                    >
-                      <Tab
-                        label="Prizes"
-                        {...a11yProps(0)}
-                      />
-                      <Tab
-                        label="Participants"
-                        {...a11yProps(1)}
-                      />
-                    </Tabs>
-                  </Box>
-                  <Grid2
-                    size={{ xs: 12, sm: 12, md: 12, lg: 12 }}
-                    sx={{ marginTop: "10px" }}
-                  >
-                    <CustomTabPanel
-                      value={tabValue}
-                      index={0}
-                    >
-                      <CustomizedDataGridBasic
+                    </FormControl>
+                  </Grid2>
+                  {dialog_type === "View" ? (
+                    <>
+                      <Box
                         sx={{
                           width: "100%",
+                          marginTop: "10px",
                         }}
-                        data={selectedPrize}
-                        headers={columnHeader}
-                        pagination={paginationModel}
-                        checkboxSelection={false}
-                      />
-                    </CustomTabPanel>
-                    <CustomTabPanel
-                      value={tabValue}
-                      index={1}
-                    >
-                      <Grid2
-                        container
-                        spacing={2}
-                        columns={12}
-                        sx={{ marginBottom: "10px" }}
                       >
-                        <Grid2 size={{ xs: 12, sm: 12, lg: 12 }}>
-                          <Button
+                        <Tabs
+                          centered
+                          value={tabValue}
+                          onChange={handleTabChange}
+                          aria-label="tab"
+                        >
+                          <Tab
+                            label="Prizes"
+                            {...a11yProps(0)}
+                          />
+                          <Tab
+                            label="Participants"
+                            {...a11yProps(1)}
+                          />
+                        </Tabs>
+                      </Box>
+                      <Grid2
+                        size={{ xs: 12, sm: 12, md: 12, lg: 12 }}
+                        sx={{ marginTop: "10px" }}
+                      >
+                        <CustomTabPanel
+                          value={tabValue}
+                          index={0}
+                        >
+                          <CustomizedDataGridBasic
                             sx={{
-                              float: "right",
+                              width: "100%",
                             }}
-                            variant="outlined"
-                            onClick={handleExport}
+                            data={selectedPrize}
+                            headers={columnHeader}
+                            pagination={paginationModel}
+                            checkboxSelection={false}
+                          />
+                        </CustomTabPanel>
+                        <CustomTabPanel
+                          value={tabValue}
+                          index={1}
+                        >
+                          <Grid2
+                            container
+                            spacing={2}
+                            columns={12}
+                            sx={{ marginBottom: "10px" }}
                           >
-                            Export
-                          </Button>
-                        </Grid2>
+                            <Grid2 size={{ xs: 12, sm: 12, lg: 12 }}>
+                              <Button
+                                sx={{
+                                  float: "right",
+                                }}
+                                variant="outlined"
+                                onClick={handleExport}
+                              >
+                                Export
+                              </Button>
+                            </Grid2>
+                          </Grid2>
+                          <Participants
+                            raffle_schedule_id={formData.raffleSchedule[0].id}
+                          />
+                        </CustomTabPanel>
                       </Grid2>
-                      <Participants
-                        raffle_schedule_id={data.raffleSchedule[0].id}
-                      />
-                    </CustomTabPanel>
-                  </Grid2>
-                </>
-              ) : (
-                <>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "end",
-                      width: "100%",
-                      marginTop: "10px",
-                    }}
-                  >
-                    <Button
-                      variant="contained"
-                      onClick={handleOpenPrizeListDialog}
-                      disabled={dialog_type === 'View' || (dialog_type === 'Edit' && !allowEdit)}
-                    >
-                      {dialog_type} Prizes
-                    </Button>
-                  </Box>
+                    </>
+                  ) : (
+                    <>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "end",
+                          width: "100%",
+                          marginTop: "10px",
+                        }}
+                      >
+                        <Button
+                          variant="contained"
+                          onClick={handleOpenPrizeListDialog}
+                          disabled={dialog_type === 'View' || (dialog_type === 'Edit' && !allowEdit)}
+                        >
+                          {dialog_type} Prizes
+                        </Button>
+                      </Box>
 
-                  <Grid2
-                    size={{ xs: 12, sm: 12, md: 12, lg: 12 }}
-                    sx={{ marginTop: "10px" }}
-                  >
-                    <CustomizedDataGridBasic
-                      sx={{
-                        width: "100%",
-                      }}
-                      data={selectedPrize}
-                      headers={columnHeader}
-                      pagination={paginationModel}
-                      checkboxSelection={false}
-                    />
-                  </Grid2>
-                </>
-              )}
+                      <Grid2
+                        size={{ xs: 12, sm: 12, md: 12, lg: 12 }}
+                        sx={{ marginTop: "10px" }}
+                      >
+                        <CustomizedDataGridBasic
+                          sx={{
+                            width: "100%",
+                          }}
+                          data={selectedPrize}
+                          headers={columnHeader}
+                          pagination={paginationModel}
+                          checkboxSelection={false}
+                        />
+                      </Grid2>
+                    </>
+                  )}
 
-              {/* <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+                  {/* <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
                                 <FormControl>
                                     <FormLabel htmlFor="schedule_type">Prize Name</FormLabel>
                                     <TextField
@@ -909,7 +948,7 @@ const MyDialog = ({
                                     />
                                 </FormControl>
                             </Grid2> */}
-              {/* {
+                  {/* {
                                 formData.schedule_type !== 1 ? (
                                     <Grid2 size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
                                         <FormControl>
@@ -922,28 +961,32 @@ const MyDialog = ({
                                     </Grid2>
                                 ) : null
                             } */}
-            </Grid2>
-            <PrizeListDialog
-              selectedPrize={selectedPrize}
-              open={openPrizeList}
-              onClose={handleOnClosePrizeList}
-              prizeList={prizeList}
-              onSubmit={handlePrizeSubmit}
-            />
-          </DialogContent>
+                </Grid2>
+                <PrizeListDialog
+                  selectedPrize={selectedPrize}
+                  open={openPrizeList}
+                  onClose={handleOnClosePrizeList}
+                  prizeList={prizeList}
+                  onSubmit={handlePrizeSubmit}
+                />
+              </DialogContent>
 
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            {dialog_type === "View" ? null : (
-              <Button
-                type="submit"
-                disabled={submitting}
-              >
-                Submit
-              </Button>
-            )}
-          </DialogActions>
+              <DialogActions>
+                <Button onClick={handleClose}>Cancel</Button>
+                {dialog_type === "View" ? null : (
+                  <Button
+                    type="submit"
+                    disabled={submitting}
+                  >
+                    Submit
+                  </Button>
+                )}
+              </DialogActions>
+            </>
+          ) : null}
         </form>
+
+
       </Dialog>
       <ImageDrawer
         open={imageDrawer}

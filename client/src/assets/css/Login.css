@@ -3,3 +3,13 @@
         flex-wrap: wrap-reverse !important;
     }
 }
+
+@media (max-width: 1024px) {
+    .login-your-account {
+        display: none;
+    }
+
+    .login-your-account2 {
+        display: block;
+    }
+}

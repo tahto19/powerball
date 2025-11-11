@@ -124,7 +124,7 @@ class Export_data_class {
           isAdmin: false,
         }
       : { isAdmin: false };
-    console.log(where);
+
     let _r = await Users.findAll({
       where: where,
       attributes: [
@@ -246,16 +246,29 @@ class Export_data_class {
       include: [
         {
           model: TicketHistory,
-          include: { model: WiningDrawDetails, required: false },
+          include: [
+            {
+              model: TicketDetails,
+              // required: true,
+              include: [
+                {
+                  model: Users,
+                },
+              ],
+            },
+            { model: WiningDrawDetails, required: false },
+          ],
         },
       ],
     });
     let r = _r.map((v) => v.toJSON());
     let b = [];
+
     r.forEach((v) => {
       v.ticket_histories.forEach((vv) =>
         b.push({
           ticket_history_generate: vv.ticket_history_generate,
+          name: vv.ticket_detail.User.fullname,
           wining: !!vv.wining_draw_detail,
           createdAt: vv.createdAt,
         })
@@ -367,45 +380,47 @@ class Export_data_class {
     for (const v of r_) {
       // let v = val.toJSON();
 
-      if (v.entries_used === 0) {
-        // find if exists
-        let f = toSend.find(
-          (x) => x["ticket number"] === v.ticket_code && v.VIN === x["VIRN"]
-        );
+      if (v["User.firstname"]) {
+        if (v.entries_used === 0) {
+          // find if exists
+          let f = toSend.find(
+            (x) => x["ticket number"] === v.ticket_code && v.VIN === x["VIRN"]
+          );
 
-        if (f !== undefined) continue;
-      } else {
-        let f = toSend.filter(
-          (x) => x["ticket number"] === v.ticket_code && v.VIN === x["VIRN"]
-        );
+          if (f !== undefined) continue;
+        } else {
+          let f = toSend.filter(
+            (x) => x["ticket number"] === v.ticket_code && v.VIN === x["VIRN"]
+          );
 
-        if (f.length > v.entries_used) continue;
+          if (f.length > v.entries_used) continue;
+        }
+        let middleName = v["User.middlename"] || "";
+
+        let temp = {
+          "Raffle ID":
+            v["ticket_histories.Raffle_Schedule.raffleDetails.details"] || "",
+          "raffle Ticket": v["ticket_histories.ticket_history_generate"] || "",
+          "raffle joined": v["ticket_histories.createdAt"]
+            ? moment(v["ticket_histories.createdAt"]).format(
+                "MMMM DD yyyy hh:ss a"
+              )
+            : "",
+          "ticket scanned": moment(v.createdAt).format("MMMM DD yyyy hh:ss a"),
+          "ticket number": v.ticket_code,
+          "Alpha Code": v.alpha_code,
+          "Full Name":
+            decryptPassword(v["User.firstname"]) +
+            " " +
+            middleName +
+            " " +
+            decryptPassword(v["User.lastname"]),
+          VIRN: v.VIN,
+          entries: v.entries,
+          "entries used": v.entries_used,
+        };
+        toSend.push(temp);
       }
-      let middleName = v["User.middlename"] || "";
-
-      let temp = {
-        "Raffle ID":
-          v["ticket_histories.Raffle_Schedule.raffleDetails.details"] || "",
-        "raffle Ticket": v["ticket_histories.ticket_history_generate"] || "",
-        "raffle joined": v["ticket_histories.createdAt"]
-          ? moment(v["ticket_histories.createdAt"]).format(
-              "MMMM DD yyyy hh:ss a"
-            )
-          : "",
-        "ticket scanned": moment(v.createdAt).format("MMMM DD yyyy hh:ss a"),
-        "ticket number": v.ticket_code,
-        "Alpha Code": v.alpha_code,
-        "Full Name":
-          decryptPassword(v["User.firstname"]) +
-          " " +
-          middleName +
-          " " +
-          decryptPassword(v["User.lastname"]),
-        VIRN: v.VIN,
-        entries: v.entries,
-        "entries used": v.entries_used,
-      };
-      toSend.push(temp);
     }
 
     return await this.toExcel(toSend, "TICKET SCANNED");
@@ -493,27 +508,28 @@ class Export_data_class {
     let toSend = [];
     for (const v of r_) {
       // find if exists
+      if (v["User.firstname"]) {
+        let middleName = v["User.middlename"] || "";
+        let temp = {
+          "ticket scanned": moment(v.createdAt).format("MMMM DD yyyy hh:ss a"),
+          "Raffle Ticket": v.ticket_code,
+          " raffle ID":
+            v["ticket_histories.Raffle_Schedule.raffleDetails.details"],
+          // "Alpha Code": v.alpha_code,
+          Active: v.active ? "Yes" : "No",
+          "Full Name":
+            decryptPassword(v["User.firstname"]) +
+            " " +
+            middleName +
+            " " +
+            decryptPassword(v["User.lastname"]),
+          VIRN: v.VIN,
+          entries: v.entries,
+          "entries used": v.entries_used,
+        };
 
-      let middleName = v["User.middlename"] || "";
-      let temp = {
-        "ticket scanned": moment(v.createdAt).format("MMMM DD yyyy hh:ss a"),
-        "Raffle Ticket": v.ticket_code,
-        " raffle ID":
-          v["ticket_histories.Raffle_Schedule.raffleDetails.details"],
-        // "Alpha Code": v.alpha_code,
-        Active: v.active ? "Yes" : "No",
-        "Full Name":
-          decryptPassword(v["User.firstname"]) +
-          " " +
-          middleName +
-          " " +
-          decryptPassword(v["User.lastname"]),
-        VIRN: v.VIN,
-        entries: v.entries,
-        "entries used": v.entries_used,
-      };
-
-      toSend.push(temp);
+        toSend.push(temp);
+      }
     }
 
     return await this.toExcel(toSend, "Ticket Scanned");
@@ -546,22 +562,24 @@ class Export_data_class {
     r_.forEach((val) => {
       let v = val.toJSON();
 
-      let middleName = v["User.middlename"] || "";
-      let temp = {
-        "raffle Ticket": v.ticket_history_generate,
-        "raffle joined": moment(v.createdAt).format("MMMM DD yyyy hh:ss a"),
-        "Ticket number": v.ticket_detail.ticket_code,
-        "Ticket Scanned": v.ticket_detail.createdAt,
-        "Alpha Code": v.ticket_detail.alpha_code,
-        "Full Name": v.ticket_detail.User.fullname,
-        Active: v.ticket_detail.active ? "Yes" : "No",
-        VIRN: v.VIN,
-        entries: v.ticket_detail.entries,
-        "entries used": v.ticket_detail.entries_used,
-        "Raffle ID": v.Raffle_Schedule.raffleDetails.details,
-        VIRN: v.ticket_detail.VIN,
-      };
-      toSend.push(temp);
+      if (v.ticket_detail.User) {
+        let middleName = v["User.middlename"] || "";
+        let temp = {
+          "raffle Ticket": v.ticket_history_generate,
+          "raffle joined": moment(v.createdAt).format("MMMM DD yyyy hh:ss a"),
+          "Ticket number": v.ticket_detail.ticket_code,
+          "Ticket Scanned": v.ticket_detail.createdAt,
+          "Alpha Code": v.ticket_detail.alpha_code,
+          "Full Name": v.ticket_detail.User.fullname,
+          Active: v.ticket_detail.active ? "Yes" : "No",
+          VIRN: v.VIN,
+          entries: v.ticket_detail.entries,
+          "entries used": v.ticket_detail.entries_used,
+          "Raffle ID": v.Raffle_Schedule.raffleDetails.details,
+          VIRN: v.ticket_detail.VIN,
+        };
+        toSend.push(temp);
+      }
     });
     return await this.toExcel(toSend, "Ticket Scanned");
   }
@@ -583,19 +601,22 @@ class Export_data_class {
     let toSend = [];
     r_.forEach((val) => {
       let v = val.toJSON();
-
-      let temp = {
-        entries: v.entries,
-        "entries used": v.entries_used,
-        "Ticket number": v.ticket_code,
-        "Date Scanned": v.createdAt,
-        "Alpha Code": v.alpha_code,
-        Active: v.active ? "Yes" : "No",
-        fullname: v.User.fullname,
-        VIRN: v.VIN,
-      };
-      toSend.push(temp);
+      let temp;
+      if (v.User) {
+        temp = {
+          entries: v.entries,
+          "entries used": v.entries_used,
+          "Ticket number": v.ticket_code,
+          "Date Scanned": v.createdAt,
+          "Alpha Code": v.alpha_code,
+          Active: v.active ? "Yes" : "No",
+          fullname: v.User.fullname,
+          VIRN: v.VIN,
+        };
+        toSend.push(temp);
+      }
     });
+
     return await this.toExcel(toSend, "Ticket Scanned");
   }
   async get_winners(date_range) {

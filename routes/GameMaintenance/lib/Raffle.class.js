@@ -77,19 +77,27 @@ class Raffle_class {
           separate: true,
           order: [["id", "DESC"]],
           as: "raffleSchedule",
-          // attributes: ["id"],
+          attributes: ["id", "raffle_id", "schedule_date", "status"],
           include: [
             {
               model: RafflePrize,
               separate: true,
               order: [["id", "DESC"]],
               as: "prizeInfo",
-              // attributes: ["id", "prize_id", "type", "name"],
+              attributes: [
+                "amount",
+                "id",
+                "number_of_winners",
+                "prize_id",
+                "raffle_schedule_id",
+                "status",
+              ],
               where: { status: 1 },
               required: false, // This ensures the RaffleSchedule is included even if there's no matching RafflePrize
               include: [
                 {
                   model: PrizeList,
+                  attributes: ["id", "type", "value"],
                   required: false, // This ensures the RaffleSchedule is included even if there's no matching RafflePrize
                 },
               ],
@@ -114,7 +122,114 @@ class Raffle_class {
     // ✅ Fetch both filtered list and total count
     let { count, rows } = await RaffleDetails.findAndCountAll(query);
 
-    return { list: rows, total: count };
+    console.log(
+      "Data size:",
+      Buffer.byteLength(JSON.stringify(rows)) / 1024 / 1024,
+      "MB"
+    );
+
+    return { list: JSON.parse(JSON.stringify(rows)), total: count };
+  }
+  async FetchV2(offset = 0, limit = 10, sort = [["id", "ASC"]], filter = []) {
+    let query = {
+      limit: parseInt(limit),
+      offset: parseInt(offset),
+      order: sort,
+      attributes: [
+        "id",
+        "details",
+        "name",
+        "schedule_type",
+        "end_date",
+        "active",
+      ],
+    };
+
+    if (filter.length !== 0) query["where"] = WhereFilters(filter);
+
+    // ✅ Fetch both filtered list and total count
+    let { count, rows } = await RaffleDetails.findAndCountAll(query);
+
+    console.log(
+      "Data size:",
+      Buffer.byteLength(JSON.stringify(rows)) / 1024 / 1024,
+      "MB"
+    );
+
+    return { list: JSON.parse(JSON.stringify(rows)), total: count };
+  }
+  async FetchRaffleDetails(
+    offset = 0,
+    limit = 10,
+    sort = [["id", "ASC"]],
+    filter = []
+  ) {
+    let query = {
+      limit: parseInt(limit),
+      offset: parseInt(offset),
+      order: sort,
+      include: [
+        {
+          model: RaffleSchedule,
+          separate: true,
+          order: [["id", "DESC"]],
+          as: "raffleSchedule",
+          attributes: ["id", "raffle_id", "schedule_date", "status"],
+          include: [
+            {
+              model: RafflePrize,
+              separate: true,
+              order: [["id", "DESC"]],
+              as: "prizeInfo",
+              attributes: [
+                "amount",
+                "id",
+                "number_of_winners",
+                "prize_id",
+                "raffle_schedule_id",
+                "status",
+              ],
+              where: { status: 1 },
+              required: false, // This ensures the RaffleSchedule is included even if there's no matching RafflePrize
+              include: [
+                {
+                  model: PrizeList,
+                  attributes: ["id", "type", "value"],
+                  required: false, // This ensures the RaffleSchedule is included even if there's no matching RafflePrize
+                },
+              ],
+            },
+            {
+              model: TicketHistory,
+              required: false, // This ensures the RaffleSchedule is included even if there's no matching TicketHistory
+            },
+          ],
+        },
+        {
+          model: Files,
+          order: [["id", "DESC"]],
+          as: "fileInfo",
+          attributes: ["id", "name", "description"],
+        },
+      ],
+    };
+
+    if (filter.length !== 0) query["where"] = WhereFilters(filter);
+
+    // ✅ Fetch both filtered list and total count
+    let { count, rows } = await RaffleDetails.findAndCountAll(query);
+    console.log(query["where"]);
+
+    console.log(count);
+    console.log(rows);
+
+    console.log(
+      "Data size:",
+      Buffer.byteLength(JSON.stringify(rows)) / 1024 / 1024,
+      "MB"
+    );
+
+    return { list: JSON.parse(JSON.stringify(rows)), total: count };
   }
   async FetchAll(sort = [["id", "ASC"]], filter = []) {
     let query = {
@@ -167,6 +282,71 @@ class Raffle_class {
     // ✅ Fetch both filtered list and total count
     let { count, rows } = await RaffleDetails.findAndCountAll(query);
     return { list: rows, total: count };
+  }
+  async FetchWithOutTicketHistory(
+    offset = 0,
+    limit = 10,
+    sort = [["id", "ASC"]],
+    filter = []
+  ) {
+    let query = {
+      limit: parseInt(limit),
+      offset: parseInt(offset),
+      order: sort,
+      include: [
+        {
+          model: RaffleSchedule,
+          separate: true,
+          order: [["id", "DESC"]],
+          as: "raffleSchedule",
+          attributes: ["id", "raffle_id", "schedule_date", "status"],
+          include: [
+            {
+              model: RafflePrize,
+              separate: true,
+              order: [["id", "DESC"]],
+              as: "prizeInfo",
+              attributes: [
+                "amount",
+                "id",
+                "number_of_winners",
+                "prize_id",
+                "raffle_schedule_id",
+                "status",
+              ],
+              where: { status: 1 },
+              required: false, // This ensures the RaffleSchedule is included even if there's no matching RafflePrize
+              include: [
+                {
+                  model: PrizeList,
+                  attributes: ["id", "type", "value"],
+                  required: false, // This ensures the RaffleSchedule is included even if there's no matching RafflePrize
+                },
+              ],
+            },
+          ],
+        },
+        {
+          model: Files,
+          order: [["id", "DESC"]],
+          as: "fileInfo",
+          attributes: ["id", "name", "description"],
+        },
+      ],
+    };
+
+    if (filter.length !== 0) query["where"] = WhereFilters(filter);
+
+    // ✅ Fetch both filtered list and total count
+    let { count, rows } = await RaffleDetails.findAndCountAll(query);
+
+    console.log(
+      "Data size:",
+      Buffer.byteLength(JSON.stringify(rows)) / 1024 / 1024,
+      "MB"
+    );
+
+    return { list: JSON.parse(JSON.stringify(rows)), total: count };
   }
 
   async Edit(_data, newPrizeList) {

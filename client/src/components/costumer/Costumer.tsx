@@ -59,6 +59,7 @@ const Costumer = () => {
       sort.push([sortModel[0].field, sortModel[0].sort.toUpperCase()]);
     }
 
+    let tempFilterModel = [];
     let newFilterModel = [];
 
     if (filterModel.items.length > 0) {
@@ -76,12 +77,22 @@ const Costumer = () => {
       );
     }
 
+    // for (let index = 0; index < tempFilterModel.length; index++) {
+    //   if (tempFilterModel[index].field === 'fullname') {
+    //     newFilterModel.push({ ...tempFilterModel[index], field: "firstname", })
+    //     newFilterModel.push({ ...tempFilterModel[index], field: "lastname", })
+    //   } else {
+    //     newFilterModel.push(tempFilterModel[index])
+    //   }
+    // }
+
     const query: getDataV2 = {
       offset: page,
       limit: pageSize,
       sort: sort,
       filter: newFilterModel,
     };
+
     dispatch(getCostumer(query));
   };
   const handleEditAction = (row: DataProps) => {
@@ -116,6 +127,8 @@ const Costumer = () => {
       flex: 1,
       minWidth: 200,
       editable: true,
+      sortable: false,
+      filterable: false,
     },
     {
       field: "emailAddress",
@@ -123,6 +136,8 @@ const Costumer = () => {
       flex: 1,
       minWidth: 200,
       editable: true,
+      sortable: false,
+      filterable: false,
     },
     {
       field: "active",
@@ -142,6 +157,8 @@ const Costumer = () => {
       headerName: "actions",
       flex: 1,
       minWidth: 200,
+      sortable: false,
+      filterable: false,
       renderCell: (params: { value: any }) => {
         return (
           <IconButton

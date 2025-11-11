@@ -16,7 +16,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import RandomLetters from '@/animated/RandomLettersNew.tsx';
 import TestRandom from '@/animated/TestRandom.tsx';
 
-const WinnerDialog = ({ open, ticket, name, onClose, reDraw }: WinnerDialogProps) => {
+const WinnerDialog = ({ open, ticket, name, allowDraw, onClose, reDraw }: WinnerDialogProps) => {
     const [allowCLose, setAllowClose] = useState(false)
     const [showName, setShowName] = useState(false)
 
@@ -42,6 +42,11 @@ const WinnerDialog = ({ open, ticket, name, onClose, reDraw }: WinnerDialogProps
         reDraw(true)
     }
 
+    useEffect(() => {
+        if (allowDraw) {
+            setAllowClose(true)
+        }
+    }, [allowDraw])
     // useEffect(() => {
     //     setAllowClose(false)
     // }, [ticket])

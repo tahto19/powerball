@@ -187,6 +187,7 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
     //   })
     // );
   };
+
   return (
     <>
       <Box
@@ -245,6 +246,7 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
           onTableChange={(e) => {
             handleTableChange(e);
           }}
+          loading={_loading}
           pageLength={count}
           isAction={false}
         />

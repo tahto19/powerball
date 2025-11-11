@@ -18,7 +18,8 @@ const WinnerDetailsHeaders: GridColDef[] = [
     minWidth: 200,
   },
   {
-    field: "$Raffle_Prize.createdAt$",
+    // field: "$Raffle_Prize.createdAt$",
+    field: "createdAt",
     headerName: "Draw Date",
     flex: 1,
     minWidth: 200,

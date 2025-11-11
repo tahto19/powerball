@@ -48,6 +48,7 @@ export interface WinnerDialogProps {
   ticket: string; 
   open: boolean;
   name: string;
+  allowDraw: boolean;
   onClose: (value: boolean) => void;
     reDraw: (value: boolean) => void;
 }

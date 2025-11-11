@@ -118,8 +118,10 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
   const [allowDraw, setAllowDraw] = useState(true);
   const [winnerDialog, setWinnerDialog] = useState(false);
   const [winnerID, setWinnerID] = useState(null);
+  const [usersID, setUsersID] = useState([]);
+
   const [winnerList, setWinnerList] = useState([]);
-  const { list, getDataLoading } = useAppSelector(
+  const { count, list, getDataLoading } = useAppSelector(
     (state: RootState) => state.raffleDraw.getData
   );
 
@@ -184,9 +186,9 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
       const payload = {
         raffle_id,
         prize_id,
-        winner_id: winnerID
+        winner_id: winnerID,
+        users: usersID
       };
-
       const res = await apiService.ticketDraw(payload, token);
 
       const d = bodyDecrypt(res.data, token);
@@ -194,6 +196,10 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
         setWinnerDialog(true);
         setWinnerDetails({ ...d.data.winnerDetails, _updatedAt: Date.now(), });
         setWinnerID(d.data.winner_id)
+        setUsersID((prev) => [
+          ...prev,
+          d.data.user_id
+        ])
 
       }
 
@@ -212,14 +218,19 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
   };
 
   const handleReDraw = async () => {
-    handleDraw()
+    handleDraw(winnerID, usersID)
   }
   const [reDrawCount, setReDrawCount] = useState(0)
   const [confirmationDialog, setConfirmationDialog] = useState(false)
   const handleConfirmationDialog = () => {
     setConfirmationDialog(false)
   }
-  const handleDraw = async () => {
+
+  const proceedDraw = async () => {
+    handleDraw(null, [])
+  }
+
+  const handleDraw = async (winner_ID, users_ID) => {
     setConfirmationDialog(false)
 
     if (!myPermission.raffle_draw.draw) {
@@ -236,17 +247,23 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
       const payload = {
         raffle_id,
         prize_id,
-        winner_id: winnerID
+        winner_id: winner_ID,
+        users: users_ID
+
       };
 
       const res = await apiService.ticketDraw(payload, token);
 
       const d = bodyDecrypt(res.data, token);
       if (d && d.success === "success") {
+
         setWinnerDialog(true);
         setWinnerDetails({ ...d.data.winnerDetails, _updatedAt: Date.now(), });
         setWinnerID(d.data.winner_id)
-
+        setUsersID((prev) => [
+          ...prev,
+          d.data.user_id
+        ])
       }
 
       setAllowDraw(true);
@@ -264,16 +281,15 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
   };
 
   const [timeLeft, setTimeLeft] = useState<TimeProps>(initailTimeData);
+  const [listCount, setListCount] = useState<number>(0);
+
   const [query, setQuery] = useState<getDataV2>({
-    sort: [],
+    sort: [["id", "DESC"]],
     filter: [],
-    limit: 10,
+    limit: 1,
     offset: 0,
   });
-  useEffect(() => {
-    console.log("=====", list)
 
-  }, list)
   useEffect(() => {
     setOpen(open);
     setPrizeData(initialRaffleData.raffleSchedule[0].prizeInfo[0]);
@@ -321,6 +337,20 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
     fetchDraw()
   };
 
+  const handleTableChange = async ({ page, pageSize, sortModel, filterModel }: any) => {
+    const copy = { ...query, offset: page, limit: pageSize, };
+    copy.filter = [
+      {
+        filter: data.raffleSchedule[0].id,
+        field: "$Raffle_Prize.raffle_schedule_id$",
+        type: "number",
+      },
+    ];
+
+    dispatch(getData(copy));
+  }
+
+
   const fetchDraw = () => {
     const copy = { ...query };
     copy.filter = [
@@ -333,15 +363,15 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
 
     dispatch(getData(copy));
   }
-  useEffect(() => {
-    if (open) {
-      //   getWinnerList(); // comment by crisanto
-      //   {
-      //     raffle_schedule_id: data.raffleSchedule[0].id,
-      //   }
-      fetchDraw()
-    }
-  }, [open]);
+  // useEffect(() => {
+  //   if (open) {
+  //     //   getWinnerList(); // comment by crisanto
+  //     //   {
+  //     //     raffle_schedule_id: data.raffleSchedule[0].id,
+  //     //   }
+  //     fetchDraw()
+  //   }
+  // }, [open]);
 
   return (
     <>
@@ -494,6 +524,8 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
               data={list}
               headers={columnHeader}
               pagination={paginationModel}
+              pageLength={count}
+              onTableChange={handleTableChange}
               checkboxSelection={false}
             />
             {/* <Box>
@@ -534,6 +566,7 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
           name={winnerDetails.user_name}
           onClose={handleWinnerDialogClose}
           reDraw={handleReDraw}
+          allowDraw={allowDraw}
         />
 
         <Dialog open={confirmationDialog} >
@@ -542,7 +575,7 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleConfirmationDialog}>No</Button>
-            <Button onClick={handleDraw} autoFocus>
+            <Button onClick={proceedDraw} autoFocus>
               Yes
             </Button>
           </DialogActions>
