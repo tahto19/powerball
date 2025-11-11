@@ -372,7 +372,7 @@ class Export_data_class {
     for (const v of r_) {
       // let v = val.toJSON();
 
-      if (v.User) {
+      if (v["User.firstname"]) {
         if (v.entries_used === 0) {
           // find if exists
           let f = toSend.find(
@@ -445,7 +445,7 @@ class Export_data_class {
     let toSend = [];
     for (const v of r_) {
       // find if exists
-      if (v.User) {
+      if (v["User.firstname"]) {
         let middleName = v["User.middlename"] || "";
         let temp = {
           "ticket scanned": moment(v.createdAt).format("MMMM DD yyyy hh:ss a"),
