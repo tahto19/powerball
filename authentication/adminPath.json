@@ -12,7 +12,7 @@
 
   { "path": "/alphacode/", "method": "POST" },
   { "path": "/ticket/allTicketDetails/", "method": "POST" },
-  { "path": "/export/", "method": "POST1" },
+  { "path": "/export/", "method": "POST", "changeBody": false },
   { "path": "/UserType/", "method": "GET" },
   { "path": "/UserType/", "method": "PUT" }
 ]

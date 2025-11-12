@@ -25,8 +25,8 @@ export const exportDataController = async (req, res) => {
 
     let dr__ = type === 14 ? dr_v2 : dr_;
 
-    let _r = await ec.getData(type, dr__, filter, req, res);
-    if (type !== 14) res.send({ file: _r });
+    let _r = await ec.getData(type, dr_v2, filter, req, res);
+    // if (type !== 14) res.send({ file: _r });
   } catch (err) {
     console.log(err);
     throw err;

@@ -17,10 +17,14 @@ export const downloadData = createAsyncThunk(
 
       const token = state.token.token;
       const title = state.exportData.title;
-      const _r = await apiService.exportData(data, token ? token : "test");
-      if (data.type !== 14) {
-        let file = _r.file;
-      }
+      const _r = await apiService.exportData(
+        data,
+        token ? token : "test",
+        title
+      );
+      // if (data.type !== 14) {
+      //   let file = _r.file;
+      // }
 
       toast.update(toastId, {
         render: "Downloading...",
@@ -30,10 +34,10 @@ export const downloadData = createAsyncThunk(
       });
       await delay(1000);
       console.log(data);
-      await base64ToFile(
-        file,
-        `${title}-date:${moment().format("MMMM DD YYYY")}`
-      );
+      // await base64ToFile(
+      //   file,
+      //   `${title}-date:${moment().format("MMMM DD YYYY")}`
+      // );
       toast.update(toastId, {
         render: "Download Complete!",
         type: "success",

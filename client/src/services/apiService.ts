@@ -452,18 +452,22 @@ export const apiService = {
     const response = await apiClient.post("/api/password-reset/confirm", data);
     return response;
   },
-  exportData: async (data, token) => {
+  exportData: async (data, token, title) => {
     try {
-      const response = await apiClient.post("/api/export", data, {
-        responseType: "blob", // 👈 important
-        withCredentials: true, // 👈 must match backend CORS
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await apiClient.post(
+        "/api/export",
+        { data: bodyEncrypt(JSON.stringify(data), token) },
+        {
+          responseType: "blob", // 👈 important
+          withCredentials: true, // 👈 must match backend CORS
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       // ✅ Extract filename from Content-Disposition header if available
-      let filename = `ticket_scanned_${Date.now()}.xlsx`;
+      let filename = `${title}_${Date.now()}.xlsx`;
       const cd = response.headers["content-disposition"];
       if (cd) {
         const match = cd.match(/filename="?([^"]+)"?/);
@@ -482,6 +486,9 @@ export const apiService = {
       a.click();
       a.remove();
       window.URL.revokeObjectURL(url);
+      if (data.type !== 14) {
+        return response.data;
+      }
     } catch (err) {
       console.error("Download error:", err);
     }

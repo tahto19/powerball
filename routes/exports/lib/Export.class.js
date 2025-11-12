@@ -29,6 +29,7 @@ class Export_data_class {
     };
   }
   async getData(type, date_range, filter, req, res) {
+    console.log(type);
     switch (type) {
       case 1:
         return await this.User_data(date_range);
@@ -52,12 +53,18 @@ class Export_data_class {
         return await this.alpha_code_data(date_range);
 
       case 11:
-        return await this.get_ticket_scanned_only(date_range);
+        return await this.get_ticket_scanned_only_stream(date_range, req, res);
       case 12:
-        return await this.get_ticket_scanned_without_raffle_code(date_range);
+        return await this.get_ticket_scanned_without_raffle_code_stream(
+          date_range,
+          req,
+          res
+        );
       case 13:
-        return await this.get_ticket_scanned_dont_include_no_details(
-          date_range
+        return await this.get_ticket_scanned_dont_include_no_details_stream(
+          date_range,
+          req,
+          res
         );
       case 14:
         return await this.get_ticket_scanned_stream(date_range, req, res);
@@ -69,7 +76,7 @@ class Export_data_class {
         return await this.get_raffleDraw_new(date_range);
       }
       case 17:
-        return await this.getFreeTickets(date_range);
+        return await this.getFreeTickets_stream(date_range, req, res);
     }
   }
   async getFreeTickets(dr) {
@@ -425,84 +432,7 @@ class Export_data_class {
 
     return await this.toExcel(toSend, "TICKET SCANNED");
   }
-  async get_ticket_scanned_stream(dr, req, reply) {
-    try {
-      const connection = mysql2.createConnection(this.dbConfig);
 
-      // ✅ Write headers directly to raw response
-      reply.raw.writeHead(200, {
-        "Content-Type":
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        "Content-Disposition": `attachment; filename="ticket_scanned_${Date.now()}.xlsx"`,
-        "Access-Control-Allow-Origin": "http://localhost:3000",
-        "Access-Control-Allow-Credentials": "true",
-        "Access-Control-Expose-Headers": "Content-Disposition",
-      });
-
-      const workbook = new ExcelJS.stream.xlsx.WorkbookWriter({
-        stream: reply.raw,
-      });
-
-      const worksheet = workbook.addWorksheet("Ticket Scanned");
-
-      worksheet.columns = [
-        { header: "Raffle ID", key: "details", width: 10 },
-        { header: "Raffle Ticket", key: "ticket_history_generate", width: 10 },
-        { header: "Raffle Joined", key: "raffle_joined", width: 25 },
-        { header: "Ticket Scanned", key: "ticket_scanned", width: 25 },
-        { header: "Ticket Number", key: "ticket_code", width: 25 },
-        { header: "Alpha Code", key: "alpha_code", width: 25 },
-        { header: "User", key: "fullname", width: 25 },
-        { header: "Entries Used", key: "entries_used", width: 25 },
-      ];
-
-      // Example query
-      let a = process.env.DB_PREFIX;
-      const query = `SELECT 
-  td.*,
-  th.*,
-  td.createdAt AS ticket_scanned,
-  th.createdAt AS raffle_joined,
-  u.*,
-  rds.*,
-  rd.*
-FROM ${a}ticket_details AS td
-LEFT JOIN ${a}ticket_history AS th ON td.id = th.ticket_id
-LEFT JOIN ${a}users AS u ON td.user_id = u.id
-LEFT JOIN ${a}raffle_details_schedule AS rds ON rds.id = th.raffle_id
-LEFT JOIN ${a}raffle_details AS rd ON rd.id = rds.raffle_id WHERE td.createdAt BETWEEN '${dr[0]}' AND '${dr[1]}';`;
-      const stream = connection.query(query).stream({ objectMode: true });
-
-      stream.on("data", (row) => {
-        let fullname = `${decryptPassword(row.firstname)} ${decryptPassword(
-          row.lastname
-        )}`;
-        let changeRow = { ...row };
-        changeRow["fullname"] = fullname;
-        changeRow["createdAt"] = moment(row.createdAt).format(
-          "MMMM DD yyyy hh:ss a"
-        );
-        worksheet.addRow(changeRow).commit();
-      });
-
-      stream.on("end", async () => {
-        await worksheet.commit();
-        await workbook.commit();
-        console.log("✅ Excel stream finished");
-        reply.raw.end();
-        connection.end();
-      });
-
-      stream.on("error", (err) => {
-        console.error("Stream error:", err);
-        reply.code(500).send("Error generating Excel");
-        connection.end();
-      });
-    } catch (err) {
-      console.error("Export error:", err);
-      reply.code(500).send("Error exporting data");
-    }
-  }
   async get_ticket_scanned_without_raffle_code(date_range) {
     let r_ = await TicketDetails.findAll({
       where: {
@@ -557,6 +487,7 @@ LEFT JOIN ${a}raffle_details AS rd ON rd.id = rds.raffle_id WHERE td.createdAt B
 
     return await this.toExcel(toSend, "Ticket Scanned");
   }
+
   async get_ticket_scanned_dont_include_no_details(date_range) {
     let r_ = await TicketHistory.findAll({
       where: {
@@ -806,6 +737,556 @@ LEFT JOIN ${a}raffle_details AS rd ON rd.id = rds.raffle_id WHERE td.createdAt B
 
     return await this.toExcel(toSend, "Raffle Draw");
   }
+  async get_winners_stream(dr, req, reply) {
+    var connection;
+    try {
+      connection = mysql2.createConnection(this.dbConfig);
+
+      // ✅ Write headers directly to raw response
+      reply.raw.writeHead(200, {
+        "Content-Type":
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "Content-Disposition": `attachment; filename="ticket_scanned_${Date.now()}.xlsx"`,
+        "Access-Control-Allow-Origin": "http://localhost:3000",
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Expose-Headers": "Content-Disposition",
+      });
+
+      const workbook = new ExcelJS.stream.xlsx.WorkbookWriter({
+        stream: reply.raw,
+      });
+
+      const worksheet = workbook.addWorksheet("Ticket Scanned");
+
+      worksheet.columns = [
+        { header: "Entries Used", key: "entries_used", width: 25 },
+        { header: "Ticket Number", key: "ticket_code", width: 25 },
+        { header: "Date Scanned", key: "ticket_scanned", width: 25 },
+        { header: "Alpha Code", key: "tdalpha_code", width: 25 },
+        { header: "Active", key: "td_active", width: 25 },
+        { header: "User", key: "fullname", width: 25 },
+        { header: "VIRN", key: "VIN", width: 25 },
+      ];
+
+      // Example query
+      let a = process.env.DB_PREFIX;
+      const query = `SELECT 
+      wdd.createdAt AS date_winned,
+      u.*
+      FROM ${a}wining_draw_details AS wdd
+      LEFT JOIN ${a}Raffle_Prize AS rp ON wdd.raffle_prize_id = rp.id 
+      LEFT JOIN ${a}RaffleSchedule AS rs ON rs.id = rp.raffle_schedule_id
+      LEFT JOIN ${a}raffle_details AS rd ON rd.id = rs.raffle_id 
+      LEFT JOIN ${a}users AS u ON td.user_id = u.id 
+      WHERE td.createdAt BETWEEN '${dr[0]}' AND '${dr[1]}
+`;
+      // WHERE ticket_scanned BETWEEN '${dr[0]}' AND '${dr[1]}'
+      const stream = connection.query(query).stream({ objectMode: true });
+
+      stream.on("data", (row) => {
+        let fullname = `${decryptPassword(row.firstname)} ${decryptPassword(
+          row.lastname
+        )}`;
+
+        // let modifyRow = this.checkObject({ ...row });
+        worksheet
+          .addRow({
+            td_active: row.td_active ? "YES" : "NO",
+            ticket_scanned:
+              row.ticket_scanned && row.ticket_scanned !== ""
+                ? moment(row.ticket_scanned).format("MMMM DD yyyy hh:ss a")
+                : "No details",
+            ticket_code: row.ticket_code || "No details",
+            tdalpha_code: row.tdalpha_code || "No details",
+            fullname: fullname || "No details",
+            VIN: row.VIN || "No details",
+            entries: row.entries || "No details",
+            entries_used: row.entries_used || "No details",
+          })
+          .commit();
+      });
+
+      stream.on("end", async () => {
+        await worksheet.commit();
+        await workbook.commit();
+        console.log("✅ Excel stream finished");
+        reply.raw.end();
+        connection.end();
+      });
+
+      stream.on("error", (err) => {
+        console.error("Stream error:", err);
+        connection.end();
+        throw new Error("Error generating Excel");
+      });
+    } catch (err) {
+      if (connection) connection.end();
+      throw err;
+    }
+  }
+  async getFreeTickets_stream(dr, req, reply) {
+    var connection;
+    let a = process.env.DB_PREFIX;
+    try {
+      connection = mysql2.createConnection(this.dbConfig);
+
+      // ✅ Write headers directly to raw response
+      reply.raw.writeHead(200, {
+        "Content-Type":
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "Content-Disposition": `attachment; filename="ticket_scanned_${Date.now()}.xlsx"`,
+        "Access-Control-Allow-Origin": "http://localhost:3000",
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Expose-Headers": "Content-Disposition",
+      });
+
+      const workbook = new ExcelJS.stream.xlsx.WorkbookWriter({
+        stream: reply.raw,
+      });
+
+      const worksheet = workbook.addWorksheet("Free Tickets");
+      worksheet.columns = [
+        { header: "Entries", key: "entries", width: 25 },
+        { header: "Entries Used", key: "entries_used", width: 25 },
+        { header: "Created", key: "ticket_scanned", width: 25 },
+        { header: "User", key: "fullname", width: 25 },
+      ];
+      const query = `SELECT td.*,td.active AS td_active,td.createdAt AS ticket_scanned,td.alpha_code AS tdalpha_code,u.*
+            FROM ${a}ticket_details AS td
+            LEFT JOIN ${a}users AS u ON td.user_id = u.id
+            WHERE td.createdAt BETWEEN '${dr[0]}' AND '${dr[1]}' AND td.alpha_code LIKE 'FREE'`;
+      const stream = connection.query(query).stream({ objectMode: true });
+      stream.on("data", (row) => {
+        let fullname = `${decryptPassword(row.firstname)} ${decryptPassword(
+          row.lastname
+        )}`;
+
+        // let modifyRow = this.checkObject({ ...row });
+        worksheet
+          .addRow({
+            td_active: row.td_active ? "YES" : "NO",
+            ticket_scanned:
+              row.ticket_scanned && row.ticket_scanned !== ""
+                ? moment(row.ticket_scanned).format("MMMM DD yyyy hh:ss a")
+                : "No details",
+            fullname: fullname || "No details",
+            entries: row.entries || "No details",
+            entries_used: row.entries_used,
+          })
+          .commit();
+      });
+
+      stream.on("end", async () => {
+        await worksheet.commit();
+        await workbook.commit();
+        console.log("✅ Excel stream finished");
+        reply.raw.end();
+        connection.end();
+      });
+
+      stream.on("error", (err) => {
+        console.error("Stream error:", err);
+        connection.end();
+        throw new Error("Error generating Excel");
+      });
+    } catch (err) {
+      if (connection) connection.end();
+      throw err;
+    }
+  }
+  async get_ticket_scanned_only_stream(dr, req, reply) {
+    var connection;
+    try {
+      connection = mysql2.createConnection(this.dbConfig);
+
+      // ✅ Write headers directly to raw response
+      reply.raw.writeHead(200, {
+        "Content-Type":
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "Content-Disposition": `attachment; filename="ticket_scanned_${Date.now()}.xlsx"`,
+        "Access-Control-Allow-Origin": "http://localhost:3000",
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Expose-Headers": "Content-Disposition",
+      });
+
+      const workbook = new ExcelJS.stream.xlsx.WorkbookWriter({
+        stream: reply.raw,
+      });
+
+      const worksheet = workbook.addWorksheet("Ticket Scanned");
+
+      worksheet.columns = [
+        { header: "Entries Used", key: "entries_used", width: 25 },
+        { header: "Ticket Number", key: "ticket_code", width: 25 },
+        { header: "Date Scanned", key: "ticket_scanned", width: 25 },
+        { header: "Alpha Code", key: "tdalpha_code", width: 25 },
+        { header: "Active", key: "td_active", width: 25 },
+        { header: "User", key: "fullname", width: 25 },
+        { header: "VIRN", key: "VIN", width: 25 },
+      ];
+
+      // Example query
+      let a = process.env.DB_PREFIX;
+      const query = `SELECT 
+  td.*,
+  td.active AS td_active,
+  td.createdAt AS ticket_scanned,
+  td.alpha_code AS tdalpha_code,
+  u.*
+FROM ${a}ticket_details AS td
+LEFT JOIN ${a}users AS u ON td.user_id = u.id  WHERE td.createdAt BETWEEN '${dr[0]}' AND '${dr[1]}
+`;
+      // WHERE ticket_scanned BETWEEN '${dr[0]}' AND '${dr[1]}'
+      const stream = connection.query(query).stream({ objectMode: true });
+
+      stream.on("data", (row) => {
+        let fullname = `${decryptPassword(row.firstname)} ${decryptPassword(
+          row.lastname
+        )}`;
+
+        // let modifyRow = this.checkObject({ ...row });
+        worksheet
+          .addRow({
+            td_active: row.td_active ? "YES" : "NO",
+            ticket_scanned:
+              row.ticket_scanned && row.ticket_scanned !== ""
+                ? moment(row.ticket_scanned).format("MMMM DD yyyy hh:ss a")
+                : "No details",
+            ticket_code: row.ticket_code || "No details",
+            tdalpha_code: row.tdalpha_code || "No details",
+            fullname: fullname || "No details",
+            VIN: row.VIN || "No details",
+            entries: row.entries || "No details",
+            entries_used: row.entries_used || "No details",
+          })
+          .commit();
+      });
+
+      stream.on("end", async () => {
+        await worksheet.commit();
+        await workbook.commit();
+        console.log("✅ Excel stream finished");
+        reply.raw.end();
+        connection.end();
+      });
+
+      stream.on("error", (err) => {
+        console.error("Stream error:", err);
+        connection.end();
+        throw new Error("Error generating Excel");
+      });
+    } catch (err) {
+      if (connection) connection.end();
+      throw err;
+    }
+  }
+  async get_ticket_scanned_without_raffle_code_stream(dr, req, reply) {
+    var connection;
+    try {
+      connection = mysql2.createConnection(this.dbConfig);
+
+      // ✅ Write headers directly to raw response
+      reply.raw.writeHead(200, {
+        "Content-Type":
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "Content-Disposition": `attachment; filename="ticket_scanned_${Date.now()}.xlsx"`,
+        "Access-Control-Allow-Origin": "http://localhost:3000",
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Expose-Headers": "Content-Disposition",
+      });
+
+      const workbook = new ExcelJS.stream.xlsx.WorkbookWriter({
+        stream: reply.raw,
+      });
+
+      const worksheet = workbook.addWorksheet("Ticket Scanned");
+
+      worksheet.columns = [
+        { header: "Ticket Scanned", key: "ticket_scanned", width: 25 },
+        { header: "Raffle Ticket", key: "ticket_history_generate", width: 10 },
+        { header: "Raffle ID", key: "details", width: 10 },
+        { header: "Active", key: "td_active", width: 25 },
+        { header: "User", key: "fullname", width: 25 },
+        { header: "VIRN", key: "VIN", width: 25 },
+        { header: "Entries", key: "entries", width: 25 },
+        { header: "Entries Used", key: "entries_used", width: 25 },
+      ];
+
+      // Example query
+      let a = process.env.DB_PREFIX;
+      const query = `SELECT 
+  td.*,
+  th.*,
+  td.active AS td_active,
+  td.createdAt AS ticket_scanned,
+  td.alpha_code AS tdalpha_code,
+  th.createdAt AS raffle_joined,
+  u.*,
+  rds.*,
+  rd.*
+FROM ${a}ticket_details AS td
+LEFT JOIN ${a}ticket_history AS th ON td.id = th.ticket_id
+LEFT JOIN ${a}users AS u ON td.user_id = u.id
+LEFT JOIN ${a}raffle_details_schedule AS rds ON rds.id = th.raffle_id
+LEFT JOIN ${a}raffle_details AS rd ON rd.id = rds.raffle_id WHERE td.createdAt BETWEEN '${dr[0]}' AND '${dr[1]}' AND td.entries_used >=1;`;
+      const stream = connection.query(query).stream({ objectMode: true });
+
+      stream.on("data", (row) => {
+        let fullname = `${decryptPassword(row.firstname)} ${decryptPassword(
+          row.lastname
+        )}`;
+
+        // let modifyRow = this.checkObject({ ...row });
+        worksheet
+          .addRow({
+            td_active: row.td_active ? "YES" : "NO",
+            details: row.details || "No details",
+            ticket_history_generate:
+              row.ticket_history_generate || "No details",
+            raffle_joined:
+              row.raffle_joined && row.raffle_joined !== ""
+                ? moment(row.raffle_joined).format("MMMM DD yyyy hh:ss a")
+                : "No details",
+            ticket_scanned:
+              row.ticket_scanned && row.ticket_scanned !== ""
+                ? moment(row.ticket_scanned).format("MMMM DD yyyy hh:ss a")
+                : "No details",
+            ticket_code: row.ticket_code || "No details",
+            tdalpha_code: row.tdalpha_code || "No details",
+            fullname: fullname || "No details",
+            VIN: row.VIN || "No details",
+            entries: row.entries || "No details",
+            entries_used: row.entries_used || "No details",
+          })
+          .commit();
+      });
+
+      stream.on("end", async () => {
+        await worksheet.commit();
+        await workbook.commit();
+        console.log("✅ Excel stream finished");
+        reply.raw.end();
+        connection.end();
+      });
+
+      stream.on("error", (err) => {
+        console.error("Stream error:", err);
+        reply.code(500).send("Error generating Excel");
+        connection.end();
+      });
+    } catch (err) {
+      if (connection) connection.end();
+      reply.code(500).send("Error exporting data");
+    }
+  }
+  async get_ticket_scanned_dont_include_no_details_stream(dr, req, reply) {
+    var connection;
+    try {
+      console.log("here");
+      connection = mysql2.createConnection(this.dbConfig);
+
+      // ✅ Write headers directly to raw response
+      reply.raw.writeHead(200, {
+        "Content-Type":
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "Content-Disposition": `attachment; filename="ticket_scanned_${Date.now()}.xlsx"`,
+        "Access-Control-Allow-Origin": "http://localhost:3000",
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Expose-Headers": "Content-Disposition",
+      });
+
+      const workbook = new ExcelJS.stream.xlsx.WorkbookWriter({
+        stream: reply.raw,
+      });
+
+      const worksheet = workbook.addWorksheet("Ticket Scanned");
+
+      worksheet.columns = [
+        { header: "Raffle Ticket", key: "ticket_history_generate", width: 10 },
+        { header: "Raffle Joined", key: "raffle_joined", width: 25 },
+        { header: "Ticket Number", key: "ticket_code", width: 25 },
+        { header: "Ticket Scanned", key: "ticket_scanned", width: 25 },
+        { header: "Alpha Code", key: "tdalpha_code", width: 25 },
+        { header: "Full Name", key: "fullname", width: 25 },
+        { header: "Active", key: "td_active", width: 25 },
+        { header: "VIRN", key: "VIN", width: 25 },
+        { header: "Entries", key: "entries", width: 25 },
+        { header: "Entries Used", key: "entries_used", width: 25 },
+        { header: "Raffle ID", key: "details", width: 10 },
+      ];
+
+      // Example query
+      let a = process.env.DB_PREFIX;
+      const query = `SELECT 
+  td.*,
+  th.*,
+  td.createdAt AS ticket_scanned,
+   td.active AS td_active,
+  td.alpha_code AS tdalpha_code,
+  th.createdAt AS raffle_joined,
+  u.*,
+  rds.*,
+  rd.*
+FROM ${a}ticket_details AS td
+LEFT JOIN ${a}ticket_history AS th ON td.id = th.ticket_id
+LEFT JOIN ${a}users AS u ON td.user_id = u.id
+LEFT JOIN ${a}raffle_details_schedule AS rds ON rds.id = th.raffle_id
+LEFT JOIN ${a}raffle_details AS rd ON rd.id = rds.raffle_id WHERE td.createdAt BETWEEN '${dr[0]}' AND '${dr[1]}' AND td.active = false;`;
+      console.log(query);
+      const stream = connection.query(query).stream({ objectMode: true });
+
+      stream.on("data", (row) => {
+        let fullname = `${decryptPassword(row.firstname)} ${decryptPassword(
+          row.lastname
+        )}`;
+        let changeRow = { ...row };
+        changeRow["fullname"] = fullname;
+        changeRow["createdAt"] = moment(row.createdAt).format(
+          "MMMM DD yyyy hh:ss a"
+        );
+        worksheet
+          .addRow({
+            details: row.details || "No details",
+            ticket_history_generate:
+              row.ticket_history_generate || "No details",
+            raffle_joined:
+              row.raffle_joined && row.raffle_joined !== ""
+                ? moment(row.raffle_joined).format("MMMM DD yyyy hh:ss a")
+                : "No details",
+            ticket_scanned:
+              row.ticket_scanned && row.ticket_scanned !== ""
+                ? moment(row.ticket_scanned).format("MMMM DD yyyy hh:ss a")
+                : "No details",
+            ticket_code: row.ticket_code || "No details",
+            tdalpha_code: row.tdalpha_code || "No details",
+            td_active: row.td_active ? "YES" : "NO",
+            fullname: fullname || "No details",
+            VIN: row.VIN || "No details",
+            entries: row.entries || "No details",
+            entries_used: row.entries_used || "No details",
+          })
+          .commit();
+      });
+
+      stream.on("end", async () => {
+        await worksheet.commit();
+        await workbook.commit();
+        console.log("✅ Excel stream finished");
+        reply.raw.end();
+        connection.end();
+      });
+
+      stream.on("error", (err) => {
+        console.error("Stream error:", err);
+        connection.end();
+        throw new Error("Error generating Excel");
+      });
+    } catch (err) {
+      console.log(err, "123131");
+      if (connection) connection.end();
+      throw err;
+    }
+  }
+  async get_ticket_scanned_stream(dr, req, reply) {
+    var connection;
+    try {
+      connection = mysql2.createConnection(this.dbConfig);
+
+      // ✅ Write headers directly to raw response
+      reply.raw.writeHead(200, {
+        "Content-Type":
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "Content-Disposition": `attachment; filename="ticket_scanned_${Date.now()}.xlsx"`,
+        "Access-Control-Allow-Origin": "http://localhost:3000",
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Expose-Headers": "Content-Disposition",
+      });
+
+      const workbook = new ExcelJS.stream.xlsx.WorkbookWriter({
+        stream: reply.raw,
+      });
+
+      const worksheet = workbook.addWorksheet("Ticket Scanned");
+
+      worksheet.columns = [
+        { header: "Raffle ID", key: "details", width: 10 },
+        { header: "Raffle Ticket", key: "ticket_history_generate", width: 10 },
+        { header: "Raffle Joined", key: "raffle_joined", width: 25 },
+        { header: "Ticket Scanned", key: "ticket_scanned", width: 25 },
+        { header: "Ticket Number", key: "ticket_code", width: 25 },
+        { header: "Alpha Code", key: "tdalpha_code", width: 25 },
+        { header: "User", key: "fullname", width: 25 },
+        { header: "VIRN", key: "VIN", width: 25 },
+        { header: "Entries", key: "entries", width: 25 },
+        { header: "Entries Used", key: "entries_used", width: 25 },
+      ];
+
+      // Example query
+      let a = process.env.DB_PREFIX;
+      const query = `SELECT 
+  td.*,
+  th.*,
+  td.active AS td_active,
+  td.createdAt AS ticket_scanned,
+  td.alpha_code AS tdalpha_code,
+  th.createdAt AS raffle_joined,
+  u.*,
+  rds.*,
+  rd.*
+FROM ${a}ticket_details AS td
+LEFT JOIN ${a}ticket_history AS th ON td.id = th.ticket_id
+LEFT JOIN ${a}users AS u ON td.user_id = u.id
+LEFT JOIN ${a}raffle_details_schedule AS rds ON rds.id = th.raffle_id
+LEFT JOIN ${a}raffle_details AS rd ON rd.id = rds.raffle_id WHERE td.createdAt BETWEEN '${dr[0]}' AND '${dr[1]}';`;
+      const stream = connection.query(query).stream({ objectMode: true });
+
+      stream.on("data", (row) => {
+        let fullname = `${decryptPassword(row.firstname)} ${decryptPassword(
+          row.lastname
+        )}`;
+
+        // let modifyRow = this.checkObject({ ...row });
+        worksheet
+          .addRow({
+            details: row.details || "No details",
+            ticket_history_generate:
+              row.ticket_history_generate || "No details",
+            raffle_joined:
+              row.raffle_joined && row.raffle_joined !== ""
+                ? moment(row.raffle_joined).format("MMMM DD yyyy hh:ss a")
+                : "No details",
+            ticket_scanned:
+              row.ticket_scanned && row.ticket_scanned !== ""
+                ? moment(row.ticket_scanned).format("MMMM DD yyyy hh:ss a")
+                : "No details",
+            ticket_code: row.ticket_code || "No details",
+            tdalpha_code: row.tdalpha_code || "No details",
+            fullname: fullname || "No details",
+            VIN: row.VIN || "No details",
+            entries: row.entries || "No details",
+            entries_used: row.entries_used || "No details",
+          })
+          .commit();
+      });
+
+      stream.on("end", async () => {
+        await worksheet.commit();
+        await workbook.commit();
+        console.log("✅ Excel stream finished");
+        reply.raw.end();
+        connection.end();
+      });
+
+      stream.on("error", (err) => {
+        console.error("Stream error:", err);
+        reply.code(500).send("Error generating Excel");
+        connection.end();
+      });
+    } catch (err) {
+      if (connection) connection.end();
+      reply.code(500).send("Error exporting data");
+    }
+  }
   async toExcel(data, type) {
     var columns;
     if (data[0])
@@ -858,6 +1339,28 @@ LEFT JOIN ${a}raffle_details AS rd ON rd.id = rds.raffle_id WHERE td.createdAt B
     const buffer = await workbook.xlsx.writeBuffer();
     return Buffer.from(buffer).toString("base64");
     // worksheet.columns = data;
+  }
+  async checkObject(v) {
+    let temp = {};
+    Object.keys(v).forEach((vv) => {
+      let val =
+        v[vv] || v[vv] === 0 || v[vv] === false
+          ? v[vv].toString()
+          : "No Details";
+
+      if (val.toUpperCase() === "TRUE") temp[vv] = "YES";
+      else if (val.toUpperCase() === "FALSE") temp[vv] = "NO";
+      else {
+        if (
+          moment(v[vv], "ddd MMM DD YYYY HH:mm:ss [GMT]Z (zz)", true).isValid()
+        ) {
+          temp[vv] = moment(val, "ddd MMM DD YYYY HH:mm:ss [GMT]Z (zz)").format(
+            "MMMM-DD-YYYY,hh:mm a"
+          );
+        } else temp[vv] = val;
+      }
+    });
+    return temp;
   }
   changeDetails(d) {
     switch (d) {
