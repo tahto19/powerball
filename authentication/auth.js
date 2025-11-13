@@ -26,7 +26,7 @@ export const auth = async (req, res) => {
         let regex = new RegExp(x.path.toString(), "i").test(req.url.toString());
         if (regex && req.method === x.method) return x;
       });
-      console.log(AdminP, "asdfasd");
+      // console.log(AdminP, "asdfasd");
       let c_checkerDetails = await cookieChecker(req);
       req.user_id = c_checkerDetails.id;
 
