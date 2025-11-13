@@ -7,7 +7,7 @@ import TicketHistory from "../../../models/TicketHistory.model.js";
 import TicketDetails from "../../../models/TicketDetails.model.js";
 
 import { WhereFilters } from "../../../util/util.js";
-import { fn, col, literal } from "sequelize";
+import { fn, col, literal, Sequelize } from "sequelize";
 
 /**
  * Filter structure:
@@ -218,10 +218,6 @@ class Raffle_class {
 
     // ✅ Fetch both filtered list and total count
     let { count, rows } = await RaffleDetails.findAndCountAll(query);
-    console.log(query["where"]);
-
-    console.log(count);
-    console.log(rows);
 
     console.log(
       "Data size:",
@@ -357,7 +353,7 @@ class Raffle_class {
 
     _data.file_id = _data.fileInfo ? _data.fileInfo.id : null;
     delete _data.fileInfo;
-    console.log("=========", _data);
+
     await RaffleDetails.update(_data, { where: { id }, individualHooks: true });
     await RaffleSchedule.update(
       { schedule_date: _data.draw_date, status: _data.active ? 2 : 3 },
@@ -429,8 +425,91 @@ class Raffle_class {
 
     return id;
   }
-
   async _2ndChanceFetchAll(
+    offset = 0,
+    limit = 10,
+    sort = [["id", "ASC"]],
+    filter = [],
+    user_id
+  ) {
+    let query = {
+      limit: parseInt(limit),
+      offset: parseInt(offset),
+      order: sort,
+      include: [
+        {
+          model: RaffleSchedule,
+          order: [["id", "DESC"]],
+          as: "raffleSchedule",
+          attributes: ["id", "schedule_date"],
+          limit: 1, // Tries to get only the latest RaffleSchedule
+        },
+        {
+          model: Files,
+          order: [["id", "DESC"]],
+          as: "fileInfo",
+          attributes: ["id", "name", "description", "file_location"],
+        },
+      ],
+    };
+
+    if (filter.length !== 0) query["where"] = WhereFilters(filter);
+
+    // ✅ Fetch both filtered list and total count
+    let { count, rows } = await RaffleDetails.findAndCountAll(query);
+
+    // 2. Collect raffleSchedule IDs
+    const scheduleIds = rows
+      .map((x) => x.raffleSchedule[0]?.id)
+      .filter(Boolean);
+
+    // Aggregate counts directly in DB
+    const ticketCounts = await TicketHistory.findAll({
+      attributes: [
+        "raffle_id",
+        [fn("COUNT", col("ticket_history.id")), "totalEntries"],
+        [
+          fn(
+            "SUM",
+            literal(
+              `CASE WHEN ticket_detail.user_id = ${user_id} THEN 1 ELSE 0 END`
+            )
+          ),
+          "yourEntries",
+        ],
+      ],
+      include: [
+        {
+          model: TicketDetails,
+          attributes: ["user_id"], // no need to fetch details, just user_id
+        },
+      ],
+      where: { raffle_id: scheduleIds },
+      group: ["raffle_id"],
+      raw: true,
+    });
+    // Convert array to map for easy lookup
+    const countsMap = {};
+    ticketCounts.forEach((tc) => {
+      countsMap[tc.raffle_id] = {
+        totalEntries: parseInt(tc.totalEntries),
+        yourEntries: parseInt(tc.yourEntries),
+      };
+    });
+
+    // Merge counts into rows
+    const new_rows = rows.map((x) => {
+      const raffleId = x.raffleSchedule[0]?.id;
+      return {
+        ...x.toJSON(),
+        totalEntries: countsMap[raffleId]?.totalEntries || 0,
+        yourEntries: countsMap[raffleId]?.yourEntries || 0,
+      };
+    });
+
+    return { list: new_rows };
+  }
+  async _2ndChanceFetchAll_old(
     offset = 0,
     limit = 10,
     sort = [["id", "ASC"]],
