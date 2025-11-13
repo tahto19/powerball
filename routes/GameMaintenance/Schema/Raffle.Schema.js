@@ -78,6 +78,7 @@ export const updateSchema = {
     end_date: { type: "string" },
     schedule_type: { type: "number" },
   },
+  bodyLimit: 100 * 1024 * 1024, // 100 MB
 };
 
 export const get2ndChanceSchemaAll = {
