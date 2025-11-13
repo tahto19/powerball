@@ -935,7 +935,7 @@ class Export_data_class {
   td.alpha_code AS tdalpha_code,
   u.*
 FROM ${a}ticket_details AS td
-LEFT JOIN ${a}users AS u ON td.user_id = u.id  WHERE td.createdAt BETWEEN '${dr[0]}' AND '${dr[1]}
+LEFT JOIN ${a}users AS u ON td.user_id = u.id  WHERE td.createdAt BETWEEN '${dr[0]}' AND '${dr[1]}'
 `;
       // WHERE ticket_scanned BETWEEN '${dr[0]}' AND '${dr[1]}'
       const stream = connection.query(query).stream({ objectMode: true });
