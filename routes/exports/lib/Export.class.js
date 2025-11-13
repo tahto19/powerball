@@ -768,13 +768,14 @@ class Export_data_class {
         { header: "VIRN", key: "VIN", width: 25 },
       ];
 
-      // Example query
+      // Example query this is where you end
       let a = process.env.DB_PREFIX;
       const query = `SELECT 
       wdd.createdAt AS date_winned,
       u.*
       FROM ${a}wining_draw_details AS wdd
       LEFT JOIN ${a}Raffle_Prize AS rp ON wdd.raffle_prize_id = rp.id 
+      LEFT JOIN ${a}Prize_List AS pl ON rd.id = rs.raffle_id 
       LEFT JOIN ${a}RaffleSchedule AS rs ON rs.id = rp.raffle_schedule_id
       LEFT JOIN ${a}raffle_details AS rd ON rd.id = rs.raffle_id 
       LEFT JOIN ${a}users AS u ON td.user_id = u.id 
