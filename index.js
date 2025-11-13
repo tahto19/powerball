@@ -126,7 +126,7 @@ const start = async () => {
     await fastify.register(cors, {
       origin: (origin, cb) => {
         if (!origin) return cb(null, true); // allow non-browser requests
-        const allowed = ["localhost", "scratchit.com.ph"];
+        const allowed = ["localhost", "scratchit.com.ph", "18.138.76.86"];
         const hostname = new URL(origin).hostname;
         if (allowed.includes(hostname)) cb(null, true);
         else cb(new Error("Not allowed"));
