@@ -36,11 +36,15 @@ export const getSchema = {
   handler: getController,
 };
 
+// export const serveImageSchema = {
+//   handler: serveImageController,
+//   onSend: async (req, reply, payload) => {
+//     return payload; // Just return the payload untouched
+//   },
+// };
+
 export const serveImageSchema = {
   handler: serveImageController,
-  onSend: async (req, reply, payload) => {
-    return payload; // Just return the payload untouched
-  },
 };
 
 export const serveVideoSchema = {

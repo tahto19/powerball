@@ -98,7 +98,7 @@ export const serveImageController = async (req, res) => {
     const fileUrl = `https://18.138.76.86/uploads/image_page/${findImage.dataValues.file_location}`;
 
     // Redirect frontend <video> tag to Nginx
-    res.redirect(302, fileUrl);
+    res.redirect(fileUrl);
     // // Check if file exists
     // if (!fs.existsSync(_path)) {
     //   return res.code(404).send("Image not found");
