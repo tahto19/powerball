@@ -360,7 +360,7 @@ class Raffle_class {
     console.log("=========", _data);
     await RaffleDetails.update(_data, { where: { id }, individualHooks: true });
     await RaffleSchedule.update(
-      { schedule_date: _data.draw_date },
+      { schedule_date: _data.draw_date, status: _data.active ? 2 : 3 },
       { where: { raffle_id: id }, individualHooks: true }
     );
     const prizeInfo = _data.raffleSchedule[0].prizeInfo;

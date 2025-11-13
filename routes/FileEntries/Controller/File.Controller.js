@@ -94,22 +94,27 @@ export const serveImageController = async (req, res) => {
       "/uploads/image_page/" + findImage.dataValues.file_location
     );
 
-    // Check if file exists
-    if (!fs.existsSync(_path)) {
-      return res.code(404).send("Image not found");
-    }
+    // Build the direct URL to Nginx
+    const fileUrl = `https://18.138.76.86/uploads/image_page/${findImage.dataValues.file_location}`;
 
-    try {
-      const buffer = fs.readFileSync(_path);
-      res.header("Content-Type", findImage.dataValues.mimetype || "image/jpeg"); // or your mimetype
-      res.header("Content-Length", buffer.length);
-      res.raw.writeHead(200); // needed to finalize headers for raw response
-      res.raw.end(buffer); // send buffer manually
-      // return res.send(buffer); // ✅ Fastify handles headers + response
-    } catch (err) {
-      // console.error("Error reading file:", err);
-      res.code(500).send("Error reading image");
-    }
+    // Redirect frontend <video> tag to Nginx
+    res.redirect(fileUrl);
+    // // Check if file exists
+    // if (!fs.existsSync(_path)) {
+    //   return res.code(404).send("Image not found");
+    // }
+
+    // try {
+    //   const buffer = fs.readFileSync(_path);
+    //   res.header("Content-Type", findImage.dataValues.mimetype || "image/jpeg"); // or your mimetype
+    //   res.header("Content-Length", buffer.length);
+    //   res.raw.writeHead(200); // needed to finalize headers for raw response
+    //   res.raw.end(buffer); // send buffer manually
+    //   // return res.send(buffer); // ✅ Fastify handles headers + response
+    // } catch (err) {
+    //   // console.error("Error reading file:", err);
+    //   res.code(500).send("Error reading image");
+    // }
   }
 };
 
