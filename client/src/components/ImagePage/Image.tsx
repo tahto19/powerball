@@ -15,9 +15,11 @@ import { toast } from "react-toastify";
 import { ImageState } from "./interface.ts"
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const apiEndpoint = base_url + "api/file/serve/image/"
-const renderImage = (id: number) => {
+const renderImage = (file_name: string) => {
 
-    const img = apiEndpoint + id
+    // const img = apiEndpoint + id
+    const img = "/media/images/" + file_name
+
     return (
         <div style={{
             display: 'flex',
@@ -48,7 +50,7 @@ const renderImage = (id: number) => {
 const headers = [
     {
         field: 'id', headerName: ' ', maxWidth: 100, sortable: false, filterable: false, renderCell: (params: any) => {
-            return renderImage(params.id);
+            return renderImage(params.row.file_location);
         },
     },
     { field: 'name', headerName: 'Image Name', flex: 1, minWidth: 200 },
@@ -118,7 +120,6 @@ const ImagePage = () => {
         const res = await apiService.getFile(query, token);
         const d = bodyDecrypt(res.data, token)
         if (d && d.success === 'success') {
-
             setImageList(d.data.list)
             setListCount(d.data.total)
         }

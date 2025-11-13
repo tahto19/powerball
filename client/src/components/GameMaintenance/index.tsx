@@ -56,7 +56,6 @@ const headers = [
         field: 'end_date', headerName: 'Status', flex: 1, minWidth: 200,
         renderCell: (params: any) => {
             const { end_date, active } = params.row;
-            console.log(params.row)
             let displayStatus = '';
             if (moment().isAfter(end_date)) {
                 displayStatus = 'Ended';

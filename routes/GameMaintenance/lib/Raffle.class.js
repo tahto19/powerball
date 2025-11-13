@@ -453,7 +453,7 @@ class Raffle_class {
           model: Files,
           order: [["id", "DESC"]],
           as: "fileInfo",
-          attributes: ["id", "name", "description"],
+          attributes: ["id", "name", "description", "file_location"],
         },
       ],
     };

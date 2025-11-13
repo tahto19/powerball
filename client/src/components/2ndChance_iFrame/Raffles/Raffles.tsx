@@ -212,7 +212,7 @@ const Raffles = () => {
                   <CardMedia
                     component="img"
                     // sx={{ height: "113px" }}
-                    image={endpoint + x.fileInfo.id}
+                    image={"/media/images/" + x.fileInfo.file_location}
                     alt="Paella dish"
                   />
                 ) : null}
