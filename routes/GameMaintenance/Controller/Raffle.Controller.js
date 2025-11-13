@@ -85,10 +85,6 @@ export const getRaffleDetails = async (req, res) => {
   const new_offset = limit * offset; // Calculate offset
   parsedSort = parsedSort.length > 0 ? parsedSort : [["id", "ASC"]];
   // let a = await rc.Fetchv1(new_offset, limit, parsedSort, parsedFilter);
-  console.log("=======", parsedSort);
-  console.log("=======", parsedFilter);
-
-  console.log("=======", new_offset);
 
   let a = await rc.FetchRaffleDetails(
     new_offset,
@@ -142,7 +138,6 @@ export const get2ndChanceControllerAll = async (req, res) => {
   // ];
 
   const new_offset = limit * offset; // Calculate offset
-  console.log("======", parsedSort);
   let a = await rc._2ndChanceFetchAll(
     new_offset,
     limit,
@@ -167,6 +162,5 @@ export const get2ndChanceControllerAllv2 = async (req, res) => {
     req.user_id
   );
 
-  console.log("======", a);
   res.send(cSend(a));
 };
