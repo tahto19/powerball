@@ -463,9 +463,9 @@ export const apiService = {
       if (data.type >= 11) options["responseType"] = "blob";
       const response = await apiClient.post(
         "/api/export",
-        data,
+        // data,
+        { data: bodyEncrypt(JSON.stringify(data), token) },
         options
-        // { data: bodyEncrypt(JSON.stringify(data), token) },
       );
 
       // ✅ Extract filename from Content-Disposition header if available
