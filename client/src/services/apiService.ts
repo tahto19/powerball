@@ -454,43 +454,50 @@ export const apiService = {
   },
   exportData: async (data, token, title) => {
     try {
+      let options = {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      if (data.type >= 11) options["responseType"] = "blob";
       const response = await apiClient.post(
         "/api/export",
-        { data: bodyEncrypt(JSON.stringify(data), token) },
-        {
-          responseType: "blob", // 👈 important
-          withCredentials: true, // 👈 must match backend CORS
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        data,
+        options
+        // { data: bodyEncrypt(JSON.stringify(data), token) },
       );
 
       // ✅ Extract filename from Content-Disposition header if available
-      let filename = `${title}_${Date.now()}.xlsx`;
-      const cd = response.headers["content-disposition"];
-      if (cd) {
-        const match = cd.match(/filename="?([^"]+)"?/);
-        if (match && match[1]) filename = match[1];
-      }
+      if (data.type >= 11) {
+        let filename = `${title}_${Date.now()}.xlsx`;
+        const cd = response.headers["content-disposition"];
+        if (cd) {
+          const match = cd.match(/filename="?([^"]+)"?/);
+          if (match && match[1]) filename = match[1];
+        }
 
-      // ✅ Create blob and trigger download
-      const blob = new Blob([response.data], {
-        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
-      if (data.type !== 14) {
+        // ✅ Create blob and trigger download
+        const blob = new Blob([response.data], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+        if (data.type !== 14) {
+          return response.data;
+        }
+      } else {
         return response.data;
       }
     } catch (err) {
-      console.error("Download error:", err);
+      console.log(err);
+      throw err;
     }
   },
   // alpha code
