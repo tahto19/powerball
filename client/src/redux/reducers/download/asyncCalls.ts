@@ -27,7 +27,7 @@ export const downloadData = createAsyncThunk(
       await delay(1000);
       console.log(data);
       if (data && data.type)
-        if (data.type < 11) {
+        if (data.type < 11 || data.type === 15) {
           let file = _r.file;
 
           await base64ToFile(

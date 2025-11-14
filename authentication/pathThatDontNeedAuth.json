@@ -12,7 +12,7 @@
   { "path": "/testingroutes(?:/.*)?$", "method": "POST" },
   { "path": "/password-reset", "method": "POST" },
   { "path": "/api/raffleHistory/insert", "method": "!POST" },
-  { "path": "/api/export", "method": "POST" },
+  { "path": "/api/export", "method": "POST1" },
   { "path": "/inquiry", "method": "POST" },
   { "path": "/inquiry/", "method": "POST" },
   { "path": "/reset-password-otp", "method": "POST" },

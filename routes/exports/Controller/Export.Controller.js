@@ -23,10 +23,11 @@ export const exportDataController = async (req, res) => {
           moment().endOf("year").format("YYYY-MM-DD HH:mm:ss"),
         ];
 
-    let dr__ = type >= 11 ? dr_v2 : dr_;
+    let dr__ = type >= 11 && type !== 15 ? dr_v2 : dr_;
 
     let _r = await ec.getData(type, dr__, filter, req, res);
-    if (type < 11) res.send({ file: _r });
+
+    if (type < 11 || type === 15) res.send({ file: _r });
   } catch (err) {
     console.log(err);
     throw err;

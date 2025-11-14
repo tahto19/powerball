@@ -484,7 +484,7 @@ export const apiService = {
           "Content-Type": "application/json",
         },
       };
-      if (data.type >= 11) options["responseType"] = "blob";
+      if (data.type >= 11 && data.type !== 15) options["responseType"] = "blob";
 
       const response = await apiClient.post(
         "/api/export",
@@ -494,7 +494,7 @@ export const apiService = {
       );
 
       // ✅ Extract filename from Content-Disposition header if available
-      if (data.type >= 11) {
+      if (data.type >= 11 && data.type !== 15) {
         let filename = `${title}_${Date.now()}.xlsx`;
         const cd = response.headers["content-disposition"];
         if (cd) {
@@ -514,7 +514,7 @@ export const apiService = {
         a.click();
         a.remove();
         window.URL.revokeObjectURL(url);
-        if (data.type !== 14) {
+        if (data.type < 11 && data.type !== 15) {
           return response.data;
         }
       } else {

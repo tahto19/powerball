@@ -29,7 +29,6 @@ class Export_data_class {
     };
   }
   async getData(type, date_range, filter, req, res) {
-    console.log(type);
     switch (type) {
       case 1:
         return await this.User_data(date_range);
