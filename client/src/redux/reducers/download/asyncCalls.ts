@@ -20,20 +20,16 @@ export const downloadData = createAsyncThunk(
       const _r = await apiService.exportData(
         data,
         token ? token : "test",
-        title
+        title,
+        toastId
       );
 
-      toast.update(toastId, {
-        render: "Downloading...",
-        type: "info",
-        isLoading: true,
-        autoClose: 2000,
-      });
       await delay(1000);
       console.log(data);
       if (data && data.type)
         if (data.type < 11) {
           let file = _r.file;
+
           await base64ToFile(
             file,
             `${title}-date:${moment().format("MMMM DD YYYY")}`
@@ -47,6 +43,7 @@ export const downloadData = createAsyncThunk(
         autoClose: 2000,
       });
     } catch (err: unknown) {
+      console.log(err);
       let m = getMessage(err);
       let type: TypeOptions = m === "No Data" ? "info" : "error";
       if (axios.isAxiosError(err)) {

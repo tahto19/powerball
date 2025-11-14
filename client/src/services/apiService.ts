@@ -34,6 +34,7 @@ import {
 import { data } from "react-router-dom";
 import moment from "moment";
 import { MediaState } from "@/components/Defaults/tabs/interface";
+import { toast } from "react-toastify";
 
 interface Credentials {
   email?: string;
@@ -452,15 +453,39 @@ export const apiService = {
     const response = await apiClient.post("/api/password-reset/confirm", data);
     return response;
   },
-  exportData: async (data, token, title) => {
+  exportData: async (data, token, title, toastId) => {
     try {
       let options = {
+        onDownloadProgress: (e) => {
+          if (e.lengthComputable) {
+            const percent = Math.round((e.loaded * 100) / e.total);
+            console.log("Download progress:", percent + "%");
+          } else {
+            console.log(e);
+            toast.update(toastId, {
+              render: "Downloading...",
+              type: "info",
+              isLoading: true,
+              autoClose: 2000,
+            });
+          }
+        },
+        onUploadProgress: (e) => {
+          toast.update(toastId, {
+            render: "Request Successful",
+            type: "info",
+            isLoading: true,
+            autoClose: 2000,
+          });
+        },
         withCredentials: true,
+
         headers: {
           "Content-Type": "application/json",
         },
       };
       if (data.type >= 11) options["responseType"] = "blob";
+
       const response = await apiClient.post(
         "/api/export",
         // data,
@@ -493,7 +518,7 @@ export const apiService = {
           return response.data;
         }
       } else {
-        return response.data;
+        return bodyDecrypt(response.data, token);
       }
     } catch (err) {
       console.log(err);
