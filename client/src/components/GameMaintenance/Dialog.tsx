@@ -384,7 +384,9 @@ const MyDialog = ({
   }, [formData, dialogType, prizeList]);
 
   useEffect(() => {
+    console.log(dialogType)
     if (dialogType === 'Add') {
+      setLoading(false)
       setData(initialRaffleData)
     } else {
       getRaffleDetails();
@@ -448,7 +450,7 @@ const MyDialog = ({
               justifyContent: "center",
               alignItems: "center",
             }}
-          ><CircularProgress enableTrackSlot size="30px" /></DialogContent>) : dialogType === 'Add' || formData?.raffleSchedule[0].id ? (
+          ><CircularProgress size="30px" /></DialogContent>) : dialogType === 'Add' || formData?.raffleSchedule[0].id ? (
             <>
               <DialogContent
                 sx={{
