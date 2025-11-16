@@ -4,6 +4,7 @@ import {
   postTicketController,
   raffleDrawController,
   raffleDrawV2Controller,
+  raffleDrawV3Controller,
   ticketHistoryInEntriesController,
 } from "../controller/Ticket.controller.js";
 
@@ -22,6 +23,19 @@ export const raffleDrawSchema = {
 };
 export const raffleDrawV2Schema = {
   handler: raffleDrawV2Controller,
+  schema: {
+    body: {
+      type: "object",
+      required: ["prize_id", "raffle_id"],
+      properties: {
+        raffle_id: { type: "number" },
+        prize_id: { type: "number" },
+      },
+    },
+  },
+};
+export const raffleDrawV3Schema = {
+  handler: raffleDrawV3Controller,
   schema: {
     body: {
       type: "object",

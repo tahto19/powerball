@@ -7,7 +7,9 @@ TicketHistory.init(
   {
     ticket_history_generate: {
       allowNull: true,
-      type: DataTypes.STRING,
+      type: DataTypes.CHAR(13),
+      charset: "utf8mb4", // ensure proper charset
+      collate: "utf8mb4_bin", // ✅ case-sensitive collation
     },
     raffle_id: {
       allowNull: false,

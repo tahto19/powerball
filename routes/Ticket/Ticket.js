@@ -4,12 +4,14 @@ import {
   postTicketSchema,
   raffleDrawSchema,
   raffleDrawV2Schema,
+  raffleDrawV3Schema,
   ticketHistoryInEntriesSchema,
 } from "./schema/Ticket.Schema.js";
 
 const Ticket = (app, opts, done) => {
   app.post("/draw", raffleDrawSchema);
   app.post("/drawV2", raffleDrawV2Schema);
+  app.post("/drawV3", raffleDrawV3Schema);
   app.post("/user", fetchTicketSchema);
   app.post("/admin", fetchTicketSchema);
   app.post("/", postTicketSchema);

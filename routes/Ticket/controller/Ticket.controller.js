@@ -1,6 +1,6 @@
 import cookieChecker from "../../../authentication/helper/cookieChecker.js";
 import random from "../../../lib/random.js";
-import { cSend } from "../../../util/util.js";
+import { cSend, randomLetters } from "../../../util/util.js";
 import tc from "../lib/Ticket.class.js";
 import td from "../../raffleHistory/lib/raffleHistory.class.js";
 import wc from "../../winnerEntries/lib/WinnerEntries.class.js";
@@ -12,9 +12,10 @@ import WiningDrawDetails from "../../../models/WiningDrawDetails.model.js";
 import RaffleSchedule from "../../../models/RaffleSchedule.model.js";
 import RaffleDetails from "../../../models/RaffleDetails.model.js";
 import rc from "../../GameMaintenance/lib/Raffle.class.js";
-import { Op } from "sequelize";
+import { Op, Sequelize } from "sequelize";
 import RafflePrize from "../../../models/RafflePrize.model.js";
 import TicketDetails from "../../../models/TicketDetails.model.js";
+import moment from "moment";
 export const raffleDrawController = async (req, res) => {
   try {
     const { raffle_id, prize_id, winner_id } = req.body;
@@ -145,7 +146,7 @@ export const raffleDrawV2Controller = async (req, res) => {
     //     },
     //   ],
     // });
-    console.log(users);
+
     let getTickets = await TicketHistory.findAll({
       where: {
         "$Raffle_Schedule.id$": raffle_id,
@@ -212,6 +213,105 @@ export const raffleDrawV2Controller = async (req, res) => {
         winnerDetails: getWinnerTicketDetails,
         totalEntries: secondClear.length,
         user_id: getWinnerTicketDetails.user,
+      })
+    );
+  } catch (err) {
+    throw err;
+  }
+};
+export const raffleDrawV3Controller = async (req, res) => {
+  try {
+    const { raffle_id, prize_id, winner_id, users } = req.body;
+
+    if (winner_id) {
+      let getWinner = await wc.Fetch(0, 10, null, [
+        {
+          field: "id",
+          filter: winner_id,
+          type: "number",
+        },
+      ]);
+      if (getWinner === 0) throw new Error("ErrorCODE x913");
+
+      await wc.getDeleteWinner({ id: winner_id });
+    }
+    if (!raffle_id || prize_id === -1 || !prize_id)
+      throw new Error("Error X984");
+    // check first if the raffle is already done
+    let getPrizeScheduleInfo = await RafflePrize.findOne({
+      where: { id: prize_id },
+    });
+    if (!getPrizeScheduleInfo) throw new Error("ErrorCODE X912");
+
+    let getPrizeScheduleInfoToJson = getPrizeScheduleInfo.toJSON();
+    let checkRaffleWinner = await wc.FetchAll(null, [
+      {
+        field: "raffle_prize_id",
+        filter: prize_id,
+        type: "number",
+      },
+    ]);
+    let prizeScheduleWinners = getPrizeScheduleInfoToJson.number_of_winners;
+    if (checkRaffleWinner.total >= prizeScheduleWinners)
+      throw new Error("ErrorCODE X911");
+
+    let ticketLength = 0;
+    let winningTicket = "";
+    let winningDetails;
+
+    do {
+      let a = randomLetters(1);
+      let findingTicket = winningTicket + a;
+      const escapedPrefix = findingTicket.replace(/[%_]/g, "\\$&");
+      let getTickets = await TicketHistory.findOne({
+        where: {
+          [Op.and]: [
+            {
+              ticket_history_generate: {
+                [Op.like]: `${escapedPrefix}%`,
+              },
+            },
+            { raffle_id: raffle_id },
+            { "$ticket_detail.user_id$": { [Op.notIn]: users ?? [] } },
+            { "$wining_draw_detail.id$": null },
+          ],
+        },
+        include: [
+          { model: TicketDetails, attributes: ["user_id"] },
+          { model: WiningDrawDetails, attributes: ["ticket_id"] },
+        ],
+        raw: true,
+      });
+
+      if (getTickets) {
+        let combineWinnerTicket = winningTicket + a;
+        let getSubstring = getTickets.ticket_history_generate.substring(
+          0,
+          ticketLength + 1
+        );
+
+        if (getSubstring === combineWinnerTicket) {
+          winningTicket += a;
+          ticketLength++;
+        }
+      }
+      if (ticketLength == 13) {
+        winningDetails = getTickets;
+      }
+    } while (ticketLength < 13);
+
+    let b = await wc.Insert({
+      admin_id: req.user_id,
+      raffle_prize_id: prize_id,
+      ticket_history_id: getWinnerTicketDetails.ticket_history_id,
+      ticket_id: getWinnerTicketDetails.ticket_id,
+    });
+    res.send(
+      cSend({
+        winner_id: b,
+        winnerDetails: winningDetails,
+
+        user_id: winningDetails.user,
       })
     );
   } catch (err) {
