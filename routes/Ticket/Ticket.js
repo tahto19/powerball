@@ -10,7 +10,7 @@ import {
 
 const Ticket = (app, opts, done) => {
   app.post("/draw", raffleDrawSchema);
-  app.post("/drawV2", raffleDrawV2Schema);
+  app.post("/drawV2", raffleDrawV3Schema);
   app.post("/drawV3", raffleDrawV3Schema);
   app.post("/user", fetchTicketSchema);
   app.post("/admin", fetchTicketSchema);
