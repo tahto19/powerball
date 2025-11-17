@@ -304,11 +304,16 @@ export const raffleDrawV3Controller = async (req, res) => {
       ticket_history_id: winningDetails.id,
       ticket_id: winningDetails.ticket_id,
     });
+    let getUserDetails = await Users.findOne({
+      where: { id: winningDetails["ticket_detail.user_id"] },
+    });
+    winningDetails["user_name"] = getUserDetails?.fullname;
     res.send(
       cSend({
         winner_id: b,
+        getUserDetails,
         winnerDetails: winningDetails,
-        user_id: winningDetails.user,
+        user_id: winningDetails["ticket_detail.user_id"],
       })
     );
   } catch (err) {
