@@ -301,7 +301,7 @@ export const raffleDrawV3Controller = async (req, res) => {
     let b = await wc.Insert({
       admin_id: req.user_id,
       raffle_prize_id: prize_id,
-      ticket_history_id: winningDetails.ticket_history_id,
+      ticket_history_id: winningDetails.id,
       ticket_id: winningDetails.ticket_id,
     });
     res.send(
