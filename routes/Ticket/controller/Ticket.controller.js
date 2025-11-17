@@ -292,11 +292,9 @@ export const raffleDrawV3Controller = async (req, res) => {
 
         if (getSubstring === combineWinnerTicket) {
           winningTicket += a;
+          winningDetails = getTickets;
           ticketLength++;
         }
-      }
-      if (ticketLength == 13) {
-        winningDetails = getTickets;
       }
     } while (ticketLength < 13);
 
@@ -310,7 +308,6 @@ export const raffleDrawV3Controller = async (req, res) => {
       cSend({
         winner_id: b,
         winnerDetails: winningDetails,
-
         user_id: winningDetails.user,
       })
     );
