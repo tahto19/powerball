@@ -146,9 +146,11 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
   }: any) => {
     setPagination({ page, pageSize });
 
-    const sort = [["id", "DESC"]];
+    let sort = [["id", "DESC"]];
+    console.log(sortModel)
     if (sortModel.length > 0) {
-      sort.push([sortModel[0].field, sortModel[0].sort.toUpperCase()]);
+      // sort.push([sortModel[0].field, sortModel[0].sort.toUpperCase()]);
+      sort = [sortModel[0].field, sortModel[0].sort.toUpperCase()]
     }
 
     let newFilterModel = [];
@@ -174,6 +176,7 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
       sort: sort,
       filter: newFilterModel,
     };
+    console.log(query)
     dispatch(
       getWinnerListAsync({
         ...query,

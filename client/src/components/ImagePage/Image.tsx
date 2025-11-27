@@ -92,7 +92,7 @@ const ImagePage = () => {
 
         setPagination({ page, pageSize })
 
-        const sort = [];
+        const sort = [["id", "DESC"]];
         if (sortModel.length > 0) {
             sort.push([sortModel[0].field, sortModel[0].sort.toUpperCase()]);
         }
