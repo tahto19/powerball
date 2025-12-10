@@ -73,6 +73,7 @@ interface userState {
   hbnandstr: string | null;
   gender: string | null;
   id: number | null;
+  location?: string | null;
 }
 
 const initialState: userState = {
@@ -103,6 +104,7 @@ const initialState: userState = {
     category: "user-image",
     file: [],
   },
+  location: null,
   mobileNumber: null,
   otpID: null,
   verifiedAndCreatedAccount: false,
