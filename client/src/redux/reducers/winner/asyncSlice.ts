@@ -38,10 +38,11 @@ export const getWinnerListAsync = createAsyncThunk(
             };
           else
             return {
-              Name:
-                v.ticket_detail.User.fullname.substring(0, 1) +
-                " __ " +
-                v.ticket_detail.User.fullname.substring(3, 4),
+              // Name:
+              //   v.ticket_detail.User.fullname.substring(0, 1) +
+              //   " __ " +
+              //   v.ticket_detail.User.fullname.substring(3, 4),
+              Name:  v.ticket_detail.User.fullname,
               id: v.id,
               "$Raffle_Prize.createdAt$": v.Raffle_Prize.createdAt,
               "$ticket_history.ticket_history_generate$":

@@ -64,3 +64,37 @@ export const checkActiveRaffles = async (req, res) => {
     throw error;
   }
 };
+
+export const autoActiveRaffleController = async (req, res) => {
+  /**
+   * Auto activation of raffle, bsaed on start date
+   */
+  const server_date = new Date(); // interprets as UTC
+
+  // parse as UTC
+  const utcMoment = moment.utc(server_date);
+
+  // convert to local timezone (Philippines / UTC+8)
+  const localTime = utcMoment.tz("Asia/Manila").format("YYYY-MM-DD");
+
+  console.log(server_date);
+  console.log(localTime);
+
+  const filter = [
+    { type: "date", field: "starting_date", filter: { start: localTime } },
+    { type: "number", field: "active", filter: 0 },
+  ];
+  const list = await cc.Fetch2([["id", "ASC"]], filter);
+  console.log("=======", list);
+
+  if (list.list.length > 0) {
+    const _x = list.list.map((x) => x.id);
+    const filter2 = [{ type: "array", field: "id", filter: _x }];
+
+    const data = {
+      active: 1,
+    };
+    const list2 = await cc.Edit(data, filter2);
+    console.log(list2);
+  }
+};

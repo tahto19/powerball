@@ -313,6 +313,7 @@ const main = () => {
                     variant="outlined"
                     value={formData.firstname}
                     onChange={(event) => handleInputChange(event)}
+                    disabled
                   />
                   {formData.firstname?.trim() === "" && (
                     <FormHelperText sx={{ color: "red" }}>
@@ -335,6 +336,7 @@ const main = () => {
                     variant="outlined"
                     value={formData.lastname}
                     onChange={(event) => handleInputChange(event)}
+                    disabled
                   />
                   {formData.lastname?.trim() === "" && (
                     <FormHelperText sx={{ color: "red" }}>

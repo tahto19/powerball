@@ -199,10 +199,10 @@ class Raffle_class {
                 },
               ],
             },
-            {
-              model: TicketHistory,
-              required: false, // This ensures the RaffleSchedule is included even if there's no matching TicketHistory
-            },
+            // {
+            //   model: TicketHistory,
+            //   required: false, // This ensures the RaffleSchedule is included even if there's no matching TicketHistory
+            // },
           ],
         },
         {

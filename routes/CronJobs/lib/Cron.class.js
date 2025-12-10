@@ -82,6 +82,41 @@ class Cron_class {
 
     return createRaffleSchedule.id;
   }
+
+  async Fetch2(sort = [["id", "ASC"]], filter = []) {
+    let query = {
+      order: sort,
+      attributes: ["id", "createdAt"],
+    };
+
+    if (filter.length !== 0) query["where"] = WhereFilters(filter);
+
+    // ✅ Fetch both filtered list and total count
+    let { count, rows } = await RaffleDetails.findAndCountAll(query);
+
+    console.log(
+      "Data size:",
+      Buffer.byteLength(JSON.stringify(rows)) / 1024 / 1024,
+      "MB"
+    );
+
+    return { list: JSON.parse(JSON.stringify(rows)), total: count };
+  }
+
+  async Edit(_data, filter) {
+    try {
+      let query = {
+        individualHooks: true,
+      };
+
+      if (filter.length !== 0) query["where"] = WhereFilters(filter);
+      await RaffleDetails.update(_data, query);
+
+      return true;
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 export default new Cron_class();

@@ -278,7 +278,6 @@ export default function MenuContent() {
 
   const handleNavigation2 = async (path: string, index: number) => {
     useSelected(index);
-    console.log(path);
     if (path === "logout") {
       try {
         const res = await apiService.logout();

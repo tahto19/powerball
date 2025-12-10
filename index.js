@@ -132,7 +132,7 @@ const start = async () => {
         if (allowed.includes(hostname)) cb(null, true);
         else cb(new Error("Not allowed"));
       },
-      methods: ["GET", "POST", "OPTIONS"],
+      methods: ["GET", "POST", "PUT", "OPTIONS"],
       exposedHeaders: ["Content-Disposition"],
       credentials: true,
     });

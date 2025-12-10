@@ -76,7 +76,6 @@ export default function DialogPassword({
         setTime(Date.now() + 300000);
         setShowOTP(true);
       }
-      console.log(a);
     }
   };
   const handleExpired = () => {
