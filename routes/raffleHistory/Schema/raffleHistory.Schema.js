@@ -31,12 +31,6 @@ export const getRaffleHistorySchema = {
       required: ["raffle_id"],
     },
   },
-  config: {
-    cache: {
-      privacy: fastifyCaching.privacy.PUBLIC, // allow client/CDN caching
-      expiresIn: 3600, // 1 hour
-    },
-  },
 };
 export const getRaffleEntriesSchema = {
   handler: getRaffleEntriesController,
@@ -49,12 +43,6 @@ export const getRaffleEntriesSchema = {
         limit: { type: "number" },
         sort: { type: "array" },
       },
-    },
-  },
-  config: {
-    cache: {
-      privacy: fastifyCaching.privacy.PUBLIC, // allow client/CDN caching
-      expiresIn: 3600, // 1 hour
     },
   },
 };
@@ -73,12 +61,6 @@ export const getRaffleEntriesInScheduleSchema = {
         },
       },
       required: ["offset", "limit", "sort", "filter"],
-    },
-  },
-  config: {
-    cache: {
-      privacy: fastifyCaching.privacy.PUBLIC, // allow client/CDN caching
-      expiresIn: 3600, // 1 hour
     },
   },
 };

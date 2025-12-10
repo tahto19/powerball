@@ -51,34 +51,16 @@ const getBodySchema = {
 export const getSchema = {
   handler: getController,
   body: getBodySchema,
-  config: {
-    cache: {
-      privacy: fastifyCaching.privacy.PUBLIC, // allow client/CDN caching
-      expiresIn: 3600, // 1 hour
-    },
-  },
 };
 
 export const getRafflesDetailsSchema = {
   handler: getControllerV2,
   body: getBodySchema,
-  config: {
-    cache: {
-      privacy: fastifyCaching.privacy.PUBLIC, // allow client/CDN caching
-      expiresIn: 3600, // 1 hour
-    },
-  },
 };
 
 export const getRaffleDetailsSchema = {
   handler: getRaffleDetails,
   body: getBodySchema,
-  config: {
-    cache: {
-      privacy: fastifyCaching.privacy.PUBLIC, // allow client/CDN caching
-      expiresIn: 3600, // 1 hour
-    },
-  },
 };
 
 export const getSchemaAll = {
@@ -103,21 +85,9 @@ export const updateSchema = {
 export const get2ndChanceSchemaAll = {
   handler: get2ndChanceControllerAll,
   body: getBodySchema,
-  config: {
-    cache: {
-      privacy: fastifyCaching.privacy.PUBLIC, // allow client/CDN caching
-      expiresIn: 3600, // 1 hour
-    },
-  },
 };
 
 export const getRaffleDrawListSchema = {
   handler: getRaffleDrawListController,
   body: getBodySchema,
-  config: {
-    cache: {
-      privacy: fastifyCaching.privacy.PUBLIC, // allow client/CDN caching
-      expiresIn: 3600, // 1 hour
-    },
-  },
 };

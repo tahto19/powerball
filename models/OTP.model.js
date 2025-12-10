@@ -35,6 +35,7 @@ class OTP extends Model {
         otp: this.code,
         number: this.mobileNumber,
       });
+      console.log("otp code is ", this.code);
       return true;
     } catch (err) {
       return false;
