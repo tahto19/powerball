@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/tahto19/powerball#readme",
   "dependencies": {
+    "@fastify/caching": "^9.0.3",
     "@fastify/cookie": "^11.0.2",
     "@fastify/cors": "^11.0.0",
     "@fastify/jwt": "^9.1.0",

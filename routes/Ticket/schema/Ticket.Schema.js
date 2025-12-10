@@ -1,3 +1,4 @@
+import fastifyCaching from "@fastify/caching";
 import {
   detailedTicketDetailsHistoryController,
   fetchTicketController,

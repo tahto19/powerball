@@ -3,6 +3,7 @@ import "dotenv/config";
 import Fastify from "fastify";
 
 import cors from "@fastify/cors";
+import fastifyCaching from "@fastify/caching";
 
 import conn from "./dbConnections/conn.js";
 
@@ -122,7 +123,7 @@ const start = async () => {
     //   origin: "*",
     //   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     // });
-
+    fastify.register(fastifyCaching);
     await fastify.register(cors, {
       origin: (origin, cb) => {
         if (!origin) return cb(null, true); // allow non-browser requests
