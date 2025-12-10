@@ -3,7 +3,6 @@ import "dotenv/config";
 import Fastify from "fastify";
 
 import cors from "@fastify/cors";
-import fastifyCaching from "@fastify/caching";
 
 import conn from "./dbConnections/conn.js";
 
