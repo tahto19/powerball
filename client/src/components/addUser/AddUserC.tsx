@@ -106,11 +106,13 @@ const AddUserC = () => {
     multiple: false,
   });
   const handleGetLocation = () => {
-    let gethref = window.parent.location.href || window.location.href;
+    let gethref = window.parent.location.search || window.location.search;
     const params = new URLSearchParams(gethref);
-    const locationValue = params.get("location");
-    setLocation(locationValue);
-    console.log(locationValue, gethref, params);
+    console.log(params.get("location")); // "123444"
+    // const locationValue = params.get("location");
+    // setLocation(locationValue);
+    console.log("href:", window.location.href);
+    console.log("search:", window.location.search);
   };
   const onSubmit: SubmitHandler<userState> = (data) => {
     if (!otpID) dispatch(outsideAddUser({ ...data, location }));
