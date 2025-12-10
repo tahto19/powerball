@@ -123,7 +123,7 @@ const start = async () => {
     //   origin: "*",
     //   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     // });
-    fastify.register(fastifyCaching);
+
     await fastify.register(cors, {
       origin: (origin, cb) => {
         if (!origin) return cb(null, true); // allow non-browser requests

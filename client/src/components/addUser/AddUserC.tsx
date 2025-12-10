@@ -78,6 +78,7 @@ const AddUserC = () => {
     });
   }, []);
   useEffect(() => {
+    console.log(window.location);
     if (firstname || lastname || emailAddress || birthdate || mobileNumber) {
       setValue("firstname", firstname, { shouldValidate: true });
       setValue("lastname", lastname, { shouldValidate: true });
