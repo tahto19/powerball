@@ -77,9 +77,10 @@ const AddUserC = () => {
       shouldDirty: true,
     });
   }, []);
+  const [location, setLocation] = useState(null);
   useEffect(() => {
-    console.log(window.parent.location);
-    console.log(window);
+    handleGetLocation(); // separate this for cleaner or
+
     if (firstname || lastname || emailAddress || birthdate || mobileNumber) {
       setValue("firstname", firstname, { shouldValidate: true });
       setValue("lastname", lastname, { shouldValidate: true });
@@ -104,10 +105,16 @@ const AddUserC = () => {
     onDrop,
     multiple: false,
   });
-
+  const handleGetLocation = () => {
+    let gethref = window.parent.location.href;
+    const params = new URLSearchParams(gethref);
+    const locationValue = params.get("location");
+    setLocation(locationValue);
+    console.log(locationValue);
+  };
   const onSubmit: SubmitHandler<userState> = (data) => {
-    if (!otpID) dispatch(outsideAddUser(data));
-    else dispatch(editDetails(data));
+    if (!otpID) dispatch(outsideAddUser({ ...data, location }));
+    else dispatch(editDetails({ ...data, location }));
   };
   const [showPassword, setShowPassword] = useState(false);
   const [phone, setPhone] = useState("+63");
