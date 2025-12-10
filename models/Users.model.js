@@ -135,6 +135,7 @@ Users.init(
         this.setDataValue("city", encrpytPassword(val));
       },
     },
+    location: { allowNull: true, type: DataTypes.STRING },
     idPath: { allowNull: true, type: DataTypes.STRING, defaultValue: null },
     birthdate: { allowNull: true, type: DataTypes.DATE, defaultValue: null },
     active: { allowNull: false, type: DataTypes.BOOLEAN, defaultValue: true },

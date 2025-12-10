@@ -86,6 +86,7 @@ export const createAccount = createAsyncThunk(
         birthdate,
         password,
         toastID,
+        location,
       } = state.user;
 
       await apiService.createUser({
@@ -96,6 +97,7 @@ export const createAccount = createAsyncThunk(
         birthdate,
         emailAddress,
         password,
+        location,
       });
       // dispatch(
       //   showToaster({

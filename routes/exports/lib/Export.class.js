@@ -118,6 +118,7 @@ class Export_data_class {
         "createdAt",
         "birthdate",
         "gender",
+        "location",
       ],
     });
     let r = _r.map((v) => v.toJSON());
@@ -147,6 +148,7 @@ class Export_data_class {
         "province",
         "city",
         "gender",
+        "location",
       ],
     });
     let r = _r.map((v) => v.toJSON());

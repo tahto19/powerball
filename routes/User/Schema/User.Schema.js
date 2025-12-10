@@ -56,6 +56,7 @@ export const createUserSchema = {
     emailAddres: { type: "string" },
     mobileNumber: { type: "string" },
     id: { type: "string" },
+    location: { type: "string" },
   },
 };
 

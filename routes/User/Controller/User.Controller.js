@@ -154,6 +154,7 @@ export const createUser = async (req, res) => {
       birthdate,
       emailAddress,
       password,
+      location,
     } = req.body;
 
     let fields = [];
@@ -179,6 +180,7 @@ export const createUser = async (req, res) => {
       mobileNumber: mobileNumber_,
       birthdate: birthdate.value,
       idPath: file ? iUp.filename : null,
+      location: location.value,
     });
     // handle adding  free tickets
     // check if theres a free ticket
