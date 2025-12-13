@@ -7,7 +7,8 @@ import {
     TextField,
     MenuItem,
     IconButton,
-    Typography
+    Typography,
+    CircularProgress
 } from '@mui/material';
 
 import { WinnerDialogProps } from "./interface.ts"
@@ -15,11 +16,16 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import RandomLetters from '@/animated/RandomLettersNew.tsx';
 import TestRandom from '@/animated/TestRandom.tsx';
+import { useAppSelector, useAppDispatch } from "@/redux/hook";
+import { setRedrawLoading } from "@/redux/reducers/RaffleDraw/asyncCalls.ts";
 
 const WinnerDialog = ({ open, ticket, name, allowDraw, onClose, reDraw }: WinnerDialogProps) => {
+    const dispatch = useAppDispatch();
     const [allowCLose, setAllowClose] = useState(false)
     const [showName, setShowName] = useState(false)
-
+    const { redrawLoading } = useAppSelector(
+        (state: RootState) => state.raffleDraw
+    );
     const handleDone = (value: boolean) => {
         console.log("Doneeeeeeeee")
 
@@ -78,7 +84,8 @@ const WinnerDialog = ({ open, ticket, name, allowDraw, onClose, reDraw }: Winner
                         display: "flex",
                         justifyContent: "center"
                     }}>
-                        <RandomLetters winner={ticket} seconds={3} onFinish={handleSecondFinish} onDone={handleDone} />
+                        {redrawLoading ? (<CircularProgress size="30px" color="#F26A21" />) : (<RandomLetters winner={ticket} seconds={3} onFinish={handleSecondFinish} onDone={handleDone} />)}
+
                     </div>
                     {
                         showName ? (<Typography variant="h4" sx={{ width: '100%', textAlign: "center" }}>{name}</Typography>
