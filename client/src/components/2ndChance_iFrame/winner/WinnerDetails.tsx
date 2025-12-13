@@ -26,6 +26,7 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
   // const
   const location = useLocation();
   const navigate = useNavigate();
+  useEffect(() => { console.log(list) }, [list])
   useEffect(() => {
     if (!loading) {
       if (token === null) {
@@ -40,7 +41,7 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
           sort,
           limit,
           offset,
-          filter,
+          filter: [...filter, { type: 'greater_than_time', field: "createdAt", value: 1, unit: "hours" }],
           location: url ? url : "myWinners", //added this because client want to change it to see all winners
           // location: url ? url : url,
         })

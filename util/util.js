@@ -145,6 +145,29 @@ export const WhereFilters = (filters = []) => {
             }
           }
           break;
+        case "greater_than_time": // you named it "greater_than_time" but it means "older than X"
+          {
+            // allow f.value to be string/number; default 1
+            const rawValue = f.value ?? 1;
+            const value =
+              typeof rawValue === "string"
+                ? parseInt(rawValue, 10) || 1
+                : rawValue;
+            const unit = f.unit || "hours"; // "minutes", "hours", "days", "seconds", etc.
+
+            // threshold = now - value unit
+            const threshold = moment().subtract(value, unit).toDate();
+
+            // debug
+            console.log("threshold for", f.field, "=>", threshold);
+
+            // Use Op.lt / Op.lte to get rows older than the threshold
+            // use Op.lte if you want to include exactly the threshold time
+            wherefilters[f.field] = {
+              [Op.lte]: threshold,
+            };
+          }
+          break;
       }
     }
   }
