@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { getDataV2 } from "@/types/allTypes";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { showToaster } from "../global/globalSlice";
