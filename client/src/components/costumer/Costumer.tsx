@@ -23,6 +23,10 @@ const Costumer = () => {
   const { loading, list, offset, limit, sort, count } = useAppSelector(
     (state: RootState) => state.costumer
   );
+
+  useEffect(() => {
+    console.log(list)
+  }, [list])
   const { myPermission } = useAppSelector((state: RootState) => state.userType);
 
   const [pagination, setPagination] = useState({ page: 0, pageSize: 10 });
@@ -121,6 +125,15 @@ const Costumer = () => {
     setUserToAdmin();
   };
   const headers: GridColDef[] = [
+    {
+      field: "id",
+      headerName: "ID",
+      flex: 1,
+      minWidth: 200,
+      // editable: true,
+      // sortable: false,
+      // filterable: false,
+    },
     {
       field: "fullname",
       headerName: "Full Name",

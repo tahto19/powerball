@@ -52,7 +52,7 @@ import { useAppSelector, useAppDispatch } from "@/redux/hook";
 import { bodyDecrypt } from "@/utils/util";
 import { showToaster } from "@/redux/reducers/global/globalSlice";
 import WinnerDialog from "./WinnerDialog.tsx";
-import { getData } from "@/redux/reducers/RaffleDraw/asyncCalls.ts";
+import { getData, setUsersID, setRedrawLoading } from "@/redux/reducers/RaffleDraw/asyncCalls.ts";
 import { getDataV2 } from "@/types/allTypes.js";
 import { RootState } from "@/redux/store.ts";
 
@@ -118,7 +118,10 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
   const [allowDraw, setAllowDraw] = useState(true);
   const [winnerDialog, setWinnerDialog] = useState(false);
   const [winnerID, setWinnerID] = useState(null);
-  const [usersID, setUsersID] = useState([]);
+  // const [usersID, setUsersID] = useState([]);
+  const { usersID } = useAppSelector(
+    (state: RootState) => state.raffleDraw
+  );
 
   const [winnerList, setWinnerList] = useState([]);
   const { count, list, getDataLoading } = useAppSelector(
@@ -129,7 +132,7 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTab(newValue);
   }
-  useEffect(() => { }, [getDataLoading]);
+  useEffect(() => { console.log(usersID) }, [usersID]);
   const handlePrizeTypeChange = (value: string) => {
     const prize_data = data.raffleSchedule[0].prizeInfo.find(
       (x) => x.Prize_List.type === value
@@ -196,11 +199,11 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
         setWinnerDialog(true);
         setWinnerDetails({ ...d.data.winnerDetails, _updatedAt: Date.now(), });
         setWinnerID(d.data.winner_id)
-        setUsersID((prev) => [
-          ...prev,
-          d.data.user_id
-        ])
-
+        // setUsersID((prev) => [
+        //   ...prev,
+        //   d.data.user_id
+        // ])
+        dispatch(setUsersID(d.data.user_id))
       }
 
       setAllowDraw(true);
@@ -227,12 +230,12 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
   }
 
   const proceedDraw = async () => {
-    handleDraw(null, [])
+    handleDraw(winnerID, usersID)
   }
 
   const handleDraw = async (winner_ID, users_ID) => {
     setConfirmationDialog(false)
-
+    dispatch(setRedrawLoading(true))
     if (!myPermission.raffle_draw.draw) {
       toast.info("You're not allowed to Draw");
       return;
@@ -251,24 +254,30 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
         users: users_ID
 
       };
-
+      console.log(payload)
       const res = await apiService.ticketDraw(payload, token);
+      dispatch(setRedrawLoading(false))
 
       const d = bodyDecrypt(res.data, token);
       if (d && d.success === "success") {
+        console.log(users_ID)
 
+        console.log(d)
         setWinnerDialog(true);
         setWinnerDetails({ ...d.data.winnerDetails, _updatedAt: Date.now(), });
         setWinnerID(d.data.winner_id)
-        setUsersID((prev) => [
-          ...prev,
-          d.data.user_id
-        ])
+        // setUsersID((prev) => [
+        //   ...prev,
+        //   d.data.user_id
+        // ])
+        dispatch(setUsersID(d.data.user_id))
       }
 
       setAllowDraw(true);
     } catch (err) {
       setAllowDraw(true);
+      dispatch(setRedrawLoading(false))
+
       dispatch(
         showToaster({
           err,

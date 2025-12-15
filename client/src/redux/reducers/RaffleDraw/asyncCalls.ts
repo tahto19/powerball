@@ -1,10 +1,11 @@
+//@ts-nocheck
 import { getDataV2 } from "@/types/allTypes";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { showToaster } from "../global/globalSlice";
 import apiService from "@/services/apiService";
 import { RootState } from "@/redux/store";
 import { bodyDecrypt } from "@/utils/util";
-import { addRaffleDrawList } from "./RaffleDrawSlice";
+import { addRaffleDrawList, addUsersID, updateRedrawLoading } from "./RaffleDrawSlice";
 
 export const getData = createAsyncThunk(
   "raffleDraw/getData",
@@ -30,6 +31,30 @@ export const getData = createAsyncThunk(
       const toReturn = { ...getFilter, ..._rD };
 
       dispatch(addRaffleDrawList(toReturn));
+    } catch (err) {
+      dispatch(showToaster({ err, variant: "error", icon: "error" }));
+    }
+  }
+);
+
+export const setUsersID = createAsyncThunk(
+  "raffleDraw/setUsersID",
+  async (data: Array<any>, { dispatch, getState }) => {
+    try {
+  
+      dispatch(addUsersID(data));
+    } catch (err) {
+      dispatch(showToaster({ err, variant: "error", icon: "error" }));
+    }
+  }
+);
+
+export const setRedrawLoading = createAsyncThunk(
+  "raffleDraw/setRedrawLoading",
+  async (data: boolean, { dispatch, getState }) => {
+    try {
+  
+      dispatch(updateRedrawLoading(data));
     } catch (err) {
       dispatch(showToaster({ err, variant: "error", icon: "error" }));
     }

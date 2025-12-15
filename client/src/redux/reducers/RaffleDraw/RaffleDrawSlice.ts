@@ -11,6 +11,8 @@ interface getData {
 }
 interface RaffleDrawI {
   getData: getData;
+  usersID:  Array<any>;
+  redrawLoading: boolean;
 }
 const initialState: RaffleDrawI = {
   getData: {
@@ -21,6 +23,8 @@ const initialState: RaffleDrawI = {
     location: null,
     getDataLoading: true,
   },
+  usersID: [],
+  redrawLoading: false,
 };
 
 const RaffleDrawSlice = createSlice({
@@ -30,6 +34,12 @@ const RaffleDrawSlice = createSlice({
     addRaffleDrawList: (state, action) => {
       state.getData = { ...state.getData, ...action.payload };
     },
+    addUsersID: (state,action) => {
+      state.usersID = [...state.usersID, action.payload]
+    },
+    updateRedrawLoading: (state,action) => {
+      state.redrawLoading = action.payload
+    }
   },
   extraReducers: (d) => {
     d.addCase(getData.pending, (state) => {
@@ -41,5 +51,5 @@ const RaffleDrawSlice = createSlice({
   },
 });
 
-export const { addRaffleDrawList } = RaffleDrawSlice.actions;
+export const { addRaffleDrawList, addUsersID, updateRedrawLoading } = RaffleDrawSlice.actions;
 export default RaffleDrawSlice.reducer;
