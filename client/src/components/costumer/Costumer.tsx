@@ -130,9 +130,9 @@ const Costumer = () => {
       headerName: "ID",
       flex: 1,
       minWidth: 200,
-      editable: true,
-      sortable: false,
-      filterable: false,
+      // editable: true,
+      // sortable: false,
+      // filterable: false,
     },
     {
       field: "fullname",
