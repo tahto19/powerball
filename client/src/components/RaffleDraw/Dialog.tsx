@@ -203,7 +203,7 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
         //   ...prev,
         //   d.data.user_id
         // ])
-        dispatch(setUsersID(d.data.user_id))
+        // dispatch(setUsersID(d.data.user_id))
       }
 
       setAllowDraw(true);
@@ -222,6 +222,8 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
 
   const handleReDraw = async () => {
     handleDraw(winnerID, usersID)
+    dispatch(setUsersID([...usersID, winnerID]))
+
   }
   const [reDrawCount, setReDrawCount] = useState(0)
   const [confirmationDialog, setConfirmationDialog] = useState(false)
@@ -230,7 +232,7 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
   }
 
   const proceedDraw = async () => {
-    handleDraw(winnerID, usersID)
+    handleDraw(null, usersID)
   }
 
   const handleDraw = async (winner_ID, users_ID) => {
@@ -270,7 +272,7 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
         //   ...prev,
         //   d.data.user_id
         // ])
-        dispatch(setUsersID(d.data.user_id))
+        // dispatch(setUsersID(d.data.user_id))
       }
 
       setAllowDraw(true);
