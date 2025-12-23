@@ -259,26 +259,26 @@ export const raffleDrawV3Controller = async (req, res) => {
     let winningTicket = "";
     let winningDetails;
 
-    let checkIftheresAWinner = await TicketHistory.findOne({
-      where: {
-        [Op.and]: [
-          {
-            ticket_history_generate: {
-              [Op.like]: `${escapedPrefix}%`,
-            },
-          },
-          { raffle_id: raffle_id },
-          { "$ticket_detail.user_id$": { [Op.notIn]: users ?? [] } },
-          { "$wining_draw_detail.id$": null },
-        ],
-      },
-      include: [
-        { model: TicketDetails, attributes: ["user_id"] },
-        { model: WiningDrawDetails, attributes: ["ticket_id"] },
-      ],
-      raw: true,
-    });
-    if(checkIftheresAWinner.length ===0) throw new Error('ErrorCode x923')
+    // let checkIftheresAWinner = await TicketHistory.findOne({
+    //   where: {
+    //     [Op.and]: [
+    //       {
+    //         ticket_history_generate: {
+    //           [Op.like]: `${escapedPrefix}%`,
+    //         },
+    //       },
+    //       { raffle_id: raffle_id },
+    //       { "$ticket_detail.user_id$": { [Op.notIn]: users ?? [] } },
+    //       { "$wining_draw_detail.id$": null },
+    //     ],
+    //   },
+    //   include: [
+    //     { model: TicketDetails, attributes: ["user_id"] },
+    //     { model: WiningDrawDetails, attributes: ["ticket_id"] },
+    //   ],
+    //   raw: true,
+    // });
+    // if(checkIftheresAWinner.length ===0) throw new Error('ErrorCode x923')
     do {
       let a = randomLetters(1);
       let findingTicket = winningTicket + a;

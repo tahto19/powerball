@@ -170,6 +170,7 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
         }
       );
     }
+    newFilterModel.push({ type: 'greater_than_time', field: "createdAt", value: 1, unit: "hours" })
 
     const query: getDataV2 = {
       offset: page,
