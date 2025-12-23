@@ -100,6 +100,7 @@ const fastify = Fastify({
  * X743 invalid email format
  * x913 No Winner Found
  * x922 Error in deleting filter is not set
+ * x923 No User Eligible for Raffle
  */
 
 /**

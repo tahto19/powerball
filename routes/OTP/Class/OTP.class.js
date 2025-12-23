@@ -68,7 +68,7 @@ class OTP_class {
     let getOTP = await this.FetchOne([
       { filter: data.id, field: "id", type: "number" },
       { filter: data.code, field: "code", type: "number" },
-      { filter: false, field: "auth", type: "boolean" },
+      // { filter: false, field: "auth", type: "boolean" },
     ]);
     if (getOTP === null) throw new Error("ERRORCODE x58");
     let _data = getOTP.toJSON();

@@ -76,6 +76,13 @@ export const createAccount = createAsyncThunk(
   async (data: veriyCode, { dispatch, getState }) => {
     try {
       // return data;
+           dispatch(
+        showToaster({
+          message: "Requesting to Create A User",
+          variant: "info",
+          icon: "info",
+        })
+      );
       const state = getState() as RootState;
       const {
         emailAddress,
@@ -99,13 +106,14 @@ export const createAccount = createAsyncThunk(
         password,
         location,
       });
-      // dispatch(
-      //   showToaster({
-      //     message: "Done Creating User",
-      //     variant: "info",
-      //     icon: "info",
-      //   })
-      // );
+      console.log('called create account')
+      dispatch(
+        showToaster({
+          message: "Done Creating User",
+          variant: "info",
+          icon: "info",
+        })
+      );
 
       let toaster__ = toast.update(data.toastID, {
         render: "successfully created account",
@@ -115,6 +123,7 @@ export const createAccount = createAsyncThunk(
       });
       return true;
     } catch (err) {
+      console.log(err.message)
       let m = getMessage(err);
       toast.update(toastID, {
         render: m,
@@ -304,6 +313,7 @@ export const verifyOTPForChangePassword = createAsyncThunk(
         isLoading: false,
         autoClose: 2000,
       });
+     
       await delay(553);
       toast.update(toastId, {
         render: "Successfully change password",

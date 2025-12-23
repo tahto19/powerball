@@ -263,7 +263,7 @@ export const apiService = {
           } else if (_d !== "file") {
             throw new Error(`${_d} has null`);
           }
-        } else if (_d !== "file" && _d !== "emailAddress") {
+        } else if (_d !== "file" && _d !== "emailAddress" && _d !== "location") {
           throw new Error(`${_d} has null`);
         }
       }

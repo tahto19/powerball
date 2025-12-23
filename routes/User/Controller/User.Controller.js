@@ -180,7 +180,7 @@ export const createUser = async (req, res) => {
       mobileNumber: mobileNumber_,
       birthdate: birthdate.value,
       idPath: file ? iUp.filename : null,
-      location: location.value,
+      location: location?.value || null,
     });
     // handle adding  free tickets
     // check if theres a free ticket
