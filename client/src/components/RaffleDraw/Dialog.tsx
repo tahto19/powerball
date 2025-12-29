@@ -173,57 +173,72 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
       setWinnerList(d.data.list);
     }
   };
-  const handleDraw2 = async () => {
-    if (!myPermission.raffle_draw.draw) {
-      toast.info("You're not allowed to Draw");
-      return;
-    }
+  // const handleDraw2 = async () => {
+  //   if (!myPermission.raffle_draw.draw) {
+  //     toast.info("You're not allowed to Draw");
+  //     return;
+  //   }
 
-    try {
-      setAllowDraw(false);
-      const raffle_id = data.raffleSchedule[0].id;
-      const prize_id = prizeData.id;
+  //   try {
+  //     setAllowDraw(false);
+  //     const raffle_id = data.raffleSchedule[0].id;
+  //     const prize_id = prizeData.id;
 
-      if (!raffle_id) return;
+  //     if (!raffle_id) return;
 
-      const payload = {
-        raffle_id,
-        prize_id,
-        winner_id: winnerID,
-        users: usersID
-      };
-      const res = await apiService.ticketDraw(payload, token);
+  //     const payload = {
+  //       raffle_id,
+  //       prize_id,
+  //       winner_id: winnerID,
+  //       users: usersID
+  //     };
+  //     const res = await apiService.ticketDraw(payload, token);
 
-      const d = bodyDecrypt(res.data, token);
-      if (d && d.success === "success") {
-        setWinnerDialog(true);
-        setWinnerDetails({ ...d.data.winnerDetails, _updatedAt: Date.now(), });
-        setWinnerID(d.data.winner_id)
-        // setUsersID((prev) => [
-        //   ...prev,
-        //   d.data.user_id
-        // ])
-        // dispatch(setUsersID(d.data.user_id))
-      }
+  //     const d = bodyDecrypt(res.data, token);
+  //     if (d && d.success === "success") {
+  //       setWinnerDialog(true);
+  //       setWinnerDetails({ ...d.data.winnerDetails, _updatedAt: Date.now(), });
+  //       setWinnerID(d.data.winner_id)
+  //       // setUsersID((prev) => [
+  //       //   ...prev,
+  //       //   d.data.user_id
+  //       // ])
+  //       // dispatch(setUsersID(d.data.user_id))
+  //     }
 
-      setAllowDraw(true);
-    } catch (err) {
-      setAllowDraw(true);
-      dispatch(
-        showToaster({
-          err,
-          show: true,
-          variant: "error",
-          icon: null,
-        })
-      );
-    }
-  };
+  //     setAllowDraw(true);
+  //   } catch (err) {
+  //     setAllowDraw(true);
+  //     dispatch(
+  //       showToaster({
+  //         err,
+  //         show: true,
+  //         variant: "error",
+  //         icon: null,
+  //       })
+  //     );
+  //   }
+  // };
 
   const handleReDraw = async () => {
-    handleDraw(winnerID, usersID)
-    dispatch(setUsersID([...usersID, winnerID]))
+    const redraw_users = sessionStorage.getItem("powerball_rd");
+    let x = {
+      _i: data.raffleSchedule[0].id,
+      _l: []
+    };
+    if (redraw_users) {
+      const parsed = JSON.parse(redraw_users);
+      if (Number(data.raffleSchedule[0].id) == Number(parsed._i)) {
+        x = parsed
+      }
+    }
 
+    handleDraw(winnerID, x._l)
+
+
+
+    // handleDraw(winnerID, usersID)
+    // dispatch(setUsersID([...usersID, winnerID]))
   }
   const [reDrawCount, setReDrawCount] = useState(0)
   const [confirmationDialog, setConfirmationDialog] = useState(false)
@@ -232,7 +247,24 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
   }
 
   const proceedDraw = async () => {
-    handleDraw(null, usersID)
+    const redraw_users = sessionStorage.getItem("powerball_rd");
+    let x = {
+      _i: data.raffleSchedule[0].id,
+      _l: []
+    };
+    if (redraw_users) {
+      const parsed = JSON.parse(redraw_users);
+      console.log(Number(data.raffleSchedule[0].id) == Number(parsed._i))
+      console.log(data.raffleSchedule[0].id)
+
+      if (Number(data.raffleSchedule[0].id) == Number(parsed._i)) {//create new sessionstorage data if stored raffle id is not the same to current raffle id.
+        x = parsed
+      }
+    }
+    console.log(redraw_users)
+    handleDraw(null, x._l)
+
+    // handleDraw(null, usersID)
   }
 
   const handleDraw = async (winner_ID, users_ID) => {
@@ -268,6 +300,21 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
         setWinnerDialog(true);
         setWinnerDetails({ ...d.data.winnerDetails, _updatedAt: Date.now(), });
         setWinnerID(d.data.winner_id)
+        const redraw_users = sessionStorage.getItem("powerball_rd");
+        let x = {
+          _i: data.raffleSchedule[0].id,
+          _l: []
+        };
+        if (redraw_users) {
+          const parsed = JSON.parse(redraw_users);
+          if (Number(data.raffleSchedule[0].id) == Number(parsed._i)) {
+            x = parsed
+          }
+        }
+        x._l.push(d.data.user_id)
+
+        sessionStorage.setItem("powerball_rd", JSON.stringify(x))
+
         // setUsersID((prev) => [
         //   ...prev,
         //   d.data.user_id
