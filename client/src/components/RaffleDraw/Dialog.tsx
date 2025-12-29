@@ -221,19 +221,19 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
   // };
 
   const handleReDraw = async () => {
-    const redraw_users = sessionStorage.getItem("powerball_rd");
-    let x = {
-      _i: data.raffleSchedule[0].id,
-      _l: []
-    };
-    if (redraw_users) {
-      const parsed = JSON.parse(redraw_users);
-      if (Number(data.raffleSchedule[0].id) == Number(parsed._i)) {
-        x = parsed
-      }
-    }
+    // const redraw_users = sessionStorage.getItem("powerball_rd");
+    // let x = {
+    //   _i: data.raffleSchedule[0].id,
+    //   _l: []
+    // };
+    // if (redraw_users) {
+    //   const parsed = JSON.parse(redraw_users);
+    //   if (Number(data.raffleSchedule[0].id) == Number(parsed._i)) {
+    //     x = parsed
+    //   }
+    // }
 
-    handleDraw(winnerID, x._l)
+    handleDraw(winnerID)
 
 
 
@@ -247,27 +247,29 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
   }
 
   const proceedDraw = async () => {
-    const redraw_users = sessionStorage.getItem("powerball_rd");
-    let x = {
-      _i: data.raffleSchedule[0].id,
-      _l: []
-    };
-    if (redraw_users) {
-      const parsed = JSON.parse(redraw_users);
-      console.log(Number(data.raffleSchedule[0].id) == Number(parsed._i))
-      console.log(data.raffleSchedule[0].id)
+    // const redraw_users = sessionStorage.getItem("powerball_rd");
+    // let x = {
+    //   _i: data.raffleSchedule[0].id,
+    //   _l: []
+    // };
+    // if (redraw_users) {
+    //   const parsed = JSON.parse(redraw_users);
+    //   console.log(Number(data.raffleSchedule[0].id) == Number(parsed._i))
+    //   console.log(data.raffleSchedule[0].id)
 
-      if (Number(data.raffleSchedule[0].id) == Number(parsed._i)) {//create new sessionstorage data if stored raffle id is not the same to current raffle id.
-        x = parsed
-      }
-    }
-    console.log(redraw_users)
-    handleDraw(null, x._l)
+    //   if (Number(data.raffleSchedule[0].id) == Number(parsed._i)) {//create new sessionstorage data if stored raffle id is not the same to current raffle id.
+    //     x = parsed
+    //   }
+    // }
+    // console.log(redraw_users)
+    handleDraw(null)
 
     // handleDraw(null, usersID)
   }
 
-  const handleDraw = async (winner_ID, users_ID) => {
+  // const handleDraw = async (winner_ID, users_ID) => {
+  const handleDraw = async (winner_ID) => {
+
     setConfirmationDialog(false)
     dispatch(setRedrawLoading(true))
     if (!myPermission.raffle_draw.draw) {
@@ -281,11 +283,31 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
 
       if (!raffle_id) return;
 
+      const redraw_users = sessionStorage.getItem("powerball_rd");
+      let x = {
+        _i: data.raffleSchedule[0].id,
+        _l: []
+      };
+      if (redraw_users) {
+        const parsed = JSON.parse(redraw_users);
+        console.log(data.raffleSchedule[0].id)
+        if (Number(data.raffleSchedule[0].id) == Number(parsed._i)) {//create new sessionstorage data if stored raffle id is not the same to current raffle id.
+          x = parsed
+        }
+      }
+
+      // const payload = {
+      //   raffle_id,
+      //   prize_id,
+      //   winner_id: winner_ID,
+      //   users: users_ID
+
+      // };
       const payload = {
         raffle_id,
         prize_id,
         winner_id: winner_ID,
-        users: users_ID
+        users: x._l
 
       };
       console.log(payload)
@@ -294,23 +316,14 @@ const MyDialog = ({ open, data, onClose }: MyDialogProps) => {
 
       const d = bodyDecrypt(res.data, token);
       if (d && d.success === "success") {
-        console.log(users_ID)
+        console.log(x._l)
 
         console.log(d)
         setWinnerDialog(true);
         setWinnerDetails({ ...d.data.winnerDetails, _updatedAt: Date.now(), });
         setWinnerID(d.data.winner_id)
-        const redraw_users = sessionStorage.getItem("powerball_rd");
-        let x = {
-          _i: data.raffleSchedule[0].id,
-          _l: []
-        };
-        if (redraw_users) {
-          const parsed = JSON.parse(redraw_users);
-          if (Number(data.raffleSchedule[0].id) == Number(parsed._i)) {
-            x = parsed
-          }
-        }
+
+
         x._l.push(d.data.user_id)
 
         sessionStorage.setItem("powerball_rd", JSON.stringify(x))
