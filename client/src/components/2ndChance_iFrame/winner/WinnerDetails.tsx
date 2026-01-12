@@ -26,7 +26,7 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
   // const
   const location = useLocation();
   const navigate = useNavigate();
-  useEffect(() => { console.log(list) }, [list])
+  // useEffect(() => { console.log(list) }, [list])
   useEffect(() => {
     if (!loading) {
       if (token === null) {
@@ -178,7 +178,6 @@ const WinnerDetails = ({ url }: { url: string | undefined }) => {
       sort: sort,
       filter: newFilterModel,
     };
-    console.log(query)
     dispatch(
       getWinnerListAsync({
         ...query,

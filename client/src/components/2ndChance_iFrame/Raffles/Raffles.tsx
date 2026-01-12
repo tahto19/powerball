@@ -26,6 +26,7 @@ import { getRaffleEntry } from "@/redux/reducers/raffleEntry/asyncCalls";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import IconButton from "@mui/material/IconButton";
 import endedImage from "@/assets/image/ended.png";
+import comingSoon from "@/assets/image/coming soon.png"
 import { raffleListAdd } from "@/redux/reducers/raffle/raffleSlice";
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const endpoint = base_url + "api/file/serve/image/";
@@ -101,6 +102,9 @@ const Raffles = () => {
   };
 
   const handleParticipate = (data: RaffleState) => {
+    if (moment(data.end_date).isSameOrBefore(moment()) || moment(data.starting_date).isAfter(moment())) {
+      return;
+    }
     setData(data);
     setOpen(true);
   };
@@ -291,11 +295,11 @@ const Raffles = () => {
                   onClick={() => handleParticipate(x)}
                   variant="contained"
                   sx={{ width: "100%" }}
-                  disabled={moment(x.end_date).isSameOrBefore(moment())}
+                  disabled={moment(x.end_date).isSameOrBefore(moment()) || moment(x.starting_date).isAfter(moment())}
                 >
                   {moment(x.end_date).isSameOrBefore(moment())
                     ? "Ended"
-                    : "Participate"}
+                    : moment(x.starting_date).isAfter(moment()) ? "Coming Soon" : "Participate"}
                 </Button>
               </CardActions>
               {moment(x.end_date).isSameOrBefore(moment()) ? (
@@ -310,6 +314,28 @@ const Raffles = () => {
                     transform: "translate(-50%, -50%)",
                   }}
                 />
+              ) : moment(x.starting_date).isAfter(moment()) ? (
+                <div style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  width: "100%",
+                  // background: "rgba(0,0,0,.7)",
+                  height: "100%"
+                }}>
+                  <CardMedia
+                    component="img"
+                    image={comingSoon}
+                    alt="Coming Soon"
+                  // sx={{
+                  //   position: "absolute",
+                  //   top: "50%",
+                  //   left: "50%",
+                  //   transform: "translate(-50%, -50%)",
+                  // }}
+                  />
+                </div>
               ) : null}
             </Card>
           ))
