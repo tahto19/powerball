@@ -282,10 +282,12 @@ const Raffles = () => {
                         marginTop: "10px",
                       }}
                     >
-                      Draw on{" "}
-                      {moment(x.raffleSchedule[0].schedule_date).format(
-                        "MMMM D, YYYY h:mm A"
-                      )}
+                      {
+                        moment(x.starting_date).isAfter(moment()) ? null : `Draw on ${moment(x.raffleSchedule[0].schedule_date).format(
+                          "MMMM D, YYYY h:mm A"
+                        )}`
+                      }
+
                     </Typography>
                   </div>
                 </CardContent>
@@ -317,17 +319,20 @@ const Raffles = () => {
               ) : moment(x.starting_date).isAfter(moment()) ? (
                 <div style={{
                   position: "absolute",
-                  top: "50%",
+                  bottom: "1%",
                   left: "50%",
-                  transform: "translate(-50%, -50%)",
+                  transform: "translate(-50%, 0)",
                   width: "100%",
                   // background: "rgba(0,0,0,.7)",
-                  height: "100%"
+
                 }}>
                   <CardMedia
                     component="img"
                     image={comingSoon}
                     alt="Coming Soon"
+                    sx={{
+                      opacity: "0.4"
+                    }}
                   // sx={{
                   //   position: "absolute",
                   //   top: "50%",
