@@ -60,13 +60,13 @@ export const raffleDrawController = async (req, res) => {
     const getTicketsWithRaffleId = await td.fetchTicketsInRaffle(raffle_id);
 
     let getTicketNumber = getTicketsWithRaffleId.list.map(
-      (v) => v.ticket_history_generate
+      (v) => v.ticket_history_generate,
     );
 
     // draw raffle here
     let a = random(getTicketNumber);
     let getWinnerTicketDetails = getTicketsWithRaffleId.list.find(
-      (v) => v.ticket_history_generate === a
+      (v) => v.ticket_history_generate === a,
     );
     // insert the winner prize ticket entry
     let b = await wc.Insert({
@@ -80,7 +80,7 @@ export const raffleDrawController = async (req, res) => {
       cSend({
         winnerDetails: getWinnerTicketDetails,
         totalEntries: getTicketsWithRaffleId.count,
-      })
+      }),
     );
   } catch (err) {
     console.log(err);
@@ -190,7 +190,7 @@ export const raffleDrawV2Controller = async (req, res) => {
 
     for (let val of firstClear) {
       let checkIfTicketIsHasSameUserId = userThatCantJoin.find(
-        (v) => v === val.user
+        (v) => v === val.user,
       );
       if (!checkIfTicketIsHasSameUserId) {
         ticketsThatCanJoin.push(val.ticket_code);
@@ -213,7 +213,7 @@ export const raffleDrawV2Controller = async (req, res) => {
         winnerDetails: getWinnerTicketDetails,
         totalEntries: secondClear.length,
         user_id: getWinnerTicketDetails.user,
-      })
+      }),
     );
   } catch (err) {
     throw err;
@@ -259,26 +259,48 @@ export const raffleDrawV3Controller = async (req, res) => {
     let winningTicket = "";
     let winningDetails;
 
-    // let checkIftheresAWinner = await TicketHistory.findOne({
-    //   where: {
-    //     [Op.and]: [
-    //       {
-    //         ticket_history_generate: {
-    //           [Op.like]: `${escapedPrefix}%`,
-    //         },
-    //       },
-    //       { raffle_id: raffle_id },
-    //       { "$ticket_detail.user_id$": { [Op.notIn]: users ?? [] } },
-    //       { "$wining_draw_detail.id$": null },
-    //     ],
-    //   },
-    //   include: [
-    //     { model: TicketDetails, attributes: ["user_id"] },
-    //     { model: WiningDrawDetails, attributes: ["ticket_id"] },
-    //   ],
-    //   raw: true,
-    // });
-    // if(checkIftheresAWinner.length ===0) throw new Error('ErrorCode x923')
+    let getAllUsersThatAlreadyWon = await TicketHistory.findAll({
+      where: {
+        [Op.and]: [
+          { raffle_id: raffle_id },
+          { "$ticket_detail.user_id$": { [Op.notIn]: users ?? [] } },
+          { "$wining_draw_detail.id$": { [Op.ne]: null } },
+        ],
+      },
+      include: [
+        { model: TicketDetails, attributes: ["user_id"] },
+        { model: WiningDrawDetails, attributes: ["ticket_id"] },
+      ],
+      raw: true,
+    });
+    const userThatShouldBeNotInRaffle = [
+      ...new Set(
+        getAllUsersThatAlreadyWon.map((v) => {
+          return v["ticket_detail.user_id"];
+        }),
+      ),
+    ];
+    let checkStillUsersAvailableToWin = await TicketHistory.findAll({
+      where: {
+        [Op.and]: [
+          { raffle_id: raffle_id },
+          {
+            "$ticket_detail.user_id$": {
+              [Op.notIn]: [...users, ...userThatShouldBeNotInRaffle] ?? [],
+            },
+          },
+          { "$wining_draw_detail.id$": null },
+        ],
+      },
+      include: [
+        { model: TicketDetails, attributes: ["user_id"] },
+        { model: WiningDrawDetails, attributes: ["ticket_id"] },
+      ],
+      raw: true,
+    });
+    if (!checkStillUsersAvailableToWin.length)
+      throw new Error("ErrorCode x876");
+
     do {
       let a = randomLetters(1);
       let findingTicket = winningTicket + a;
@@ -292,7 +314,11 @@ export const raffleDrawV3Controller = async (req, res) => {
               },
             },
             { raffle_id: raffle_id },
-            { "$ticket_detail.user_id$": { [Op.notIn]: users ?? [] } },
+            {
+              "$ticket_detail.user_id$": {
+                [Op.notIn]: [...users, ...userThatShouldBeNotInRaffle] ?? [],
+              },
+            },
             { "$wining_draw_detail.id$": null },
           ],
         },
@@ -307,7 +333,7 @@ export const raffleDrawV3Controller = async (req, res) => {
         let combineWinnerTicket = winningTicket + a;
         let getSubstring = getTickets.ticket_history_generate.substring(
           0,
-          ticketLength + 1
+          ticketLength + 1,
         );
 
         if (getSubstring === combineWinnerTicket) {
@@ -334,7 +360,7 @@ export const raffleDrawV3Controller = async (req, res) => {
         getUserDetails,
         winnerDetails: winningDetails,
         user_id: winningDetails["ticket_detail.user_id"],
-      })
+      }),
     );
   } catch (err) {
     throw err;
@@ -360,7 +386,7 @@ export const postTicketController = async (req, res) => {
   try {
     let getTicket_ = await tc.FetchAll(
       [["id", "ASC"]],
-      [{ field: "VIN", filter: req.body.ticket_id, type: "string_eq" }]
+      [{ field: "VIN", filter: req.body.ticket_id, type: "string_eq" }],
     );
 
     if (getTicket_.list.length > 0) {
@@ -375,7 +401,7 @@ export const postTicketController = async (req, res) => {
         headers: {
           authorization: `Bearer ${process.env.TICKET_VALIDATION_TOKEN}`,
         },
-      }
+      },
     );
 
     // _r.data.r.trim() === "This is a non-winning ticket." ||
@@ -406,7 +432,7 @@ export const postTicketController = async (req, res) => {
         [
           { field: "ticket_code", filter: _r.data.t, type: "string_eq" },
           { field: "VIN", filter: req.body.ticket_id, type: "string_eq" },
-        ]
+        ],
       );
 
       if (getTicket.list.length > 0) {
