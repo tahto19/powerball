@@ -33,6 +33,7 @@ import FreeTickets from "./routes/freeTickets/FreeTickets.route.js";
 import userType from "./routes/UserType/UserType.route.js";
 import { createSuperUser } from "./util/createSuperUser.js";
 import siteDefaults from "./routes/SCSiteDefaults/siteDefaults.js";
+import EScratch from "./routes/EScratch/EScratch.route.js";
 
 const fastify = Fastify({
   // trustProxy: true,
@@ -101,6 +102,15 @@ const fastify = Fastify({
  * x913 No Winner Found
  * x922 Error in deleting filter is not set
  * x923 No User Eligible for Raffle
+ * x801 Authorization Header Missing
+ * x802 Invalid Bearer Token
+ * x803 Requestor’s IP is not in whitelist
+ * x804 Malformed JSON or missing fields
+ * x805 Mobile number could not be recognized
+ * x806 Credits must be greater than 0
+ * x807 Exceeded the vendor’s max allowable credits
+ * x808 Same mobile credited within window
+ * x809 Duplicate request detected within window
  */
 
 /**
@@ -295,6 +305,9 @@ const start = async () => {
     });
     fastify.register(siteDefaults, {
       prefix: process.env.ROUTES_PREFIX + "site-defaults",
+    });
+    fastify.register(EScratch, {
+      prefix: process.env.ROUTES_PREFIX + "e-scratch",
     });
     /**
      *error handler

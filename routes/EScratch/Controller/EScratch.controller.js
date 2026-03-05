@@ -1,5 +1,6 @@
-import axiosClient from "../../../util/axiosClient";
+import axiosClient from "../../../util/axiosClient.js";
 import "dotenv/config";
+import { eScratchErrorStatus } from "../../../util/util.js";
 
 export const EScratchController = async (req, res) => {
   try {
@@ -22,6 +23,11 @@ export const EScratchController = async (req, res) => {
 
     res.send(cSend(a));
   } catch (err) {
-    throw err;
+    if (err?.response?.data?.m) {
+      const m = eScratchErrorStatus(err?.response?.data?.m);
+      throw new Error(m.toString());
+    } else {
+      throw err;
+    }
   }
 };

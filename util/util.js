@@ -302,4 +302,40 @@ export function replaceFirstZeroWith63(input) {
   return str.replace("0", "63");
 }
 
-export const eScratchErrorStatus = () => {};
+export const eScratchErrorStatus = (status) => {
+  console.log(",,,,", status);
+  let s = "ErrorCODE x803";
+  switch (status) {
+    case "AUTH_REQUIRED":
+      s = "ErrorCODE x801";
+      break;
+    case "INVALID_TOKEN":
+      s = "ErrorCODE x802";
+      break;
+    case "IP_NOT_ALLOWED":
+      s = "ErrorCODE x803";
+      break;
+    case "INVALID_REQUEST":
+      s = "ErrorCODE x804";
+      break;
+    case "INVALID_MOBILE":
+      s = "ErrorCODE x805";
+      break;
+    case "INVALID_CREDITS":
+      s = "ErrorCODE x806";
+      break;
+    case "CREDITS_EXCEED_MAX":
+      s = "ErrorCODE x807";
+      break;
+    case "TOO_MANY_REQUESTS":
+      s = "ErrorCODE x808";
+      break;
+    case "DUPLICATE_REQUEST":
+      s = "ErrorCODE x809";
+      break;
+    default:
+      break;
+  }
+
+  return s;
+};
