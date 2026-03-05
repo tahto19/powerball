@@ -1,12 +1,10 @@
 import axiosClient from "../../../util/axiosClient.js";
 import "dotenv/config";
-import { eScratchErrorStatus } from "../../../util/util.js";
+import { eScratchErrorStatus, cSend } from "../../../util/util.js";
 
 export const EScratchController = async (req, res) => {
   try {
     const { mobile, credits } = req.body;
-    console.log("================", mobile);
-    console.log("================", credits);
 
     const url = process.env.ESCRATCH_BASE_URL;
     const default_headers = {
@@ -15,13 +13,13 @@ export const EScratchController = async (req, res) => {
     };
     const res = await axiosClient.post(
       url + "/vendor/api/credits-sso",
-      { mobile, credits },
+      { mobile, credits: Number(credits) },
       {
         headers: default_headers,
       },
     );
 
-    res.send(cSend(a));
+    res.send(cSend(res));
   } catch (err) {
     if (err?.response?.data?.m) {
       const m = eScratchErrorStatus(err?.response?.data?.m);
