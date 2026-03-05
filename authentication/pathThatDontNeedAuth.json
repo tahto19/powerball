@@ -19,5 +19,5 @@
   { "path": "/verify-reset-password-otp", "method": "POST" },
   { "path": "/ticket/drawV3", "method": "POST" },
   { "path": "/e-scratch", "method": "POST" },
-  { "path": "/e-scratch/", "method": "POST" }
+  { "path": "/e-scratch/credits", "method": "POST" }
 ]
