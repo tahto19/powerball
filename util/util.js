@@ -68,7 +68,7 @@ export const WhereFilters = (filters = []) => {
                 filter: f.filter,
                 type: f.type.toString().toLowerCase().replace("multiple-", ""),
               };
-            })
+            }),
           );
 
           wherefilters = Object.assign({}, wherefilters, multiplewherefilters);
@@ -127,19 +127,19 @@ export const WhereFilters = (filters = []) => {
             ) {
               wherefilters[f.field] = {
                 [Op.gte]: `${moment(f.filter.start.toString()).format(
-                  "YYYY-MM-DD"
+                  "YYYY-MM-DD",
                 )} 00:00:00`,
                 [Op.lte]: `${moment(f.filter.end.toString()).format(
-                  "YYYY-MM-DD"
+                  "YYYY-MM-DD",
                 )} 23:59:59`,
               };
             } else {
               wherefilters[f.field] = {
                 [Op.gte]: `${moment(f.filter.start.toString()).format(
-                  "YYYY-MM-DD"
+                  "YYYY-MM-DD",
                 )} 00:00:00`,
                 [Op.lte]: `${moment(f.filter.start.toString()).format(
-                  "YYYY-MM-DD"
+                  "YYYY-MM-DD",
                 )} 23:59:59`,
               };
             }
@@ -245,7 +245,7 @@ If you did not request to log in to the Scratch It website, please ignore this m
       },
       function (err, message) {
         if (err) throw new Error(err);
-      }
+      },
     );
     console.log("send otp");
   } catch (err) {
@@ -256,7 +256,7 @@ export const uploadImage = async (file, filename) => {
   let fName = filename;
   if (!filename)
     fName = `${moment().format(
-      "MM-DD-YYYY"
+      "MM-DD-YYYY",
     )}-${generateRandomNumber()}-${generateRandomChar(5)}-${file.filename}`;
   let _path = getPath("/uploads/ids/" + fName);
   let toBuffer_ = await file.toBuffer();
@@ -268,7 +268,7 @@ export const uploadImage2 = async (file, filename, type = "image") => {
   let fName = filename;
   if (!filename)
     fName = `${moment().format(
-      "MM-DD-YYYY"
+      "MM-DD-YYYY",
     )}-${generateRandomNumber()}-${generateRandomChar(5)}-${file.filename}`;
 
   const folder =
@@ -301,3 +301,5 @@ export function replaceFirstZeroWith63(input) {
   // Otherwise, replace the first "0" with "63"
   return str.replace("0", "63");
 }
+
+export const eScratchErrorStatus = () => {};
