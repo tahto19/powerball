@@ -3,7 +3,7 @@ import { createCipheriv, createDecipheriv } from "crypto";
 import "dotenv/config";
 import path from "path";
 import { fileURLToPath } from "url";
-import { Op } from "sequelize";
+import { Op, col, where } from "sequelize";
 import CryptoJS from "crypto-js";
 import nodemailer from "nodemailer";
 import moment from "moment";
@@ -167,6 +167,10 @@ export const WhereFilters = (filters = []) => {
               [Op.lte]: threshold,
             };
           }
+          break;
+        case "column_less_than":
+          wherefilters[Op.and] = wherefilters[Op.and] || [];
+          wherefilters[Op.and].push(where(col(f.field), Op.lt, col(f.compare)));
           break;
       }
     }

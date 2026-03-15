@@ -190,7 +190,8 @@ const EDialog = ({ points, open, onClose }: { points: number; open: boolean; onC
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "space-between",
-                    flex: "1"
+                    flex: "1",
+                    width: !fullScreen ? "500px" : "auto"
                 }}>
                     <div>
                         <div style={{
