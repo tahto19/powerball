@@ -108,8 +108,9 @@ const EDialog = ({ points, open, onClose }: { points: number; open: boolean; onC
                 credits: myPoints
             }, token);
             const d = bodyDecrypt(res.data, token);
+            console.log(d)
             if (d && d.success === "success") {
-                console.log(d)
+
                 const data = d.data
 
                 if (data.m == "ok") {

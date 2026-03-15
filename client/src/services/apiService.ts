@@ -675,7 +675,7 @@ export const apiService = {
         data: bodyEncrypt(data, token),
       }
     );
-    return response.data;
+    return response;
   },
 };
 
