@@ -31,8 +31,8 @@ export const EScratchController = async (req, res) => {
           headers: default_headers,
         },
       );
-
-      res.send(cSend(r));
+      console.log("============", r.data);
+      res.send(cSend(r.data));
     } else {
       throw new Error("ErrorCODE x810");
     }
