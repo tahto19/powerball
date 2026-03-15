@@ -101,14 +101,15 @@ const EDialog = ({ points, open, onClose }: { points: number; open: boolean; onC
         onClose()
     }
 
+    const [isDisable, setIsDisable] = useState(false)
     const handleConfirm = async () => {
         if (!token) return;
+        setIsDisable(true)
         try {
             const res = await apiService.sendCredit({
                 credits: myPoints
             }, token);
             const d = bodyDecrypt(res.data, token);
-            console.log(d)
             if (d && d.success === "success") {
 
                 const data = d.data
@@ -123,9 +124,12 @@ const EDialog = ({ points, open, onClose }: { points: number; open: boolean; onC
                             window.parent.location.href = "https://escratch.ph" + data.ssoUrl;
                         }, 4000)
                     }, 1000)
+                } else {
+                    setIsDisable(false)
                 }
             }
         } catch (err) {
+            setIsDisable(false)
             dispatch(
                 showToaster({
                     err,
@@ -310,7 +314,7 @@ const EDialog = ({ points, open, onClose }: { points: number; open: boolean; onC
                     <Button onClick={handleCloseConfirmation}>Cancel</Button>
                     <Button onClick={handleConfirm} sx={{
                         color: "#F26A21"
-                    }}>
+                    }} disabled={isDisable}>
                         Confirm
                     </Button>
                 </DialogActions>
