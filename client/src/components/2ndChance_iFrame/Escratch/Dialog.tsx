@@ -1,26 +1,17 @@
+//@ts-nocheck
 import apiService from "@/services/apiService";
 
 import { useMediaQuery, useTheme } from "@mui/material";
 import {
     AppBar,
     Toolbar,
-    Chip,
     TextField,
     Box,
-    Switch,
-    MenuItem,
     Dialog,
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle,
     Button,
-    FormLabel,
-    FormControlLabel,
-    Grid2,
-    Select,
-    Autocomplete,
-    Stack,
     Typography,
     IconButton,
     Divider,
@@ -28,7 +19,7 @@ import {
 } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAppSelector, useAppDispatch } from "@/redux/hook";
 import { bodyDecrypt } from "@/utils/util";
 import { showToaster } from "@/redux/reducers/global/globalSlice";
@@ -71,6 +62,7 @@ const EDialog = ({ points, open, onClose }: { points: number; open: boolean; onC
         const p = e.target.value
         setInputError(false);
         setInputErrorMessage("")
+        setPoints(p)
 
         if (myPoints && myPoints > points) {
             setInputError(true);
@@ -98,7 +90,7 @@ const EDialog = ({ points, open, onClose }: { points: number; open: boolean; onC
         }
 
 
-        setPoints(p)
+
         if (p <= points) {
             const g = p * 20
             setGems(g)

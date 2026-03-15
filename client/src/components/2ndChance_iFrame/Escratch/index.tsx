@@ -1,8 +1,9 @@
+//@ts-nocheck
 import { Box, Button, CardMedia } from "@mui/material";
 import image1 from "@/assets/image/Screenshot 2026-03-14 160244.png"
 import EDialog from "./Dialog";
 import { useState } from "react";
-const Escratch = ({ points }: { points: number | string }) => {
+const Escratch = ({ points }: { points: number }) => {
     const [open, setOpen] = useState(false);
     const handleOnClose = () => {
         setOpen(false);

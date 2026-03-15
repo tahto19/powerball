@@ -335,7 +335,7 @@ const Dashboard = () => {
       </Box> */}
       <br />
       <br />
-      <Escratch points={availableTicket} />
+      <Escratch points={Number(availableTicket)} />
       <Raffles />
       <Box
         sx={{
