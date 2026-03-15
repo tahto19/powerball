@@ -668,6 +668,15 @@ export const apiService = {
     );
     return response;
   },
+  sendCredit: async (data, token) => {
+   const response = await apiClient.post(
+      "/api/e-scratch/credits",
+      {
+        data: bodyEncrypt(data, token),
+      }
+    );
+    return response.data;
+  },
 };
 
 export default apiService;

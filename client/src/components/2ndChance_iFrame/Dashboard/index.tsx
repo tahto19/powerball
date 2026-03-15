@@ -29,6 +29,8 @@ import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import IconButton from '@mui/material/IconButton';
 
+import Escratch from "../Escratch";
+
 const base_url = import.meta.env.VITE_API_BASE_URL;
 const endpoint = base_url + "api/file/serve/image/";
 
@@ -333,6 +335,7 @@ const Dashboard = () => {
       </Box> */}
       <br />
       <br />
+      <Escratch points={availableTicket} />
       <Raffles />
       <Box
         sx={{

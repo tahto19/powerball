@@ -117,7 +117,29 @@ const getErrorsStatus = (code: string) => {
       return "Invalid Email Format";
     case "X912":
       return "No more eligible customers to win";
-
+ case "x801":
+      return "Authorization Header Missing";
+       case "x802":
+      return "Invalid Bearer Token";
+       case "x803":
+      return "Requestor’s IP is not in whitelist";
+       case "x804":
+      return "Malformed JSON or missing fields";
+       case "x805":
+      return "Mobile number could not be recognized";
+       case "x806":
+      return "Credits must be greater than 0";
+       case "x807":
+      return "Exceeded the vendor’s max allowable credits";
+       case "x808":
+      return "Same mobile credited within window";
+       case "x809":
+      return "Duplicate request detected within window";
+       case "x810":
+      return "Credits not found";
+       case "x811":
+      return "Invalid mobile number";
+    
     default:
       return false;
   }

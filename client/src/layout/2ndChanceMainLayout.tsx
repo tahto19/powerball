@@ -96,6 +96,8 @@ function MainLayout2({ title, children }: { title: string; children: any }) {
           <Stack
             spacing={2}
             sx={{
+              marginLeft: "0px !important",
+              marginRight: "0px !important",
               alignItems: "center",
               mx: 3,
               pb: 5,

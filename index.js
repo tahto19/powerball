@@ -111,6 +111,8 @@ const fastify = Fastify({
  * x807 Exceeded the vendor’s max allowable credits
  * x808 Same mobile credited within window
  * x809 Duplicate request detected within window
+ * x810 Credits not found
+ * x811 Invalid mobile number
  */
 
 /**
