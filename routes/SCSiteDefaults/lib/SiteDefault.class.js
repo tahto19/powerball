@@ -27,6 +27,34 @@ class SiteDefault {
     let list = await Files.findOne(query);
     return list;
   }
+
+  async FetchAll(sort = [["id", "ASC"]], filter = []) {
+    if (filter.length === 0) throw new Error("ErrorCode X1");
+    let query = {
+      order: sort,
+    };
+
+    if (filter.length !== 0) query["where"] = WhereFilters(filter);
+
+    // ✅ Fetch both filtered list and total count
+    let { count, rows } = await Files.findAndCountAll(query);
+
+    return { list: rows, total: count };
+  }
+
+  async Delete(id) {
+    if (!id) throw new Error("Invalid ID");
+
+    const count = await Files.count({ where: { id } });
+
+    if (count === 0) throw new Error("Record not found");
+
+    await Files.destroy({
+      where: { id },
+    });
+
+    return { id };
+  }
 }
 
 export default new SiteDefault();

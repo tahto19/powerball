@@ -58,6 +58,11 @@ Files.init(
         key: "id",
       },
     },
+    sequence: {
+      type: DataTypes.SMALLINT,
+      required: false,
+      default: null,
+    },
   },
   {
     timestamps: true,
@@ -65,7 +70,7 @@ Files.init(
     modelName: "files",
     paranoid: true,
     tableName: process.env.DB_PREFIX + "files",
-  }
+  },
 );
 
 export default Files;

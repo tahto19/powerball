@@ -126,10 +126,12 @@ const EDialog = ({ points, open, onClose }: { points: number; open: boolean; onC
                     }, 1000)
                 } else {
                     setIsDisable(false)
+                    setOpenConfirmation(false)
                 }
             }
         } catch (err) {
             setIsDisable(false)
+            setOpenConfirmation(false)
             dispatch(
                 showToaster({
                     err,

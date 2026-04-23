@@ -108,7 +108,6 @@ export const apiService = {
 
   // Login API (Returns token & stores it)
   login: async (credentials: Credentials) => {
-    console.log(credentials);
     const response = await apiClient.post("/api/login", credentials);
     return response;
   },
@@ -216,7 +215,6 @@ export const apiService = {
 
     fd.append("data", bodyEncrypt(d, token));
     fd.append("file", d.file[0]);
-    console.log(d.file[0]);
     const res = apiClient.put("/api/file/image", fd, {});
     // const file = d.file[0];
     // const base64File = await fileToBase64(file);
@@ -271,7 +269,6 @@ export const apiService = {
       const _r = await apiClient.post("/api/users/createUser", fd, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      console.log(_r);
       return _r;
     } catch (err) {
       throw err;
@@ -652,6 +649,31 @@ export const apiService = {
   getMediaBanner: async () => {
     const res = apiClient.get("/api/site-defaults/media-banner");
     return res;
+  },
+  getHighlights: async () => {
+    const res = apiClient.get("/api/site-defaults/highlights");
+    return res;
+  },
+
+  getHighlights_PlayerSide: async (token: string | null) => {
+    const res = apiClient.get("/api/site-defaults/highlights/players");
+    return res;
+  },
+
+  deleteHighlights: async (data:any, token: string | null) => {
+    const r_ = await apiClient.post("/api/site-defaults/highlights/delete", {
+      data: bodyEncrypt(JSON.stringify(data), token),
+    });
+
+    return bodyDecrypt(r_.data, token);
+  },
+
+  updateHighlightsSequence: async (data:any, token: string | null) => {
+    const r_ = await apiClient.put("/api/site-defaults/highlights/update", {
+      data: bodyEncrypt(JSON.stringify(data), token),
+    });
+
+    return bodyDecrypt(r_.data, token);
   },
 
   resetOtp: async (data) => {

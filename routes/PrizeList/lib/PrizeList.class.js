@@ -19,9 +19,10 @@ class PrizeList_class {
     // let list = await PrizeList.findAll(query);
     return { list: rows, total: count };
   }
-  async FetchAll(sort = [["id", "ASC"]], filter = []) {
+  async FetchAll(sort = [["id", "ASC"]], filter = [], attributes = []) {
     let query = {
       order: sort,
+      attributes: attributes,
     };
 
     if (filter.length !== 0) query["where"] = WhereFilters(filter);
@@ -47,7 +48,7 @@ class PrizeList_class {
 
     await RafflePrize.update(
       { amount: _data.value },
-      { where: { prize_id: id }, individualHooks: true }
+      { where: { prize_id: id }, individualHooks: true },
     );
 
     return id;

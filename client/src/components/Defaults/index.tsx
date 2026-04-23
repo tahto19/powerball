@@ -3,6 +3,7 @@ import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import MediaBanner from './tabs/MediaBanner';
+import Highlights from './tabs/Highlights';
 import {
     Typography,
     Box,
@@ -62,9 +63,13 @@ const Defaults = () => {
                 sx={{ borderRight: 1, borderColor: 'divider', width: "200px" }}
             >
                 <Tab label="Media Banner" {...a11yProps(0)} />
+                <Tab label="Highlights" {...a11yProps(1)} />
             </Tabs>
             <TabPanel value={value} index={0}>
                 <MediaBanner />
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+                <Highlights />
             </TabPanel>
 
         </Box>

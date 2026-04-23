@@ -2,6 +2,10 @@ import {
   insertSiteDefaultsSchema,
   getMediaBannerSchema,
   updateSiteDefaultsSchema,
+  getHighlightsSchema,
+  deleteHighlightsSiteDefaultsSchema,
+  updateHighlightsSchema,
+  getHighlightsPlayserSideSchema,
 } from "./Schema/siteDefaults.Schema.js";
 import { decryptData } from "../../util/util.js";
 
@@ -22,6 +26,10 @@ const siteDefaults = (app, opts, done) => {
   app.post("/insert", insertSiteDefaultsSchema);
   app.put("/update", updateSiteDefaultsSchema);
   app.get("/media-banner", getMediaBannerSchema);
+  app.get("/highlights", getHighlightsSchema);
+  app.post("/highlights/delete", deleteHighlightsSiteDefaultsSchema);
+  app.put("/highlights/update", updateHighlightsSchema);
+  app.get("/highlights/players", getHighlightsPlayserSideSchema);
 
   done();
 };

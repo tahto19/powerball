@@ -19,6 +19,7 @@ const userTypeSlice = createSlice({
   initialState,
   reducers: {
     addPermissions: (state, action) => {
+      console.log("+++++++++++++", action)
       state.permissions = action.payload.permissions;
       state.id = action.payload.id;
     },

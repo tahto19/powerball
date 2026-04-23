@@ -81,7 +81,6 @@ export const getRaffleEntryList = createAsyncThunk(
         let _r = await apiService.getRaffleEntryList(getFilter, token, url);
 
         let r_data = bodyDecrypt(_r.data, token);
-        console.log(r_data.list)
         r_data.list = r_data.list.map((v) => {
           // const getEndDate = moment(
           //   v.Raffle_Schedule.raffleDetails.end_date

@@ -3,6 +3,7 @@ export interface MediaState {
       file: File | null;
       name: string;
       category: string;
+      sequence: number | null;
 }
 
 export const mediaInitialData: MediaState = {
@@ -10,4 +11,5 @@ export const mediaInitialData: MediaState = {
     file: null,
     name: "",
       category: "",
+      sequence: null
 }
