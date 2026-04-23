@@ -58,8 +58,8 @@ const SortableImage = ({ id, x, onDelete }: MyDialogProps) => {
                 <CardMedia
                     component="img"
                     sx={{ width: "181px" }}
-                    // image={"/media/images/" + x?.file_location}
-                    image={x?.file_location}
+                    image={"/media/images/" + x?.file_location}
+                // image={x?.file_location}
 
                 />
             </Box>
