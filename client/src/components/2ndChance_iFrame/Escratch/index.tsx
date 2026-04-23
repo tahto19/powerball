@@ -101,7 +101,7 @@ const Escratch = ({ points }: { points: number }) => {
                                         imageList.map((img, i) => (
                                             <SwiperSlide key={i}>
                                                 <img
-                                                    src={img.file_location}
+                                                    src={"/media/images/" + img.file_location}
                                                     style={{ width: "100%", height: "100%", objectFit: "cover" }}
                                                 />
                                             </SwiperSlide>
