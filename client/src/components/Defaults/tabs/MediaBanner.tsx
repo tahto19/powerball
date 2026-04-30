@@ -129,7 +129,7 @@ const MediaBanner = () => {
                         <CardMedia
                             key={date}
                             component="img"
-                            sx={{ width: "fit-content", height: "181px", border: "3px solid #000", borderRadius: "10px", marginTop: "20px" }}
+                            sx={{ width: "fit-content", height: "181px", border: "3px solid #000", borderRadius: "10px", marginTop: "20px", maxWidth: "100%" }}
                             image={apiEndpoint + formData.id + "?t=" + date}
                             alt="Logo"
                         ></CardMedia>
