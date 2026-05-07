@@ -296,7 +296,7 @@ const Dashboard = () => {
             }}
             onClick={handleOpen}
           >
-            Available Raffle Ticket: {availableTicket}
+            Available Points: {availableTicket}
           </Box>
         </Box>
       </Box>

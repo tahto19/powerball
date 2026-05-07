@@ -309,7 +309,10 @@ const MyDialog = ({
                     </Grid2>
                   );
                 })}
-              <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+              <Grid2 size={{ xs: 12, sm: 12, md: 12, lg: 12 }} sx={{
+                height: "1px",
+                overflow: "hidden"
+              }}>
                 <FormControl>
                   <FormLabel htmlFor="details">Total Entries</FormLabel>
                   <TextField
